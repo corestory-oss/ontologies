@@ -14,7 +14,7 @@ description: >-
   structural components, domain modeling (DDD), security, data management,
   integration, deployment, and observability concerns.
 version: 1.0.0
-license: Apache-2.0
+license: Proprietary
 
 prefixes:
   sao: https://ontology.example.org/software-application/

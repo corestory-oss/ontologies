@@ -7,7 +7,7 @@ The Software Application Ontology (SAO) is a comprehensive ontology for modeling
 The ontology is described in LinkML.
 
 * **Version**: 1.0.0
-* **License**: MIT License
+* **License**: Proprietary - Copyright (c) 2025 CoreStory, Inc.
 * **Schema ID**: https://ontology.example.org/software-application
 
 ## Purpose
@@ -377,7 +377,12 @@ We welcome contributions! Areas of interest:
 
 ## License
 
-Apache License 2.0 - See LICENSE file for details.
+Proprietary and Confidential - Copyright (c) 2025 CoreStory, Inc. All rights reserved.
+
+This software is the proprietary and confidential information of CoreStory, Inc.
+Unauthorized copying, distribution, or use is strictly prohibited.
+
+See LICENSE file for complete terms.
 
 ## References
 
@@ -408,7 +413,7 @@ If you use this ontology in your research or projects, please cite:
 Software Application Ontology (SAO)
 Version 1.0.0
 https://ontology.example.org/software-application
-License: Apache-2.0
+Copyright (c) 2025 CoreStory, Inc. All rights reserved.
 ```
 
 ---

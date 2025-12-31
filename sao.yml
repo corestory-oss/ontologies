@@ -1,0 +1,3808 @@
+# =============================================================================
+# SOFTWARE APPLICATION ONTOLOGY (SAO)
+# LinkML Schema Definition
+# =============================================================================
+# This ontology provides a comprehensive framework for modeling software
+# applications, covering structure, behavior, security, data, and operations.
+# =============================================================================
+
+id: https://ontology.example.org/software-application
+name: software-application-ontology
+title: Software Application Ontology
+description: >-
+  A comprehensive ontology for modeling software applications, including
+  structural components, domain modeling (DDD), security, data management,
+  integration, deployment, and observability concerns.
+version: 1.0.0
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontology.example.org/software-application/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dct: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+imports:
+  - linkml:types
+
+# =============================================================================
+# ENUMERATIONS
+# =============================================================================
+enums:
+  Cardinality:
+    description: Relationship cardinality options
+    permissible_values:
+      ONE_TO_ONE:
+        description: One-to-one relationship
+      ONE_TO_MANY:
+        description: One-to-many relationship
+      MANY_TO_ONE:
+        description: Many-to-one relationship
+      MANY_TO_MANY:
+        description: Many-to-many relationship
+
+  ChannelType:
+    description: Types of communication channels
+    permissible_values:
+      PUBLIC_CHANNEL:
+        description: Public communication channel accessible to all users
+      PRIVATE_CHANNEL:
+        description: Private communication channel with restricted access
+      MPIM:
+        description: Multi-party instant messaging
+      IM:
+        description: Direct instant messaging between two parties
+
+  InterfaceCategory:
+    description: Categories of system interfaces
+    permissible_values:
+      USER_INTERFACE:
+        description: Human-facing interface for user interaction
+      PROGRAMMATIC_INTERFACE:
+        description: Machine-to-machine API interface
+      EVENT_INTERFACE:
+        description: Event-driven asynchronous interface
+
+  UserInterfaceType:
+    description: Types of user interfaces
+    permissible_values:
+      WEB_UI:
+        description: Web browser-based user interface
+      MOBILE_UI:
+        description: Mobile device (iOS/Android) user interface
+      DESKTOP_UI:
+        description: Desktop application user interface
+      CLI:
+        description: Command-line interface
+
+  APIType:
+    description: Types of programmatic interfaces
+    permissible_values:
+      REST_API:
+        description: RESTful HTTP-based API
+      GRAPHQL_API:
+        description: GraphQL query language API
+      GRPC_API:
+        description: gRPC remote procedure call API
+      SDK:
+        description: Software development kit for programmatic access
+      SOAP_API:
+        description: SOAP protocol-based web service API
+
+  EventInterfaceType:
+    description: Types of event interfaces
+    permissible_values:
+      WEBHOOK:
+        description: HTTP callback for event notifications
+      MESSAGE_QUEUE:
+        description: Queue-based asynchronous messaging
+      EVENT_STREAM:
+        description: Continuous stream of events
+      PUB_SUB:
+        description: Publish-subscribe messaging pattern
+
+  ServiceType:
+    description: Types of runtime services
+    permissible_values:
+      MICROSERVICE:
+        description: Small, independently deployable service
+      MONOLITH:
+        description: Single-tier monolithic application
+      FUNCTION:
+        description: Serverless function or lambda
+      JOB:
+        description: Batch processing job
+      DAEMON:
+        description: Background service or daemon process
+
+  DependencyType:
+    description: Types of dependencies
+    permissible_values:
+      RUNTIME:
+        description: Required at runtime for execution
+      BUILD:
+        description: Required at build/compile time
+      OPTIONAL:
+        description: Optional dependency for additional features
+      DEV:
+        description: Required only for development/testing
+
+  ActorCategory:
+    description: Categories of actors
+    permissible_values:
+      HUMAN:
+        description: Human user or operator
+      SYSTEM:
+        description: Automated system or service
+
+  HumanActorType:
+    description: Types of human actors
+    permissible_values:
+      END_USER:
+        description: Regular end user of the system
+      ADMINISTRATOR:
+        description: System administrator with elevated privileges
+      OPERATOR:
+        description: Operations personnel managing system runtime
+      DEVELOPER:
+        description: Software developer or engineer
+      AUDITOR:
+        description: Compliance or security auditor
+
+  SystemActorType:
+    description: Types of system actors
+    permissible_values:
+      INTERNAL_SERVICE:
+        description: Internal service within the system
+      EXTERNAL_SYSTEM:
+        description: External third-party system
+      SCHEDULED_PROCESS:
+        description: Scheduled or cron-based process
+      AI_AGENT:
+        description: Artificial intelligence agent or bot
+      MESSAGE_TRIGGER:
+        description: Message or event-triggered automation
+
+  CredentialType:
+    description: Types of authentication credentials
+    permissible_values:
+      PASSWORD:
+        description: Username and password credentials
+      TOKEN:
+        description: Token-based authentication (JWT, bearer token)
+      CERTIFICATE:
+        description: Digital certificate or X.509 certificate
+      API_KEY:
+        description: API key for service authentication
+      BIOMETRIC:
+        description: Biometric authentication (fingerprint, face recognition)
+      MFA:
+        description: Multi-factor authentication
+      OAUTH:
+        description: OAuth 2.0 authentication flow
+
+  PolicyType:
+    description: Types of authorization policies
+    permissible_values:
+      RBAC:
+        description: Role-Based Access Control
+      ABAC:
+        description: Attribute-Based Access Control
+      REBAC:
+        description: Relationship-Based Access Control
+      PBAC:
+        description: Policy-Based Access Control
+
+  ScopeType:
+    description: Types of permission scopes
+    permissible_values:
+      GLOBAL:
+        description: System-wide global scope
+      TENANT:
+        description: Limited to a specific tenant
+      ORGANIZATION:
+        description: Limited to an organization within a tenant
+      RESOURCE:
+        description: Limited to a specific resource or resource type
+      FIELD:
+        description: Limited to specific fields within a resource
+
+  ConstraintType:
+    description: Types of authorization constraints
+    permissible_values:
+      TEMPORAL:
+        description: Time-based constraint (date/time ranges)
+      SPATIAL:
+        description: Location or geography-based constraint
+      ATTRIBUTE:
+        description: Attribute or property-based constraint
+      CONTEXT:
+        description: Context-dependent constraint (device, IP, etc.)
+      RATE_LIMIT:
+        description: Rate limiting or quota-based constraint
+
+  AttributeCategory:
+    description: Categories of entity attributes
+    permissible_values:
+      REQUIRED:
+        description: Required attribute that must have a value
+      OPTIONAL:
+        description: Optional attribute that may be null
+      COMPUTED:
+        description: Computed or calculated attribute
+      DERIVED:
+        description: Derived from other attributes
+      TRANSIENT:
+        description: Transient attribute not persisted
+
+  ActionCategory:
+    description: Categories of actions
+    permissible_values:
+      QUERY:
+        description: Read-only query action
+      COMMAND:
+        description: State-changing command action
+      MUTATION:
+        description: Data mutation or modification action
+
+  CommandType:
+    description: Types of commands
+    permissible_values:
+      CREATE:
+        description: Create a new entity
+      UPDATE:
+        description: Update an existing entity
+      DELETE:
+        description: Delete an entity
+      EXECUTE:
+        description: Execute an operation or process
+      ARCHIVE:
+        description: Archive an entity for retention
+      RESTORE:
+        description: Restore an archived entity
+
+  WorkflowType:
+    description: Types of workflows
+    permissible_values:
+      SYNCHRONOUS:
+        description: Synchronous blocking workflow
+      ASYNCHRONOUS:
+        description: Asynchronous non-blocking workflow
+      SAGA:
+        description: Saga pattern for distributed transactions
+      CHOREOGRAPHY:
+        description: Event-driven choreography workflow
+      ORCHESTRATION:
+        description: Centrally orchestrated workflow
+
+  RuleCategory:
+    description: Categories of business rules
+    permissible_values:
+      VALIDATION:
+        description: Validation rule for data integrity
+      BUSINESS:
+        description: Business logic or domain rule
+      DERIVATION:
+        description: Derivation rule for computed values
+      CONSTRAINT:
+        description: Constraint or invariant rule
+      TRIGGER:
+        description: Event trigger or automation rule
+
+  EventCategory:
+    description: Categories of events
+    permissible_values:
+      DOMAIN_EVENT:
+        description: Domain-specific business event
+      INTEGRATION_EVENT:
+        description: Integration or cross-service event
+      SYSTEM_EVENT:
+        description: System-level technical event
+      AUDIT_EVENT:
+        description: Audit trail or compliance event
+
+  TransactionType:
+    description: Types of transactions
+    permissible_values:
+      LOCAL:
+        description: Local transaction within a single database
+      DISTRIBUTED:
+        description: Distributed transaction across multiple resources
+      SAGA:
+        description: Saga pattern with compensating transactions
+      TWO_PHASE_COMMIT:
+        description: Two-phase commit protocol
+
+  DataStoreType:
+    description: Types of data stores
+    permissible_values:
+      RELATIONAL_DB:
+        description: Relational database (SQL)
+      DOCUMENT_DB:
+        description: Document-oriented database (NoSQL)
+      KEY_VALUE_STORE:
+        description: Key-value store (Redis, DynamoDB)
+      GRAPH_DB:
+        description: Graph database (Neo4j)
+      TIME_SERIES_DB:
+        description: Time-series database
+      OBJECT_STORAGE:
+        description: Object storage (S3, blob storage)
+      SEARCH_INDEX:
+        description: Search index (Elasticsearch, Solr)
+      CACHE:
+        description: In-memory cache
+      MESSAGE_BROKER:
+        description: Message broker or queue
+      DATA_LAKE:
+        description: Data lake for analytics
+
+  SchemaType:
+    description: Types of data schemas
+    permissible_values:
+      TABLE_SCHEMA:
+        description: Relational database table schema
+      DOCUMENT_SCHEMA:
+        description: Document or JSON schema
+      EVENT_SCHEMA:
+        description: Event payload schema
+      API_SCHEMA:
+        description: API request/response schema
+      MESSAGE_SCHEMA:
+        description: Message format schema
+
+  DataClassificationType:
+    description: Data sensitivity classifications
+    permissible_values:
+      PUBLIC:
+        description: Publicly accessible information
+      INTERNAL:
+        description: Internal use only information
+      CONFIDENTIAL:
+        description: Confidential sensitive information
+      RESTRICTED:
+        description: Highly restricted information
+      PII:
+        description: Personally Identifiable Information
+      PHI:
+        description: Protected Health Information
+      PCI:
+        description: Payment Card Industry data
+
+  IntegrationType:
+    description: Types of integrations
+    permissible_values:
+      INBOUND:
+        description: Inbound integration receiving data
+      OUTBOUND:
+        description: Outbound integration sending data
+      BIDIRECTIONAL:
+        description: Bidirectional two-way integration
+
+  ExternalSystemType:
+    description: Types of external systems
+    permissible_values:
+      THIRD_PARTY_SERVICE:
+        description: Third-party external service
+      PARTNER_SYSTEM:
+        description: Partner or vendor system
+      LEGACY_SYSTEM:
+        description: Legacy system being integrated
+      SAAS_APPLICATION:
+        description: Software-as-a-Service application
+
+  ProtocolType:
+    description: Communication protocols
+    permissible_values:
+      HTTP:
+        description: Hypertext Transfer Protocol
+      HTTPS:
+        description: HTTP Secure (TLS/SSL)
+      WEBSOCKET:
+        description: WebSocket protocol for bidirectional communication
+      GRPC:
+        description: gRPC protocol
+      AMQP:
+        description: Advanced Message Queuing Protocol
+      MQTT:
+        description: Message Queuing Telemetry Transport
+      KAFKA:
+        description: Apache Kafka protocol
+      SFTP:
+        description: Secure File Transfer Protocol
+      TCP:
+        description: Transmission Control Protocol
+      UDP:
+        description: User Datagram Protocol
+
+  MessageType:
+    description: Types of messages
+    permissible_values:
+      REQUEST:
+        description: Request message expecting a response
+      RESPONSE:
+        description: Response message to a request
+      NOTIFICATION:
+        description: One-way notification message
+      COMMAND:
+        description: Command message for action execution
+      EVENT:
+        description: Event notification message
+      QUERY:
+        description: Query message for data retrieval
+
+  ContractType:
+    description: Types of API contracts
+    permissible_values:
+      OPENAPI:
+        description: OpenAPI (Swagger) specification
+      ASYNCAPI:
+        description: AsyncAPI specification for async APIs
+      JSON_SCHEMA:
+        description: JSON Schema specification
+      PROTOBUF:
+        description: Protocol Buffers schema
+      AVRO:
+        description: Apache Avro schema
+      GRAPHQL_SCHEMA:
+        description: GraphQL schema definition
+      WSDL:
+        description: Web Services Description Language
+
+  EnvironmentType:
+    description: Types of deployment environments
+    permissible_values:
+      DEVELOPMENT:
+        description: Development environment for active development
+      TESTING:
+        description: Testing environment for QA and integration testing
+      STAGING:
+        description: Pre-production staging environment
+      PRODUCTION:
+        description: Live production environment
+      DR:
+        description: Disaster Recovery
+
+  DeploymentUnitType:
+    description: Types of deployment units
+    permissible_values:
+      CONTAINER:
+        description: Container image (Docker, etc.)
+      VM:
+        description: Virtual machine image
+      SERVERLESS_FUNCTION:
+        description: Serverless function deployment package
+      BINARY:
+        description: Compiled binary executable
+      PACKAGE:
+        description: Application package (JAR, WAR, etc.)
+
+  ConfigurationType:
+    description: Types of configuration
+    permissible_values:
+      ENVIRONMENT_VARIABLE:
+        description: Environment variable configuration
+      CONFIG_FILE:
+        description: Configuration file (YAML, JSON, properties)
+      SECRET:
+        description: Secret or sensitive configuration value
+      FEATURE_FLAG:
+        description: Feature flag or toggle
+      REMOTE_CONFIG:
+        description: Remote configuration service
+
+  InfrastructureType:
+    description: Types of infrastructure
+    permissible_values:
+      COMPUTE:
+        description: Compute resources (VMs, containers)
+      STORAGE:
+        description: Storage resources (disks, volumes)
+      NETWORK:
+        description: Network infrastructure
+      LOAD_BALANCER:
+        description: Load balancer
+      DNS:
+        description: DNS service
+      CDN:
+        description: Content Delivery Network
+      FIREWALL:
+        description: Firewall or security group
+
+  MetricType:
+    description: Types of metrics
+    permissible_values:
+      COUNTER:
+        description: Monotonically increasing counter
+      GAUGE:
+        description: Value that can increase or decrease
+      HISTOGRAM:
+        description: Distribution of values in buckets
+      SUMMARY:
+        description: Summary statistics (quantiles, etc.)
+
+  LogType:
+    description: Types of logs
+    permissible_values:
+      APPLICATION:
+        description: Application-level logs
+      ACCESS:
+        description: Access and request logs
+      ERROR:
+        description: Error and exception logs
+      SECURITY:
+        description: Security event logs
+      AUDIT:
+        description: Audit trail logs
+      DEBUG:
+        description: Debug and diagnostic logs
+
+  HealthCheckType:
+    description: Types of health checks
+    permissible_values:
+      LIVENESS:
+        description: Liveness probe for service health
+      READINESS:
+        description: Readiness probe for traffic acceptance
+      DEPENDENCY:
+        description: Health check for dependencies
+      STARTUP:
+        description: Startup probe during initialization
+
+  ComplianceFramework:
+    description: Compliance frameworks
+    permissible_values:
+      GDPR:
+        description: General Data Protection Regulation (EU)
+      HIPAA:
+        description: Health Insurance Portability and Accountability Act
+      SOC2:
+        description: Service Organization Control 2
+      PCI_DSS:
+        description: Payment Card Industry Data Security Standard
+      ISO27001:
+        description: ISO 27001 Information Security Management
+      SOX:
+        description: Sarbanes-Oxley Act
+      CCPA:
+        description: California Consumer Privacy Act
+      FEDRAMP:
+        description: Federal Risk and Authorization Management Program
+
+  FeatureCategory:
+    description: Categories of features
+    permissible_values:
+      CORE:
+        description: Core essential feature
+      OPTIONAL:
+        description: Optional add-on feature
+      EXPERIMENTAL:
+        description: Experimental or beta feature
+      DEPRECATED:
+        description: Deprecated feature scheduled for removal
+
+# =============================================================================
+# TYPE DEFINITIONS
+# =============================================================================
+types:
+  SemanticVersion:
+    typeof: string
+    description: Semantic version string (e.g., 1.2.3)
+    pattern: "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$"
+
+  URI:
+    typeof: uriorcurie
+    description: Universal Resource Identifier
+
+  Timestamp:
+    typeof: datetime
+    description: ISO 8601 timestamp
+
+# =============================================================================
+# ABSTRACT BASE CLASSES
+# =============================================================================
+classes:
+  # ---------------------------------------------------------------------------
+  # Named Entity Base
+  # ---------------------------------------------------------------------------
+  NamedEntity:
+    abstract: true
+    description: >-
+      Abstract base class for all named entities in the ontology
+    attributes:
+      id:
+        identifier: true
+        range: string
+        required: true
+        description: Unique identifier for the entity
+      name:
+        range: string
+        required: true
+        description: Human-readable name
+      description:
+        range: string
+        description: Detailed description of the entity
+      tags:
+        range: string
+        multivalued: true
+        description: Classification tags
+      metadata:
+        range: Metadata
+        inlined: true
+        description: Additional metadata
+
+  Metadata:
+    description: Common metadata for entities
+    attributes:
+      created_at:
+        range: Timestamp
+      updated_at:
+        range: Timestamp
+      created_by:
+        range: string
+      version:
+        range: SemanticVersion
+
+  # ---------------------------------------------------------------------------
+  # Versionable Mixin
+  # ---------------------------------------------------------------------------
+  Versionable:
+    mixin: true
+    description: Mixin for entities that support versioning
+    attributes:
+      version:
+        range: SemanticVersion
+        description: Semantic version
+      effective_from:
+        range: Timestamp
+        description: When this version became effective
+      effective_to:
+        range: Timestamp
+        description: When this version was superseded
+      is_current:
+        range: boolean
+        description: Whether this is the current version
+
+  # ---------------------------------------------------------------------------
+  # Auditable Mixin
+  # ---------------------------------------------------------------------------
+  Auditable:
+    mixin: true
+    description: Mixin for entities requiring audit trails
+    attributes:
+      audit_log:
+        range: AuditLog
+        description: Associated audit log
+
+  # =============================================================================
+  # SECTION 1: STRUCTURAL FOUNDATION
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # System
+  # ---------------------------------------------------------------------------
+  System:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      Top-level container representing a software product, platform, or application
+    slots:
+      - contains_bounded_contexts
+      - has_integrations
+      - enforces_policies
+      - must_comply_with
+      - assessed_by
+      - exposes_interfaces
+    slot_usage:
+      contains_bounded_contexts:
+        inlined_as_list: true
+
+  # ---------------------------------------------------------------------------
+  # Bounded Context
+  # ---------------------------------------------------------------------------
+  BoundedContext:
+    is_a: NamedEntity
+    description: >-
+      A semantic boundary within which a domain model applies consistently.
+      Corresponds to DDD bounded context concept.
+    slots:
+      - contained_in_system
+      - contains_modules
+      - upstream_from
+      - downstream_from
+      - contains_aggregates
+    attributes:
+      ubiquitous_language:
+        range: string
+        multivalued: true
+        description: Key terms in the ubiquitous language for this context
+      context_map_relationship:
+        range: string
+        description: Relationship pattern (e.g., Customer-Supplier, Partnership)
+    slot_usage:
+      contains_modules:
+        inlined_as_list: true
+      contains_aggregates:
+        inlined_as_list: true
+
+  # ---------------------------------------------------------------------------
+  # Module
+  # ---------------------------------------------------------------------------
+  Module:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A deployable, cohesive unit of functionality within a bounded context
+    slots:
+      - contained_in_context
+      - contains_components
+      - depends_on_module
+      - depended_on_by_module
+      - provides_capabilities
+      - runs_as_services
+    attributes:
+      dependencies:
+        range: Dependency
+        multivalued: true
+        inlined_as_list: true
+        description: Module dependencies
+      is_optional:
+        range: boolean
+        description: Whether this module is optional
+      required_features:
+        range: string
+        multivalued: true
+        description: Features required to enable this module
+    slot_usage:
+      contains_components:
+        inlined_as_list: true
+
+  # ---------------------------------------------------------------------------
+  # Component
+  # ---------------------------------------------------------------------------
+  Component:
+    is_a: NamedEntity
+    description: >-
+      A logical building block within a module (class, function group, etc.)
+    slots:
+      - contained_in_module
+      - exposes_operations
+      - emits_events
+    attributes:
+      component_type:
+        range: string
+        description: Type of component (e.g., class, service, handler)
+      language:
+        range: string
+        description: Implementation language
+      source_location:
+        range: string
+        description: Path to source code
+      dependencies:
+        range: Dependency
+        multivalued: true
+        inlined_as_list: true
+        description: Component dependencies
+      emits_metrics:
+        range: Metric
+        multivalued: true
+        description: Metrics emitted by this component
+      generates_logs:
+        range: Log
+        multivalued: true
+        description: Logs generated by this component
+
+  # ---------------------------------------------------------------------------
+  # Capability
+  # ---------------------------------------------------------------------------
+  Capability:
+    is_a: NamedEntity
+    description: >-
+      A discrete business or technical ability the system provides
+    slots:
+      - realizes_features
+      - requires_permissions
+
+  # ---------------------------------------------------------------------------
+  # Feature
+  # ---------------------------------------------------------------------------
+  Feature:
+    is_a: NamedEntity
+    description: >-
+      A user-facing manifestation of one or more capabilities
+    slots:
+      - enabled_by_capabilities
+      - controlled_by_configs
+      - accessible_by_roles
+    attributes:
+      category:
+        range: FeatureCategory
+        description: Feature category
+
+  # ---------------------------------------------------------------------------
+  # Interface
+  # ---------------------------------------------------------------------------
+  Interface:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      A contract-defined boundary through which interaction occurs
+    slots:
+      - defined_by_contract
+    attributes:
+      category:
+        range: InterfaceCategory
+        description: Interface category
+      authentication_required:
+        range: boolean
+        description: Whether authentication is required
+      rate_limit:
+        range: integer
+        description: Requests per minute limit
+
+  UserInterface:
+    is_a: Interface
+    description: User-facing interface
+    attributes:
+      ui_type:
+        range: UserInterfaceType
+        description: Type of user interface
+      screens:
+        range: Screen
+        multivalued: true
+        inlined_as_list: true
+        description: Screens in this interface
+
+  Screen:
+    is_a: UserInterface
+    description: A single screen or view in a user interface
+    slots:
+      - offers_operations
+    attributes:
+      route:
+        range: string
+        description: URL route or navigation path
+
+  ProgrammaticInterface:
+    is_a: Interface
+    description: Machine-to-machine interface
+    slots:
+      - has_endpoints
+    attributes:
+      api_type:
+        range: APIType
+        description: Type of API
+      base_url:
+        range: URI
+        description: Base URL for the API
+    slot_usage:
+      has_endpoints:
+        inlined_as_list: true
+
+  EventInterface:
+    is_a: Interface
+    description: Event-driven interface
+    slots:
+      - has_subscriptions
+    attributes:
+      event_type:
+        range: EventInterfaceType
+        description: Type of event interface
+      topics:
+        range: string
+        multivalued: true
+        description: Event topics or channels
+
+  # ---------------------------------------------------------------------------
+  # Service
+  # ---------------------------------------------------------------------------
+  Service:
+    is_a: NamedEntity
+    description: >-
+      An independently deployable runtime unit
+    slots:
+      - exposes_endpoints
+      - depends_on_service
+      - depended_on_by_service
+      - deployed_as
+    attributes:
+      service_type:
+        range: ServiceType
+        description: Type of service
+      health_checks:
+        range: HealthCheck
+        multivalued: true
+        inlined_as_list: true
+        description: Health check definitions
+      emits_metrics:
+        range: Metric
+        multivalued: true
+        description: Metrics emitted
+    slot_usage:
+      exposes_endpoints:
+        inlined_as_list: true
+
+  Endpoint:
+    is_a: NamedEntity
+    description: >-
+      A specific addressable entry point on a service
+    slots:
+      - exposed_by_service
+      - belongs_to_interface
+    attributes:
+      path:
+        range: string
+        description: URL path or route
+      method:
+        range: string
+        description: HTTP method or operation type
+      operations:
+        range: Operation
+        multivalued: true
+        description: Operations at this endpoint
+      protocol:
+        range: ProtocolType
+        description: Communication protocol
+      port:
+        range: integer
+        description: Port number
+
+  # ---------------------------------------------------------------------------
+  # Dependency
+  # ---------------------------------------------------------------------------
+  Dependency:
+    is_a: NamedEntity
+    description: >-
+      A required relationship between components or services
+    attributes:
+      dependency_type:
+        range: DependencyType
+        description: Type of dependency
+      target:
+        range: NamedEntity
+        description: Target of the dependency
+      version_constraint:
+        range: string
+        description: Version constraint expression
+      is_optional:
+        range: boolean
+        description: Whether this dependency is optional
+
+  # =============================================================================
+  # SECTION 2: ACTORS AND IDENTITY
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Actor
+  # ---------------------------------------------------------------------------
+  Actor:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      Any entity that can initiate actions
+    slots:
+      - has_identities
+    attributes:
+      category:
+        range: ActorCategory
+        description: Actor category
+
+  HumanActor:
+    is_a: Actor
+    description: A human user of the system
+    attributes:
+      actor_type:
+        range: HumanActorType
+        description: Type of human actor
+      email:
+        range: string
+        description: Contact email
+
+  SystemActor:
+    is_a: Actor
+    description: A system or automated actor
+    attributes:
+      actor_type:
+        range: SystemActorType
+        description: Type of system actor
+      service_account:
+        range: string
+        description: Service account identifier
+
+  # ---------------------------------------------------------------------------
+  # Identity
+  # ---------------------------------------------------------------------------
+  Identity:
+    is_a: NamedEntity
+    description: >-
+      A verified representation of an actor
+    slots:
+      - has_roles
+      - belongs_to_tenant
+      - member_of_organizations
+    attributes:
+      identity_type:
+        range: string
+        description: Type of identity (user, service, device)
+      credentials:
+        range: Credential
+        multivalued: true
+        inlined_as_list: true
+        description: Associated credentials
+
+  Credential:
+    is_a: NamedEntity
+    description: >-
+      Authentication material proving an identity claim
+    attributes:
+      credential_type:
+        range: CredentialType
+        description: Type of credential
+      expires_at:
+        range: Timestamp
+        description: Expiration timestamp
+      is_active:
+        range: boolean
+        description: Whether the credential is active
+
+  # ---------------------------------------------------------------------------
+  # Tenant and Organization
+  # ---------------------------------------------------------------------------
+  Tenant:
+    is_a: NamedEntity
+    description: >-
+      An organizational boundary for multi-tenant systems
+    attributes:
+      organizations:
+        range: Organization
+        multivalued: true
+        inlined_as_list: true
+        description: Organizations within this tenant
+      settings:
+        range: Configuration
+        multivalued: true
+        description: Tenant-specific configuration
+
+  Organization:
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of users and resources within a tenant
+    attributes:
+      parent:
+        range: Organization
+        description: Parent organization for hierarchical structures
+      children:
+        range: Organization
+        multivalued: true
+        description: Child organizations
+
+  # =============================================================================
+  # SECTION 3: AUTHORIZATION AND POLICY
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Role
+  # ---------------------------------------------------------------------------
+  Role:
+    is_a: NamedEntity
+    description: >-
+      A named collection of permissions assignable to actors
+    slots:
+      - grants_permissions
+      - assigned_to_identities
+      - inherits_from_role
+    attributes:
+      is_system_role:
+        range: boolean
+        description: Whether this is a built-in system role
+
+  # ---------------------------------------------------------------------------
+  # Permission
+  # ---------------------------------------------------------------------------
+  Permission:
+    is_a: NamedEntity
+    description: >-
+      A specific allowed action on a resource type or instance
+    slots:
+      - allows_actions
+      - granted_by_roles
+      - applies_to_resource_types
+      - limited_by_scope
+    attributes:
+      constraints:
+        range: Constraint
+        multivalued: true
+        inlined_as_list: true
+        description: Conditions for this permission
+
+  # ---------------------------------------------------------------------------
+  # Policy
+  # ---------------------------------------------------------------------------
+  Policy:
+    is_a: NamedEntity
+    description: >-
+      A rule set governing access decisions
+    slots:
+      - evaluates_permissions
+    attributes:
+      policy_type:
+        range: PolicyType
+        description: Type of policy
+      rules:
+        range: Rule
+        multivalued: true
+        inlined_as_list: true
+        description: Rules within this policy
+      priority:
+        range: integer
+        description: Evaluation priority
+
+  # ---------------------------------------------------------------------------
+  # Scope
+  # ---------------------------------------------------------------------------
+  Scope:
+    is_a: NamedEntity
+    description: >-
+      A boundary limiting where a permission applies
+    attributes:
+      scope_type:
+        range: ScopeType
+        description: Type of scope
+      resource_pattern:
+        range: string
+        description: Pattern matching resources in scope
+
+  # ---------------------------------------------------------------------------
+  # Constraint
+  # ---------------------------------------------------------------------------
+  Constraint:
+    is_a: NamedEntity
+    description: >-
+      A condition that must be satisfied for authorization
+    attributes:
+      constraint_type:
+        range: ConstraintType
+        description: Type of constraint
+      expression:
+        range: string
+        description: Constraint expression
+      parameters:
+        range: string
+        multivalued: true
+        description: Constraint parameters
+
+  # =============================================================================
+  # SECTION 4: DOMAIN MODELING
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Aggregate
+  # ---------------------------------------------------------------------------
+  Aggregate:
+    is_a: NamedEntity
+    description: >-
+      A cluster of domain entities treated as a single transactional unit.
+      Corresponds to DDD aggregate concept.
+    slots:
+      - aggregates_entities
+      - has_root_entity
+      - enforced_by_invariant_rules
+      - persisted_in_stores
+    attributes:
+      value_objects:
+        range: ValueObject
+        multivalued: true
+        inlined_as_list: true
+        description: Value objects within the aggregate
+    slot_usage:
+      aggregates_entities:
+        inlined_as_list: true
+
+  # ---------------------------------------------------------------------------
+  # DomainEntity
+  # ---------------------------------------------------------------------------
+  DomainEntity:
+    is_a: NamedEntity
+    mixins:
+      - Auditable
+    description: >-
+      A uniquely identifiable object within the domain
+    slots:
+      - aggregated_by
+      - exposes_as_resource
+      - governed_by_lifecycle
+      - in_state
+      - governed_by_rules
+    attributes:
+      attributes:
+        range: Attribute
+        multivalued: true
+        inlined_as_list: true
+        description: Attributes of this entity
+      classifications:
+        range: DataClassificationType
+        multivalued: true
+        description: Data classifications applied
+
+  # ---------------------------------------------------------------------------
+  # ValueObject
+  # ---------------------------------------------------------------------------
+  ValueObject:
+    is_a: NamedEntity
+    description: >-
+      An immutable domain object defined by its attributes
+    attributes:
+      attributes:
+        range: Attribute
+        multivalued: true
+        inlined_as_list: true
+        description: Attributes defining this value object
+
+  # ---------------------------------------------------------------------------
+  # Attribute
+  # ---------------------------------------------------------------------------
+  Attribute:
+    is_a: NamedEntity
+    description: >-
+      A named property of an entity or value object
+    slots:
+      - validated_by_rules
+    attributes:
+      category:
+        range: AttributeCategory
+        description: Attribute category
+      data_type:
+        range: string
+        required: true
+        description: Data type of the attribute
+      is_identifier:
+        range: boolean
+        description: Whether this is an identifier
+      is_indexed:
+        range: boolean
+        description: Whether this attribute is indexed
+      default_value:
+        range: string
+        description: Default value
+      classification:
+        range: DataClassificationType
+        description: Data classification
+
+  # ---------------------------------------------------------------------------
+  # Resource and ResourceType
+  # ---------------------------------------------------------------------------
+  Resource:
+    is_a: NamedEntity
+    description: >-
+      A domain entity or value object exposed for external interaction
+    slots:
+      - represents_entity
+      - classified_as_type
+
+  ResourceType:
+    is_a: NamedEntity
+    description: >-
+      A classification of resources sharing common structure and behavior
+    slots:
+      - structured_by_schema
+
+  # ---------------------------------------------------------------------------
+  # State and Lifecycle
+  # ---------------------------------------------------------------------------
+  State:
+    is_a: NamedEntity
+    description: >-
+      A discrete condition in an entity's lifecycle
+    slots:
+      - allows_actions_in_state
+    attributes:
+      is_initial:
+        range: boolean
+        description: Whether this is the initial state
+      is_terminal:
+        range: boolean
+        description: Whether this is a terminal state
+
+  Transition:
+    is_a: NamedEntity
+    description: >-
+      A valid movement between states
+    slots:
+      - transitions_from_state
+      - transitions_to_state
+      - triggered_by_events
+      - guarded_by_rules
+      - executes_actions_on_transition
+
+  Lifecycle:
+    is_a: NamedEntity
+    description: >-
+      The complete set of states and transitions for an entity type
+    slots:
+      - starts_with_state
+    attributes:
+      states:
+        range: State
+        multivalued: true
+        inlined_as_list: true
+        description: States in this lifecycle
+      transitions:
+        range: Transition
+        multivalued: true
+        inlined_as_list: true
+        description: Transitions between states
+
+  # =============================================================================
+  # SECTION 5: BEHAVIOR AND WORKFLOW
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Action
+  # ---------------------------------------------------------------------------
+  Action:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      An atomic operation that can be performed
+    slots:
+      - allowed_by_permissions
+      - performed_by_actor
+      - targets_resources
+      - emits_events_from_action
+      - validated_by_action_rules
+      - executes_in_transaction
+    attributes:
+      category:
+        range: ActionCategory
+        description: Action category
+
+  Query:
+    is_a: Action
+    description: A read-only action that retrieves data
+    attributes:
+      filters:
+        range: string
+        multivalued: true
+        description: Query filters
+      projections:
+        range: string
+        multivalued: true
+        description: Fields to return
+
+  Command:
+    is_a: Action
+    description: An action that changes system state
+    attributes:
+      command_type:
+        range: CommandType
+        description: Type of command
+      idempotency_key:
+        range: string
+        description: Key for idempotent execution
+
+  # ---------------------------------------------------------------------------
+  # Operation
+  # ---------------------------------------------------------------------------
+  Operation:
+    is_a: NamedEntity
+    description: >-
+      A named, invocable unit of behavior exposed via an interface
+    slots:
+      - exposed_by_component
+      - executes_operation_actions
+      - accepts_input_schema
+      - produces_output_schema
+    attributes:
+      errors:
+        range: string
+        multivalued: true
+        description: Possible error responses
+
+  # ---------------------------------------------------------------------------
+  # Workflow
+  # ---------------------------------------------------------------------------
+  Workflow:
+    is_a: NamedEntity
+    description: >-
+      A coordinated sequence of actions achieving a business goal
+    slots:
+      - triggered_by_workflow_events
+    attributes:
+      workflow_type:
+        range: WorkflowType
+        description: Type of workflow
+      steps:
+        range: Step
+        multivalued: true
+        inlined_as_list: true
+        description: Steps in the workflow
+
+  Step:
+    is_a: NamedEntity
+    description: >-
+      A discrete stage within a workflow
+    slots:
+      - executes_actions_in_step
+      - followed_by_steps
+      - compensated_by_step
+    attributes:
+      order:
+        range: integer
+        description: Execution order
+      condition:
+        range: string
+        description: Condition for execution
+      timeout_seconds:
+        range: integer
+        description: Step timeout
+
+  # ---------------------------------------------------------------------------
+  # Rule
+  # ---------------------------------------------------------------------------
+  Rule:
+    is_a: NamedEntity
+    description: >-
+      A declarative constraint or trigger governing behavior
+    attributes:
+      category:
+        range: RuleCategory
+        description: Rule category
+      condition:
+        range: string
+        description: Rule condition expression
+      action:
+        range: string
+        description: Action when rule fires
+      priority:
+        range: integer
+        description: Evaluation priority
+      is_active:
+        range: boolean
+        description: Whether rule is active
+
+  # ---------------------------------------------------------------------------
+  # Event and Subscription
+  # ---------------------------------------------------------------------------
+  Event:
+    is_a: NamedEntity
+    description: >-
+      A notification that something occurred
+    slots:
+      - emitted_by_component
+      - event_structured_by_schema
+    attributes:
+      category:
+        range: EventCategory
+        description: Event category
+      correlation_id:
+        range: string
+        description: Correlation identifier
+
+  DomainEvent:
+    is_a: Event
+    description: A significant occurrence in the domain
+    slots:
+      - produced_by_aggregate
+
+  IntegrationEvent:
+    is_a: Event
+    description: An event for cross-service communication
+    slots:
+      - targeted_at_services
+
+  Subscription:
+    is_a: NamedEntity
+    description: >-
+      A registration to receive events of a certain type
+    slots:
+      - subscribes_to_event_types
+      - subscribed_by_actor
+    attributes:
+      filter:
+        range: string
+        description: Filter expression
+      delivery_mode:
+        range: string
+        description: Delivery mode (push, pull, etc.)
+
+  # ---------------------------------------------------------------------------
+  # Transaction
+  # ---------------------------------------------------------------------------
+  Transaction:
+    is_a: NamedEntity
+    description: >-
+      A unit of work with ACID or BASE guarantees
+    attributes:
+      transaction_type:
+        range: TransactionType
+        description: Type of transaction
+      isolation_level:
+        range: string
+        description: Transaction isolation level
+      timeout_seconds:
+        range: integer
+        description: Transaction timeout
+
+  # =============================================================================
+  # SECTION 6: DATA MANAGEMENT
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # DataStore
+  # ---------------------------------------------------------------------------
+  DataStore:
+    is_a: NamedEntity
+    description: >-
+      A persistence mechanism
+    slots:
+      - hosted_on_infrastructure
+    attributes:
+      store_type:
+        range: DataStoreType
+        description: Type of data store
+      connection_string:
+        range: string
+        description: Connection configuration
+      collections:
+        range: Collection
+        multivalued: true
+        inlined_as_list: true
+        description: Collections/tables in this store
+
+  # ---------------------------------------------------------------------------
+  # Collection and Record
+  # ---------------------------------------------------------------------------
+  Collection:
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of records (table, collection, bucket)
+    slots:
+      - collection_structured_by_schema
+      - governed_by_retention_policy
+    attributes:
+      indexes:
+        range: string
+        multivalued: true
+        description: Index definitions
+
+  Record:
+    is_a: NamedEntity
+    description: >-
+      A single persisted instance of data
+    slots:
+      - stored_in_collection
+      - conforms_to_schema
+      - has_lineage
+    attributes:
+      classifications:
+        range: DataClassificationType
+        multivalued: true
+        description: Data classifications
+
+  # ---------------------------------------------------------------------------
+  # Schema
+  # ---------------------------------------------------------------------------
+  Schema:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      The structural definition of stored data
+    attributes:
+      schema_type:
+        range: SchemaType
+        description: Type of schema
+      definition:
+        range: string
+        description: Schema definition (JSON Schema, DDL, etc.)
+      versions:
+        range: SchemaVersion
+        multivalued: true
+        inlined_as_list: true
+        description: Schema versions
+
+  SchemaVersion:
+    is_a: Schema
+    description: >-
+      A specific iteration of a schema
+    attributes:
+      version:
+        range: SemanticVersion
+        description: Version number
+      definition:
+        range: string
+        description: Schema definition at this version
+      migration_script:
+        range: string
+        description: Migration from previous version
+      is_backward_compatible:
+        range: boolean
+        description: Whether backward compatible
+
+  # ---------------------------------------------------------------------------
+  # Data Classification and Retention
+  # ---------------------------------------------------------------------------
+  DataClassification:
+    is_a: NamedEntity
+    description: >-
+      A sensitivity or handling category
+    attributes:
+      classification_type:
+        range: DataClassificationType
+        description: Classification type
+      handling_requirements:
+        range: string
+        multivalued: true
+        description: Required handling procedures
+      encryption_required:
+        range: boolean
+        description: Whether encryption is required
+
+  RetentionPolicy:
+    is_a: NamedEntity
+    description: >-
+      Rules governing data lifecycle and deletion
+    attributes:
+      retention_days:
+        range: integer
+        description: Days to retain data
+      archive_after_days:
+        range: integer
+        description: Days before archiving
+      deletion_strategy:
+        range: string
+        description: How data is deleted
+
+  DataLineage:
+    is_a: NamedEntity
+    description: >-
+      The origin, transformation history, and movement of data
+    slots:
+      - derived_from_records
+    attributes:
+      source:
+        range: string
+        description: Original data source
+      transformations:
+        range: string
+        multivalued: true
+        description: Transformations applied
+
+  # ---------------------------------------------------------------------------
+  # Audit
+  # ---------------------------------------------------------------------------
+  AuditLog:
+    is_a: NamedEntity
+    description: >-
+      A tamper-evident record of system activities
+    slots:
+      - auditlog_governed_by_retention
+    attributes:
+      entries:
+        range: AuditEntry
+        multivalued: true
+        description: Audit entries
+
+  AuditEntry:
+    is_a: AuditLog
+    description: >-
+      A single record within an audit log
+    slots:
+      - audit_performed_by_actor
+      - records_action
+      - affects_resource
+    attributes:
+      timestamp:
+        range: Timestamp
+        required: true
+        description: When the event occurred
+      outcome:
+        range: string
+        description: Result of the action
+      details:
+        range: string
+        description: Additional details
+
+  # =============================================================================
+  # SECTION 7: INTEGRATION
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # External System
+  # ---------------------------------------------------------------------------
+  ExternalSystem:
+    is_a: NamedEntity
+    description: >-
+      A system outside this system's boundary
+    slots:
+      - integrated_via
+    attributes:
+      system_type:
+        range: ExternalSystemType
+        description: Type of external system
+      owner:
+        range: string
+        description: System owner
+      sla:
+        range: string
+        description: Service level agreement
+      documentation_url:
+        range: URI
+        description: API documentation URL
+
+  # ---------------------------------------------------------------------------
+  # Integration
+  # ---------------------------------------------------------------------------
+  Integration:
+    is_a: NamedEntity
+    description: >-
+      A configured connection to an external system
+    slots:
+      - integrates_with_system
+      - uses_adapter
+      - protected_by_breaker
+      - integration_governed_by_contract
+    attributes:
+      integration_type:
+        range: IntegrationType
+        description: Type of integration
+      protocol:
+        range: ProtocolType
+        description: Communication protocol
+      messages:
+        range: Message
+        multivalued: true
+        inlined_as_list: true
+        description: Messages exchanged
+
+  # ---------------------------------------------------------------------------
+  # Message
+  # ---------------------------------------------------------------------------
+  Message:
+    is_a: NamedEntity
+    description: >-
+      A unit of data exchanged in integration
+    slots:
+      - message_structured_by_schema
+      - validated_by_contract
+    attributes:
+      message_type:
+        range: MessageType
+        description: Type of message
+
+  # ---------------------------------------------------------------------------
+  # Contract
+  # ---------------------------------------------------------------------------
+  Contract:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A formal specification of integration behavior
+    attributes:
+      contract_type:
+        range: ContractType
+        description: Type of contract
+      definition:
+        range: string
+        description: Contract definition
+      versions:
+        range: ContractVersion
+        multivalued: true
+        inlined_as_list: true
+        description: Contract versions
+
+  ContractVersion:
+    is_a: Contract
+    description: >-
+      A specific iteration of a contract
+    attributes:
+      version:
+        range: SemanticVersion
+        description: Version number
+      definition:
+        range: string
+        description: Contract at this version
+      breaking_changes:
+        range: string
+        multivalued: true
+        description: Breaking changes from previous
+
+  # ---------------------------------------------------------------------------
+  # Adapter and Circuit Breaker
+  # ---------------------------------------------------------------------------
+  Adapter:
+    is_a: Component
+    description: >-
+      A component that translates between system and external protocols
+    attributes:
+      source_protocol:
+        range: ProtocolType
+        description: Source protocol
+      target_protocol:
+        range: ProtocolType
+        description: Target protocol
+      transformation:
+        range: string
+        description: Data transformation logic
+
+  CircuitBreaker:
+    is_a: NamedEntity
+    description: >-
+      A resilience pattern preventing cascade failures
+    attributes:
+      failure_threshold:
+        range: integer
+        description: Failures before opening
+      reset_timeout_seconds:
+        range: integer
+        description: Seconds before half-open
+      half_open_requests:
+        range: integer
+        description: Requests allowed in half-open
+
+  # =============================================================================
+  # SECTION 8: DEPLOYMENT AND OPERATIONS
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Environment
+  # ---------------------------------------------------------------------------
+  Environment:
+    is_a: NamedEntity
+    description: >-
+      A runtime context with specific configuration
+    slots:
+      - hosts_deployments
+      - env_configured_by
+      - uses_infrastructure
+    attributes:
+      environment_type:
+        range: EnvironmentType
+        description: Type of environment
+
+  # ---------------------------------------------------------------------------
+  # Deployment
+  # ---------------------------------------------------------------------------
+  Deployment:
+    is_a: NamedEntity
+    description: >-
+      An instance of a service running in an environment
+    slots:
+      - deploys_service
+      - deployed_in_environment
+      - deploys_unit
+      - deployment_configured_by
+      - deploys_release
+    attributes:
+      replicas:
+        range: integer
+        description: Number of replicas
+
+  DeploymentUnit:
+    is_a: NamedEntity
+    description: >-
+      The packaged artifact being deployed
+    attributes:
+      unit_type:
+        range: DeploymentUnitType
+        description: Type of deployment unit
+      artifact_uri:
+        range: URI
+        description: Location of the artifact
+      checksum:
+        range: string
+        description: Artifact checksum
+
+  # ---------------------------------------------------------------------------
+  # Configuration
+  # ---------------------------------------------------------------------------
+  Configuration:
+    is_a: NamedEntity
+    description: >-
+      Runtime parameters for a deployment
+    attributes:
+      config_type:
+        range: ConfigurationType
+        description: Type of configuration
+      value:
+        range: string
+        description: Configuration value
+      is_secret:
+        range: boolean
+        description: Whether this is sensitive
+      source:
+        range: string
+        description: Configuration source
+
+  # ---------------------------------------------------------------------------
+  # Infrastructure
+  # ---------------------------------------------------------------------------
+  Infrastructure:
+    is_a: NamedEntity
+    description: >-
+      The underlying compute, storage, and network resources
+    attributes:
+      infra_type:
+        range: InfrastructureType
+        description: Type of infrastructure
+      provider:
+        range: string
+        description: Cloud or infrastructure provider
+      region:
+        range: string
+        description: Geographic region
+      specifications:
+        range: string
+        description: Resource specifications
+
+  # ---------------------------------------------------------------------------
+  # Release
+  # ---------------------------------------------------------------------------
+  Release:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A versioned, deployable package of changes
+    attributes:
+      version:
+        range: SemanticVersion
+        description: Release version
+      changelog:
+        range: string
+        description: Release notes
+      artifacts:
+        range: DeploymentUnit
+        multivalued: true
+        description: Deployment artifacts
+
+  # =============================================================================
+  # SECTION 9: OBSERVABILITY
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Metric
+  # ---------------------------------------------------------------------------
+  Metric:
+    is_a: NamedEntity
+    description: >-
+      A quantitative measurement over time
+    slots:
+      - metric_emitted_by_component
+    attributes:
+      metric_type:
+        range: MetricType
+        description: Type of metric
+      unit:
+        range: string
+        description: Unit of measurement
+      labels:
+        range: string
+        multivalued: true
+        description: Metric labels
+
+  # ---------------------------------------------------------------------------
+  # Log
+  # ---------------------------------------------------------------------------
+  Log:
+    is_a: NamedEntity
+    description: >-
+      A timestamped record of discrete events
+    slots:
+      - log_governed_by_retention
+    attributes:
+      log_type:
+        range: LogType
+        description: Type of log
+      entries:
+        range: LogEntry
+        multivalued: true
+        description: Log entries
+
+  LogEntry:
+    is_a: Log
+    description: >-
+      A single record within a log
+    attributes:
+      timestamp:
+        range: Timestamp
+        description: Entry timestamp
+      level:
+        range: string
+        description: Log level
+      message:
+        range: string
+        description: Log message
+      context:
+        range: string
+        description: Additional context
+
+  # ---------------------------------------------------------------------------
+  # Trace
+  # ---------------------------------------------------------------------------
+  Trace:
+    is_a: NamedEntity
+    description: >-
+      A causal chain of operations across services
+    slots:
+      - starts_with_span
+    attributes:
+      trace_id:
+        range: string
+        description: Unique trace identifier
+      spans:
+        range: Span
+        multivalued: true
+        inlined_as_list: true
+        description: Spans in this trace
+
+  Span:
+    is_a: Trace
+    description: >-
+      A single unit of work within a trace
+    slots:
+      - child_of_span
+    attributes:
+      span_id:
+        range: string
+        description: Unique span identifier
+      operation_name:
+        range: string
+        description: Operation being traced
+      start_time:
+        range: Timestamp
+        description: Start timestamp
+      end_time:
+        range: Timestamp
+        description: End timestamp
+      status:
+        range: string
+        description: Span status
+      attributes:
+        range: string
+        multivalued: true
+        description: Span attributes
+
+  # ---------------------------------------------------------------------------
+  # Alert
+  # ---------------------------------------------------------------------------
+  Alert:
+    is_a: NamedEntity
+    description: >-
+      A notification triggered by metric thresholds or anomalies
+    slots:
+      - triggered_by_rule
+    attributes:
+      severity:
+        range: string
+        description: Alert severity
+      triggered_at:
+        range: Timestamp
+        description: When triggered
+      acknowledged_at:
+        range: Timestamp
+        description: When acknowledged
+      resolved_at:
+        range: Timestamp
+        description: When resolved
+
+  AlertRule:
+    is_a: Rule
+    description: >-
+      The condition that triggers an alert
+    slots:
+      - monitors_metrics
+    attributes:
+      condition:
+        range: string
+        description: Alert condition expression
+      threshold:
+        range: float
+        description: Threshold value
+      duration_seconds:
+        range: integer
+        description: Duration before alerting
+      notification_channels:
+        range: string
+        multivalued: true
+        description: Where to send alerts
+
+  # ---------------------------------------------------------------------------
+  # Incident
+  # ---------------------------------------------------------------------------
+  Incident:
+    is_a: NamedEntity
+    description: >-
+      A tracked degradation or outage event
+    slots:
+      - escalated_from_alerts
+      - affects_services
+    attributes:
+      severity:
+        range: string
+        description: Incident severity
+      status:
+        range: string
+        description: Current status
+      started_at:
+        range: Timestamp
+        description: Incident start time
+      resolved_at:
+        range: Timestamp
+        description: Resolution time
+      root_cause:
+        range: string
+        description: Root cause analysis
+      postmortem_url:
+        range: URI
+        description: Link to postmortem
+
+  # ---------------------------------------------------------------------------
+  # Health Check
+  # ---------------------------------------------------------------------------
+  HealthCheck:
+    is_a: NamedEntity
+    description: >-
+      A probe verifying service availability
+    attributes:
+      check_type:
+        range: HealthCheckType
+        description: Type of health check
+      endpoint:
+        range: string
+        description: Health check endpoint
+      interval_seconds:
+        range: integer
+        description: Check interval
+      timeout_seconds:
+        range: integer
+        description: Check timeout
+      success_threshold:
+        range: integer
+        description: Successes before healthy
+      failure_threshold:
+        range: integer
+        description: Failures before unhealthy
+
+  # =============================================================================
+  # SECTION 10: GOVERNANCE AND COMPLIANCE
+  # =============================================================================
+
+  # ---------------------------------------------------------------------------
+  # Compliance Requirement
+  # ---------------------------------------------------------------------------
+  ComplianceRequirement:
+    is_a: NamedEntity
+    description: >-
+      A regulatory or policy obligation
+    attributes:
+      framework:
+        range: ComplianceFramework
+        description: Compliance framework
+      controls:
+        range: Control
+        multivalued: true
+        inlined_as_list: true
+        description: Controls implementing this requirement
+      effective_date:
+        range: Timestamp
+        description: When requirement became effective
+
+  # ---------------------------------------------------------------------------
+  # Control
+  # ---------------------------------------------------------------------------
+  Control:
+    is_a: NamedEntity
+    description: >-
+      A measure implementing a compliance requirement
+    slots:
+      - owned_by_actor
+    attributes:
+      control_id:
+        range: string
+        description: Control identifier (e.g., SOC2-CC6.1)
+      implementation:
+        range: string
+        description: How control is implemented
+      evidence:
+        range: Evidence
+        multivalued: true
+        inlined_as_list: true
+        description: Evidence of control effectiveness
+      frequency:
+        range: string
+        description: Assessment frequency
+
+  # ---------------------------------------------------------------------------
+  # Evidence
+  # ---------------------------------------------------------------------------
+  Evidence:
+    is_a: NamedEntity
+    description: >-
+      Proof that a control is operating effectively
+    slots:
+      - verified_by_actor
+    attributes:
+      evidence_type:
+        range: string
+        description: Type of evidence
+      collected_at:
+        range: Timestamp
+        description: Collection timestamp
+      artifact_uri:
+        range: URI
+        description: Location of evidence artifact
+
+  # ---------------------------------------------------------------------------
+  # Risk Assessment
+  # ---------------------------------------------------------------------------
+  RiskAssessment:
+    is_a: NamedEntity
+    description: >-
+      An evaluation of threats and vulnerabilities
+    slots:
+      - mitigated_by_controls
+    attributes:
+      assessed_at:
+        range: Timestamp
+        description: Assessment date
+      risk_level:
+        range: string
+        description: Overall risk level
+      threats:
+        range: string
+        multivalued: true
+        description: Identified threats
+      vulnerabilities:
+        range: string
+        multivalued: true
+        description: Identified vulnerabilities
+      residual_risk:
+        range: string
+        description: Remaining risk after mitigations
+
+# =============================================================================
+# SLOTS (Global Properties)
+# =============================================================================
+slots:
+  # Common identification
+  id:
+    identifier: true
+    range: string
+    description: Unique identifier
+
+  name:
+    range: string
+    description: Human-readable name
+
+  description:
+    range: string
+    description: Detailed description
+
+  # Versioning
+  version:
+    range: SemanticVersion
+    description: Semantic version
+
+  # Timestamps
+  created_at:
+    range: Timestamp
+    description: Creation timestamp
+
+  updated_at:
+    range: Timestamp
+    description: Last update timestamp
+
+  # Classification
+  tags:
+    range: string
+    multivalued: true
+    description: Classification tags
+
+  # Status
+  is_active:
+    range: boolean
+    description: Whether entity is active
+
+  is_optional:
+    range: boolean
+    description: Whether entity is optional
+
+  # =============================================================================
+  # RELATIONSHIP SLOTS
+  # =============================================================================
+
+  # Containment relationships
+  contains_bounded_contexts:
+    domain: System
+    range: BoundedContext
+    multivalued: true
+    inverse: contained_in_system
+    description: Bounded contexts contained within this system
+
+  contained_in_system:
+    domain: BoundedContext
+    range: System
+    inverse: contains_bounded_contexts
+    description: System that contains this bounded context
+
+  contains_modules:
+    domain: BoundedContext
+    range: Module
+    multivalued: true
+    inverse: contained_in_context
+    description: Modules contained within this bounded context
+
+  contained_in_context:
+    domain: Module
+    range: BoundedContext
+    inverse: contains_modules
+    description: Bounded context that contains this module
+
+  contains_components:
+    domain: Module
+    range: Component
+    multivalued: true
+    inverse: contained_in_module
+    description: Components contained within this module
+
+  contained_in_module:
+    domain: Component
+    range: Module
+    inverse: contains_components
+    description: Module that contains this component
+
+  # Service-Endpoint relationships
+  exposes_endpoints:
+    domain: Service
+    range: Endpoint
+    multivalued: true
+    inverse: exposed_by_service
+    description: Endpoints exposed by this service
+
+  exposed_by_service:
+    domain: Endpoint
+    range: Service
+    inverse: exposes_endpoints
+    description: Service that exposes this endpoint
+
+  # Interface-Endpoint relationships (for ProgrammaticInterface)
+  has_endpoints:
+    domain: ProgrammaticInterface
+    range: Endpoint
+    multivalued: true
+    inverse: belongs_to_interface
+    description: Endpoints that are part of this interface
+
+  belongs_to_interface:
+    domain: Endpoint
+    range: ProgrammaticInterface
+    inverse: has_endpoints
+    description: Programmatic interface this endpoint belongs to
+
+  # Dependency relationships
+  depends_on_service:
+    domain: Service
+    range: Service
+    multivalued: true
+    inverse: depended_on_by_service
+    description: Services this service depends on
+
+  depended_on_by_service:
+    domain: Service
+    range: Service
+    multivalued: true
+    inverse: depends_on_service
+    description: Services that depend on this service
+
+  depends_on_module:
+    domain: Module
+    range: Module
+    multivalued: true
+    inverse: depended_on_by_module
+    description: Modules this module depends on
+
+  depended_on_by_module:
+    domain: Module
+    range: Module
+    multivalued: true
+    inverse: depends_on_module
+    description: Modules that depend on this module
+
+  # Context mapping relationships
+  upstream_from:
+    domain: BoundedContext
+    range: BoundedContext
+    multivalued: true
+    inverse: downstream_from
+    description: Contexts upstream from this one (this context depends on them)
+
+  downstream_from:
+    domain: BoundedContext
+    range: BoundedContext
+    multivalued: true
+    inverse: upstream_from
+    description: Contexts downstream from this one (they depend on this context)
+
+  # Aggregate-Entity relationships
+  aggregates_entities:
+    domain: Aggregate
+    range: DomainEntity
+    multivalued: true
+    inverse: aggregated_by
+    description: Entities aggregated in this aggregate
+
+  aggregated_by:
+    domain: DomainEntity
+    range: Aggregate
+    inverse: aggregates_entities
+    description: Aggregate that contains this entity
+
+  # Entity-Resource exposure
+  exposes_as_resource:
+    domain: DomainEntity
+    range: Resource
+    multivalued: true
+    inverse: represents_entity
+    description: Resources that expose this entity
+
+  represents_entity:
+    domain: Resource
+    range: DomainEntity
+    inverse: exposes_as_resource
+    description: Domain entity this resource represents
+
+  # Identity-Role relationships
+  has_roles:
+    domain: Identity
+    range: Role
+    multivalued: true
+    inverse: assigned_to_identities
+    description: Roles assigned to this identity
+
+  assigned_to_identities:
+    domain: Role
+    range: Identity
+    multivalued: true
+    inverse: has_roles
+    description: Identities that have this role
+
+  # Role-Permission relationships
+  grants_permissions:
+    domain: Role
+    range: Permission
+    multivalued: true
+    inverse: granted_by_roles
+    description: Permissions granted by this role
+
+  granted_by_roles:
+    domain: Permission
+    range: Role
+    multivalued: true
+    inverse: grants_permissions
+    description: Roles that grant this permission
+
+  # Permission-Action relationships
+  allows_actions:
+    domain: Permission
+    range: Action
+    multivalued: true
+    inverse: allowed_by_permissions
+    description: Actions allowed by this permission
+
+  allowed_by_permissions:
+    domain: Action
+    range: Permission
+    multivalued: true
+    inverse: allows_actions
+    description: Permissions that allow this action
+
+  # Deployment relationships
+  deployed_in_environment:
+    domain: Deployment
+    range: Environment
+    inverse: hosts_deployments
+    description: Environment where this deployment runs
+
+  hosts_deployments:
+    domain: Environment
+    range: Deployment
+    multivalued: true
+    inverse: deployed_in_environment
+    description: Deployments hosted in this environment
+
+  deploys_service:
+    domain: Deployment
+    range: Service
+    inverse: deployed_as
+    description: Service being deployed
+
+  deployed_as:
+    domain: Service
+    range: Deployment
+    multivalued: true
+    inverse: deploys_service
+    description: Deployments of this service
+
+  # Component-Operation relationships
+  exposes_operations:
+    domain: Component
+    range: Operation
+    multivalued: true
+    inverse: exposed_by_component
+    description: Operations exposed by this component
+
+  exposed_by_component:
+    domain: Operation
+    range: Component
+    inverse: exposes_operations
+    description: Component that exposes this operation
+
+  # Event-Component relationships
+  emits_events:
+    domain: Component
+    range: Event
+    multivalued: true
+    inverse: emitted_by_component
+    description: Events emitted by this component
+
+  emitted_by_component:
+    domain: Event
+    range: Component
+    inverse: emits_events
+    description: Component that emits this event
+
+  # Integration relationships
+  integrates_with_system:
+    domain: Integration
+    range: ExternalSystem
+    inverse: integrated_via
+    description: External system this integration connects to
+
+  integrated_via:
+    domain: ExternalSystem
+    range: Integration
+    multivalued: true
+    inverse: integrates_with_system
+    description: Integrations to this external system
+
+  # System relationships
+  has_integrations:
+    domain: System
+    range: Integration
+    multivalued: true
+    inverse: belongs_to_system
+    description: Integrations owned by this system
+
+  belongs_to_system:
+    domain: Integration
+    range: System
+    inverse: has_integrations
+    description: System that owns this integration
+
+  enforces_policies:
+    domain: System
+    range: Policy
+    multivalued: true
+    inverse: enforced_by_system
+    description: Policies enforced by this system
+
+  enforced_by_system:
+    domain: Policy
+    range: System
+    inverse: enforces_policies
+    description: System that enforces this policy
+
+  must_comply_with:
+    domain: System
+    range: ComplianceRequirement
+    multivalued: true
+    inverse: applies_to_systems
+    description: Compliance requirements for this system
+
+  applies_to_systems:
+    domain: ComplianceRequirement
+    range: System
+    multivalued: true
+    inverse: must_comply_with
+    description: Systems this compliance requirement applies to
+
+  assessed_by:
+    domain: System
+    range: RiskAssessment
+    multivalued: true
+    inverse: assesses_system
+    description: Risk assessments for this system
+
+  assesses_system:
+    domain: RiskAssessment
+    range: System
+    inverse: assessed_by
+    description: System being assessed by this risk assessment
+
+  # BoundedContext-Aggregate relationships
+  contains_aggregates:
+    domain: BoundedContext
+    range: Aggregate
+    multivalued: true
+    inverse: contained_in_bounded_context
+    description: Aggregates within this bounded context
+
+  contained_in_bounded_context:
+    domain: Aggregate
+    range: BoundedContext
+    inverse: contains_aggregates
+    description: Bounded context containing this aggregate
+
+  # Module-Capability relationships
+  provides_capabilities:
+    domain: Module
+    range: Capability
+    multivalued: true
+    inverse: provided_by_modules
+    description: Capabilities provided by this module
+
+  provided_by_modules:
+    domain: Capability
+    range: Module
+    multivalued: true
+    inverse: provides_capabilities
+    description: Modules that provide this capability
+
+  # Module-Service relationships
+  runs_as_services:
+    domain: Module
+    range: Service
+    multivalued: true
+    inverse: runs_module
+    description: Services this module runs as
+
+  runs_module:
+    domain: Service
+    range: Module
+    inverse: runs_as_services
+    description: Module run by this service
+
+  # Capability-Feature relationships
+  realizes_features:
+    domain: Capability
+    range: Feature
+    multivalued: true
+    inverse: realized_by_capabilities
+    description: Features realized by this capability
+
+  realized_by_capabilities:
+    domain: Feature
+    range: Capability
+    multivalued: true
+    inverse: realizes_features
+    description: Capabilities that realize this feature
+
+  # Capability-Permission relationships
+  requires_permissions:
+    domain: Capability
+    range: Permission
+    multivalued: true
+    inverse: required_by_capabilities
+    description: Permissions required by this capability
+
+  required_by_capabilities:
+    domain: Permission
+    range: Capability
+    multivalued: true
+    inverse: requires_permissions
+    description: Capabilities that require this permission
+
+  # Feature relationships
+  enabled_by_capabilities:
+    domain: Feature
+    range: Capability
+    multivalued: true
+    inverse: enables_features
+    description: Capabilities that enable this feature
+
+  enables_features:
+    domain: Capability
+    range: Feature
+    multivalued: true
+    inverse: enabled_by_capabilities
+    description: Features enabled by this capability
+
+  controlled_by_configs:
+    domain: Feature
+    range: Configuration
+    multivalued: true
+    inverse: controls_features
+    description: Configurations controlling this feature
+
+  controls_features:
+    domain: Configuration
+    range: Feature
+    multivalued: true
+    inverse: controlled_by_configs
+    description: Features controlled by this configuration
+
+  accessible_by_roles:
+    domain: Feature
+    range: Role
+    multivalued: true
+    inverse: can_access_features
+    description: Roles that can access this feature
+
+  can_access_features:
+    domain: Role
+    range: Feature
+    multivalued: true
+    inverse: accessible_by_roles
+    description: Features accessible to this role
+
+  # Interface-Contract relationships
+  defined_by_contract:
+    domain: Interface
+    range: Contract
+    inverse: defines_interfaces
+    description: Contract defining this interface
+
+  defines_interfaces:
+    domain: Contract
+    range: Interface
+    multivalued: true
+    inverse: defined_by_contract
+    description: Interfaces defined by this contract
+
+  # Screen-Operation relationships
+  offers_operations:
+    domain: Screen
+    range: Operation
+    multivalued: true
+    inverse: offered_on_screens
+    description: Operations offered on this screen
+
+  offered_on_screens:
+    domain: Operation
+    range: Screen
+    multivalued: true
+    inverse: offers_operations
+    description: Screens offering this operation
+
+  # EventInterface-Subscription relationships
+  has_subscriptions:
+    domain: EventInterface
+    range: Subscription
+    multivalued: true
+    inverse: subscribes_to_interface
+    description: Subscriptions to this event interface
+
+  subscribes_to_interface:
+    domain: Subscription
+    range: EventInterface
+    inverse: has_subscriptions
+    description: Event interface subscribed to
+
+  # Actor-Identity relationships
+  has_identities:
+    domain: Actor
+    range: Identity
+    multivalued: true
+    inverse: represents_actor
+    description: Identities associated with this actor
+
+  represents_actor:
+    domain: Identity
+    range: Actor
+    inverse: has_identities
+    description: Actor represented by this identity
+
+  # Identity-Tenant relationships
+  belongs_to_tenant:
+    domain: Identity
+    range: Tenant
+    inverse: contains_identities
+    description: Tenant this identity belongs to
+
+  contains_identities:
+    domain: Tenant
+    range: Identity
+    multivalued: true
+    inverse: belongs_to_tenant
+    description: Identities within this tenant
+
+  # Identity-Organization relationships
+  member_of_organizations:
+    domain: Identity
+    range: Organization
+    multivalued: true
+    inverse: has_identity_members
+    description: Organizations this identity is a member of
+
+  has_identity_members:
+    domain: Organization
+    range: Identity
+    multivalued: true
+    inverse: member_of_organizations
+    description: Identity members of this organization
+
+  # Role inheritance
+  inherits_from_role:
+    domain: Role
+    range: Role
+    inverse: inherited_by_roles
+    description: Parent role for inheritance
+
+  inherited_by_roles:
+    domain: Role
+    range: Role
+    multivalued: true
+    inverse: inherits_from_role
+    description: Child roles inheriting from this role
+
+  # Permission-ResourceType relationships
+  applies_to_resource_types:
+    domain: Permission
+    range: ResourceType
+    multivalued: true
+    inverse: governed_by_permissions
+    description: Resource types this permission applies to
+
+  governed_by_permissions:
+    domain: ResourceType
+    range: Permission
+    multivalued: true
+    inverse: applies_to_resource_types
+    description: Permissions governing this resource type
+
+  # Permission-Scope relationships
+  limited_by_scope:
+    domain: Permission
+    range: Scope
+    inverse: limits_permissions
+    description: Scope limiting this permission
+
+  limits_permissions:
+    domain: Scope
+    range: Permission
+    multivalued: true
+    inverse: limited_by_scope
+    description: Permissions limited by this scope
+
+  # Policy-Permission relationships
+  evaluates_permissions:
+    domain: Policy
+    range: Permission
+    multivalued: true
+    inverse: evaluated_by_policies
+    description: Permissions evaluated by this policy
+
+  evaluated_by_policies:
+    domain: Permission
+    range: Policy
+    multivalued: true
+    inverse: evaluates_permissions
+    description: Policies evaluating this permission
+
+  # Aggregate relationships
+  has_root_entity:
+    domain: Aggregate
+    range: DomainEntity
+    required: true
+    inverse: is_root_of_aggregate
+    description: Root entity of this aggregate
+
+  is_root_of_aggregate:
+    domain: DomainEntity
+    range: Aggregate
+    inverse: has_root_entity
+    description: Aggregate this entity is root of
+
+  enforced_by_invariant_rules:
+    domain: Aggregate
+    range: Rule
+    multivalued: true
+    inverse: enforces_aggregate_invariants
+    description: Invariant rules enforcing this aggregate
+
+  enforces_aggregate_invariants:
+    domain: Rule
+    range: Aggregate
+    multivalued: true
+    inverse: enforced_by_invariant_rules
+    description: Aggregates whose invariants are enforced by this rule
+
+  persisted_in_stores:
+    domain: Aggregate
+    range: DataStore
+    multivalued: true
+    inverse: persists_aggregates
+    description: Data stores persisting this aggregate
+
+  persists_aggregates:
+    domain: DataStore
+    range: Aggregate
+    multivalued: true
+    inverse: persisted_in_stores
+    description: Aggregates persisted in this data store
+
+  # DomainEntity relationships
+  governed_by_lifecycle:
+    domain: DomainEntity
+    range: Lifecycle
+    inverse: governs_entities
+    description: Lifecycle governing this entity
+
+  governs_entities:
+    domain: Lifecycle
+    range: DomainEntity
+    multivalued: true
+    inverse: governed_by_lifecycle
+    description: Entities governed by this lifecycle
+
+  in_state:
+    domain: DomainEntity
+    range: State
+    inverse: current_for_entities
+    description: Current state of this entity
+
+  current_for_entities:
+    domain: State
+    range: DomainEntity
+    multivalued: true
+    inverse: in_state
+    description: Entities currently in this state
+
+  governed_by_rules:
+    domain: DomainEntity
+    range: Rule
+    multivalued: true
+    inverse: governs_domain_entities
+    description: Rules governing this entity
+
+  governs_domain_entities:
+    domain: Rule
+    range: DomainEntity
+    multivalued: true
+    inverse: governed_by_rules
+    description: Domain entities governed by this rule
+
+  # Attribute-Rule relationships
+  validated_by_rules:
+    domain: Attribute
+    range: Rule
+    multivalued: true
+    inverse: validates_attributes
+    description: Rules validating this attribute
+
+  validates_attributes:
+    domain: Rule
+    range: Attribute
+    multivalued: true
+    inverse: validated_by_rules
+    description: Attributes validated by this rule
+
+  # Resource-ResourceType relationships
+  classified_as_type:
+    domain: Resource
+    range: ResourceType
+    inverse: classifies_resources
+    description: Type classification of this resource
+
+  classifies_resources:
+    domain: ResourceType
+    range: Resource
+    multivalued: true
+    inverse: classified_as_type
+    description: Resources classified by this type
+
+  # ResourceType-Schema relationships
+  structured_by_schema:
+    domain: ResourceType
+    range: Schema
+    inverse: structures_resource_types
+    description: Schema structuring this resource type
+
+  structures_resource_types:
+    domain: Schema
+    range: ResourceType
+    multivalued: true
+    inverse: structured_by_schema
+    description: Resource types structured by this schema
+
+  # State-Action relationships
+  allows_actions_in_state:
+    domain: State
+    range: Action
+    multivalued: true
+    inverse: allowed_in_states
+    description: Actions allowed in this state
+
+  allowed_in_states:
+    domain: Action
+    range: State
+    multivalued: true
+    inverse: allows_actions_in_state
+    description: States allowing this action
+
+  # Transition relationships
+  transitions_from_state:
+    domain: Transition
+    range: State
+    required: true
+    inverse: source_of_transitions
+    description: Source state of this transition
+
+  source_of_transitions:
+    domain: State
+    range: Transition
+    multivalued: true
+    inverse: transitions_from_state
+    description: Transitions from this state
+
+  transitions_to_state:
+    domain: Transition
+    range: State
+    required: true
+    inverse: target_of_transitions
+    description: Target state of this transition
+
+  target_of_transitions:
+    domain: State
+    range: Transition
+    multivalued: true
+    inverse: transitions_to_state
+    description: Transitions to this state
+
+  triggered_by_events:
+    domain: Transition
+    range: Event
+    multivalued: true
+    inverse: triggers_transitions
+    description: Events triggering this transition
+
+  triggers_transitions:
+    domain: Event
+    range: Transition
+    multivalued: true
+    inverse: triggered_by_events
+    description: Transitions triggered by this event
+
+  guarded_by_rules:
+    domain: Transition
+    range: Rule
+    multivalued: true
+    inverse: guards_transitions
+    description: Rules guarding this transition
+
+  guards_transitions:
+    domain: Rule
+    range: Transition
+    multivalued: true
+    inverse: guarded_by_rules
+    description: Transitions guarded by this rule
+
+  executes_actions_on_transition:
+    domain: Transition
+    range: Action
+    multivalued: true
+    inverse: executed_during_transition
+    description: Actions executed during this transition
+
+  executed_during_transition:
+    domain: Action
+    range: Transition
+    multivalued: true
+    inverse: executes_actions_on_transition
+    description: Transitions executing this action
+
+  # Lifecycle-State relationships
+  starts_with_state:
+    domain: Lifecycle
+    range: State
+    inverse: initial_for_lifecycle
+    description: Initial state of this lifecycle
+
+  initial_for_lifecycle:
+    domain: State
+    range: Lifecycle
+    inverse: starts_with_state
+    description: Lifecycle this state is initial for
+
+  # Action relationships
+  performed_by_actor:
+    domain: Action
+    range: Actor
+    inverse: performs_actions
+    description: Actor performing this action
+
+  performs_actions:
+    domain: Actor
+    range: Action
+    multivalued: true
+    inverse: performed_by_actor
+    description: Actions performed by this actor
+
+  targets_resources:
+    domain: Action
+    range: Resource
+    multivalued: true
+    inverse: targeted_by_actions
+    description: Resources targeted by this action
+
+  targeted_by_actions:
+    domain: Resource
+    range: Action
+    multivalued: true
+    inverse: targets_resources
+    description: Actions targeting this resource
+
+  emits_events_from_action:
+    domain: Action
+    range: Event
+    multivalued: true
+    inverse: emitted_by_action
+    description: Events emitted by this action
+
+  emitted_by_action:
+    domain: Event
+    range: Action
+    multivalued: true
+    inverse: emits_events_from_action
+    description: Actions emitting this event
+
+  validated_by_action_rules:
+    domain: Action
+    range: Rule
+    multivalued: true
+    inverse: validates_actions
+    description: Rules validating this action
+
+  validates_actions:
+    domain: Rule
+    range: Action
+    multivalued: true
+    inverse: validated_by_action_rules
+    description: Actions validated by this rule
+
+  executes_in_transaction:
+    domain: Action
+    range: Transaction
+    inverse: executes_actions
+    description: Transaction context for this action
+
+  executes_actions:
+    domain: Transaction
+    range: Action
+    multivalued: true
+    inverse: executes_in_transaction
+    description: Actions executed in this transaction
+
+  # Operation relationships
+  executes_operation_actions:
+    domain: Operation
+    range: Action
+    multivalued: true
+    inverse: executed_by_operation
+    description: Actions executed by this operation
+
+  executed_by_operation:
+    domain: Action
+    range: Operation
+    multivalued: true
+    inverse: executes_operation_actions
+    description: Operations executing this action
+
+  accepts_input_schema:
+    domain: Operation
+    range: Schema
+    inverse: defines_operation_input
+    description: Input schema for this operation
+
+  defines_operation_input:
+    domain: Schema
+    range: Operation
+    multivalued: true
+    inverse: accepts_input_schema
+    description: Operations using this schema for input
+
+  produces_output_schema:
+    domain: Operation
+    range: Schema
+    inverse: defines_operation_output
+    description: Output schema for this operation
+
+  defines_operation_output:
+    domain: Schema
+    range: Operation
+    multivalued: true
+    inverse: produces_output_schema
+    description: Operations using this schema for output
+
+  # Workflow relationships
+  triggered_by_workflow_events:
+    domain: Workflow
+    range: Event
+    multivalued: true
+    inverse: triggers_workflows
+    description: Events triggering this workflow
+
+  triggers_workflows:
+    domain: Event
+    range: Workflow
+    multivalued: true
+    inverse: triggered_by_workflow_events
+    description: Workflows triggered by this event
+
+  # Step relationships
+  executes_actions_in_step:
+    domain: Step
+    range: Action
+    multivalued: true
+    inverse: executed_in_step
+    description: Actions executed in this step
+
+  executed_in_step:
+    domain: Action
+    range: Step
+    multivalued: true
+    inverse: executes_actions_in_step
+    description: Steps executing this action
+
+  followed_by_steps:
+    domain: Step
+    range: Step
+    multivalued: true
+    inverse: follows_step
+    description: Steps following this step
+
+  follows_step:
+    domain: Step
+    range: Step
+    multivalued: true
+    inverse: followed_by_steps
+    description: Steps this step follows
+
+  compensated_by_step:
+    domain: Step
+    range: Step
+    inverse: compensates_for_step
+    description: Compensation step for this step
+
+  compensates_for_step:
+    domain: Step
+    range: Step
+    inverse: compensated_by_step
+    description: Step compensated by this step
+
+  # Event-Schema relationships
+  event_structured_by_schema:
+    domain: Event
+    range: Schema
+    inverse: structures_events
+    description: Schema structuring this event
+
+  structures_events:
+    domain: Schema
+    range: Event
+    multivalued: true
+    inverse: event_structured_by_schema
+    description: Events structured by this schema
+
+  # DomainEvent-Aggregate relationships
+  produced_by_aggregate:
+    domain: DomainEvent
+    range: Aggregate
+    inverse: produces_domain_events
+    description: Aggregate producing this event
+
+  produces_domain_events:
+    domain: Aggregate
+    range: DomainEvent
+    multivalued: true
+    inverse: produced_by_aggregate
+    description: Domain events produced by this aggregate
+
+  # IntegrationEvent-Service relationships
+  targeted_at_services:
+    domain: IntegrationEvent
+    range: Service
+    multivalued: true
+    inverse: receives_integration_events
+    description: Services targeted by this event
+
+  receives_integration_events:
+    domain: Service
+    range: IntegrationEvent
+    multivalued: true
+    inverse: targeted_at_services
+    description: Integration events received by this service
+
+  # Subscription relationships
+  subscribes_to_event_types:
+    domain: Subscription
+    range: Event
+    multivalued: true
+    inverse: subscribed_by_subscriptions
+    description: Event types subscribed to
+
+  subscribed_by_subscriptions:
+    domain: Event
+    range: Subscription
+    multivalued: true
+    inverse: subscribes_to_event_types
+    description: Subscriptions to this event type
+
+  subscribed_by_actor:
+    domain: Subscription
+    range: Actor
+    inverse: actor_subscriptions
+    description: Actor subscribing
+
+  actor_subscriptions:
+    domain: Actor
+    range: Subscription
+    multivalued: true
+    inverse: subscribed_by_actor
+    description: Subscriptions by this actor
+
+  # DataStore-Infrastructure relationships
+  hosted_on_infrastructure:
+    domain: DataStore
+    range: Infrastructure
+    inverse: hosts_datastores
+    description: Infrastructure hosting this data store
+
+  hosts_datastores:
+    domain: Infrastructure
+    range: DataStore
+    multivalued: true
+    inverse: hosted_on_infrastructure
+    description: Data stores hosted on this infrastructure
+
+  # Collection relationships
+  collection_structured_by_schema:
+    domain: Collection
+    range: Schema
+    inverse: structures_collections
+    description: Schema structuring this collection
+
+  structures_collections:
+    domain: Schema
+    range: Collection
+    multivalued: true
+    inverse: collection_structured_by_schema
+    description: Collections structured by this schema
+
+  governed_by_retention_policy:
+    domain: Collection
+    range: RetentionPolicy
+    inverse: governs_collections
+    description: Retention policy governing this collection
+
+  governs_collections:
+    domain: RetentionPolicy
+    range: Collection
+    multivalued: true
+    inverse: governed_by_retention_policy
+    description: Collections governed by this retention policy
+
+  # Record relationships
+  stored_in_collection:
+    domain: Record
+    range: Collection
+    inverse: stores_records
+    description: Collection storing this record
+
+  stores_records:
+    domain: Collection
+    range: Record
+    multivalued: true
+    inverse: stored_in_collection
+    description: Records stored in this collection
+
+  conforms_to_schema:
+    domain: Record
+    range: Schema
+    inverse: validates_records
+    description: Schema this record conforms to
+
+  validates_records:
+    domain: Schema
+    range: Record
+    multivalued: true
+    inverse: conforms_to_schema
+    description: Records validated by this schema
+
+  has_lineage:
+    domain: Record
+    range: DataLineage
+    inverse: tracks_record
+    description: Lineage information for this record
+
+  tracks_record:
+    domain: DataLineage
+    range: Record
+    inverse: has_lineage
+    description: Record tracked by this lineage
+
+  # DataLineage relationships
+  derived_from_records:
+    domain: DataLineage
+    range: Record
+    multivalued: true
+    inverse: source_of_lineage
+    description: Records this data is derived from
+
+  source_of_lineage:
+    domain: Record
+    range: DataLineage
+    multivalued: true
+    inverse: derived_from_records
+    description: Lineage derived from this record
+
+  # AuditLog relationships
+  auditlog_governed_by_retention:
+    domain: AuditLog
+    range: RetentionPolicy
+    inverse: governs_audit_logs
+    description: Retention policy for this audit log
+
+  governs_audit_logs:
+    domain: RetentionPolicy
+    range: AuditLog
+    multivalued: true
+    inverse: auditlog_governed_by_retention
+    description: Audit logs governed by this retention policy
+
+  # AuditEntry relationships
+  audit_performed_by_actor:
+    domain: AuditEntry
+    range: Actor
+    inverse: audit_actions_performed
+    description: Actor who performed the audited action
+
+  audit_actions_performed:
+    domain: Actor
+    range: AuditEntry
+    multivalued: true
+    inverse: audit_performed_by_actor
+    description: Audit entries for actions by this actor
+
+  records_action:
+    domain: AuditEntry
+    range: Action
+    inverse: recorded_in_audit
+    description: Action recorded in this audit entry
+
+  recorded_in_audit:
+    domain: Action
+    range: AuditEntry
+    multivalued: true
+    inverse: records_action
+    description: Audit entries recording this action
+
+  affects_resource:
+    domain: AuditEntry
+    range: Resource
+    inverse: affected_in_audit
+    description: Resource affected by this audited action
+
+  affected_in_audit:
+    domain: Resource
+    range: AuditEntry
+    multivalued: true
+    inverse: affects_resource
+    description: Audit entries affecting this resource
+
+  # Integration adapter and circuit breaker relationships
+  uses_adapter:
+    domain: Integration
+    range: Adapter
+    inverse: used_by_integrations
+    description: Adapter used by this integration
+
+  used_by_integrations:
+    domain: Adapter
+    range: Integration
+    multivalued: true
+    inverse: uses_adapter
+    description: Integrations using this adapter
+
+  protected_by_breaker:
+    domain: Integration
+    range: CircuitBreaker
+    inverse: protects_integrations
+    description: Circuit breaker protecting this integration
+
+  protects_integrations:
+    domain: CircuitBreaker
+    range: Integration
+    multivalued: true
+    inverse: protected_by_breaker
+    description: Integrations protected by this circuit breaker
+
+  integration_governed_by_contract:
+    domain: Integration
+    range: Contract
+    inverse: governs_integrations
+    description: Contract governing this integration
+
+  governs_integrations:
+    domain: Contract
+    range: Integration
+    multivalued: true
+    inverse: integration_governed_by_contract
+    description: Integrations governed by this contract
+
+  # Message relationships
+  message_structured_by_schema:
+    domain: Message
+    range: Schema
+    inverse: structures_messages
+    description: Schema structuring this message
+
+  structures_messages:
+    domain: Schema
+    range: Message
+    multivalued: true
+    inverse: message_structured_by_schema
+    description: Messages structured by this schema
+
+  validated_by_contract:
+    domain: Message
+    range: Contract
+    inverse: validates_messages
+    description: Contract validating this message
+
+  validates_messages:
+    domain: Contract
+    range: Message
+    multivalued: true
+    inverse: validated_by_contract
+    description: Messages validated by this contract
+
+  # Environment relationships
+  env_configured_by:
+    domain: Environment
+    range: Configuration
+    multivalued: true
+    inverse: configures_environments
+    description: Configurations for this environment
+
+  configures_environments:
+    domain: Configuration
+    range: Environment
+    multivalued: true
+    inverse: env_configured_by
+    description: Environments configured by this configuration
+
+  uses_infrastructure:
+    domain: Environment
+    range: Infrastructure
+    multivalued: true
+    inverse: used_by_environments
+    description: Infrastructure used by this environment
+
+  used_by_environments:
+    domain: Infrastructure
+    range: Environment
+    multivalued: true
+    inverse: uses_infrastructure
+    description: Environments using this infrastructure
+
+  # Deployment relationships
+  deploys_unit:
+    domain: Deployment
+    range: DeploymentUnit
+    inverse: deployed_in_deployments
+    description: Deployment unit being deployed
+
+  deployed_in_deployments:
+    domain: DeploymentUnit
+    range: Deployment
+    multivalued: true
+    inverse: deploys_unit
+    description: Deployments of this unit
+
+  deployment_configured_by:
+    domain: Deployment
+    range: Configuration
+    multivalued: true
+    inverse: configures_deployments
+    description: Configurations for this deployment
+
+  configures_deployments:
+    domain: Configuration
+    range: Deployment
+    multivalued: true
+    inverse: deployment_configured_by
+    description: Deployments configured by this configuration
+
+  deploys_release:
+    domain: Deployment
+    range: Release
+    inverse: deployed_in_deployments_as_release
+    description: Release being deployed
+
+  deployed_in_deployments_as_release:
+    domain: Release
+    range: Deployment
+    multivalued: true
+    inverse: deploys_release
+    description: Deployments of this release
+
+  # Metric relationships
+  metric_emitted_by_component:
+    domain: Metric
+    range: Component
+    inverse: emits_metric
+    description: Component emitting this metric
+
+  emits_metric:
+    domain: Component
+    range: Metric
+    multivalued: true
+    inverse: metric_emitted_by_component
+    description: Metrics emitted by this component
+
+  # Log relationships
+  log_governed_by_retention:
+    domain: Log
+    range: RetentionPolicy
+    inverse: governs_logs
+    description: Retention policy for this log
+
+  governs_logs:
+    domain: RetentionPolicy
+    range: Log
+    multivalued: true
+    inverse: log_governed_by_retention
+    description: Logs governed by this retention policy
+
+  # Trace relationships
+  starts_with_span:
+    domain: Trace
+    range: Span
+    inverse: root_of_trace
+    description: Root span of this trace
+
+  root_of_trace:
+    domain: Span
+    range: Trace
+    inverse: starts_with_span
+    description: Trace this span is root of
+
+  # Span relationships
+  child_of_span:
+    domain: Span
+    range: Span
+    inverse: parent_of_spans
+    description: Parent span
+
+  parent_of_spans:
+    domain: Span
+    range: Span
+    multivalued: true
+    inverse: child_of_span
+    description: Child spans
+
+  # Alert relationships
+  triggered_by_rule:
+    domain: Alert
+    range: AlertRule
+    inverse: triggers_alerts
+    description: Rule triggering this alert
+
+  triggers_alerts:
+    domain: AlertRule
+    range: Alert
+    multivalued: true
+    inverse: triggered_by_rule
+    description: Alerts triggered by this rule
+
+  # AlertRule relationships
+  monitors_metrics:
+    domain: AlertRule
+    range: Metric
+    multivalued: true
+    inverse: monitored_by_alert_rules
+    description: Metrics monitored by this rule
+
+  monitored_by_alert_rules:
+    domain: Metric
+    range: AlertRule
+    multivalued: true
+    inverse: monitors_metrics
+    description: Alert rules monitoring this metric
+
+  # Incident relationships
+  escalated_from_alerts:
+    domain: Incident
+    range: Alert
+    multivalued: true
+    inverse: escalates_to_incident
+    description: Alerts escalated to this incident
+
+  escalates_to_incident:
+    domain: Alert
+    range: Incident
+    multivalued: true
+    inverse: escalated_from_alerts
+    description: Incidents this alert escalated to
+
+  affects_services:
+    domain: Incident
+    range: Service
+    multivalued: true
+    inverse: affected_by_incidents
+    description: Services affected by this incident
+
+  affected_by_incidents:
+    domain: Service
+    range: Incident
+    multivalued: true
+    inverse: affects_services
+    description: Incidents affecting this service
+
+  # Control relationships
+  owned_by_actor:
+    domain: Control
+    range: Actor
+    inverse: owns_controls
+    description: Actor owning this control
+
+  owns_controls:
+    domain: Actor
+    range: Control
+    multivalued: true
+    inverse: owned_by_actor
+    description: Controls owned by this actor
+
+  # Evidence relationships
+  verified_by_actor:
+    domain: Evidence
+    range: Actor
+    inverse: verifies_evidence
+    description: Actor verifying this evidence
+
+  verifies_evidence:
+    domain: Actor
+    range: Evidence
+    multivalued: true
+    inverse: verified_by_actor
+    description: Evidence verified by this actor
+
+  # RiskAssessment relationships
+  mitigated_by_controls:
+    domain: RiskAssessment
+    range: Control
+    multivalued: true
+    inverse: mitigates_risks
+    description: Controls mitigating this risk
+
+  mitigates_risks:
+    domain: Control
+    range: RiskAssessment
+    multivalued: true
+    inverse: mitigated_by_controls
+    description: Risks mitigated by this control
+
+  # System-Interface relationships
+  exposes_interfaces:
+    domain: System
+    range: Interface
+    multivalued: true
+    inverse: exposed_by_system
+    description: Interfaces exposed by this system
+
+  exposed_by_system:
+    domain: Interface
+    range: System
+    inverse: exposes_interfaces
+    description: System that exposes this interface

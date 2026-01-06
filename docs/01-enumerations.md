@@ -17,6 +17,7 @@ This document describes all enumeration types defined in the Software Applicatio
 - [Observability](#observability)
 - [Compliance](#compliance)
 - [Features](#features)
+- [Code Structure](#code-structure)
 
 ## Cardinality
 
@@ -356,7 +357,409 @@ Types of communication channels in the system.
 
 ### Feature Categories
 
-- **CORE**: Core essential feature
-- **OPTIONAL**: Optional add-on feature
-- **EXPERIMENTAL**: Experimental or beta feature
-- **DEPRECATED**: Deprecated feature scheduled for removal
+- **core**: Core essential feature
+- **optional**: Optional add-on feature
+- **experimental**: Experimental or beta feature
+- **deprecated**: Deprecated feature scheduled for removal
+
+## Code Structure
+
+### Code Container Types
+
+Types of physical code storage units.
+
+- **source_file**: Standard source code file
+- **library_member**: Member of a partitioned dataset or library (mainframe)
+- **include_file**: Header or include file
+- **script**: Executable script
+- **configuration**: Configuration file
+- **schema_definition**: Database or API schema definition
+- **notebook_cell**: Jupyter/computational notebook cell
+- **inline_code**: Embedded code (e.g., JavaScript in HTML, SQL in code)
+
+### Storage Location Types
+
+Types of storage locations for code containers.
+
+- **directory**: Filesystem directory
+- **library**: Partitioned dataset (mainframe) or static library
+- **package**: Language package or module
+- **namespace**: Logical namespace grouping
+- **module_path**: Module search path
+
+### Encapsulation Types
+
+Types of encapsulation units across different programming paradigms.
+
+**Object-Oriented:**
+- **class**: Object-oriented class
+- **interface**: Interface or contract definition
+- **abstract_class**: Abstract base class
+- **trait**: Trait (Rust, Scala) or mixin
+- **enum_class**: Enumeration class
+- **record_class**: Immutable record class (Java, C#)
+- **singleton**: Singleton pattern implementation
+
+**Procedural:**
+- **program**: Standalone program (COBOL, Fortran, C)
+- **subprogram**: Subprogram or subroutine module
+- **unit**: Pascal/Ada unit
+
+**Functional:**
+- **module**: Functional module (Haskell, OCaml, F#)
+- **namespace**: Namespace grouping
+- **package**: Package grouping
+- **library**: Library module
+
+**Mainframe:**
+- **batch_program**: Batch processing program
+- **online_program**: Online transaction program (CICS, IMS)
+- **copybook**: COBOL copybook
+
+**Database:**
+- **stored_procedure**: Database stored procedure package
+- **function_package**: Function package (Oracle, PostgreSQL)
+- **trigger**: Database trigger
+- **view**: Database view
+
+**Other:**
+- **object**: Module-level object (Scala)
+- **component**: Component definition
+- **service**: Service class
+- **controller**: Controller class
+- **script**: Script module
+- **composite**: Composite structure
+- **other**: Other encapsulation types
+
+### Callable Types
+
+Types of callable/invocable code units across different paradigms.
+
+**Object-Oriented Methods:**
+- **method**: Instance method in OOP
+- **static_method**: Static/class method
+- **constructor**: Object constructor
+- **destructor**: Object destructor/finalizer
+- **property_getter**: Property getter method
+- **property_setter**: Property setter method
+- **operator_overload**: Operator overloading method
+- **conversion_operator**: Type conversion operator
+- **indexer**: Indexer/subscript operator
+- **abstract_method**: Abstract method declaration
+- **virtual_method**: Virtual/overridable method
+
+**Procedural:**
+- **function**: Function (procedural or functional programming)
+- **procedure**: Procedure/subroutine
+- **subroutine**: Subroutine
+- **paragraph**: COBOL paragraph
+- **section**: COBOL section
+
+**Functional:**
+- **lambda**: Anonymous lambda function
+- **closure**: Closure
+- **higher_order_function**: Higher-order function
+- **curried_function**: Curried function
+- **functor**: Functor
+
+**Event Handling:**
+- **event_handler**: Event handler
+- **callback**: Callback function
+- **delegate**: Delegate
+- **signal_handler**: Signal handler
+
+**Database:**
+- **stored_procedure**: Database stored procedure
+- **stored_function**: Database function
+- **trigger_body**: Trigger implementation
+- **cursor**: Database cursor
+
+**Concurrency:**
+- **coroutine**: Coroutine
+- **generator**: Generator function
+- **async_function**: Async/await function
+- **thread_entry**: Thread entry point
+- **task**: Task/future/promise
+
+**Testing:**
+- **test_case**: Unit test case
+- **test_fixture**: Test fixture/setup method
+- **mock**: Mock function
+
+**Other:**
+- **macro**: Preprocessor macro
+- **template**: Template/generic function
+- **generic_method**: Generic method
+- **main_entry**: Main entry point
+- **interrupt_handler**: Interrupt service routine
+- **exception_handler**: Exception handler
+- **finalizer**: Finalizer/cleanup method
+- **factory_method**: Factory method
+- **extension_method**: Extension method
+- **script_function**: Script function
+- **command**: Command/action function
+- **other**: Other callable types
+
+### Data Structure Types
+
+Types of data structures across different paradigms.
+
+**Object-Oriented:**
+- **class_data**: Data members of a class
+- **inner_class**: Inner/nested class
+- **anonymous_class**: Anonymous class
+
+**Procedural:**
+- **struct**: C/C++ struct
+- **record**: Pascal/Ada record or COBOL record
+- **union**: C union
+
+**COBOL/Mainframe:**
+- **group_item**: COBOL group item (composite data)
+- **copybook_structure**: COBOL copybook structure
+- **commarea**: CICS communication area
+
+**Functional:**
+- **algebraic_data_type**: Algebraic data type (Haskell, ML)
+- **type_class**: Type class
+- **product_type**: Product type (tuple-like)
+- **sum_type**: Sum/variant type
+
+**Collections:**
+- **array**: Fixed-size array
+- **dynamic_array**: Dynamic/resizable array
+- **list**: List structure
+- **dictionary**: Dictionary/map/hash table
+- **set**: Set structure
+- **queue**: Queue structure
+- **stack**: Stack structure
+- **tree**: Tree structure
+- **graph**: Graph structure
+
+**Database:**
+- **table_structure**: Database table structure
+- **view_structure**: Database view structure
+- **cursor_structure**: Cursor structure
+- **rowtype**: Database row type
+
+**Domain-Driven Design:**
+- **value_object**: DDD value object
+- **dto**: Data Transfer Object
+
+**Other:**
+- **tuple**: Tuple
+- **pair**: Key-value pair
+- **enum**: Enumeration
+- **flags**: Bit flags
+- **configuration_object**: Configuration data
+- **message**: Message structure
+- **event**: Event data
+- **command**: Command data
+- **json_schema**: JSON schema structure
+- **xml_schema**: XML schema structure
+- **protobuf_message**: Protocol Buffers message
+- **avro_record**: Avro record
+- **smart_pointer**: Smart pointer wrapper
+- **reference_wrapper**: Reference wrapper
+
+### Visibility Types
+
+Visibility/access levels for code elements.
+
+- **public**: Publicly accessible
+- **private**: Private to containing unit
+- **protected**: Protected (accessible to subclasses)
+- **internal**: Internal to assembly/package
+- **package**: Package-level visibility
+- **module**: Module-level visibility
+- **file**: File-level visibility
+
+### Callable Categories
+
+Categories of callable behavior.
+
+- **synchronous**: Synchronous/blocking execution
+- **asynchronous**: Asynchronous/non-blocking execution
+- **event_driven**: Event-driven execution
+- **reactive**: Reactive/stream-based execution
+
+### Entry Point Types
+
+Types of entry points for callables.
+
+- **main**: Main entry point
+- **constructor**: Object constructor
+- **destructor**: Object destructor
+- **initializer**: Initializer/setup
+- **event_handler**: Event handler entry
+- **callback**: Callback entry
+
+### Data Structure Categories
+
+Categories of data structures.
+
+- **simple**: Simple/primitive data
+- **composite**: Composite/aggregate data
+- **collection**: Collection of items
+- **reference**: Reference/pointer
+
+### Data Element Categories
+
+Categories of data elements.
+
+- **field**: Class/struct field
+- **property**: Property with accessors
+- **variable**: Local or module variable
+- **constant**: Constant value
+- **parameter**: Function/method parameter
+
+### Parameter Directions
+
+Direction of parameter data flow.
+
+- **input**: Input parameter (read-only)
+- **output**: Output parameter (write-only)
+- **input_output**: Input/output parameter (read-write)
+- **return**: Return value
+
+### Passing Mechanisms
+
+Mechanisms for passing parameters.
+
+- **by_value**: Pass by value (copy)
+- **by_reference**: Pass by reference
+- **by_name**: Pass by name (lazy evaluation)
+- **by_need**: Pass by need (call-by-need)
+
+### Code Block Types
+
+Types of code blocks.
+
+- **conditional**: Conditional block (if/else)
+- **loop**: Loop block (for/while)
+- **try_catch**: Exception handling block
+- **synchronized**: Synchronized/locked block
+- **transaction**: Transaction block
+- **scope**: Scoping block
+
+### Statement Categories
+
+Categories of code statements.
+
+- **assignment**: Assignment statement
+- **invocation**: Method/function call
+- **return**: Return statement
+- **declaration**: Variable/constant declaration
+- **control**: Control flow statement
+- **exception**: Exception handling statement
+
+### Reference Types
+
+Types of code references (imports/includes).
+
+- **import**: Import statement (Python, Java)
+- **include**: Include directive (C/C++)
+- **using**: Using directive (C#)
+- **require**: Require statement (Ruby, Node.js)
+- **copy**: COBOL COPY statement
+
+### Control Flow Types
+
+Types of control flow between code elements.
+
+- **call**: Function/method call
+- **conditional_branch**: Conditional branch (if/switch)
+- **unconditional_branch**: Unconditional branch (goto)
+- **loop**: Loop iteration
+- **exception**: Exception throw/catch
+- **return**: Return from callable
+
+### Data Flow Types
+
+Types of data flow between elements.
+
+- **parameter_passing**: Parameter passed to callable
+- **return_value**: Value returned from callable
+- **field_access**: Access to field/property
+- **assignment**: Assignment to variable
+- **reference**: Reference to data
+
+### Storage Classes
+
+Storage classes for data elements.
+
+- **automatic**: Automatic/stack storage
+- **static**: Static storage
+- **heap**: Heap-allocated storage
+- **register**: Register storage
+- **thread_local**: Thread-local storage
+
+### Persistence Types
+
+How data structures are persisted.
+
+- **transient**: Not persisted
+- **database**: Persisted in database
+- **file**: Persisted in file
+- **memory**: In-memory only
+- **cache**: Cached storage
+
+### Database Types
+
+Database system types.
+
+- **relational**: Relational database (SQL)
+- **document**: Document database (MongoDB)
+- **key_value**: Key-value store (Redis)
+- **graph**: Graph database (Neo4j)
+- **columnar**: Columnar database (Cassandra)
+- **time_series**: Time-series database
+
+### Linkage Types
+
+Linkage types for code units.
+
+- **static**: Static linkage
+- **dynamic**: Dynamic linkage
+- **external**: External linkage
+- **internal**: Internal linkage
+
+### Security Types
+
+Security attributes for code elements.
+
+- **public**: Public/unrestricted
+- **authenticated**: Requires authentication
+- **authorized**: Requires authorization
+- **encrypted**: Encrypted at rest/transit
+- **audited**: Audited access
+
+### Structure Layouts
+
+Memory layout for structures.
+
+- **sequential**: Sequential layout
+- **packed**: Packed layout (no padding)
+- **explicit**: Explicit layout with offsets
+- **union**: Union layout (overlapping)
+
+### Equality Semantics
+
+How equality is determined.
+
+- **reference**: Reference/identity equality
+- **value**: Value/structural equality
+- **custom**: Custom equality logic
+
+### Message Formats
+
+Message/data formats.
+
+- **json**: JSON format
+- **xml**: XML format
+- **protobuf**: Protocol Buffers
+- **avro**: Apache Avro
+- **msgpack**: MessagePack
+- **yaml**: YAML format
+- **csv**: CSV format
+- **binary**: Binary format

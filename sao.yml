@@ -23,7 +23,7 @@ prefixes:
   rdfs: http://www.w3.org/2000/01/rdf-schema#
   xsd: http://www.w3.org/2001/XMLSchema#
   skos: http://www.w3.org/2004/02/skos/core#
-  dct: http://purl.org/dc/terms/
+  dcterms: http://purl.org/dc/terms/
 
 default_prefix: sao
 default_range: string
@@ -38,554 +38,1172 @@ enums:
   Cardinality:
     description: Relationship cardinality options
     permissible_values:
-      ONE_TO_ONE:
+      one_to_one:
         description: One-to-one relationship
-      ONE_TO_MANY:
+      one_to_many:
         description: One-to-many relationship
-      MANY_TO_ONE:
+      many_to_one:
         description: Many-to-one relationship
-      MANY_TO_MANY:
+      many_to_many:
         description: Many-to-many relationship
 
   ChannelType:
     description: Types of communication channels
     permissible_values:
-      PUBLIC_CHANNEL:
+      public_channel:
         description: Public communication channel accessible to all users
-      PRIVATE_CHANNEL:
+      private_channel:
         description: Private communication channel with restricted access
-      MPIM:
+      mpim:
         description: Multi-party instant messaging
-      IM:
+      im:
         description: Direct instant messaging between two parties
 
   InterfaceCategory:
     description: Categories of system interfaces
     permissible_values:
-      USER_INTERFACE:
+      user_interface:
         description: Human-facing interface for user interaction
-      PROGRAMMATIC_INTERFACE:
+      programmatic_interface:
         description: Machine-to-machine API interface
-      EVENT_INTERFACE:
+      event_interface:
         description: Event-driven asynchronous interface
 
   UserInterfaceType:
     description: Types of user interfaces
     permissible_values:
-      WEB_UI:
+      web_ui:
         description: Web browser-based user interface
-      MOBILE_UI:
+      mobile_ui:
         description: Mobile device (iOS/Android) user interface
-      DESKTOP_UI:
+      desktop_ui:
         description: Desktop application user interface
-      CLI:
+      cli:
         description: Command-line interface
 
   APIType:
     description: Types of programmatic interfaces
     permissible_values:
-      REST_API:
+      rest_api:
         description: RESTful HTTP-based API
-      GRAPHQL_API:
+      graphql_api:
         description: GraphQL query language API
-      GRPC_API:
+      grpc_api:
         description: gRPC remote procedure call API
-      SDK:
+      sdk:
         description: Software development kit for programmatic access
-      SOAP_API:
+      soap_api:
         description: SOAP protocol-based web service API
 
   EventInterfaceType:
     description: Types of event interfaces
     permissible_values:
-      WEBHOOK:
+      webhook:
         description: HTTP callback for event notifications
-      MESSAGE_QUEUE:
+      message_queue:
         description: Queue-based asynchronous messaging
-      EVENT_STREAM:
+      event_stream:
         description: Continuous stream of events
-      PUB_SUB:
+      pub_sub:
         description: Publish-subscribe messaging pattern
 
   ServiceType:
     description: Types of runtime services
     permissible_values:
-      MICROSERVICE:
+      microservice:
         description: Small, independently deployable service
-      MONOLITH:
+      monolith:
         description: Single-tier monolithic application
-      FUNCTION:
+      function:
         description: Serverless function or lambda
-      JOB:
+      job:
         description: Batch processing job
-      DAEMON:
+      daemon:
         description: Background service or daemon process
 
   DependencyType:
     description: Types of dependencies
     permissible_values:
-      RUNTIME:
+      runtime:
         description: Required at runtime for execution
-      BUILD:
+      build:
         description: Required at build/compile time
-      OPTIONAL:
+      optional:
         description: Optional dependency for additional features
-      DEV:
+      dev:
         description: Required only for development/testing
 
   ActorCategory:
     description: Categories of actors
     permissible_values:
-      HUMAN:
+      human:
         description: Human user or operator
-      SYSTEM:
+      system:
         description: Automated system or service
 
   HumanActorType:
     description: Types of human actors
     permissible_values:
-      END_USER:
+      end_user:
         description: Regular end user of the system
-      ADMINISTRATOR:
+      administrator:
         description: System administrator with elevated privileges
-      OPERATOR:
+      operator:
         description: Operations personnel managing system runtime
-      DEVELOPER:
+      developer:
         description: Software developer or engineer
-      AUDITOR:
+      auditor:
         description: Compliance or security auditor
 
   SystemActorType:
     description: Types of system actors
     permissible_values:
-      INTERNAL_SERVICE:
+      internal_service:
         description: Internal service within the system
-      EXTERNAL_SYSTEM:
+      external_system:
         description: External third-party system
-      SCHEDULED_PROCESS:
+      scheduled_process:
         description: Scheduled or cron-based process
-      AI_AGENT:
+      ai_agent:
         description: Artificial intelligence agent or bot
-      MESSAGE_TRIGGER:
+      message_trigger:
         description: Message or event-triggered automation
 
   CredentialType:
     description: Types of authentication credentials
     permissible_values:
-      PASSWORD:
+      password:
         description: Username and password credentials
-      TOKEN:
+      token:
         description: Token-based authentication (JWT, bearer token)
-      CERTIFICATE:
+      certificate:
         description: Digital certificate or X.509 certificate
-      API_KEY:
+      api_key:
         description: API key for service authentication
-      BIOMETRIC:
+      biometric:
         description: Biometric authentication (fingerprint, face recognition)
-      MFA:
+      mfa:
         description: Multi-factor authentication
-      OAUTH:
+      oauth:
         description: OAuth 2.0 authentication flow
 
   PolicyType:
     description: Types of authorization policies
     permissible_values:
-      RBAC:
+      rbac:
         description: Role-Based Access Control
-      ABAC:
+      abac:
         description: Attribute-Based Access Control
-      REBAC:
+      rebac:
         description: Relationship-Based Access Control
-      PBAC:
+      pbac:
         description: Policy-Based Access Control
 
   ScopeType:
     description: Types of permission scopes
     permissible_values:
-      GLOBAL:
+      global:
         description: System-wide global scope
-      TENANT:
+      tenant:
         description: Limited to a specific tenant
-      ORGANIZATION:
+      organization:
         description: Limited to an organization within a tenant
-      RESOURCE:
+      resource:
         description: Limited to a specific resource or resource type
-      FIELD:
+      field:
         description: Limited to specific fields within a resource
 
   ConstraintType:
     description: Types of authorization constraints
     permissible_values:
-      TEMPORAL:
+      temporal:
         description: Time-based constraint (date/time ranges)
-      SPATIAL:
+      spatial:
         description: Location or geography-based constraint
-      ATTRIBUTE:
+      attribute:
         description: Attribute or property-based constraint
-      CONTEXT:
+      context:
         description: Context-dependent constraint (device, IP, etc.)
-      RATE_LIMIT:
+      rate_limit:
         description: Rate limiting or quota-based constraint
 
   AttributeCategory:
     description: Categories of entity attributes
     permissible_values:
-      REQUIRED:
+      required:
         description: Required attribute that must have a value
-      OPTIONAL:
+      optional:
         description: Optional attribute that may be null
-      COMPUTED:
+      computed:
         description: Computed or calculated attribute
-      DERIVED:
+      derived:
         description: Derived from other attributes
-      TRANSIENT:
+      transient:
         description: Transient attribute not persisted
 
   ActionCategory:
     description: Categories of actions
     permissible_values:
-      QUERY:
+      query:
         description: Read-only query action
-      COMMAND:
+      command:
         description: State-changing command action
-      MUTATION:
+      mutation:
         description: Data mutation or modification action
 
   CommandType:
     description: Types of commands
     permissible_values:
-      CREATE:
+      create:
         description: Create a new entity
-      UPDATE:
+      update:
         description: Update an existing entity
-      DELETE:
+      delete:
         description: Delete an entity
-      EXECUTE:
+      execute:
         description: Execute an operation or process
-      ARCHIVE:
+      archive:
         description: Archive an entity for retention
-      RESTORE:
+      restore:
         description: Restore an archived entity
 
   WorkflowType:
     description: Types of workflows
     permissible_values:
-      SYNCHRONOUS:
+      synchronous:
         description: Synchronous blocking workflow
-      ASYNCHRONOUS:
+      asynchronous:
         description: Asynchronous non-blocking workflow
-      SAGA:
+      saga:
         description: Saga pattern for distributed transactions
-      CHOREOGRAPHY:
+      choreography:
         description: Event-driven choreography workflow
-      ORCHESTRATION:
+      orchestration:
         description: Centrally orchestrated workflow
 
   RuleCategory:
     description: Categories of business rules
     permissible_values:
-      VALIDATION:
+      validation:
         description: Validation rule for data integrity
-      BUSINESS:
+      business:
         description: Business logic or domain rule
-      DERIVATION:
+      derivation:
         description: Derivation rule for computed values
-      CONSTRAINT:
+      constraint:
         description: Constraint or invariant rule
-      TRIGGER:
+      trigger:
         description: Event trigger or automation rule
 
   EventCategory:
     description: Categories of events
     permissible_values:
-      DOMAIN_EVENT:
+      domain_event:
         description: Domain-specific business event
-      INTEGRATION_EVENT:
+      integration_event:
         description: Integration or cross-service event
-      SYSTEM_EVENT:
+      system_event:
         description: System-level technical event
-      AUDIT_EVENT:
+      audit_event:
         description: Audit trail or compliance event
 
   TransactionType:
     description: Types of transactions
     permissible_values:
-      LOCAL:
+      local:
         description: Local transaction within a single database
-      DISTRIBUTED:
+      distributed:
         description: Distributed transaction across multiple resources
-      SAGA:
+      saga:
         description: Saga pattern with compensating transactions
-      TWO_PHASE_COMMIT:
+      two_phase_commit:
         description: Two-phase commit protocol
 
   DataStoreType:
     description: Types of data stores
     permissible_values:
-      RELATIONAL_DB:
+      relational_db:
         description: Relational database (SQL)
-      DOCUMENT_DB:
+      document_db:
         description: Document-oriented database (NoSQL)
-      KEY_VALUE_STORE:
+      key_value_store:
         description: Key-value store (Redis, DynamoDB)
-      GRAPH_DB:
+      graph_db:
         description: Graph database (Neo4j)
-      TIME_SERIES_DB:
+      time_series_db:
         description: Time-series database
-      OBJECT_STORAGE:
+      object_storage:
         description: Object storage (S3, blob storage)
-      SEARCH_INDEX:
+      search_index:
         description: Search index (Elasticsearch, Solr)
-      CACHE:
+      cache:
         description: In-memory cache
-      MESSAGE_BROKER:
+      message_broker:
         description: Message broker or queue
-      DATA_LAKE:
+      data_lake:
         description: Data lake for analytics
 
   SchemaType:
     description: Types of data schemas
     permissible_values:
-      TABLE_SCHEMA:
+      table_schema:
         description: Relational database table schema
-      DOCUMENT_SCHEMA:
+      document_schema:
         description: Document or JSON schema
-      EVENT_SCHEMA:
+      event_schema:
         description: Event payload schema
-      API_SCHEMA:
+      api_schema:
         description: API request/response schema
-      MESSAGE_SCHEMA:
+      message_schema:
         description: Message format schema
 
   DataClassificationType:
     description: Data sensitivity classifications
     permissible_values:
-      PUBLIC:
+      public:
         description: Publicly accessible information
-      INTERNAL:
+      internal:
         description: Internal use only information
-      CONFIDENTIAL:
+      confidential:
         description: Confidential sensitive information
-      RESTRICTED:
+      restricted:
         description: Highly restricted information
-      PII:
+      pii:
         description: Personally Identifiable Information
-      PHI:
+      phi:
         description: Protected Health Information
-      PCI:
+      pci:
         description: Payment Card Industry data
 
   IntegrationType:
     description: Types of integrations
     permissible_values:
-      INBOUND:
+      inbound:
         description: Inbound integration receiving data
-      OUTBOUND:
+      outbound:
         description: Outbound integration sending data
-      BIDIRECTIONAL:
+      bidirectional:
         description: Bidirectional two-way integration
 
   ExternalSystemType:
     description: Types of external systems
     permissible_values:
-      THIRD_PARTY_SERVICE:
+      third_party_service:
         description: Third-party external service
-      PARTNER_SYSTEM:
+      partner_system:
         description: Partner or vendor system
-      LEGACY_SYSTEM:
+      legacy_system:
         description: Legacy system being integrated
-      SAAS_APPLICATION:
+      saas_application:
         description: Software-as-a-Service application
 
   ProtocolType:
     description: Communication protocols
     permissible_values:
-      HTTP:
+      http:
         description: Hypertext Transfer Protocol
-      HTTPS:
+      https:
         description: HTTP Secure (TLS/SSL)
-      WEBSOCKET:
+      websocket:
         description: WebSocket protocol for bidirectional communication
-      GRPC:
+      grpc:
         description: gRPC protocol
-      AMQP:
+      amqp:
         description: Advanced Message Queuing Protocol
-      MQTT:
+      mqtt:
         description: Message Queuing Telemetry Transport
-      KAFKA:
+      kafka:
         description: Apache Kafka protocol
-      SFTP:
+      sftp:
         description: Secure File Transfer Protocol
-      TCP:
+      tcp:
         description: Transmission Control Protocol
-      UDP:
+      udp:
         description: User Datagram Protocol
 
   MessageType:
     description: Types of messages
     permissible_values:
-      REQUEST:
+      request:
         description: Request message expecting a response
-      RESPONSE:
+      response:
         description: Response message to a request
-      NOTIFICATION:
+      notification:
         description: One-way notification message
-      COMMAND:
+      command:
         description: Command message for action execution
-      EVENT:
+      event:
         description: Event notification message
-      QUERY:
+      query:
         description: Query message for data retrieval
 
   ContractType:
     description: Types of API contracts
     permissible_values:
-      OPENAPI:
+      openapi:
         description: OpenAPI (Swagger) specification
-      ASYNCAPI:
+      asyncapi:
         description: AsyncAPI specification for async APIs
-      JSON_SCHEMA:
+      json_schema:
         description: JSON Schema specification
-      PROTOBUF:
+      protobuf:
         description: Protocol Buffers schema
-      AVRO:
+      avro:
         description: Apache Avro schema
-      GRAPHQL_SCHEMA:
+      graphql_schema:
         description: GraphQL schema definition
-      WSDL:
+      wsdl:
         description: Web Services Description Language
 
   EnvironmentType:
     description: Types of deployment environments
     permissible_values:
-      DEVELOPMENT:
+      development:
         description: Development environment for active development
-      TESTING:
+      testing:
         description: Testing environment for QA and integration testing
-      STAGING:
+      staging:
         description: Pre-production staging environment
-      PRODUCTION:
+      production:
         description: Live production environment
-      DR:
+      dr:
         description: Disaster Recovery
 
   DeploymentUnitType:
     description: Types of deployment units
     permissible_values:
-      CONTAINER:
+      container:
         description: Container image (Docker, etc.)
-      VM:
+      vm:
         description: Virtual machine image
-      SERVERLESS_FUNCTION:
+      serverless_function:
         description: Serverless function deployment package
-      BINARY:
+      binary:
         description: Compiled binary executable
-      PACKAGE:
+      package:
         description: Application package (JAR, WAR, etc.)
 
   ConfigurationType:
     description: Types of configuration
     permissible_values:
-      ENVIRONMENT_VARIABLE:
+      environment_variable:
         description: Environment variable configuration
-      CONFIG_FILE:
+      config_file:
         description: Configuration file (YAML, JSON, properties)
-      SECRET:
+      secret:
         description: Secret or sensitive configuration value
-      FEATURE_FLAG:
+      feature_flag:
         description: Feature flag or toggle
-      REMOTE_CONFIG:
+      remote_config:
         description: Remote configuration service
 
   InfrastructureType:
     description: Types of infrastructure
     permissible_values:
-      COMPUTE:
+      compute:
         description: Compute resources (VMs, containers)
-      STORAGE:
+      storage:
         description: Storage resources (disks, volumes)
-      NETWORK:
+      network:
         description: Network infrastructure
-      LOAD_BALANCER:
+      load_balancer:
         description: Load balancer
-      DNS:
+      dns:
         description: DNS service
-      CDN:
+      cdn:
         description: Content Delivery Network
-      FIREWALL:
+      firewall:
         description: Firewall or security group
 
   MetricType:
     description: Types of metrics
     permissible_values:
-      COUNTER:
+      counter:
         description: Monotonically increasing counter
-      GAUGE:
+      gauge:
         description: Value that can increase or decrease
-      HISTOGRAM:
+      histogram:
         description: Distribution of values in buckets
-      SUMMARY:
+      summary:
         description: Summary statistics (quantiles, etc.)
 
   LogType:
     description: Types of logs
     permissible_values:
-      APPLICATION:
+      application:
         description: Application-level logs
-      ACCESS:
+      access:
         description: Access and request logs
-      ERROR:
+      error:
         description: Error and exception logs
-      SECURITY:
+      security:
         description: Security event logs
-      AUDIT:
+      audit:
         description: Audit trail logs
-      DEBUG:
+      debug:
         description: Debug and diagnostic logs
 
   HealthCheckType:
     description: Types of health checks
     permissible_values:
-      LIVENESS:
+      liveness:
         description: Liveness probe for service health
-      READINESS:
+      readiness:
         description: Readiness probe for traffic acceptance
-      DEPENDENCY:
+      dependency:
         description: Health check for dependencies
-      STARTUP:
+      startup:
         description: Startup probe during initialization
 
   ComplianceFramework:
     description: Compliance frameworks
     permissible_values:
-      GDPR:
+      gdpr:
         description: General Data Protection Regulation (EU)
-      HIPAA:
+      hipaa:
         description: Health Insurance Portability and Accountability Act
-      SOC2:
+      soc2:
         description: Service Organization Control 2
-      PCI_DSS:
+      pci_dss:
         description: Payment Card Industry Data Security Standard
-      ISO27001:
+      iso27001:
         description: ISO 27001 Information Security Management
-      SOX:
+      sox:
         description: Sarbanes-Oxley Act
-      CCPA:
+      ccpa:
         description: California Consumer Privacy Act
-      FEDRAMP:
+      fedramp:
         description: Federal Risk and Authorization Management Program
 
   FeatureCategory:
     description: Categories of features
     permissible_values:
-      CORE:
+      core:
         description: Core essential feature
-      OPTIONAL:
+      optional:
         description: Optional add-on feature
-      EXPERIMENTAL:
+      experimental:
         description: Experimental or beta feature
-      DEPRECATED:
+      deprecated:
         description: Deprecated feature scheduled for removal
+
+  # ===========================================================================
+  # CODE STRUCTURE ENUMERATIONS
+  # ===========================================================================
+
+  CodeContainerType:
+    description: Types of code containers
+    permissible_values:
+      source_file:
+        description: Standard source code file
+      library_member:
+        description: Member of a partitioned dataset or library
+      include_file:
+        description: Shared definitions file (header, copybook)
+      script:
+        description: Executable script
+      configuration:
+        description: Configuration file
+      schema_definition:
+        description: Schema or DDL file
+      notebook_cell:
+        description: Cell in computational notebook
+      inline_code:
+        description: Code embedded in another format
+
+  StorageLocationType:
+    description: Types of storage locations
+    permissible_values:
+      directory:
+        description: File system directory
+      library:
+        description: Partitioned dataset or library (mainframe)
+      package:
+        description: Package (Java, Go, etc.)
+      namespace:
+        description: Namespace (C#, C++, etc.)
+      module_path:
+        description: Module search path
+
+  EncapsulationType:
+    description: Types of encapsulation units across different paradigms
+    permissible_values:
+      class:
+        description: Object-oriented class
+      interface:
+        description: Interface or protocol definition
+      abstract_class:
+        description: Abstract class that cannot be instantiated
+      trait:
+        description: Trait (Rust, Scala) or mixin
+      enum_class:
+        description: Enumeration class
+      record_class:
+        description: Record or data class (Java records, Python dataclass)
+      singleton:
+        description: Singleton class
+      program:
+        description: Standalone program (COBOL, Fortran)
+      subprogram:
+        description: Callable subprogram or subroutine library
+      unit:
+        description: Pascal/Delphi unit
+      module:
+        description: Functional module (Haskell, OCaml, F#)
+      namespace:
+        description: Namespace or package grouping
+      package:
+        description: Package (Ada, Go)
+      library:
+        description: Library module
+      object:
+        description: JavaScript/prototype-based object
+      component:
+        description: Component (React, Angular, Vue)
+      service:
+        description: Service class/module
+      controller:
+        description: Controller (MVC pattern)
+      stored_procedure:
+        description: Database stored procedure
+      function_package:
+        description: PL/SQL or T-SQL package
+      trigger:
+        description: Database trigger
+      view:
+        description: Database view definition
+      script:
+        description: Script file as a unit
+      batch_program:
+        description: Batch processing program
+      online_program:
+        description: Online transaction program (CICS, IMS)
+      copybook:
+        description: COBOL copybook or include file
+      composite:
+        description: Composite unit containing mixed elements
+      other:
+        description: Other or language-specific type
+
+  CallableType:
+    description: Types of callable units across different paradigms
+    permissible_values:
+      method:
+        description: Instance method in OOP
+      static_method:
+        description: Static/class method
+      constructor:
+        description: Object constructor
+      destructor:
+        description: Object destructor/finalizer
+      property_getter:
+        description: Property getter method
+      property_setter:
+        description: Property setter method
+      operator_overload:
+        description: Operator overloading method
+      conversion_operator:
+        description: Type conversion operator
+      indexer:
+        description: Indexer accessor (C#, etc.)
+      abstract_method:
+        description: Abstract method requiring implementation
+      virtual_method:
+        description: Virtual method that can be overridden
+      function:
+        description: Function (procedural or functional paradigm)
+      procedure:
+        description: Procedure or subroutine (no return value)
+      subroutine:
+        description: Subroutine (Fortran, BASIC)
+      paragraph:
+        description: COBOL paragraph
+      section:
+        description: COBOL section or similar grouping
+      lambda:
+        description: Anonymous lambda function
+      closure:
+        description: Closure capturing environment
+      higher_order_function:
+        description: Function taking/returning functions
+      curried_function:
+        description: Curried function
+      functor:
+        description: Functor in functional programming
+      event_handler:
+        description: Event handler or callback
+      callback:
+        description: Callback function
+      delegate:
+        description: Delegate (C#, etc.)
+      signal_handler:
+        description: Signal handler (Unix/Linux)
+      stored_procedure:
+        description: Database stored procedure
+      stored_function:
+        description: Database function
+      trigger_body:
+        description: Database trigger implementation
+      cursor:
+        description: Database cursor definition
+      coroutine:
+        description: Coroutine
+      generator:
+        description: Generator function (Python, JavaScript)
+      async_function:
+        description: Async/await function
+      thread_entry:
+        description: Thread entry point
+      task:
+        description: Async task
+      test_case:
+        description: Unit test case
+      test_fixture:
+        description: Test fixture/setup
+      mock:
+        description: Mock function/method
+      macro:
+        description: Preprocessor macro or language macro
+      template:
+        description: Template function (C++)
+      generic_method:
+        description: Generic/parameterized method
+      main_entry:
+        description: Program main entry point
+      interrupt_handler:
+        description: Hardware interrupt handler
+      exception_handler:
+        description: Exception handler
+      finalizer:
+        description: Finalizer/cleanup function
+      factory_method:
+        description: Factory method pattern
+      extension_method:
+        description: Extension method (C#, Kotlin)
+      script_function:
+        description: Script-level function
+      command:
+        description: Shell command or script command
+      other:
+        description: Other or language-specific type
+
+  DataStructureType:
+    description: Types of data structures across different paradigms
+    permissible_values:
+      class_data:
+        description: Data members of a class
+      inner_class:
+        description: Nested or inner class
+      anonymous_class:
+        description: Anonymous class instance
+      struct:
+        description: C/C++ struct or similar
+      record:
+        description: Pascal/Ada record or COBOL record
+      union:
+        description: C/C++ union or variant record
+      group_item:
+        description: COBOL group item (composite)
+      algebraic_data_type:
+        description: Sum/product type (Haskell, ML)
+      type_class:
+        description: Type class or trait
+      product_type:
+        description: Product type (tuple, record)
+      sum_type:
+        description: Sum type (variant, enum)
+      array:
+        description: Fixed-size array
+      dynamic_array:
+        description: Dynamic/resizable array
+      list:
+        description: Linked list
+      dictionary:
+        description: Dictionary/map/hash table
+      set:
+        description: Set (unique elements)
+      queue:
+        description: Queue (FIFO)
+      stack:
+        description: Stack (LIFO)
+      tree:
+        description: Tree structure
+      graph:
+        description: Graph structure
+      table_structure:
+        description: Database table structure
+      view_structure:
+        description: Database view structure
+      cursor_structure:
+        description: Database cursor row type
+      rowtype:
+        description: Database %ROWTYPE
+      value_object:
+        description: Immutable value object (DDD)
+      dto:
+        description: Data Transfer Object
+      tuple:
+        description: Tuple (immutable ordered collection)
+      pair:
+        description: Pair (two-element tuple)
+      enum:
+        description: Enumeration
+      flags:
+        description: Bit flags enumeration
+      configuration_object:
+        description: Configuration/settings object
+      message:
+        description: Message structure
+      event:
+        description: Event data structure
+      command:
+        description: Command data structure
+      json_schema:
+        description: JSON schema structure
+      xml_schema:
+        description: XML schema structure
+      protobuf_message:
+        description: Protocol Buffer message
+      avro_record:
+        description: Apache Avro record
+      smart_pointer:
+        description: Smart pointer wrapper
+      reference_wrapper:
+        description: Reference wrapper
+      copybook_structure:
+        description: COBOL copybook structure
+      commarea:
+        description: CICS communication area
+      linkage_section:
+        description: COBOL linkage section structure
+      opaque_type:
+        description: Opaque/abstract data type
+      variant:
+        description: Variant/any type
+      other:
+        description: Other or language-specific type
+
+  VisibilityType:
+    description: Visibility modifiers for code elements
+    permissible_values:
+      public:
+        description: Publicly accessible
+      private:
+        description: Private to containing class/module
+      protected:
+        description: Accessible to subclasses
+      internal:
+        description: Internal to assembly/package
+      package:
+        description: Package-private (Java-style)
+
+  CallableCategory:
+    description: Categories of callable units
+    permissible_values:
+      constructor:
+        description: Object constructor/initializer
+      destructor:
+        description: Object destructor/finalizer
+      normal:
+        description: Regular callable
+      operator:
+        description: Operator overload
+      property_getter:
+        description: Property/attribute getter
+      property_setter:
+        description: Property/attribute setter
+      event_handler:
+        description: Event handler/callback
+      main_entry:
+        description: Program entry point
+
+  EntryPointType:
+    description: Types of program entry points
+    permissible_values:
+      main_program:
+        description: Main program entry
+      transaction_entry:
+        description: Transaction entry (CICS, etc.)
+      event_handler:
+        description: Event handler entry
+      scheduled_entry:
+        description: Scheduled/batch entry
+      api_endpoint:
+        description: API endpoint entry
+
+  DataStructureCategory:
+    description: Categories of data structures
+    permissible_values:
+      composite:
+        description: Composite/aggregate structure
+      collection:
+        description: Collection/array/list
+      hierarchical:
+        description: Hierarchical/tree structure
+      value_type:
+        description: Value type (immutable)
+      reference_type:
+        description: Reference type (mutable)
+      union:
+        description: Union/variant type
+
+  DataElementCategory:
+    description: Categories of data elements
+    permissible_values:
+      field:
+        description: Instance field/member
+      static_field:
+        description: Static/class-level field
+      local_variable:
+        description: Local variable
+      parameter:
+        description: Parameter variable
+      constant:
+        description: Named constant
+      global_variable:
+        description: Global/shared variable
+      computed:
+        description: Computed/derived value
+      temporary:
+        description: Temporary working storage
+
+  ParameterDirection:
+    description: Parameter passing direction
+    permissible_values:
+      input:
+        description: Input only
+      output:
+        description: Output only
+      input_output:
+        description: Both input and output
+      return:
+        description: Return value
+
+  PassingMechanism:
+    description: Parameter passing mechanisms
+    permissible_values:
+      by_value:
+        description: Pass by value (copy)
+      by_reference:
+        description: Pass by reference
+      by_name:
+        description: Pass by name (lazy evaluation)
+      by_result:
+        description: Pass by result (copy-out)
+
+  CodeBlockType:
+    description: Types of code blocks
+    permissible_values:
+      sequential:
+        description: Sequential execution block
+      conditional:
+        description: Conditional block (if/then/else)
+      loop:
+        description: Iteration block
+      try_catch:
+        description: Exception handling block
+      transaction:
+        description: Transaction boundary
+      critical_section:
+        description: Critical section/synchronized block
+      scope:
+        description: Lexical scope
+
+  StatementCategory:
+    description: Categories of statements
+    permissible_values:
+      declaration:
+        description: Declaration statement
+      assignment:
+        description: Assignment/update
+      invocation:
+        description: Call/invoke
+      control_transfer:
+        description: Control transfer (goto, return, break)
+      io_operation:
+        description: Input/output operation
+      data_manipulation:
+        description: Data manipulation
+      transaction_control:
+        description: Transaction control (commit, rollback)
+      exception_handling:
+        description: Exception handling
+
+  ReferenceType:
+    description: Types of definition references
+    permissible_values:
+      import_module:
+        description: Import entire module
+      import_symbol:
+        description: Import specific symbol
+      include_source:
+        description: Include source text
+      inherit:
+        description: Inheritance relationship
+      implement:
+        description: Implementation relationship
+
+  ControlFlowType:
+    description: Types of control flow
+    permissible_values:
+      call:
+        description: Synchronous call
+      async_call:
+        description: Asynchronous invocation
+      branch:
+        description: Conditional branch
+      jump:
+        description: Unconditional jump
+      return:
+        description: Return from callable
+      throw:
+        description: Exception throw
+      yield:
+        description: Yield/generator control
+
+  DataFlowType:
+    description: Types of data flow
+    permissible_values:
+      read:
+        description: Read data element
+      write:
+        description: Write data element
+      modify:
+        description: Modify data element
+      define:
+        description: Define data element
+      use:
+        description: Use data element
+
+  StorageClass:
+    description: Storage classes for data elements
+    permissible_values:
+      automatic:
+        description: Automatic/stack storage
+      static:
+        description: Static/global storage
+      heap:
+        description: Heap/dynamic storage
+      register:
+        description: Register storage hint
+      thread_local:
+        description: Thread-local storage
+      external:
+        description: External linkage
+
+  PersistenceType:
+    description: How a data structure is persisted
+    permissible_values:
+      transient:
+        description: Not persisted (in-memory only)
+      database_table:
+        description: Persisted as database table
+      database_view:
+        description: Represented as database view
+      file_record:
+        description: File record (VSAM, sequential, etc.)
+      serialized:
+        description: Serialized to file/stream
+      cached:
+        description: Cached in memory with backing store
+      distributed_cache:
+        description: Distributed cache (Redis, Memcached)
+      message_queue:
+        description: Persisted in message queue
+      object_store:
+        description: Object/blob storage
+      document_store:
+        description: Document database (MongoDB, etc.)
+      key_value_store:
+        description: Key-value store
+      graph_database:
+        description: Graph database node/edge
+
+  DatabaseType:
+    description: Types of database management systems
+    permissible_values:
+      oracle:
+        description: Oracle Database
+      postgresql:
+        description: PostgreSQL
+      sql_server:
+        description: Microsoft SQL Server
+      mysql:
+        description: MySQL/MariaDB
+      db2:
+        description: IBM DB2
+      teradata:
+        description: Teradata
+      sybase:
+        description: Sybase
+      informix:
+        description: IBM Informix
+      mongodb:
+        description: MongoDB (NoSQL)
+      cassandra:
+        description: Apache Cassandra
+
+  LinkageType:
+    description: Types of callable linkage
+    permissible_values:
+      static:
+        description: Statically linked
+      dynamic:
+        description: Dynamically linked
+      inline:
+        description: Inlined at compile time
+      late_binding:
+        description: Late/runtime binding
+
+  SecurityType:
+    description: Database security context types
+    permissible_values:
+      definer:
+        description: Execute with definer's privileges
+      invoker:
+        description: Execute with invoker's privileges
+
+  StructureLayout:
+    description: Memory layout strategies for structures
+    permissible_values:
+      sequential:
+        description: Sequential layout (default)
+      explicit:
+        description: Explicit field offsets
+      auto:
+        description: Compiler-optimized layout
+      packed:
+        description: Packed layout (no padding)
+
+  EqualitySemantics:
+    description: How equality is determined for value types
+    permissible_values:
+      by_value:
+        description: Compare all field values
+      by_reference:
+        description: Compare object references
+      by_identity:
+        description: Compare unique identifiers
+      custom:
+        description: Custom equality logic
+
+  MessageFormat:
+    description: Message serialization formats
+    permissible_values:
+      json:
+        description: JSON format
+      xml:
+        description: XML format
+      protobuf:
+        description: Protocol Buffers
+      avro:
+        description: Apache Avro
+      thrift:
+        description: Apache Thrift
+      msgpack:
+        description: MessagePack
+      custom_binary:
+        description: Custom binary format
 
 # =============================================================================
 # TYPE DEFINITIONS
@@ -646,6 +1264,7 @@ classes:
         range: Timestamp
       created_by:
         range: string
+        description: User or system that created this entity
       version:
         range: SemanticVersion
 
@@ -799,6 +1418,473 @@ classes:
         range: Log
         multivalued: true
         description: Logs generated by this component
+
+  # ===========================================================================
+  # CODE STRUCTURE CLASSES
+  # ===========================================================================
+
+  # ---------------------------------------------------------------------------
+  # Physical Structure (Files and Storage)
+  # ---------------------------------------------------------------------------
+  CodeContainer:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A physical container of source code - may be a file, member in a library,
+      or other storage unit depending on the platform.
+    attributes:
+      container_path:
+        range: string
+        required: true
+        description: Path or identifier for this container
+      container_type:
+        range: CodeContainerType
+        description: Type of container (file, library member, module, etc.)
+      format:
+        range: string
+        description: Format or language (COBOL, Java, Python, SQL, etc.)
+      size_bytes:
+        range: integer
+        description: Size in bytes
+      line_count:
+        range: integer
+        description: Number of lines
+      encoding:
+        range: string
+        description: Character encoding
+      checksum:
+        range: string
+        description: Content hash for version tracking
+    slots:
+      - contained_in_storage_location
+      - contains_encapsulation_units
+      - references_containers
+      - referenced_by_containers
+      - includes_definitions
+      - included_in_containers
+      - implements_component
+
+  StorageLocation:
+    is_a: NamedEntity
+    description: >-
+      A logical or physical location for storing code containers.
+      Maps to: directory (Unix/Windows), PDS/PDSE (mainframe),
+      package (Java), namespace (C#), module path (Python).
+    attributes:
+      location_path:
+        range: string
+        required: true
+        description: Path or identifier
+      location_type:
+        range: StorageLocationType
+        description: Type of storage location
+    slots:
+      - parent_location
+      - contains_locations
+      - contains_containers
+      - maps_to_module
+
+  # ---------------------------------------------------------------------------
+  # Logical Structure (Code Organization)
+  # ---------------------------------------------------------------------------
+  EncapsulationUnit:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      A logical boundary that groups related code and data.
+      Maps to: Class (OOP), Program (COBOL), Module (functional),
+      Package (Java), Namespace (C#), Record module (ML).
+    attributes:
+      encapsulation_type:
+        range: EncapsulationType
+        required: true
+        description: The paradigm-specific type of this encapsulation unit
+      visibility:
+        range: VisibilityType
+        description: Access control level
+      is_reusable:
+        range: boolean
+        description: Whether this unit can be reused/instantiated
+      is_abstract:
+        range: boolean
+        description: Whether this is an abstract unit (abstract class, interface, etc.)
+      is_final:
+        range: boolean
+        description: Whether this unit can be extended/inherited
+      qualified_name:
+        range: string
+        description: Fully qualified name including namespace/package
+      line_start:
+        range: integer
+        description: Starting line in container
+      line_end:
+        range: integer
+        description: Ending line in container
+      stereotype:
+        range: string
+        description: Additional stereotype or pattern (e.g., Service, Repository, DTO)
+    slots:
+      - defined_in_container
+      - contains_callable_units
+      - contains_data_structures
+      - contains_data_elements
+      - extends_units
+      - implements_contracts
+      - uses_definitions
+      - implements_component
+
+  CallableUnit:
+    is_a: NamedEntity
+    description: >-
+      A named, invocable unit of code that performs a specific task.
+      Maps to: Method (OOP), Function (procedural/functional),
+      Paragraph (COBOL), Procedure (SQL), Subroutine (Fortran),
+      Lambda (functional).
+    attributes:
+      callable_type:
+        range: CallableType
+        required: true
+        description: The paradigm-specific type of this callable unit
+      visibility:
+        range: VisibilityType
+        description: Access control level
+      callable_category:
+        range: CallableCategory
+        description: Category of callable (constructor, destructor, normal, etc.)
+      return_type:
+        range: string
+        description: Return type/output description
+      is_async:
+        range: boolean
+        description: Whether execution is asynchronous
+      is_pure:
+        range: boolean
+        description: Whether function is pure (no side effects)
+      is_static:
+        range: boolean
+        description: Whether this is a static/class-level callable
+      is_virtual:
+        range: boolean
+        description: Whether this can be overridden
+      is_override:
+        range: boolean
+        description: Whether this overrides a parent callable
+      is_recursive:
+        range: boolean
+        description: Whether this calls itself (directly or indirectly)
+      is_inline:
+        range: boolean
+        description: Whether this should be inlined (hint to compiler)
+      calling_convention:
+        range: string
+        description: Calling convention (cdecl, stdcall, fastcall, etc.)
+      line_start:
+        range: integer
+        description: Starting line
+      line_end:
+        range: integer
+        description: Ending line in container
+      entry_point_type:
+        range: EntryPointType
+        description: Type of entry point if applicable
+      documentation:
+        range: string
+        description: Documentation/comments
+      complexity_score:
+        range: integer
+        description: Cyclomatic complexity or similar metric
+    slots:
+      - contained_in_unit
+      - defined_in_container
+      - has_parameters
+      - invokes_callables
+      - invoked_by_callables
+      - accesses_data_elements
+      - modifies_data_elements
+      - implements_operation
+      - raises_exceptions
+      - handles_exceptions
+      - overrides_callable
+      - overridden_by_callables
+
+  DataStructure:
+    is_a: NamedEntity
+    description: >-
+      A composite data type grouping related data elements.
+      Maps to: Struct (C), Record (Pascal/COBOL), Class data (OOP),
+      Type (Haskell), Dictionary (Python), Hash (Ruby).
+    attributes:
+      structure_type:
+        range: DataStructureType
+        required: true
+        description: The paradigm-specific type of this data structure
+      structure_category:
+        range: DataStructureCategory
+        description: Category of structure (composite, collection, etc.)
+      visibility:
+        range: VisibilityType
+        description: Access control level
+      is_mutable:
+        range: boolean
+        description: Whether structure can be modified after creation
+      is_nested:
+        range: boolean
+        description: Whether this is nested within another structure
+      nesting_level:
+        range: integer
+        description: Nesting depth (for hierarchical structures like COBOL)
+      is_packed:
+        range: boolean
+        description: Whether structure uses packed storage
+      alignment:
+        range: integer
+        description: Memory alignment requirement in bytes
+      size_bytes:
+        range: integer
+        description: Total size in bytes (if known)
+      is_serializable:
+        range: boolean
+        description: Whether structure can be serialized
+      persistence_type:
+        range: PersistenceType
+        description: How this structure is persisted
+      line_start:
+        range: integer
+      line_end:
+        range: integer
+    slots:
+      - contained_in_unit
+      - defined_in_container
+      - contains_data_elements
+      - parent_structure
+      - child_structures
+      - maps_to_domain_entity
+      - maps_to_value_object
+      - persisted_in_collection
+
+  DataElement:
+    is_a: NamedEntity
+    description: >-
+      An individual data field or variable.
+      Maps to: Field (OOP), Variable (procedural), Column (database),
+      Data item (COBOL), Property (C#), Attribute (Python).
+    attributes:
+      data_type:
+        range: string
+        required: true
+        description: Data type (language-specific or abstract)
+      element_category:
+        range: DataElementCategory
+        description: Category of data element
+      visibility:
+        range: VisibilityType
+        description: Access control
+      is_constant:
+        range: boolean
+        description: Whether value is immutable
+      is_nullable:
+        range: boolean
+        description: Whether can be null/nil
+      default_value:
+        range: string
+        description: Default/initial value
+      size_specification:
+        range: string
+        description: Size/length specification (e.g., COBOL PIC, array dimensions)
+      storage_class:
+        range: StorageClass
+        description: Storage class (static, automatic, register, etc.)
+      classification:
+        range: DataClassificationType
+        description: Security/privacy classification
+      line_number:
+        range: integer
+        description: Line where defined
+    slots:
+      - contained_in_structure
+      - contained_in_unit
+      - parent_element
+      - child_elements
+      - maps_to_attribute
+
+  Parameter:
+    is_a: DataElement
+    description: >-
+      An input/output parameter for a callable unit.
+      Maps to: Parameter (most languages), Argument (some contexts),
+      USING clause (COBOL), Formal parameter (functional).
+    attributes:
+      direction:
+        range: ParameterDirection
+        description: Input, output, or both
+      position:
+        range: integer
+        description: Position in parameter list
+      passing_mechanism:
+        range: PassingMechanism
+        description: How parameter is passed (by value, reference, etc.)
+
+  # ---------------------------------------------------------------------------
+  # Code Semantics
+  # ---------------------------------------------------------------------------
+  CodeBlock:
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of statements within a callable unit.
+      Maps to: Block (C/Java), Section (COBOL), Scope (general),
+      Let binding (functional).
+    attributes:
+      block_type:
+        range: CodeBlockType
+        description: Type of block
+      line_start:
+        range: integer
+      line_end:
+        range: integer
+    slots:
+      - contained_in_callable
+      - contains_statements
+      - parent_block
+      - child_blocks
+
+  Statement:
+    is_a: NamedEntity
+    description: >-
+      A single executable instruction or declaration.
+      Maps to: Statement (imperative), Expression (functional),
+      Sentence (COBOL), Query (SQL).
+    attributes:
+      statement_category:
+        range: StatementCategory
+        description: Category of statement
+      line_number:
+        range: integer
+        description: Line number
+      is_conditional:
+        range: boolean
+        description: Whether statement is conditional
+      text:
+        range: string
+        description: Source text of statement
+    slots:
+      - contained_in_block
+      - operates_on_elements
+      - invokes_callable
+      - transfers_control_to
+
+  DefinitionReference:
+    is_a: NamedEntity
+    description: >-
+      A reference from one code container to shared definitions.
+      Maps to: Import (Python/Java), Include (C/C++), COPY (COBOL),
+      Using (C#), Require (Ruby), Use (Rust).
+    attributes:
+      reference_type:
+        range: ReferenceType
+        description: Type of reference
+      reference_path:
+        range: string
+        description: Path or identifier of referenced definition
+      alias:
+        range: string
+        description: Alias or local name
+      is_wildcard:
+        range: boolean
+        description: Whether this imports all symbols
+      scope:
+        range: string
+        description: Scope of import (global, local, etc.)
+    slots:
+      - referencing_container
+      - referenced_container
+      - imports_symbols
+
+  ControlFlow:
+    is_a: NamedEntity
+    description: >-
+      Represents control flow between code elements.
+      Maps to: Call graph edges, PERFORM (COBOL), GOTO,
+      Function calls, Method invocations.
+    attributes:
+      flow_type:
+        range: ControlFlowType
+        description: Type of control transfer
+      is_conditional:
+        range: boolean
+        description: Whether flow is conditional
+      condition:
+        range: string
+        description: Condition expression if applicable
+    slots:
+      - source_callable
+      - target_callable
+      - source_statement
+      - target_statement
+
+  DataFlow:
+    is_a: NamedEntity
+    description: >-
+      Represents data flow between code elements.
+    attributes:
+      flow_type:
+        range: DataFlowType
+        description: Type of data flow (read, write, modify)
+    slots:
+      - source_element
+      - target_element
+      - through_callable
+      - through_statement
+
+  # ---------------------------------------------------------------------------
+  # Platform-Specific Extensions
+  # ---------------------------------------------------------------------------
+  PlatformExtension:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      Base class for platform-specific extensions that don't map
+      cleanly to universal concepts.
+    attributes:
+      platform:
+        range: string
+        description: Platform this extension applies to
+
+  ExecutionEnvironmentDirective:
+    is_a: PlatformExtension
+    description: >-
+      Platform-specific execution directives.
+      Maps to: JCL (mainframe), Docker Compose, Kubernetes manifests,
+      Shell scripts, Makefiles, Ant/Maven/Gradle build files.
+    attributes:
+      directive_type:
+        range: string
+        description: Type of directive
+      configuration:
+        range: string
+        description: Configuration content
+    slots:
+      - orchestrates_units
+      - defines_execution_order
+      - allocates_resources
+
+  Annotation:
+    is_a: NamedEntity
+    description: >-
+      Metadata attached to code elements.
+      Maps to: Annotations (Java), Decorators (Python),
+      Attributes (C#), Pragmas (C/C++), Compiler directives.
+    attributes:
+      annotation_syntax:
+        range: string
+        description: Annotation syntax/name
+      parameters:
+        range: string
+        multivalued: true
+        description: Annotation parameters
+    slots:
+      - annotates_element
+      - affects_behavior_of
 
   # ---------------------------------------------------------------------------
   # Capability
@@ -3806,3 +4892,545 @@ slots:
     range: System
     inverse: exposes_interfaces
     description: System that exposes this interface
+
+  # ===========================================================================
+  # CODE STRUCTURE RELATIONSHIP SLOTS
+  # ===========================================================================
+
+  # Container and Storage relationships
+  contained_in_storage_location:
+    domain: CodeContainer
+    range: StorageLocation
+    inverse: contains_containers
+    description: Storage location containing this code container
+
+  contains_containers:
+    domain: StorageLocation
+    range: CodeContainer
+    multivalued: true
+    inverse: contained_in_storage_location
+    description: Code containers in this storage location
+
+  parent_location:
+    domain: StorageLocation
+    range: StorageLocation
+    inverse: contains_locations
+    description: Parent storage location
+
+  contains_locations:
+    domain: StorageLocation
+    range: StorageLocation
+    multivalued: true
+    inverse: parent_location
+    description: Child storage locations
+
+  maps_to_module:
+    domain: StorageLocation
+    range: Module
+    inverse: mapped_from_directory
+    description: Module corresponding to this storage location
+
+  mapped_from_directory:
+    domain: Module
+    range: StorageLocation
+    inverse: maps_to_module
+    description: Storage location for this module
+
+  # EncapsulationUnit relationships
+  defined_in_container:
+    range: CodeContainer
+    inverse: contains_code_elements
+    description: Code container where this element is defined
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+
+  contains_code_elements:
+    domain: CodeContainer
+    multivalued: true
+    inverse: defined_in_container
+    description: Code elements defined in this container
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+
+  contains_encapsulation_units:
+    domain: CodeContainer
+    range: EncapsulationUnit
+    multivalued: true
+    description: Encapsulation units in this container
+
+  contains_callable_units:
+    domain: EncapsulationUnit
+    range: CallableUnit
+    multivalued: true
+    inverse: contained_in_unit
+    description: Callable units in this encapsulation unit
+
+  contained_in_unit:
+    range: EncapsulationUnit
+    inverse: contains_callable_units
+    description: Encapsulation unit containing this element
+    domain_of:
+      - CallableUnit
+      - DataStructure
+      - DataElement
+
+  contains_data_structures:
+    domain: EncapsulationUnit
+    range: DataStructure
+    multivalued: true
+    description: Data structures in this encapsulation unit
+
+  contains_data_elements:
+    range: DataElement
+    multivalued: true
+    description: Data elements in this unit/structure
+    domain_of:
+      - EncapsulationUnit
+      - DataStructure
+
+  extends_units:
+    domain: EncapsulationUnit
+    range: EncapsulationUnit
+    multivalued: true
+    inverse: extended_by_units
+    description: Units extended/inherited by this unit
+
+  extended_by_units:
+    domain: EncapsulationUnit
+    range: EncapsulationUnit
+    multivalued: true
+    inverse: extends_units
+    description: Units extending this unit
+
+  implements_contracts:
+    domain: EncapsulationUnit
+    range: Contract
+    multivalued: true
+    inverse: implemented_by_units
+    description: Contracts implemented by this unit
+
+  implemented_by_units:
+    domain: Contract
+    range: EncapsulationUnit
+    multivalued: true
+    inverse: implements_contracts
+    description: Units implementing this contract
+
+  uses_definitions:
+    domain: EncapsulationUnit
+    range: DefinitionReference
+    multivalued: true
+    description: Definition references used by this unit
+
+  implements_component:
+    range: Component
+    inverse: implemented_by_code
+    description: Architectural component implemented by this code element
+    domain_of:
+      - CodeContainer
+      - EncapsulationUnit
+
+  implemented_by_code:
+    domain: Component
+    multivalued: true
+    inverse: implements_component
+    description: Code elements implementing this component
+    any_of:
+      - range: CodeContainer
+      - range: EncapsulationUnit
+
+  # CallableUnit relationships
+  has_parameters:
+    domain: CallableUnit
+    range: Parameter
+    multivalued: true
+    inverse: parameter_of
+    description: Parameters of this callable
+
+  parameter_of:
+    domain: Parameter
+    range: CallableUnit
+    inverse: has_parameters
+    description: Callable this parameter belongs to
+
+  invokes_callables:
+    domain: CallableUnit
+    range: CallableUnit
+    multivalued: true
+    inverse: invoked_by_callables
+    description: Callables invoked by this callable
+
+  invoked_by_callables:
+    domain: CallableUnit
+    range: CallableUnit
+    multivalued: true
+    inverse: invokes_callables
+    description: Callables that invoke this callable
+
+  accesses_data_elements:
+    domain: CallableUnit
+    range: DataElement
+    multivalued: true
+    description: Data elements accessed (read) by this callable
+
+  modifies_data_elements:
+    domain: CallableUnit
+    range: DataElement
+    multivalued: true
+    description: Data elements modified (written) by this callable
+
+  raises_exceptions:
+    domain: CallableUnit
+    range: string
+    multivalued: true
+    description: Exceptions that may be raised
+
+  handles_exceptions:
+    domain: CallableUnit
+    range: string
+    multivalued: true
+    description: Exceptions handled by this callable
+
+  overrides_callable:
+    domain: CallableUnit
+    range: CallableUnit
+    inverse: overridden_by_callables
+    description: Callable in parent that this overrides
+
+  overridden_by_callables:
+    domain: CallableUnit
+    range: CallableUnit
+    multivalued: true
+    inverse: overrides_callable
+    description: Callables that override this callable
+
+  implements_operation:
+    domain: CallableUnit
+    range: Operation
+    inverse: implemented_by_callables
+    description: Architectural operation implemented by this callable
+
+  implemented_by_callables:
+    domain: Operation
+    range: CallableUnit
+    multivalued: true
+    inverse: implements_operation
+    description: Callables implementing this operation
+
+  # DataStructure relationships
+  contained_in_structure:
+    domain: DataElement
+    range: DataStructure
+    inverse: structure_contains_elements
+    description: Data structure containing this element
+
+  structure_contains_elements:
+    domain: DataStructure
+    range: DataElement
+    multivalued: true
+    inverse: contained_in_structure
+    description: Data elements in this structure
+
+  parent_structure:
+    domain: DataStructure
+    range: DataStructure
+    inverse: child_structures
+    description: Parent structure (for nested structures)
+
+  child_structures:
+    domain: DataStructure
+    range: DataStructure
+    multivalued: true
+    inverse: parent_structure
+    description: Child/nested structures
+
+  maps_to_domain_entity:
+    domain: DataStructure
+    range: DomainEntity
+    inverse: mapped_from_structure
+    description: Domain entity this structure maps to
+
+  mapped_from_structure:
+    domain: DomainEntity
+    range: DataStructure
+    multivalued: true
+    inverse: maps_to_domain_entity
+    description: Data structures mapping to this entity
+
+  maps_to_value_object:
+    domain: DataStructure
+    range: ValueObject
+    inverse: mapped_from_structure_vo
+    description: Value object this structure maps to
+
+  mapped_from_structure_vo:
+    domain: ValueObject
+    range: DataStructure
+    multivalued: true
+    inverse: maps_to_value_object
+    description: Data structures mapping to this value object
+
+  persisted_in_collection:
+    domain: DataStructure
+    range: Collection
+    inverse: persists_structures
+    description: Collection where this structure is persisted
+
+  persists_structures:
+    domain: Collection
+    range: DataStructure
+    multivalued: true
+    inverse: persisted_in_collection
+    description: Data structures persisted in this collection
+
+  # DataElement relationships
+  parent_element:
+    domain: DataElement
+    range: DataElement
+    inverse: child_elements
+    description: Parent element (for hierarchical data like COBOL)
+
+  child_elements:
+    domain: DataElement
+    range: DataElement
+    multivalued: true
+    inverse: parent_element
+    description: Child elements
+
+  maps_to_attribute:
+    domain: DataElement
+    range: Attribute
+    inverse: mapped_from_element
+    description: Domain attribute this element maps to
+
+  mapped_from_element:
+    domain: Attribute
+    range: DataElement
+    multivalued: true
+    inverse: maps_to_attribute
+    description: Data elements mapping to this attribute
+
+  # CodeBlock and Statement relationships
+  contained_in_callable:
+    domain: CodeBlock
+    range: CallableUnit
+    inverse: contains_blocks
+    description: Callable containing this block
+
+  contains_blocks:
+    domain: CallableUnit
+    range: CodeBlock
+    multivalued: true
+    inverse: contained_in_callable
+    description: Code blocks in this callable
+
+  contains_statements:
+    domain: CodeBlock
+    range: Statement
+    multivalued: true
+    inverse: contained_in_block
+    description: Statements in this block
+
+  contained_in_block:
+    domain: Statement
+    range: CodeBlock
+    inverse: contains_statements
+    description: Block containing this statement
+
+  parent_block:
+    domain: CodeBlock
+    range: CodeBlock
+    inverse: child_blocks
+    description: Parent block
+
+  child_blocks:
+    domain: CodeBlock
+    range: CodeBlock
+    multivalued: true
+    inverse: parent_block
+    description: Child blocks
+
+  operates_on_elements:
+    domain: Statement
+    range: DataElement
+    multivalued: true
+    description: Data elements operated on by this statement
+
+  invokes_callable:
+    domain: Statement
+    range: CallableUnit
+    description: Callable invoked by this statement
+
+  transfers_control_to:
+    domain: Statement
+    range: Statement
+    description: Statement control transfers to
+
+  # DefinitionReference relationships
+  references_containers:
+    domain: CodeContainer
+    range: CodeContainer
+    multivalued: true
+    inverse: referenced_by_containers
+    description: Containers referenced by this container
+
+  referenced_by_containers:
+    domain: CodeContainer
+    range: CodeContainer
+    multivalued: true
+    inverse: references_containers
+    description: Containers that reference this container
+
+  includes_definitions:
+    domain: CodeContainer
+    range: CodeContainer
+    multivalued: true
+    inverse: included_in_containers
+    description: Definitions included by this container
+
+  included_in_containers:
+    domain: CodeContainer
+    range: CodeContainer
+    multivalued: true
+    inverse: includes_definitions
+    description: Containers that include this definition
+
+  referencing_container:
+    domain: DefinitionReference
+    range: CodeContainer
+    inverse: has_references
+    description: Container making this reference
+
+  has_references:
+    domain: CodeContainer
+    range: DefinitionReference
+    multivalued: true
+    inverse: referencing_container
+    description: Definition references from this container
+
+  referenced_container:
+    domain: DefinitionReference
+    range: CodeContainer
+    inverse: referenced_via
+    description: Container being referenced
+
+  referenced_via:
+    domain: CodeContainer
+    range: DefinitionReference
+    multivalued: true
+    inverse: referenced_container
+    description: References to this container
+
+  imports_symbols:
+    domain: DefinitionReference
+    multivalued: true
+    inverse: imported_via
+    description: Specific symbols being imported
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+
+  imported_via:
+    range: DefinitionReference
+    multivalued: true
+    inverse: imports_symbols
+    description: References importing this symbol
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+
+  # ControlFlow and DataFlow relationships
+  source_callable:
+    domain: ControlFlow
+    range: CallableUnit
+    description: Source callable in control flow
+
+  target_callable:
+    domain: ControlFlow
+    range: CallableUnit
+    description: Target callable in control flow
+
+  source_statement:
+    domain: ControlFlow
+    range: Statement
+    description: Source statement in control flow
+
+  target_statement:
+    domain: ControlFlow
+    range: Statement
+    description: Target statement in control flow
+
+  source_element:
+    domain: DataFlow
+    range: DataElement
+    description: Source data element
+
+  target_element:
+    domain: DataFlow
+    range: DataElement
+    description: Target data element
+
+  through_callable:
+    domain: DataFlow
+    range: CallableUnit
+    description: Callable through which data flows
+
+  through_statement:
+    domain: DataFlow
+    range: Statement
+    description: Statement through which data flows
+
+  # ExecutionEnvironmentDirective relationships
+  orchestrates_units:
+    domain: ExecutionEnvironmentDirective
+    range: EncapsulationUnit
+    multivalued: true
+    description: Units orchestrated by this directive
+
+  defines_execution_order:
+    domain: ExecutionEnvironmentDirective
+    range: CallableUnit
+    multivalued: true
+    description: Execution order defined by this directive
+
+  allocates_resources:
+    domain: ExecutionEnvironmentDirective
+    range: Infrastructure
+    multivalued: true
+    description: Resources allocated by this directive
+
+  # Annotation relationships
+  annotates_element:
+    domain: Annotation
+    inverse: annotated_by
+    description: Code element this annotation applies to
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+      - range: DataElement
+
+  annotated_by:
+    range: Annotation
+    multivalued: true
+    inverse: annotates_element
+    description: Annotations applied to this element
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+      - DataElement
+
+  affects_behavior_of:
+    domain: Annotation
+    multivalued: true
+    description: Elements whose behavior is affected by this annotation
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit

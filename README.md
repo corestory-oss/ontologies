@@ -32,7 +32,7 @@ SAO provides a structured vocabulary and semantic model for describing:
 
 ## Documentation Structure
 
-The ontology is organized into 10 major sections:
+The ontology is organized into 12 major sections:
 
 ### [01. Enumerations](docs/01-enumerations.md)
 Defines all enumeration types used throughout the ontology, including:
@@ -131,6 +131,17 @@ Regulatory compliance and risk:
 - **Control**: Security and compliance measures
 - **Evidence**: Proof of control effectiveness
 - **RiskAssessment**: Threat and vulnerability analysis
+
+### [12. Code Structure](docs/12-code-structure.md)
+Implementation-level code modeling with paradigm-agnostic design:
+- **CodeContainer**: Physical code storage (files, library members, scripts)
+- **StorageLocation**: Directory structures and libraries
+- **EncapsulationUnit**: Logical code boundaries (classes, programs, modules) - supports OOP, procedural, functional, and mainframe paradigms
+- **CallableUnit**: Invocable code (methods, functions, paragraphs, procedures)
+- **DataStructure**: Data organization (classes, records, structs, group items)
+- **DataElement**: Fields, properties, and variables
+- **ControlFlow** and **DataFlow**: Code execution and data movement
+- **Maps to Architecture**: Links code to Components, Operations, and Domain Entities
 
 ## Core Design Principles
 
@@ -342,9 +353,10 @@ Integration:
 
 ### Version 1.0.0 (Current)
 - Initial comprehensive ontology release
-- All 10 major sections defined
+- All 12 major sections defined
 - Support for common compliance frameworks
 - Cloud-native and microservices patterns
+- **New**: Paradigm-agnostic code structure modeling supporting modern (Java, Python, C#) and legacy (COBOL, mainframe) systems
 
 ### Future Roadmap
 - **v1.1**: Enhanced event sourcing patterns
@@ -418,6 +430,6 @@ Copyright (c) 2025 CoreStory, Inc. All rights reserved.
 
 ---
 
-**Last Updated**: 2025-12-30
+**Last Updated**: 2026-01-06
 **Schema Version**: 1.0.0
 **Documentation Version**: 1.0.0

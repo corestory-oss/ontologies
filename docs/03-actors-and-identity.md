@@ -2,6 +2,8 @@
 
 This section defines entities and actors that interact with the system, along with their identity and organizational structures.
 
+> **v2.0 Note**: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships are now defined directly on classes rather than referencing global `slots:` for single-domain relationships.
+
 ## Overview
 
 The Actors and Identity section provides a comprehensive model for representing who or what can perform actions within the system, how they are authenticated, and how they are organized within tenants and organizational hierarchies.
@@ -20,6 +22,13 @@ The Actors and Identity section provides a comprehensive model for representing 
 
 **Relationships**:
 - **has_identities**: One or more `Identity` entities associated with this actor
+
+**Back-Reference Attributes** *(v2.0)*:
+- **performs_actions**: `Action` entities performed by this actor
+- **audit_actions_performed**: `AuditEntry` entities recording actions by this actor
+- **actor_subscriptions**: `Subscription` entities owned by this actor
+- **owns_controls**: `Control` entities owned by this actor
+- **verifies_evidence**: `Evidence` entities verified by this actor
 
 **Specialized Actor Types**:
 
@@ -74,7 +83,7 @@ A system or automated actor.
 - **credentials**: List of associated credentials
 
 **Relationships**:
-- **represents_actor**: The `Actor` this identity represents
+- **represents_actor**: The `Actor` this identity represents *(v2.0: this is now also a back-reference attribute on Identity, inverse of `has_identities`)*
 - **has_roles**: `Role` entities assigned to this identity
 - **belongs_to_tenant**: The `Tenant` this identity belongs to
 - **member_of_organizations**: `Organization` entities this identity is a member of

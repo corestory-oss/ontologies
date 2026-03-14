@@ -2,6 +2,8 @@
 
 This section defines environments, deployments, deployment units, configuration, infrastructure, and releases.
 
+> **v2.0 Note**: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as `Environment`, `Configuration`, `Infrastructure`, `Release`, and `DeploymentUnit` gain back-reference attributes that make navigating the ontology more explicit.
+
 ## Overview
 
 The Deployment and Operations section models how software is packaged, configured, deployed, and run across different environments.
@@ -19,6 +21,7 @@ The Deployment and Operations section models how software is packaged, configure
 - **hosts_deployments**: `Deployment` instances running in this environment
 - **env_configured_by**: `Configuration` entities for this environment
 - **uses_infrastructure**: `Infrastructure` resources used
+- **deployed_by_pipelines**: `Pipeline` entities that deploy to this environment (v2.0 back-reference)
 
 **Environment Types**:
 - **DEVELOPMENT**: For active software development
@@ -67,6 +70,9 @@ The Deployment and Operations section models how software is packaged, configure
 - **artifact_uri**: Location of the deployment artifact
 - **checksum**: Artifact integrity checksum
 
+**Back-Reference Attributes** (v2.0):
+- **deployed_in_deployments**: `Deployment` entities that deploy this unit
+
 **Deployment Unit Types**:
 - **CONTAINER**: Docker/OCI container image
 - **VM**: Virtual machine image (AMI, qcow2)
@@ -100,6 +106,11 @@ The Deployment and Operations section models how software is packaged, configure
 - **FEATURE_FLAG**: Feature toggle configuration
 - **REMOTE_CONFIG**: Configuration from remote service (Spring Cloud Config, AWS AppConfig)
 
+**Back-Reference Attributes** (v2.0):
+- **controls_features**: `FeatureFlag` entities controlled by this configuration
+- **configures_environments**: `Environment` entities configured
+- **configures_deployments**: `Deployment` entities configured
+
 **Configuration Best Practices**:
 1. **Externalize**: Keep config separate from code
 2. **Environment-Specific**: Different values per environment
@@ -122,6 +133,7 @@ The Deployment and Operations section models how software is packaged, configure
 **Relationships**:
 - **used_by_environments**: `Environment` entities using this infrastructure
 - **hosts_datastores**: `DataStore` entities hosted
+- **infrastructure_provisioned_by_iac**: `IaCDefinition` entities provisioning this infrastructure (v2.0 back-reference)
 
 **Infrastructure Types**:
 - **COMPUTE**: VMs, containers, serverless compute
@@ -150,6 +162,9 @@ The Deployment and Operations section models how software is packaged, configure
 - **version**: Semantic version number
 - **changelog**: Release notes describing changes
 - **artifacts**: List of `DeploymentUnit` entities
+
+**Back-Reference Attributes** (v2.0):
+- **deployed_in_deployments_as_release**: `Deployment` entities that deploy this release
 
 **Release Process**:
 1. **Build**: Compile and package code

@@ -2,6 +2,8 @@
 
 This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles.
 
+> **v2.0 Note — Inlining Change**: In SAO v2.0, many previously string-based cross-references have been replaced with direct object references (inlined relationships). Classes in this section now carry explicit back-reference attributes that make the bidirectional links between ontology concepts navigable from either side.
+
 ## Overview
 
 The Domain Modeling section provides a comprehensive framework for modeling business domains using Domain-Driven Design (DDD) principles. It supports defining domain entities, aggregates, value objects, and their lifecycle management.
@@ -60,6 +62,8 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 - **in_state**: Current `State` in the lifecycle
 - **governed_by_rules**: `Rule` entities governing this entity
 - **is_root_of_aggregate**: Aggregate for which this is the root entity
+- **outgoing_relationships** *(v2.0)*: `DomainRelationship` entities where this entity is the source
+- **incoming_relationships** *(v2.0)*: `DomainRelationship` entities where this entity is the target
 
 **Entity vs Value Object**:
 - **Entity**: Has identity, mutable, compared by ID
@@ -73,6 +77,57 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 
 ---
 
+### DomainRelationship *(v2.0)*
+
+**Definition**: A named, typed relationship between two domain entities (e.g., "Order has many OrderLines", "User belongs to Organization"). Wires the previously orphaned `Cardinality` enum into the domain model.
+
+**Purpose**: Explicitly captures how domain entities relate to each other, including cardinality, navigability, and composition semantics. This is a major addition in SAO v2.0 (Section 26).
+
+**Key Attributes**:
+- Inherits from `NamedEntity`
+- **cardinality** (range: `Cardinality`, required): The multiplicity of the relationship (e.g., ONE_TO_ONE, ONE_TO_MANY, MANY_TO_MANY) — wires the previously orphaned `Cardinality` enum
+- **is_navigable** (boolean): Whether the relationship is traversable from source to target
+- **is_bidirectional** (boolean): Whether the relationship can be navigated in both directions
+- **is_composition** (boolean): Whether this represents UML composition (strong ownership) vs aggregation (weak ownership)
+- **foreign_key_field** (string): The implementing field in the data layer
+- **join_entity** (string): For many-to-many relationships, the join table or entity
+
+**Relationships**:
+- **source_entity**: The `DomainEntity` that owns or originates the relationship (inverse: `outgoing_relationships` on DomainEntity)
+- **target_entity**: The `DomainEntity` that is referenced by the relationship (inverse: `incoming_relationships` on DomainEntity)
+
+**Example Domain Relationships**:
+```
+DomainRelationship: OrderHasLineItems
+  source_entity: Order
+  target_entity: OrderLineItem
+  cardinality: ONE_TO_MANY
+  is_composition: true
+  is_navigable: true
+  is_bidirectional: true
+  foreign_key_field: order_id
+
+DomainRelationship: UserBelongsToOrganization
+  source_entity: User
+  target_entity: Organization
+  cardinality: MANY_TO_ONE
+  is_composition: false
+  is_navigable: true
+  is_bidirectional: true
+  foreign_key_field: organization_id
+
+DomainRelationship: StudentEnrolledInCourses
+  source_entity: Student
+  target_entity: Course
+  cardinality: MANY_TO_MANY
+  is_composition: false
+  is_navigable: true
+  is_bidirectional: true
+  join_entity: Enrollment
+```
+
+---
+
 ### ValueObject
 
 **Definition**: An immutable domain object defined by its attributes.
@@ -82,6 +137,7 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 **Key Attributes**:
 - Inherits from `NamedEntity`
 - **attributes**: List of `Attribute` entities defining the value object
+- **mapped_from_structure_vo** *(v2.0)*: Back-reference to the `DataStructure` that maps to this value object
 
 **Value Object Characteristics**:
 1. **Immutable**: Cannot be modified after creation
@@ -116,6 +172,7 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 
 **Relationships**:
 - **validated_by_rules**: `Rule` entities that validate this attribute
+- **mapped_from_element** *(v2.0)*: Back-reference to the `DataElement` that maps to this attribute
 
 **Attribute Categories**:
 - **REQUIRED**: Must have a value
@@ -207,6 +264,7 @@ Attributes:
 - **current_for_entities**: `DomainEntity` instances currently in this state
 - **source_of_transitions**: `Transition` entities starting from this state
 - **target_of_transitions**: `Transition` entities ending in this state
+- **initial_for_lifecycle** *(v2.0)*: Back-reference to the `Lifecycle` for which this is the initial state
 
 **Example States**:
 - **Order States**: Draft, Submitted, Confirmed, Shipped, Delivered, Cancelled

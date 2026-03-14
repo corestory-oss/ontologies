@@ -2,6 +2,8 @@
 
 This section defines the authorization model including roles, permissions, policies, scopes, and constraints.
 
+> **v2.0 Note**: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships and back-references are now defined directly on classes rather than referencing global `slots:` for single-domain relationships.
+
 ## Overview
 
 The Authorization and Policy section provides a flexible, fine-grained access control model that supports multiple authorization paradigms including RBAC (Role-Based Access Control), ABAC (Attribute-Based Access Control), REBAC (Relationship-Based Access Control), and PBAC (Policy-Based Access Control).
@@ -22,8 +24,8 @@ The Authorization and Policy section provides a flexible, fine-grained access co
 - **grants_permissions**: `Permission` entities included in this role
 - **assigned_to_identities**: `Identity` entities that have this role
 - **inherits_from_role**: Parent role for role hierarchy
-- **inherited_by_roles**: Child roles that inherit from this role
-- **can_access_features**: `Feature` entities accessible to this role
+- **inherited_by_roles**: Child roles that inherit from this role *(v2.0 back-reference)*
+- **can_access_features**: `Feature` entities accessible to this role *(v2.0 back-reference)*
 
 **Role Patterns**:
 - **Flat Roles**: Simple role assignments without hierarchy
@@ -62,8 +64,8 @@ The Authorization and Policy section provides a flexible, fine-grained access co
 - **granted_by_roles**: `Role` entities that grant this permission
 - **applies_to_resource_types**: `ResourceType` entities this permission governs
 - **limited_by_scope**: `Scope` entity defining boundaries
-- **required_by_capabilities**: `Capability` entities requiring this permission
-- **evaluated_by_policies**: `Policy` entities evaluating this permission
+- **required_by_capabilities**: `Capability` entities requiring this permission *(v2.0 back-reference)*
+- **evaluated_by_policies**: `Policy` entities evaluating this permission *(v2.0 back-reference)*
 
 **Permission Naming Conventions**:
 - `<action>:<resource_type>` - e.g., `read:user`, `write:order`
@@ -102,7 +104,8 @@ The Authorization and Policy section provides a flexible, fine-grained access co
 
 **Relationships**:
 - **evaluates_permissions**: `Permission` entities evaluated by this policy
-- **enforced_by_system**: `System` that enforces this policy
+- **enforced_by_system**: `System` that enforces this policy *(v2.0 inlined attribute)*
+- **guards_routes**: `Route` entities guarded by this policy *(v2.0 inlined attribute)*
 
 **Policy Types Explained**:
 
@@ -159,7 +162,7 @@ Access decisions based on centrally defined policies.
 - **resource_pattern**: Pattern matching resources in scope (e.g., regex, glob)
 
 **Relationships**:
-- **limits_permissions**: `Permission` entities limited by this scope
+- **limits_permissions**: `Permission` entities limited by this scope *(v2.0 back-reference)*
 
 **Scope Hierarchies**:
 ```

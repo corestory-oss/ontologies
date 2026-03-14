@@ -2,6 +2,8 @@
 
 The Code Structure layer provides a paradigm-agnostic framework for modeling software applications at the implementation level. This layer bridges the gap between architectural concepts (Components, Operations) and the actual source code that implements them, supporting both modern and legacy systems.
 
+> **v2.0 Note:** In SAO v2.0, all single-use relationship slots have been inlined as class attributes on their owning classes. Only approximately 20 multi-domain slots remain as global relationships: `defined_in_container`, `contained_in_unit`, `contains_data_elements`, `implements_component`, `implemented_by_code`, `annotates_element`, `annotated_by`, `affects_behavior_of`, `imports_symbols`, and `imported_via`.
+
 ## Overview
 
 The code structure model consists of three main levels:
@@ -57,11 +59,15 @@ Represents the physical storage of source code - files, library members, or othe
 **Key Attributes:**
 - `container_path` - Path or identifier for the container
 - `container_type` - Type of container (source_file, library_member, copybook, script, etc.)
-- `format` - Language or format (COBOL, Java, Python, SQL, etc.)
+- `format` - ~~Language or format (COBOL, Java, Python, SQL, etc.)~~ **Deprecated in v2.0** — use `written_in_language` (range: ProgrammingLanguage) instead
+- `written_in_language` - **(v2.0)** ProgrammingLanguage relationship replacing `format`
 - `size_bytes` - Size in bytes
 - `line_count` - Number of lines
 - `encoding` - Character encoding
 - `checksum` - Content hash for version tracking
+- `container_file_definitions` - **(v2.0)** FileDefinition[] associated with this container
+- `container_screen_definitions` - **(v2.0)** ScreenDefinition[] associated with this container
+- `container_preprocessor_directives` - **(v2.0)** PreprocessorDirective[] associated with this container
 
 **Container Types:**
 - `source_file` - Standard source code file
@@ -72,6 +78,11 @@ Represents the physical storage of source code - files, library members, or othe
 - `schema_definition` - Database or API schema
 - `notebook_cell` - Jupyter notebook cell
 - `inline_code` - Embedded code (JavaScript in HTML, SQL in application)
+- `jcl_member` - **(v2.0)** JCL member
+- `rpg_source` - **(v2.0)** RPG source member
+- `pli_source` - **(v2.0)** PL/I source member
+- `assembler_source` - **(v2.0)** Assembler source member
+- `cl_source` - **(v2.0)** CL (Control Language) source member
 
 **Example:**
 ```yaml
@@ -133,6 +144,13 @@ A logical boundary that groups related code and data. This is the cornerstone of
 - `is_abstract` - Whether this is abstract/incomplete
 - `is_final` - Whether this can be extended
 - `is_static` - Whether this is static/stateless
+- `error_model_for_module` - **(v2.0)** ErrorModel associated with this unit
+- `screen_used_by_programs` - **(v2.0)** ScreenDefinition[] used by this unit
+- `outgoing_ipc_connections` - **(v2.0)** IPCConnection[] originating from this unit
+- `incoming_ipc_connections` - **(v2.0)** IPCConnection[] targeting this unit
+- `affected_by_directives` - **(v2.0)** PreprocessorDirective[] affecting this unit
+- `memory_model_for_module` - **(v2.0)** MemoryModel associated with this unit
+- `executed_by_job_steps` - **(v2.0)** JobStep[] that execute this unit
 
 **EncapsulationType Values** (31 total):
 
@@ -160,6 +178,11 @@ A logical boundary that groups related code and data. This is the cornerstone of
 - `batch_program` - Batch processing program
 - `online_program` - Online transaction program (CICS, IMS)
 - `copybook` - COBOL copybook
+- `rpg_module` - **(v2.0)** RPG module
+- `rpg_service_program` - **(v2.0)** RPG service program
+- `pli_procedure` - **(v2.0)** PL/I external procedure
+- `pli_package` - **(v2.0)** PL/I package
+- `assembler_csect` - **(v2.0)** Assembler control section (CSECT)
 
 **Database:**
 - `stored_procedure` - Database stored procedure package
@@ -223,6 +246,10 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `is_virtual` - Whether this is virtual/overridable
 - `complexity_score` - Cyclomatic complexity or similar metric
 - `entry_point_type` - If this is an entry point (main, constructor, handler, etc.)
+- `return_type_expression` - **(v2.0)** TypeExpression for the return type
+- `uses_file_definitions` - **(v2.0)** FileDefinition[] used by this callable
+- `callable_file_operations` - **(v2.0)** FileOperation[] performed by this callable
+- `callable_affected_by_directives` - **(v2.0)** PreprocessorDirective[] affecting this callable
 
 **CallableType Values** (48 total):
 
@@ -245,6 +272,10 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `subroutine` - Subroutine
 - `paragraph` - COBOL paragraph
 - `section` - COBOL section
+- `rpg_subprocedure` - **(v2.0)** RPG subprocedure
+- `pli_entry` - **(v2.0)** PL/I entry point
+- `assembler_entry` - **(v2.0)** Assembler entry point
+- `rpg_subroutine` - **(v2.0)** RPG subroutine
 
 **Functional:**
 - `lambda` - Anonymous lambda function
@@ -297,8 +328,10 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `invokes_callables` - Other callables invoked by this one
 - `accesses_data_elements` - Data elements accessed (read)
 - `modifies_data_elements` - Data elements modified (written)
-- `raises_exceptions` - Exceptions that may be raised
-- `handles_exceptions` - Exceptions handled
+- `raises_exceptions` - ~~Exceptions that may be raised~~ **Deprecated in v2.0** — use `raises_exception_types` (ExceptionType[]) instead
+- `handles_exceptions` - ~~Exceptions handled~~ **Deprecated in v2.0** — use `handles_exception_types` (ExceptionType[]) instead
+- `raises_exception_types` - **(v2.0)** ExceptionType[] that may be raised
+- `handles_exception_types` - **(v2.0)** ExceptionType[] that are handled
 - `overrides_callable` - Callable in parent this overrides
 - `implements_operation` - Architectural Operation this implements
 
@@ -334,6 +367,7 @@ Represents organized data storage - the paradigm-agnostic representation of clas
 - `is_mutable` - Whether data can be modified
 - `is_serializable` - Whether this can be serialized
 - `persistence_type` - How this is persisted (transient, database, file, memory, cache)
+- `passed_via_ipc` - **(v2.0)** IPCConnection[] through which this structure is passed
 
 **DataStructureType Values** (43 total):
 
@@ -351,6 +385,10 @@ Represents organized data storage - the paradigm-agnostic representation of clas
 - `group_item` - COBOL group item (composite data)
 - `copybook_structure` - COBOL copybook structure
 - `commarea` - CICS communication area
+- `rpg_data_structure` - **(v2.0)** RPG data structure
+- `pli_structure` - **(v2.0)** PL/I structure
+- `assembler_dsect` - **(v2.0)** Assembler DSECT
+- `cobol_file_descriptor` - **(v2.0)** COBOL file descriptor (FD)
 
 **Functional:**
 - `algebraic_data_type` - ADT (Haskell, ML)
@@ -430,7 +468,8 @@ Individual data fields, variables, or constants.
 
 **Key Attributes:**
 - `element_type` - Type of element (field, property, variable, constant, parameter)
-- `data_type` - Data type (string, integer, User, etc.)
+- `data_type` - Data type (string, integer, User, etc.) — **Deprecated for typed analysis in v2.0** — use `declared_type` (TypeExpression) instead
+- `declared_type` - **(v2.0)** TypeExpression for the declared type
 - `visibility` - Visibility level
 - `is_static` - Whether this is static
 - `is_final` - Whether this is final/immutable
@@ -438,6 +477,8 @@ Individual data fields, variables, or constants.
 - `default_value` - Default value
 - `min_occurs` - Minimum occurrences (for arrays)
 - `max_occurs` - Maximum occurrences
+- `ownership_annotations` - **(v2.0)** OwnershipAnnotation[] for this element
+- `mapped_from_screen_fields` - **(v2.0)** ScreenField[] mapped to this element
 
 **Relationships:**
 - `contained_in_unit` - Encapsulation unit containing this element
@@ -705,7 +746,7 @@ update_inventory_impl:
 ### Additional Type Enumerations
 
 - **VisibilityType**: public, private, protected, internal, package, module, file
-- **CallableCategory**: synchronous, asynchronous, event_driven, reactive
+- **CallableCategory**: `normal`, `operator`, `main_entry` **(v2.0 — cleaned to 3 values)**
 - **EntryPointType**: main, constructor, destructor, initializer, event_handler, callback
 - **DataStructureCategory**: simple, composite, collection, reference
 - **DataElementCategory**: field, property, variable, constant, parameter
@@ -772,5 +813,288 @@ SELECT ?caller WHERE {
 - **Behavior**: CallableUnits implement Operations and participate in Workflows
 - **Data Management**: DataStructures are persisted in Collections
 - **Integration**: EncapsulationUnits may expose or consume Interfaces
+
+## New Sections in v2.0
+
+The following sections were introduced in SAO v2.0 to support advanced type modeling, error handling, file I/O, screen interaction, batch orchestration, inter-process communication, preprocessor/metaprogramming, memory/ownership models, database schema objects, and programming language metadata.
+
+### Type System Modeling (Section 18)
+
+**TypeExpression** (is_a NamedEntity)
+
+A recursive type model capable of representing generics, unions, pointers, and function types.
+
+**Key Attributes:**
+- `type_kind` - TypeKind (e.g., primitive, generic, union, pointer, function_type, array)
+- `base_type` - Base type name or reference
+- `type_parameters` - TypeExpression[] (self-referential, multivalued) for generic parameters
+- `type_constraints` - Constraints on type parameters
+- `is_nullable` - Whether this type is nullable
+- `nullability_model` - Nullability model (e.g., optional, nullable_reference, maybe)
+- `pointer_semantics` - Pointer semantics (e.g., raw, shared, unique, weak)
+
+**Relationships:**
+- Connected to DataElement via `declared_type` / `type_of_data_elements`
+- Connected to Parameter via `parameter_type` / `type_of_parameters`
+- Connected to CallableUnit via `return_type_expression` / `return_type_of_callables`
+
+### Error Handling Model (Section 19)
+
+**ErrorModel** (is_a NamedEntity)
+
+Describes the error handling strategy for a module or language.
+
+**Key Attributes:**
+- `strategy` - ErrorHandlingStrategy (e.g., exceptions, error_codes, result_type, condition_system)
+- `checkedness` - ExceptionCheckedness (e.g., checked, unchecked, mixed)
+
+**Relationships:**
+- Connected to EncapsulationUnit via `error_model_for_module`
+- Connected to ProgrammingLanguage
+
+---
+
+**ExceptionType** (is_a NamedEntity)
+
+Represents a specific exception or error type in the exception hierarchy.
+
+**Key Attributes:**
+- `qualified_name` - Fully qualified exception class name
+- `is_checked` - Whether this is a checked exception
+- `parent_exception` - Parent ExceptionType in the hierarchy
+- `child_exceptions` - Child ExceptionType[] in the hierarchy
+
+**Relationships:**
+- Connected to CallableUnit via `raises_exception_types` / `handles_exception_types`
+
+### File I/O Definitions (Section 20)
+
+**FileDefinition** (is_a NamedEntity)
+
+Represents a declared file or dataset used by a program.
+
+**Key Attributes:**
+- `organization` - FileOrganization (e.g., sequential, indexed, relative, vsam_ksds, vsam_rrds)
+- `access_mode` - FileAccessMode (e.g., sequential, random, dynamic)
+- `record_format` - RecordFormat (e.g., fixed, variable, undefined)
+- `record_length` - Record length
+- `block_size` - Block size
+- `key_fields` - Key field names
+- `file_status_field` - File status variable name
+- `external_name` - External dataset or file name
+
+**Relationships:**
+- Connected to CallableUnit via `uses_file_definitions`
+- Connected to CodeContainer via `container_file_definitions`
+- Connected to DataStore
+
+---
+
+**FileOperation** (is_a NamedEntity)
+
+Represents an individual file I/O operation within code.
+
+**Key Attributes:**
+- `operation_type` - FileOperationType (e.g., open, close, read, write, rewrite, delete, start)
+- `condition_handling` - Condition or error handling for this operation
+
+**Relationships:**
+- Connected to FileDefinition
+- Connected to CallableUnit via `callable_file_operations`
+
+### Screen / Terminal Interaction (Section 21)
+
+**ScreenDefinition** (is_a NamedEntity)
+
+Represents a terminal screen or display definition (e.g., BMS map, DDS display file).
+
+**Key Attributes:**
+- `screen_type` - ScreenType (e.g., bms_map, dds_display, mfs_format, panel)
+- `rows` - Number of rows
+- `columns` - Number of columns
+- `external_name` - External map or screen name
+
+**Relationships:**
+- Connected to ScreenField (contains fields)
+- Connected to EncapsulationUnit via `screen_used_by_programs`
+- Connected to CodeContainer via `container_screen_definitions`
+
+---
+
+**ScreenField** (is_a NamedEntity)
+
+Represents an individual field on a screen definition.
+
+**Key Attributes:**
+- `row` - Row position
+- `column` - Column position
+- `length` - Field length
+- `is_input` - Whether this field accepts input
+- `is_protected` - Whether this field is protected
+- `attribute_byte` - Display attribute byte
+- `initial_value` - Initial/default value
+
+**Relationships:**
+- Connected to ScreenDefinition
+- Connected to DataElement via `mapped_from_screen_fields`
+
+### Job Control / Batch Orchestration (Section 22)
+
+**JobDefinition** (is_a NamedEntity)
+
+Represents a batch job definition (e.g., JCL JOB statement).
+
+**Key Attributes:**
+- `job_class` - Job execution class
+- `priority` - Job priority
+- `restart_point` - Restart step or checkpoint
+- `scheduling_info` - Scheduling metadata
+
+**Relationships:**
+- Contains JobStep[] (ordered steps within the job)
+- Can depend on other JobDefinition[] (job dependencies)
+
+---
+
+**JobStep** (is_a NamedEntity)
+
+Represents an individual step within a batch job.
+
+**Key Attributes:**
+- `step_type` - JobStepType (e.g., exec_pgm, exec_proc, exec_utility)
+- `program_name` - Program or procedure to execute
+- `condition_code` - Condition code for step execution
+- `region_size` - Memory region size
+
+**Relationships:**
+- Connected to JobDefinition (parent job)
+- Connected to EncapsulationUnit via `executed_by_job_steps`
+
+---
+
+**DatasetAllocation** (is_a NamedEntity)
+
+Represents a dataset or file allocation within a job step (e.g., JCL DD statement).
+
+**Key Attributes:**
+- `dd_name` - DD name (logical file name)
+- `dataset_name` - Physical dataset name
+- `disposition` - DatasetDisposition (e.g., new, old, shr, mod)
+- `space_allocation` - Space allocation parameters
+- `record_format` - Record format
+
+**Relationships:**
+- Connected to JobStep
+- Connected to FileDefinition
+
+### Inter-Process Communication (Section 23)
+
+**IPCConnection** (is_a NamedEntity)
+
+Represents a communication channel between processes or programs.
+
+**Key Attributes:**
+- `mechanism` - IPCMechanism (e.g., mq_message, tcp_socket, shared_memory, named_pipe, cics_link, cics_xctl)
+- `is_synchronous` - Whether the communication is synchronous
+- `transaction_scoped` - Whether the connection is scoped to a transaction
+
+**Relationships:**
+- Connects source EncapsulationUnit (`outgoing_ipc_connections`) to target EncapsulationUnit (`incoming_ipc_connections`)
+- Passes DataStructure[] via `passed_via_ipc`
+
+### Preprocessor / Metaprogramming (Section 24)
+
+**PreprocessorDirective** (is_a NamedEntity)
+
+Represents a preprocessor directive or metaprogramming construct.
+
+**Key Attributes:**
+- `directive_type` - MetaprogrammingType (e.g., conditional_compilation, macro_definition, include, pragma, template_instantiation)
+- `condition` - Condition expression (for conditional compilation)
+- `expansion` - Expanded text or result
+
+**Relationships:**
+- Connected to CodeContainer via `container_preprocessor_directives`
+- Connected to EncapsulationUnit via `affected_by_directives`
+- Connected to CallableUnit via `callable_affected_by_directives`
+
+### Memory / Ownership Model (Section 25)
+
+**MemoryModel** (is_a NamedEntity)
+
+Describes the memory management model for a module or language.
+
+**Key Attributes:**
+- `primary_model` - OwnershipModel (e.g., gc_managed, reference_counted, manual, ownership_based, arena)
+- `gc_type` - Garbage collector type (e.g., generational, concurrent, reference_counting)
+- `supports_unsafe` - Whether unsafe/unmanaged memory access is supported
+
+**Relationships:**
+- Connected to EncapsulationUnit via `memory_model_for_module`
+- Connected to ProgrammingLanguage
+
+---
+
+**OwnershipAnnotation** (is_a NamedEntity)
+
+Represents an ownership or lifetime annotation on a data element.
+
+**Key Attributes:**
+- `ownership` - OwnershipModel (e.g., owned, borrowed, shared, static)
+- `lifetime` - LifetimeScope (e.g., static, local, heap, parameter)
+- `lifetime_name` - Named lifetime identifier (e.g., `'a` in Rust)
+
+**Relationships:**
+- Connected to DataElement via `ownership_annotations`
+
+### Database Schema Objects (Section 27)
+
+**DatabaseConstraint** (is_a NamedEntity)
+
+Represents a constraint on a database table or collection.
+
+**Key Attributes:**
+- `constraint_type` - DatabaseConstraintType (e.g., primary_key, foreign_key, unique, check, not_null, default)
+- `columns` - Column names involved
+- `reference_table` - Referenced table (for foreign keys)
+- `reference_columns` - Referenced column names
+- `expression` - Constraint expression (for check constraints)
+
+**Relationships:**
+- Connected to Collection
+
+---
+
+**DatabaseIndex** (is_a NamedEntity)
+
+Represents an index on a database table or collection.
+
+**Key Attributes:**
+- `index_type` - IndexType (e.g., btree, hash, gin, gist, fulltext)
+- `columns` - Indexed column names
+- `is_unique` - Whether this is a unique index
+- `is_partial` - Whether this is a partial/filtered index
+- `filter_expression` - Filter expression (for partial indexes)
+
+**Relationships:**
+- Connected to Collection
+
+### Programming Language (Section 28)
+
+**ProgrammingLanguage** (is_a NamedEntity)
+
+Represents a programming language and its characteristics, replacing the string-based `format` attribute on CodeContainer.
+
+**Key Attributes:**
+- `paradigms` - ProgrammingParadigm[] (e.g., object_oriented, procedural, functional, logic, declarative)
+- `type_discipline` - Type discipline (e.g., static, dynamic, gradual, untyped)
+- `has_preprocessor` - Whether the language has a preprocessor
+- `has_gc` - Whether the language has garbage collection
+- `year_introduced` - Year the language was introduced
+
+**Relationships:**
+- Connected to CodeContainer via `written_in_language` (replaces `format` string)
+- Connected to ErrorModel
+- Connected to MemoryModel
 
 This code structure model provides complete traceability from high-level architecture down to individual lines of code, supporting analysis, documentation, and transformation across any programming paradigm.

@@ -2,6 +2,8 @@
 
 This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging.
 
+> **v2.0 Note**: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as `Schema`, `DataStore`, and `RetentionPolicy` gain back-reference attributes that make navigating the ontology more explicit. Additionally, `SchemaVersion` and `AuditEntry` have been restructured from subclass inheritance to composition (they are now `is_a: NamedEntity` with explicit reference attributes back to their parent).
+
 ## Overview
 
 The Data Management section provides comprehensive modeling of data persistence, schema management, data governance, and audit trails.
@@ -20,6 +22,9 @@ The Data Management section provides comprehensive modeling of data persistence,
 **Relationships**:
 - **hosted_on_infrastructure**: `Infrastructure` hosting the data store
 - **persists_aggregates**: `Aggregate` entities stored
+- **store_read_by_pipelines**: `Pipeline` entities that read from this store
+- **store_written_by_pipelines**: `Pipeline` entities that write to this store
+- **store_file_definitions**: `FileDefinition` entities associated with this store
 
 **Data Store Types**:
 - **RELATIONAL_DB**: SQL databases (PostgreSQL, MySQL, Oracle)
@@ -40,12 +45,14 @@ The Data Management section provides comprehensive modeling of data persistence,
 **Definition**: A logical grouping of records (table, collection, bucket).
 
 **Key Attributes**:
-- **indexes**: Index definitions for query performance
+- **indexes**: Index definitions for query performance (**deprecated** in v2.0 -- use `has_indexes` instead)
 
 **Relationships**:
 - **collection_structured_by_schema**: `Schema` defining structure
 - **governed_by_retention_policy**: `RetentionPolicy` for data lifecycle
 - **stores_records**: `Record` instances
+- **has_constraints**: `DatabaseConstraint[]` (inlined) -- constraint definitions for this collection (see Section 27)
+- **has_indexes**: `DatabaseIndex[]` (inlined) -- index definitions for this collection (see Section 27)
 
 **Collection Patterns**:
 - **Relational Table**: Structured rows with fixed schema
@@ -77,7 +84,16 @@ The Data Management section provides comprehensive modeling of data persistence,
 - Implements `Versionable` mixin
 - **schema_type**: TABLE_SCHEMA, DOCUMENT_SCHEMA, EVENT_SCHEMA, API_SCHEMA, MESSAGE_SCHEMA
 - **definition**: Schema definition (JSON Schema, DDL, etc.)
-- **versions**: List of schema versions
+- **schema_versions**: List of `SchemaVersion` entities (v2.0 back-reference)
+
+**Back-Reference Attributes** (v2.0):
+- **structures_resource_types**: `ResourceType` entities structured by this schema
+- **structures_collections**: `Collection` entities structured by this schema
+- **structures_events**: `Event` entities structured by this schema
+- **structures_messages**: `Message` entities structured by this schema
+- **defines_operation_input**: `Operation` entities using this schema as input
+- **defines_operation_output**: `Operation` entities using this schema as output
+- **validates_records**: `Record` entities validated by this schema
 
 **Schema Evolution**:
 - **Backward Compatible**: New schema can read old data
@@ -97,11 +113,16 @@ The Data Management section provides comprehensive modeling of data persistence,
 
 **Definition**: A specific iteration of a schema.
 
+> **v2.0 Change**: `SchemaVersion` is now `is_a: NamedEntity` (previously `is_a: Schema`). Instead of inheriting from `Schema`, it uses the `version_of_schema` attribute to reference its parent `Schema`.
+
 **Key Attributes**:
 - **version**: Semantic version number
 - **definition**: Schema at this version
 - **migration_script**: Migration from previous version
 - **is_backward_compatible**: Compatibility flag
+
+**Relationships**:
+- **version_of_schema**: `Schema` that this version belongs to
 
 **Schema Versioning Best Practices**:
 1. Use semantic versioning
@@ -147,6 +168,11 @@ The Data Management section provides comprehensive modeling of data persistence,
 - **retention_days**: Days to retain data
 - **archive_after_days**: Days before archiving
 - **deletion_strategy**: How data is deleted (soft delete, hard delete, anonymize)
+
+**Back-Reference Attributes** (v2.0):
+- **governs_collections**: `Collection` entities governed by this policy
+- **governs_logs**: `Log` entities governed by this policy
+- **governs_audit_logs**: `AuditLog` entities governed by this policy
 
 **Retention Strategies**:
 - **Legal Hold**: Prevent deletion for legal reasons
@@ -195,6 +221,7 @@ The Data Management section provides comprehensive modeling of data persistence,
 
 **Key Attributes**:
 - **entries**: List of `AuditEntry` records
+- **audit_log_entries**: `AuditEntry[]` (v2.0 back-reference from `AuditEntry.entry_in_audit_log`)
 
 **Relationships**:
 - **auditlog_governed_by_retention**: `RetentionPolicy` for log retention
@@ -212,12 +239,15 @@ The Data Management section provides comprehensive modeling of data persistence,
 
 **Definition**: A single record within an audit log.
 
+> **v2.0 Change**: `AuditEntry` is now `is_a: NamedEntity` (previously `is_a: AuditLog`). Instead of inheriting from `AuditLog`, it uses the `entry_in_audit_log` attribute to reference its parent `AuditLog`. Conversely, `AuditLog` now has the `audit_log_entries` back-reference attribute.
+
 **Key Attributes**:
 - **timestamp**: When the event occurred (required)
 - **outcome**: Result of the action (success, failure, error)
 - **details**: Additional context
 
 **Relationships**:
+- **entry_in_audit_log**: `AuditLog` that this entry belongs to
 - **audit_performed_by_actor**: `Actor` who performed action
 - **records_action**: `Action` that was performed
 - **affects_resource**: `Resource` affected

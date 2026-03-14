@@ -86,7 +86,7 @@ Summary statistics (quantiles).
 
 **Key Attributes**:
 - **log_type**: APPLICATION, ACCESS, ERROR, SECURITY, AUDIT, DEBUG
-- **entries**: List of `LogEntry` records
+- **log_entries**: List of `LogEntry` records (inverse: `entry_in_log`)
 
 **Relationships**:
 - **log_governed_by_retention**: `RetentionPolicy` for log retention
@@ -128,11 +128,14 @@ Use structured formats (JSON) instead of plain text:
 
 **Definition**: A single record within a log.
 
+**Class**: `is_a: NamedEntity` (not `Log`). In SAO v2.0, LogEntry was changed from a subclass of Log to a subclass of NamedEntity, with an explicit relationship back to its parent Log.
+
 **Key Attributes**:
 - **timestamp**: When the event occurred
 - **level**: Log level (DEBUG, INFO, WARN, ERROR)
 - **message**: Log message
 - **context**: Additional context (trace ID, user ID, etc.)
+- **entry_in_log**: The `Log` this entry belongs to (range: Log, inverse: `log_entries`)
 
 **Best Practices**:
 1. **Correlation IDs**: Include trace/request ID in all logs
@@ -151,7 +154,7 @@ Use structured formats (JSON) instead of plain text:
 
 **Key Attributes**:
 - **trace_id**: Unique identifier for the entire trace
-- **spans**: List of `Span` entities representing operations
+- **trace_spans**: List of `Span` entities representing operations (inverse: `belongs_to_trace`)
 
 **Relationships**:
 - **starts_with_span**: Root `Span` of the trace
@@ -173,6 +176,8 @@ Use structured formats (JSON) instead of plain text:
 
 **Definition**: A single unit of work within a trace.
 
+**Class**: `is_a: NamedEntity` (not `Trace`). In SAO v2.0, Span was changed from a subclass of Trace to a subclass of NamedEntity, with an explicit relationship back to its parent Trace.
+
 **Key Attributes**:
 - **span_id**: Unique identifier for this span
 - **operation_name**: Name of the operation
@@ -180,6 +185,7 @@ Use structured formats (JSON) instead of plain text:
 - **end_time**: Operation end timestamp
 - **status**: Span status (OK, ERROR, etc.)
 - **attributes**: Key-value pairs with additional context
+- **belongs_to_trace**: The `Trace` this span belongs to (range: Trace, inverse: `trace_spans`)
 
 **Relationships**:
 - **child_of_span**: Parent span (for nested operations)
@@ -410,6 +416,12 @@ Response: 200 OK
 3. **Runbooks**: Link to runbooks for resolution
 4. **On-Call**: Route to appropriate on-call team
 5. **Retrospective**: Review and tune alert rules
+
+---
+
+## SAO v2.0 Changes
+
+In SAO v2.0, relationship attributes that were previously modeled as standalone linkML relationship classes have been inlined directly into the domain classes. For example, `Incident` now carries `escalated_from_alerts` and `affects_services` as direct attributes, `Alert` carries `escalates_to_incident`, and `AlertRule` carries `triggers_alerts`. Additionally, `LogEntry` and `Span` were changed from subclasses of `Log` and `Trace` respectively to subclasses of `NamedEntity`, with explicit back-reference attributes (`entry_in_log`, `belongs_to_trace`) linking them to their parent entities.
 
 ---
 

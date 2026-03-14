@@ -6,7 +6,7 @@ The Software Application Ontology (SAO) is a comprehensive ontology for modeling
 
 The ontology is described in LinkML.
 
-* **Version**: 1.0.0
+* **Version**: 2.0.0
 * **License**: Proprietary - Copyright (c) 2025 CoreStory, Inc.
 * **Schema ID**: https://ontology.example.org/software-application
 
@@ -29,10 +29,11 @@ SAO provides a structured vocabulary and semantic model for describing:
 - **Compliance-Ready**: Includes models for GDPR, HIPAA, SOC2, PCI-DSS, and more
 - **Interoperable**: Based on LinkML standard for semantic modeling
 - **Extensible**: Designed for extension and customization
+- **Legacy-Ready**: First-class support for COBOL, RPG, PL/I, Assembler, JCL, CICS, IMS alongside modern languages
 
 ## Documentation Structure
 
-The ontology is organized into 12 major sections:
+The ontology is organized into 28 major sections:
 
 ### [01. Enumerations](docs/01-enumerations.md)
 Defines all enumeration types used throughout the ontology, including:
@@ -143,6 +144,20 @@ Implementation-level code modeling with paradigm-agnostic design:
 - **ControlFlow** and **DataFlow**: Code execution and data movement
 - **Maps to Architecture**: Links code to Components, Operations, and Domain Entities
 
+### [13-17. Extended Modeling](docs/13-extended-modeling.md)
+New sections added in v2.0 for cross-cutting concerns:
+- **Section 18 - Type System**: `TypeExpression` for recursive type modeling (generics, unions, pointers, function types)
+- **Section 19 - Error Handling**: `ErrorModel` and `ExceptionType` for language-level error paradigms
+- **Section 20 - File I/O**: `FileDefinition` and `FileOperation` for file-based I/O (COBOL SELECT, VSAM, etc.)
+- **Section 21 - Screen/Terminal**: `ScreenDefinition` and `ScreenField` for character-mode UI modeling
+- **Section 22 - Job Control**: `JobDefinition`, `JobStep`, `DatasetAllocation` for batch orchestration (JCL, schedulers)
+- **Section 23 - IPC**: `IPCConnection` for inter-process communication (CICS LINK, shared memory, pipes)
+- **Section 24 - Preprocessor**: `PreprocessorDirective` for macros and metaprogramming constructs
+- **Section 25 - Memory/Ownership**: `MemoryModel` and `OwnershipAnnotation` for Rust-style ownership, GC models
+- **Section 26 - Domain Relationships**: `DomainRelationship` connecting domain entities with cardinality
+- **Section 27 - Database Schema**: `DatabaseConstraint` and `DatabaseIndex` for schema-level constraints
+- **Section 28 - Programming Language**: `ProgrammingLanguage` as first-class entity with paradigms and type discipline
+
 ## Core Design Principles
 
 ### 1. Domain-Driven Design (DDD)
@@ -161,6 +176,8 @@ Implementation-level code modeling with paradigm-agnostic design:
 - Various deployment models (containers, VMs, serverless)
 - Multiple integration patterns (sync, async, event-driven)
 - Flexible authorization models (RBAC, ABAC, REBAC)
+- Legacy mainframe paradigms (COBOL, RPG, PL/I, Assembler)
+- File-based I/O and batch job orchestration
 
 ### 4. Compliance by Design
 - Built-in data classification
@@ -218,6 +235,7 @@ Demonstrate compliance with:
 - **Schema Format**: YAML
 - **Validation**: LinkML validation tools
 - **Code Generation**: Support for Python, TypeScript, JSON Schema, RDF
+- **Global Slots**: Only ~20 multi-domain and base identification slots remain global; all single-use relationships are inlined as class attributes
 
 ### Semantic Web Support
 - RDF/RDFS compatible
@@ -351,18 +369,28 @@ Integration:
 
 ## Versioning and Evolution
 
-### Version 1.0.0 (Current)
+### Version 2.0.0 (Current)
+- **Structural refactor**: ~340 single-use global slots inlined as class attributes for improved readability
+- **18 new classes** spanning type system, error handling, file I/O, screen definitions, job control, IPC, preprocessor, memory model, domain relationships, database schema objects, and programming language
+- **17 new enums** for type kinds, error strategies, file organization, screen types, job steps, IPC mechanisms, ownership models, and more
+- **8 existing enums extended** with legacy platform values (RPG, PL/I, Assembler, VSAM, JCL)
+- **6 inheritance fixes**: SchemaVersion, ContractVersion, LogEntry, AuditEntry, Span, Screen changed from parent inheritance to NamedEntity with containment
+- **Orphaned Cardinality enum** wired to new DomainRelationship class
+- **ChannelType enum** removed (Slack-specific, unused)
+- **CallableCategory enum** cleaned to 3 behavioral-role values
+- **6 deprecated attributes** with migration paths to typed replacements
+- **Programming Language** as first-class entity replacing bare string fields
+
+### Version 1.0.0 (Historical)
 - Initial comprehensive ontology release
 - All 12 major sections defined
 - Support for common compliance frameworks
 - Cloud-native and microservices patterns
-- **New**: Paradigm-agnostic code structure modeling supporting modern (Java, Python, C#) and legacy (COBOL, mainframe) systems
+- Paradigm-agnostic code structure modeling supporting modern (Java, Python, C#) and legacy (COBOL, mainframe) systems
 
 ### Future Roadmap
-- **v1.1**: Enhanced event sourcing patterns
-- **v1.2**: Service mesh and API gateway extensions
-- **v1.3**: ML/AI model lifecycle management
-- **v2.0**: Breaking changes for simplified relationships
+- **v2.1**: Enhanced event sourcing patterns
+- **v2.2**: Service mesh and API gateway extensions
 
 ### Schema Evolution Guidelines
 - Use semantic versioning
@@ -423,13 +451,13 @@ If you use this ontology in your research or projects, please cite:
 
 ```
 Software Application Ontology (SAO)
-Version 1.0.0
+Version 2.0.0
 https://ontology.example.org/software-application
 Copyright (c) 2025 CoreStory, Inc. All rights reserved.
 ```
 
 ---
 
-**Last Updated**: 2026-01-06
-**Schema Version**: 1.0.0
-**Documentation Version**: 1.0.0
+**Last Updated**: 2026-03-14
+**Schema Version**: 2.0.0
+**Documentation Version**: 2.0.0

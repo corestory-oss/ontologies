@@ -4,7 +4,6 @@ This document describes all enumeration types defined in the Software Applicatio
 
 ## Table of Contents
 - [Cardinality](#cardinality)
-- [Channel Types](#channel-types)
 - [Interface Types](#interface-types)
 - [Service and Dependency Types](#service-and-dependency-types)
 - [Actor Types](#actor-types)
@@ -18,6 +17,16 @@ This document describes all enumeration types defined in the Software Applicatio
 - [Compliance](#compliance)
 - [Features](#features)
 - [Code Structure](#code-structure)
+- [Type System](#type-system)
+- [Error Handling](#error-handling)
+- [File Operations](#file-operations)
+- [Screen and Terminal](#screen-and-terminal)
+- [Batch Processing](#batch-processing)
+- [Inter-Process Communication](#inter-process-communication)
+- [Metaprogramming](#metaprogramming)
+- [Memory and Ownership](#memory-and-ownership)
+- [Database Constraints and Indexes](#database-constraints-and-indexes)
+- [Programming Paradigms](#programming-paradigms)
 
 ## Cardinality
 
@@ -27,15 +36,6 @@ Defines relationship cardinality options between entities.
 - **ONE_TO_MANY**: One-to-many relationship
 - **MANY_TO_ONE**: Many-to-one relationship
 - **MANY_TO_MANY**: Many-to-many relationship
-
-## Channel Types
-
-Types of communication channels in the system.
-
-- **PUBLIC_CHANNEL**: Public communication channel accessible to all users
-- **PRIVATE_CHANNEL**: Private communication channel with restricted access
-- **MPIM**: Multi-party instant messaging
-- **IM**: Direct instant messaging between two parties
 
 ## Interface Types
 
@@ -76,6 +76,10 @@ Types of communication channels in the system.
 - **FUNCTION**: Serverless function or lambda
 - **JOB**: Batch processing job
 - **DAEMON**: Background service or daemon process
+- **CICS_TRANSACTION**: CICS online transaction
+- **IMS_TRANSACTION**: IMS online transaction
+- **BATCH_JOB**: Mainframe batch job
+- **STORED_PROC_SERVICE**: Stored procedure exposed as service
 
 ### Dependency Types
 
@@ -213,6 +217,9 @@ Types of communication channels in the system.
 - **CACHE**: In-memory cache
 - **MESSAGE_BROKER**: Message broker or queue
 - **DATA_LAKE**: Data lake for analytics
+- **VSAM**: IBM VSAM dataset
+- **FLAT_FILE**: Sequential or flat file
+- **ISAM**: Indexed Sequential Access Method file
 
 ### Schema Types
 
@@ -259,6 +266,11 @@ Types of communication channels in the system.
 - **SFTP**: Secure File Transfer Protocol
 - **TCP**: Transmission Control Protocol
 - **UDP**: User Datagram Protocol
+- **CORBA**: Common Object Request Broker Architecture
+- **DCOM**: Distributed Component Object Model
+- **RMI**: Java Remote Method Invocation
+- **NAMED_PIPE**: Named pipe protocol
+- **SHARED_MEMORY**: Shared memory protocol
 
 ### Message Types
 
@@ -376,6 +388,11 @@ Types of physical code storage units.
 - **schema_definition**: Database or API schema definition
 - **notebook_cell**: Jupyter/computational notebook cell
 - **inline_code**: Embedded code (e.g., JavaScript in HTML, SQL in code)
+- **jcl_member**: JCL member in a PDS
+- **rpg_source**: RPG source
+- **pli_source**: PL/I source
+- **assembler_source**: Assembler source
+- **cl_source**: IBM CL source
 
 ### Storage Location Types
 
@@ -430,6 +447,11 @@ Types of encapsulation units across different programming paradigms.
 - **script**: Script module
 - **composite**: Composite structure
 - **other**: Other encapsulation types
+- **rpg_module**: RPG module
+- **rpg_service_program**: RPG service program
+- **pli_procedure**: PL/I procedure
+- **pli_package**: PL/I package
+- **assembler_csect**: Assembler control section
 
 ### Callable Types
 
@@ -499,6 +521,10 @@ Types of callable/invocable code units across different paradigms.
 - **script_function**: Script function
 - **command**: Command/action function
 - **other**: Other callable types
+- **rpg_subprocedure**: RPG subprocedure
+- **pli_entry**: PL/I ENTRY point
+- **assembler_entry**: Assembler entry point
+- **rpg_subroutine**: RPG subroutine
 
 ### Data Structure Types
 
@@ -561,6 +587,10 @@ Types of data structures across different paradigms.
 - **avro_record**: Avro record
 - **smart_pointer**: Smart pointer wrapper
 - **reference_wrapper**: Reference wrapper
+- **rpg_data_structure**: RPG data structure
+- **pli_structure**: PL/I structure
+- **assembler_dsect**: Assembler dummy section
+- **cobol_file_descriptor**: COBOL FD entry
 
 ### Visibility Types
 
@@ -576,12 +606,11 @@ Visibility/access levels for code elements.
 
 ### Callable Categories
 
-Categories of callable behavior.
+Behavioral-role categories of callable units.
 
-- **synchronous**: Synchronous/blocking execution
-- **asynchronous**: Asynchronous/non-blocking execution
-- **event_driven**: Event-driven execution
-- **reactive**: Reactive/stream-based execution
+- **normal**: Normal callable
+- **operator**: Operator overload
+- **main_entry**: Main entry point
 
 ### Entry Point Types
 
@@ -714,6 +743,10 @@ Database system types.
 - **graph**: Graph database (Neo4j)
 - **columnar**: Columnar database (Cassandra)
 - **time_series**: Time-series database
+- **sqlite**: SQLite database
+- **ims_db**: IBM IMS hierarchical database
+- **adabas**: Software AG Adabas
+- **idms**: CA IDMS network database
 
 ### Linkage Types
 
@@ -763,3 +796,228 @@ Message/data formats.
 - **yaml**: YAML format
 - **csv**: CSV format
 - **binary**: Binary format
+
+## Type System
+
+### Type Kinds
+
+Classification of type expressions.
+
+- **primitive**: Primitive type
+- **generic**: Generic/parameterized type
+- **union**: Union type
+- **intersection**: Intersection type
+- **alias**: Type alias
+- **pointer**: Pointer type
+- **reference**: Reference type
+- **array_of**: Array type
+- **function_type**: Function type
+- **tuple_type**: Tuple type
+- **optional_type**: Optional/nullable type
+- **constrained**: Constrained type
+- **opaque**: Opaque type
+
+## Error Handling
+
+### Error Handling Strategies
+
+Language-level error handling paradigms.
+
+- **exception_based**: Exception-based error handling
+- **return_value_based**: Return value-based error handling (Go, Rust Result)
+- **condition_based**: Condition-based error handling (Common Lisp)
+- **error_code_based**: Error code-based error handling (C, COBOL)
+- **panic_recover**: Panic and recover error handling (Go)
+- **monadic**: Monadic error handling (Haskell Either/Maybe)
+
+### Exception Checkedness
+
+Whether exceptions must be declared/caught.
+
+- **checked**: Checked exception (Java checked)
+- **unchecked**: Unchecked exception
+- **not_applicable**: Not applicable
+
+## File Operations
+
+### File Organization
+
+How records are organized.
+
+- **sequential**: Sequential organization
+- **indexed**: Indexed organization
+- **relative**: Relative organization
+- **vsam_ksds**: VSAM Key-Sequenced Data Set
+- **vsam_esds**: VSAM Entry-Sequenced Data Set
+- **vsam_rrds**: VSAM Relative Record Data Set
+- **partitioned**: Partitioned organization
+- **line_sequential**: Line-sequential organization
+- **heap**: Heap organization
+
+### File Access Modes
+
+How records are accessed.
+
+- **sequential_access**: Sequential access
+- **random_access**: Random access
+- **dynamic_access**: Dynamic access
+
+### Record Formats
+
+Physical record format.
+
+- **fixed**: Fixed-length records
+- **variable**: Variable-length records
+- **undefined**: Undefined-length records
+- **spanned**: Spanned records
+- **stream**: Stream format
+
+### File Operation Types
+
+File I/O operations.
+
+- **read**: Read operation
+- **write**: Write operation
+- **rewrite**: Rewrite/update operation
+- **delete**: Delete operation
+- **start**: Start/position operation
+- **open**: Open operation
+- **close**: Close operation
+- **sort**: Sort operation
+- **merge**: Merge operation
+
+## Screen and Terminal
+
+### Screen Types
+
+Terminal/screen types.
+
+- **bms_map**: CICS BMS map
+- **rpg_display_file**: RPG display file
+- **character_terminal**: Character-mode terminal
+- **tui**: Text-based user interface
+- **form_based**: Form-based screen
+
+## Batch Processing
+
+### Job Step Types
+
+Batch job step types.
+
+- **exec_program**: Execute program step
+- **exec_proc**: Execute procedure step
+- **utility**: Utility step
+- **sort**: Sort step
+- **file_transfer**: File transfer step
+- **conditional**: Conditional step
+
+### Dataset Dispositions
+
+JCL dataset dispositions.
+
+- **new_dataset**: New dataset
+- **old_dataset**: Old dataset (exclusive)
+- **shared**: Shared dataset
+- **modify**: Modify existing dataset
+- **catalog**: Catalog dataset
+- **delete_disp**: Delete dataset
+- **pass**: Pass dataset to next step
+
+## Inter-Process Communication
+
+### IPC Mechanisms
+
+IPC mechanisms.
+
+- **cics_link**: CICS LINK command
+- **cics_xctl**: CICS XCTL (transfer control)
+- **ims_schedule**: IMS schedule call
+- **shared_memory**: Shared memory
+- **pipe**: Pipe
+- **rmi**: Java Remote Method Invocation
+- **corba**: CORBA invocation
+- **database_mediated**: Database-mediated communication
+- **message_queue**: Message queue
+- **socket**: Socket communication
+- **named_pipe**: Named pipe
+- **signal**: Signal
+- **semaphore**: Semaphore
+- **dcom**: Distributed COM
+- **rest_call**: REST API call
+
+## Metaprogramming
+
+### Metaprogramming Types
+
+Preprocessor/metaprogramming mechanisms.
+
+- **c_preprocessor**: C preprocessor macros
+- **rust_macro_declarative**: Rust declarative macros
+- **rust_macro_procedural**: Rust procedural macros
+- **cobol_copy_replacing**: COBOL COPY REPLACING
+- **template_metaprogramming**: Template metaprogramming (C++)
+- **python_metaclass**: Python metaclass
+- **lisp_macro**: Lisp macro
+- **java_annotation_processor**: Java annotation processor
+- **code_generator**: Code generator
+
+## Memory and Ownership
+
+### Ownership Models
+
+Memory ownership models.
+
+- **owned**: Owned value
+- **borrowed_shared**: Shared/immutable borrow
+- **borrowed_mutable**: Mutable borrow
+- **moved**: Moved value
+- **copied**: Copied value
+- **reference_counted**: Reference-counted
+- **garbage_collected**: Garbage-collected
+- **manual**: Manual memory management
+- **stack_allocated**: Stack-allocated
+
+### Lifetime Scopes
+
+Value lifetime scopes.
+
+- **static_lifetime**: Static lifetime
+- **function_scope**: Function scope
+- **block_scope**: Block scope
+- **named_lifetime**: Named lifetime (Rust 'a)
+- **heap_lifetime**: Heap lifetime
+
+## Database Constraints and Indexes
+
+### Database Constraint Types
+
+Database constraints.
+
+- **primary_key**: Primary key constraint
+- **foreign_key**: Foreign key constraint
+- **unique**: Unique constraint
+- **check**: Check constraint
+- **not_null**: NOT NULL constraint
+
+### Index Types
+
+Database index types.
+
+- **btree**: B-tree index
+- **hash**: Hash index
+- **gin**: PostgreSQL GIN index
+- **fulltext**: Full-text index
+
+## Programming Paradigms
+
+### Programming Paradigm Types
+
+Programming paradigms.
+
+- **object_oriented**: Object-oriented programming
+- **procedural**: Procedural programming
+- **functional**: Functional programming
+- **logic**: Logic programming
+- **concatenative**: Concatenative programming
+- **data_driven**: Data-driven programming
+- **multi_paradigm**: Multi-paradigm programming

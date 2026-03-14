@@ -2,6 +2,8 @@
 
 This section defines actions, operations, workflows, rules, events, subscriptions, and transactions.
 
+> **v2.0 Note — Inlining Change**: In SAO v2.0, many previously string-based cross-references have been replaced with direct object references (inlined relationships). Classes in this section now carry explicit back-reference attributes that make the bidirectional links between ontology concepts navigable from either side.
+
 ## Overview
 
 The Behavior and Workflow section models how the system behaves, processes requests, executes business logic, and coordinates complex multi-step operations.
@@ -22,6 +24,11 @@ The Behavior and Workflow section models how the system behaves, processes reque
 - **emits_events_from_action**: `Event` entities emitted
 - **validated_by_action_rules**: `Rule` entities that validate
 - **executes_in_transaction**: `Transaction` context
+- **allowed_in_states** *(v2.0)*: Back-reference to `State` entities that allow this action
+- **executed_during_transition** *(v2.0)*: Back-reference to `Transition` entities that execute this action
+- **executed_by_operation** *(v2.0)*: Back-reference to `Operation` entities that execute this action
+- **executed_in_step** *(v2.0)*: Back-reference to `Step` entities that execute this action
+- **recorded_in_audit** *(v2.0)*: Back-reference to `AuditEntry` entities that record this action
 
 **Specialized Action Types**:
 
@@ -51,6 +58,8 @@ Action that changes system state.
 - **accepts_input_schema**: `Schema` for input
 - **produces_output_schema**: `Schema` for output
 - **offered_on_screens**: `Screen` entities offering this operation
+- **implemented_by_callables** *(v2.0)*: `Callable` entities that implement this operation
+- **operation_tested_by_cases** *(v2.0)*: `TestCase` entities that test this operation
 
 **Key Attributes**:
 - **errors**: Possible error responses
@@ -144,6 +153,13 @@ Centrally coordinated workflow.
 - **priority**: Evaluation priority
 - **is_active**: Whether rule is currently active
 
+**Relationships** *(v2.0 back-references)*:
+- **validates_attributes**: Back-reference to `Attribute` entities validated by this rule
+- **enforces_aggregate_invariants**: Back-reference to `Aggregate` entities whose invariants this rule enforces
+- **governs_domain_entities**: Back-reference to `DomainEntity` entities governed by this rule
+- **validates_actions**: Back-reference to `Action` entities validated by this rule
+- **guards_transitions**: Back-reference to `Transition` entities guarded by this rule
+
 **Rule Categories**:
 
 #### VALIDATION Rules
@@ -185,6 +201,10 @@ Automate actions based on events.
 **Relationships**:
 - **emitted_by_component**: `Component` that produced the event
 - **event_structured_by_schema**: `Schema` defining event payload
+- **emitted_by_action** *(v2.0)*: Back-reference to `Action` entities that emit this event
+- **triggers_transitions** *(v2.0)*: Back-reference to `Transition` entities triggered by this event
+- **triggers_workflows** *(v2.0)*: Back-reference to `Workflow` entities triggered by this event
+- **subscribed_by_subscriptions** *(v2.0)*: Back-reference to `Subscription` entities that subscribe to this event
 
 **Event Categories**:
 

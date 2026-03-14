@@ -2,6 +2,8 @@
 
 This section defines integration with external systems, including adapters, circuit breakers, messages, and contracts.
 
+> **v2.0 Note**: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as `Contract` gain back-reference attributes that make navigating the ontology more explicit. Additionally, `ContractVersion` has been restructured from subclass inheritance to composition (it is now `is_a: NamedEntity` with an explicit reference attribute back to its parent `Contract`).
+
 ## Overview
 
 The Integration section provides comprehensive modeling of connections to external systems, communication protocols, message formats, and API contracts.
@@ -19,7 +21,7 @@ The Integration section provides comprehensive modeling of connections to extern
 - **documentation_url**: API documentation URL
 
 **Relationships**:
-- **integrated_via**: `Integration` entities connecting to this system
+- **integrated_via**: `Integration[]` (inlined) connecting to this system
 
 **External System Types**:
 - **THIRD_PARTY_SERVICE**: External SaaS or API service (Stripe, SendGrid, Twilio)
@@ -99,6 +101,8 @@ The Integration section provides comprehensive modeling of connections to extern
 - **defines_interfaces**: `Interface` entities defined
 - **governs_integrations**: `Integration` entities governed
 - **validates_messages**: `Message` entities validated
+- **implemented_by_units**: `DeploymentUnit` entities implementing this contract
+- **contract_versions**: `ContractVersion[]` (v2.0 back-reference from `ContractVersion.version_of_contract`)
 
 **Contract Types**:
 - **OPENAPI**: REST API specification (Swagger)
@@ -120,10 +124,15 @@ The Integration section provides comprehensive modeling of connections to extern
 
 **Definition**: A specific iteration of a contract.
 
+> **v2.0 Change**: `ContractVersion` is now `is_a: NamedEntity` (previously `is_a: Contract`). Instead of inheriting from `Contract`, it uses the `version_of_contract` attribute to reference its parent `Contract`.
+
 **Key Attributes**:
 - **version**: Semantic version number
 - **definition**: Contract at this version
 - **breaking_changes**: List of breaking changes from previous version
+
+**Relationships**:
+- **version_of_contract**: `Contract` that this version belongs to
 
 **API Versioning Strategies**:
 - **URL Versioning**: `/api/v1/users`, `/api/v2/users`

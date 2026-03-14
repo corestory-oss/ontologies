@@ -356,6 +356,12 @@ C = Critical risk
 
 ---
 
+## SAO v2.0 Changes
+
+In SAO v2.0, relationship attributes that were previously modeled as standalone linkML relationship classes have been inlined directly into the domain classes. For example, `ComplianceRequirement` now carries `applies_to_systems` as a direct attribute, `Control` carries `mitigates_risks`, and `RiskAssessment` carries `assesses_system`. This simplifies navigation and reduces the number of intermediate relationship entities.
+
+---
+
 ## Relationships with Other Sections
 
 - **Section 1 (Structural Foundation)**: Systems must comply with requirements

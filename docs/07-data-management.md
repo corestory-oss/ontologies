@@ -15,28 +15,32 @@ The Data Management section provides comprehensive modeling of data persistence,
 **Definition**: A persistence mechanism for storing data.
 
 **Key Attributes**:
-- **store_type**: RELATIONAL_DB, DOCUMENT_DB, KEY_VALUE_STORE, GRAPH_DB, TIME_SERIES_DB, OBJECT_STORAGE, SEARCH_INDEX, CACHE, MESSAGE_BROKER, DATA_LAKE
+- **store_type**: `relational_db`, `document_db`, `key_value_store`, `graph_db`, `time_series_db`, `object_storage`, `search_index`, `cache`, `message_broker`, `data_lake`, `vsam`, `flat_file`, `isam`, `dead_letter_queue`
 - **connection_string**: Connection configuration
 - **collections**: List of collections/tables
 
 **Relationships**:
 - **hosted_on_infrastructure**: `Infrastructure` hosting the data store
 - **persists_aggregates**: `Aggregate` entities stored
-- **store_read_by_pipelines**: `Pipeline` entities that read from this store
-- **store_written_by_pipelines**: `Pipeline` entities that write to this store
+- **store_read_by_pipelines**: `DataPipeline` entities that read from this store
+- **store_written_by_pipelines**: `DataPipeline` entities that write to this store
 - **store_file_definitions**: `FileDefinition` entities associated with this store
 
 **Data Store Types**:
-- **RELATIONAL_DB**: SQL databases (PostgreSQL, MySQL, Oracle)
-- **DOCUMENT_DB**: NoSQL document stores (MongoDB, CouchDB)
-- **KEY_VALUE_STORE**: KV stores (Redis, DynamoDB)
-- **GRAPH_DB**: Graph databases (Neo4j, ArangoDB)
-- **TIME_SERIES_DB**: Time-series databases (InfluxDB, TimescaleDB)
-- **OBJECT_STORAGE**: Object stores (S3, Azure Blob)
-- **SEARCH_INDEX**: Search engines (Elasticsearch, Solr)
-- **CACHE**: In-memory caches (Redis, Memcached)
-- **MESSAGE_BROKER**: Message queues (Kafka, RabbitMQ)
-- **DATA_LAKE**: Analytics data lakes (S3, ADLS)
+- `relational_db`: SQL databases (PostgreSQL, MySQL, Oracle)
+- `document_db`: NoSQL document stores (MongoDB, CouchDB)
+- `key_value_store`: KV stores (Redis, DynamoDB)
+- `graph_db`: Graph databases (Neo4j, ArangoDB)
+- `time_series_db`: Time-series databases (InfluxDB, TimescaleDB)
+- `object_storage`: Object stores (S3, Azure Blob)
+- `search_index`: Search engines (Elasticsearch, Solr)
+- `cache`: In-memory caches (Redis, Memcached)
+- `message_broker`: Message queues (Kafka, RabbitMQ)
+- `data_lake`: Analytics data lakes (S3, ADLS)
+- `vsam`: IBM VSAM dataset
+- `flat_file`: Sequential or flat file
+- `isam`: Indexed Sequential Access Method file
+- `dead_letter_queue`: Dead letter queue
 
 ---
 
@@ -82,7 +86,7 @@ The Data Management section provides comprehensive modeling of data persistence,
 
 **Key Attributes**:
 - Implements `Versionable` mixin
-- **schema_type**: TABLE_SCHEMA, DOCUMENT_SCHEMA, EVENT_SCHEMA, API_SCHEMA, MESSAGE_SCHEMA
+- **schema_type**: `table_schema`, `document_schema`, `event_schema`, `api_schema`, `message_schema`
 - **definition**: Schema definition (JSON Schema, DDL, etc.)
 - **schema_versions**: List of `SchemaVersion` entities (v2.0 back-reference)
 
@@ -101,11 +105,11 @@ The Data Management section provides comprehensive modeling of data persistence,
 - **Breaking Change**: Incompatible schema change
 
 **Example Schema Types**:
-- **TABLE_SCHEMA**: SQL CREATE TABLE statement
-- **DOCUMENT_SCHEMA**: JSON Schema for documents
-- **EVENT_SCHEMA**: Event payload schema
-- **API_SCHEMA**: OpenAPI/GraphQL schema
-- **MESSAGE_SCHEMA**: Message format schema
+- `table_schema`: SQL CREATE TABLE statement
+- `document_schema`: JSON Schema for documents
+- `event_schema`: Event payload schema
+- `api_schema`: OpenAPI/GraphQL schema
+- `message_schema`: Message format schema
 
 ---
 
@@ -138,18 +142,18 @@ The Data Management section provides comprehensive modeling of data persistence,
 **Definition**: A sensitivity or handling category for data.
 
 **Key Attributes**:
-- **classification_type**: PUBLIC, INTERNAL, CONFIDENTIAL, RESTRICTED, PII, PHI, PCI
+- **classification_type**: `public`, `internal`, `confidential`, `restricted`, `pii`, `phi`, `pci`
 - **handling_requirements**: Required procedures
 - **encryption_required**: Encryption flag
 
 **Classification Levels**:
-- **PUBLIC**: Publicly accessible information
-- **INTERNAL**: Internal use only
-- **CONFIDENTIAL**: Sensitive business information
-- **RESTRICTED**: Highly restricted access
-- **PII**: Personally Identifiable Information (GDPR)
-- **PHI**: Protected Health Information (HIPAA)
-- **PCI**: Payment Card Industry data (PCI-DSS)
+- `public`: Publicly accessible information
+- `internal`: Internal use only
+- `confidential`: Sensitive business information
+- `restricted`: Highly restricted access
+- `pii`: Personally Identifiable Information (GDPR)
+- `phi`: Protected Health Information (HIPAA)
+- `pci`: Payment Card Industry data (PCI-DSS)
 
 **Handling Requirements**:
 - Encryption at rest and in transit
@@ -352,27 +356,27 @@ Centralized repository for all data:
 
 ```
 DataStores:
-  - ProductDB (RELATIONAL_DB)
+  - ProductDB (relational_db)
     - Collections: products, categories, inventory
     - Schema: Relational table schemas
     - Retention: 7 years
 
-  - OrderDB (RELATIONAL_DB)
+  - OrderDB (relational_db)
     - Collections: orders, order_items, payments
-    - Classification: PCI for payment data
+    - Classification: pci for payment data
     - Retention: 10 years (compliance)
     - Audit: All access logged
 
-  - SessionCache (CACHE)
+  - SessionCache (cache)
     - Collections: user_sessions
     - Retention: 24 hours
 
-  - ProductSearch (SEARCH_INDEX)
+  - ProductSearch (search_index)
     - Collections: product_index
     - Schema: Product search schema
     - Sync: From ProductDB via events
 
-  - EventStore (MESSAGE_BROKER)
+  - EventStore (message_broker)
     - Collections: domain_events
     - Schema: Event schemas (versioned)
     - Retention: 30 days, archive to data lake

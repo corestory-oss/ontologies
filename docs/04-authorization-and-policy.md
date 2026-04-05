@@ -95,10 +95,10 @@ The Authorization and Policy section provides a flexible, fine-grained access co
 **Key Attributes**:
 - Inherits from `NamedEntity`
 - **policy_type**: Type of policy
-  - **RBAC**: Role-Based Access Control
-  - **ABAC**: Attribute-Based Access Control
-  - **REBAC**: Relationship-Based Access Control
-  - **PBAC**: Policy-Based Access Control
+  - `rbac`: Role-Based Access Control
+  - `abac`: Attribute-Based Access Control
+  - `rebac`: Relationship-Based Access Control
+  - `pbac`: Policy-Based Access Control
 - **rules**: List of rules within this policy
 - **priority**: Evaluation priority (higher priority policies evaluated first)
 
@@ -154,11 +154,11 @@ Access decisions based on centrally defined policies.
 **Key Attributes**:
 - Inherits from `NamedEntity`
 - **scope_type**: Type of scope
-  - **GLOBAL**: System-wide global scope
-  - **TENANT**: Limited to a specific tenant
-  - **ORGANIZATION**: Limited to an organization within a tenant
-  - **RESOURCE**: Limited to a specific resource or resource type
-  - **FIELD**: Limited to specific fields within a resource
+  - `global`: System-wide global scope
+  - `tenant`: Limited to a specific tenant
+  - `organization`: Limited to an organization within a tenant
+  - `resource`: Limited to a specific resource or resource type
+  - `field`: Limited to specific fields within a resource
 - **resource_pattern**: Pattern matching resources in scope (e.g., regex, glob)
 
 **Relationships**:
@@ -197,11 +197,11 @@ GLOBAL
 **Key Attributes**:
 - Inherits from `NamedEntity`
 - **constraint_type**: Type of constraint
-  - **TEMPORAL**: Time-based constraint (date/time ranges)
-  - **SPATIAL**: Location or geography-based constraint
-  - **ATTRIBUTE**: Attribute or property-based constraint
-  - **CONTEXT**: Context-dependent constraint (device, IP, etc.)
-  - **RATE_LIMIT**: Rate limiting or quota-based constraint
+  - `temporal`: Time-based constraint (date/time ranges)
+  - `spatial`: Location or geography-based constraint
+  - `attribute`: Attribute or property-based constraint
+  - `context`: Context-dependent constraint (device, IP, etc.)
+  - `rate_limit`: Rate limiting or quota-based constraint
 - **expression**: Constraint expression (e.g., "hour >= 9 AND hour <= 17")
 - **parameters**: Constraint parameters
 

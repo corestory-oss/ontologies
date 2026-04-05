@@ -138,12 +138,11 @@ A logical boundary that groups related code and data. This is the cornerstone of
 
 **Key Attributes:**
 - `encapsulation_type` - **Required.** The paradigm-specific type (see EncapsulationType enum)
-- `visibility` - Visibility level (public, private, protected, internal, package, module)
+- `visibility` - Visibility level (public, private, protected, internal, package)
 - `qualified_name` - Fully qualified name (e.g., com.example.UserService)
 - `stereotype` - Additional stereotype (Service, Repository, DTO, Controller, etc.)
 - `is_abstract` - Whether this is abstract/incomplete
 - `is_final` - Whether this can be extended
-- `is_static` - Whether this is static/stateless
 - `error_model_for_module` - **(v2.0)** ErrorModel associated with this unit
 - `screen_used_by_programs` - **(v2.0)** ScreenDefinition[] used by this unit
 - `outgoing_ipc_connections` - **(v2.0)** IPCConnection[] originating from this unit
@@ -152,7 +151,7 @@ A logical boundary that groups related code and data. This is the cornerstone of
 - `memory_model_for_module` - **(v2.0)** MemoryModel associated with this unit
 - `executed_by_job_steps` - **(v2.0)** JobStep[] that execute this unit
 
-**EncapsulationType Values** (31 total):
+**EncapsulationType Values** (33 total):
 
 **Object-Oriented:**
 - `class` - Standard OOP class
@@ -191,7 +190,7 @@ A logical boundary that groups related code and data. This is the cornerstone of
 - `view` - Database view
 
 **Other:**
-- `object` - Module-level object (Scala)
+- `object` - JavaScript/prototype-based object
 - `component` - Component definition
 - `service` - Service class
 - `controller` - Controller class
@@ -242,7 +241,6 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `is_async` - Whether this is asynchronous
 - `is_pure` - Whether this is a pure function (no side effects)
 - `is_static` - Whether this is static
-- `is_abstract` - Whether this is abstract
 - `is_virtual` - Whether this is virtual/overridable
 - `complexity_score` - Cyclomatic complexity or similar metric
 - `entry_point_type` - If this is an entry point (main, constructor, handler, etc.)
@@ -251,7 +249,7 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `callable_file_operations` - **(v2.0)** FileOperation[] performed by this callable
 - `callable_affected_by_directives` - **(v2.0)** PreprocessorDirective[] affecting this callable
 
-**CallableType Values** (48 total):
+**CallableType Values** (53 total):
 
 **Object-Oriented Methods:**
 - `method` - Instance method
@@ -369,7 +367,7 @@ Represents organized data storage - the paradigm-agnostic representation of clas
 - `persistence_type` - How this is persisted (transient, database, file, memory, cache)
 - `passed_via_ipc` - **(v2.0)** IPCConnection[] through which this structure is passed
 
-**DataStructureType Values** (43 total):
+**DataStructureType Values** (50 total):
 
 **Object-Oriented:**
 - `class_data` - Data members of a class
@@ -467,16 +465,13 @@ employee_record:
 Individual data fields, variables, or constants.
 
 **Key Attributes:**
-- `element_type` - Type of element (field, property, variable, constant, parameter)
+- `element_category` - Category of element (field, static_field, local_variable, parameter, constant, global_variable, computed, temporary)
 - `data_type` - Data type (string, integer, User, etc.) — **Deprecated for typed analysis in v2.0** — use `declared_type` (TypeExpression) instead
 - `declared_type` - **(v2.0)** TypeExpression for the declared type
 - `visibility` - Visibility level
-- `is_static` - Whether this is static
-- `is_final` - Whether this is final/immutable
+- `is_constant` - Whether this is a constant/immutable
 - `is_nullable` - Whether this can be null
 - `default_value` - Default value
-- `min_occurs` - Minimum occurrences (for arrays)
-- `max_occurs` - Maximum occurrences
 - `ownership_annotations` - **(v2.0)** OwnershipAnnotation[] for this element
 - `mapped_from_screen_fields` - **(v2.0)** ScreenField[] mapped to this element
 
@@ -491,7 +486,7 @@ Individual data fields, variables, or constants.
 user_email:
   a: DataElement
   name: email
-  element_type: field
+  element_category: field
   data_type: String
   visibility: private
   is_nullable: false
@@ -503,22 +498,18 @@ user_email:
 Function/method parameter.
 
 **Key Attributes:**
-- `parameter_type` - Type (input, output, input_output, return, variadic)
-- `data_type` - Data type
+- `direction` - Direction (range: `ParameterDirection`): `input`, `output`, `input_output`, `return`
 - `position` - Position in parameter list
-- `is_optional` - Whether this is optional
-- `default_value` - Default value
-- `passing_mechanism` - How passed (by_value, by_reference, by_name)
+- `passing_mechanism` - How passed (by_value, by_reference, by_name, by_result)
 
 **Example:**
 ```yaml
 username_param:
   a: Parameter
   name: username
-  parameter_type: input
+  direction: input
   data_type: String
   position: 1
-  is_optional: false
   parameter_of: create_user
 ```
 
@@ -529,25 +520,22 @@ username_param:
 A logical block of code (conditional, loop, try-catch, etc.).
 
 **Key Attributes:**
-- `block_type` - Type (conditional, loop, try_catch, synchronized, etc.)
-- `condition` - Condition expression
-- `nesting_level` - Nesting depth
+- `block_type` - Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope)
 
 ### Statement
 
 Individual code statement.
 
 **Key Attributes:**
-- `statement_type` - Type (assignment, invocation, return, declaration, etc.)
+- `statement_category` - Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling)
 - `line_number` - Source line number
-- `complexity_contribution` - Contribution to complexity
 
 ### ControlFlow
 
 Control flow between code elements (calls, branches, etc.).
 
 **Key Attributes:**
-- `flow_type` - Type (call, conditional_branch, unconditional_branch, loop, etc.)
+- `flow_type` - Type (call, async_call, branch, jump, return, throw, yield)
 - `is_conditional` - Whether flow is conditional
 - `condition` - Condition expression
 
@@ -562,8 +550,7 @@ Control flow between code elements (calls, branches, etc.).
 Data flow between elements.
 
 **Key Attributes:**
-- `flow_type` - Type (parameter_passing, return_value, field_access, assignment, etc.)
-- `data_type` - Type of data flowing
+- `flow_type` - Type (read, write, modify, define, use)
 
 **Relationships:**
 - `source_element` - Source data element
@@ -745,18 +732,18 @@ update_inventory_impl:
 
 ### Additional Type Enumerations
 
-- **VisibilityType**: public, private, protected, internal, package, module, file
+- **VisibilityType**: `public`, `private`, `protected`, `internal`, `package`
 - **CallableCategory**: `normal`, `operator`, `main_entry` **(v2.0 — cleaned to 3 values)**
-- **EntryPointType**: main, constructor, destructor, initializer, event_handler, callback
-- **DataStructureCategory**: simple, composite, collection, reference
-- **DataElementCategory**: field, property, variable, constant, parameter
-- **ParameterDirection**: input, output, input_output, return
-- **PassingMechanism**: by_value, by_reference, by_name, by_need
-- **CodeBlockType**: conditional, loop, try_catch, synchronized, transaction, scope
-- **StatementCategory**: assignment, invocation, return, declaration, control, exception
-- **ReferenceType**: import, include, using, require, copy
-- **ControlFlowType**: call, conditional_branch, unconditional_branch, loop, exception
-- **DataFlowType**: parameter_passing, return_value, field_access, assignment, reference
+- **EntryPointType**: `main_program`, `transaction_entry`, `event_handler`, `scheduled_entry`, `api_endpoint`
+- **DataStructureCategory**: `composite`, `collection`, `hierarchical`, `value_type`, `reference_type`, `union`
+- **DataElementCategory**: `field`, `static_field`, `local_variable`, `parameter`, `constant`, `global_variable`, `computed`, `temporary`
+- **ParameterDirection**: `input`, `output`, `input_output`, `return`
+- **PassingMechanism**: `by_value`, `by_reference`, `by_name`, `by_result`
+- **CodeBlockType**: `sequential`, `conditional`, `loop`, `try_catch`, `transaction`, `critical_section`, `scope`
+- **StatementCategory**: `declaration`, `assignment`, `invocation`, `control_transfer`, `io_operation`, `data_manipulation`, `transaction_control`, `exception_handling`
+- **ReferenceType**: `import_module`, `import_symbol`, `include_source`, `inherit`, `implement`
+- **ControlFlowType**: `call`, `async_call`, `branch`, `jump`, `return`, `throw`, `yield`
+- **DataFlowType**: `read`, `write`, `modify`, `define`, `use`
 
 ## Usage Patterns
 
@@ -961,7 +948,7 @@ Represents a batch job definition (e.g., JCL JOB statement).
 Represents an individual step within a batch job.
 
 **Key Attributes:**
-- `step_type` - JobStepType (e.g., exec_pgm, exec_proc, exec_utility)
+- `step_type` - JobStepType (e.g., exec_program, exec_proc, utility)
 - `program_name` - Program or procedure to execute
 - `condition_code` - Condition code for step execution
 - `region_size` - Memory region size
@@ -980,7 +967,8 @@ Represents a dataset or file allocation within a job step (e.g., JCL DD statemen
 - `dd_name` - DD name (logical file name)
 - `dataset_name` - Physical dataset name
 - `disposition` - DatasetDisposition (e.g., new, old, shr, mod)
-- `space_allocation` - Space allocation parameters
+- `space_primary` - Primary space allocation
+- `space_secondary` - Secondary space allocation
 - `record_format` - Record format
 
 **Relationships:**
@@ -994,7 +982,7 @@ Represents a dataset or file allocation within a job step (e.g., JCL DD statemen
 Represents a communication channel between processes or programs.
 
 **Key Attributes:**
-- `mechanism` - IPCMechanism (e.g., mq_message, tcp_socket, shared_memory, named_pipe, cics_link, cics_xctl)
+- `mechanism` - IPCMechanism (e.g., message_queue, socket, shared_memory, named_pipe, cics_link, cics_xctl, grpc_call, event_bus)
 - `is_synchronous` - Whether the communication is synchronous
 - `transaction_scoped` - Whether the connection is scoped to a transaction
 

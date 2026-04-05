@@ -15,7 +15,7 @@ The Integration section provides comprehensive modeling of connections to extern
 **Definition**: A system outside this system's boundary.
 
 **Key Attributes**:
-- **system_type**: THIRD_PARTY_SERVICE, PARTNER_SYSTEM, LEGACY_SYSTEM, SAAS_APPLICATION
+- **system_type**: `third_party_service`, `partner_system`, `legacy_system`, `saas_application`
 - **owner**: System owner or vendor
 - **sla**: Service level agreement
 - **documentation_url**: API documentation URL
@@ -24,10 +24,10 @@ The Integration section provides comprehensive modeling of connections to extern
 - **integrated_via**: `Integration[]` (inlined) connecting to this system
 
 **External System Types**:
-- **THIRD_PARTY_SERVICE**: External SaaS or API service (Stripe, SendGrid, Twilio)
-- **PARTNER_SYSTEM**: Business partner's system
-- **LEGACY_SYSTEM**: Existing legacy system being integrated
-- **SAAS_APPLICATION**: Software-as-a-Service application
+- `third_party_service`: External SaaS or API service (Stripe, SendGrid, Twilio)
+- `partner_system`: Business partner's system
+- `legacy_system`: Existing legacy system being integrated
+- `saas_application`: Software-as-a-Service application
 
 ---
 
@@ -36,7 +36,7 @@ The Integration section provides comprehensive modeling of connections to extern
 **Definition**: A configured connection to an external system.
 
 **Key Attributes**:
-- **integration_type**: INBOUND (receiving data), OUTBOUND (sending data), BIDIRECTIONAL
+- **integration_type**: `inbound` (receiving data), `outbound` (sending data), `bidirectional`
 - **protocol**: Communication protocol (HTTP, GRPC, KAFKA, etc.)
 - **messages**: List of messages exchanged
 
@@ -48,9 +48,9 @@ The Integration section provides comprehensive modeling of connections to extern
 - **belongs_to_system**: Parent `System`
 
 **Integration Types**:
-- **INBOUND**: Receive data from external system (webhooks, API calls)
-- **OUTBOUND**: Send data to external system (API calls, events)
-- **BIDIRECTIONAL**: Two-way communication
+- `inbound`: Receive data from external system (webhooks, API calls)
+- `outbound`: Send data to external system (API calls, events)
+- `bidirectional`: Two-way communication
 
 **Integration Patterns**:
 - **Request-Response**: Synchronous API calls
@@ -65,19 +65,19 @@ The Integration section provides comprehensive modeling of connections to extern
 **Definition**: A unit of data exchanged in integration.
 
 **Key Attributes**:
-- **message_type**: REQUEST, RESPONSE, NOTIFICATION, COMMAND, EVENT, QUERY
+- **message_type**: `request`, `response`, `notification`, `command`, `event`, `query`
 
 **Relationships**:
 - **message_structured_by_schema**: `Schema` defining message structure
 - **validated_by_contract**: `Contract` validating message
 
 **Message Types**:
-- **REQUEST**: Request message expecting a response
-- **RESPONSE**: Response to a request
-- **NOTIFICATION**: One-way notification (no response expected)
-- **COMMAND**: Command for action execution
-- **EVENT**: Event notification
-- **QUERY**: Query for data retrieval
+- `request`: Request message expecting a response
+- `response`: Response to a request
+- `notification`: One-way notification (no response expected)
+- `command`: Command for action execution
+- `event`: Event notification
+- `query`: Query for data retrieval
 
 **Message Patterns**:
 - **Envelope Pattern**: Wrap payload in standard envelope (headers, metadata)
@@ -93,25 +93,25 @@ The Integration section provides comprehensive modeling of connections to extern
 
 **Key Attributes**:
 - Implements `Versionable` mixin
-- **contract_type**: OPENAPI, ASYNCAPI, JSON_SCHEMA, PROTOBUF, AVRO, GRAPHQL_SCHEMA, WSDL
+- **contract_type**: `openapi`, `asyncapi`, `json_schema`, `protobuf`, `avro`, `graphql_schema`, `wsdl`
 - **definition**: Contract definition
-- **versions**: List of contract versions
+- **contract_versions**: List of contract versions
 
 **Relationships**:
 - **defines_interfaces**: `Interface` entities defined
 - **governs_integrations**: `Integration` entities governed
 - **validates_messages**: `Message` entities validated
-- **implemented_by_units**: `DeploymentUnit` entities implementing this contract
+- **implemented_by_units**: `EncapsulationUnit` entities implementing this contract
 - **contract_versions**: `ContractVersion[]` (v2.0 back-reference from `ContractVersion.version_of_contract`)
 
 **Contract Types**:
-- **OPENAPI**: REST API specification (Swagger)
-- **ASYNCAPI**: Async API specification (events, messages)
-- **JSON_SCHEMA**: JSON data structure schema
-- **PROTOBUF**: Protocol Buffers schema
-- **AVRO**: Apache Avro schema
-- **GRAPHQL_SCHEMA**: GraphQL type system
-- **WSDL**: SOAP web service description
+- `openapi`: REST API specification (Swagger)
+- `asyncapi`: Async API specification (events, messages)
+- `json_schema`: JSON data structure schema
+- `protobuf`: Protocol Buffers schema
+- `avro`: Apache Avro schema
+- `graphql_schema`: GraphQL type system
+- `wsdl`: SOAP web service description
 
 **Contract-First vs Code-First**:
 - **Contract-First**: Define contract, generate code
@@ -329,13 +329,13 @@ Translation layer protecting domain model:
 
 ```
 ExternalSystem: StripePaymentGateway
-  Type: THIRD_PARTY_SERVICE
+  Type: third_party_service
   Owner: Stripe, Inc.
   SLA: 99.99% uptime
   Documentation: https://stripe.com/docs/api
 
 Integration: PaymentProcessingIntegration
-  Type: BIDIRECTIONAL
+  Type: bidirectional
   Protocol: HTTPS
 
   Adapter: StripeAdapter
@@ -352,19 +352,19 @@ Integration: PaymentProcessingIntegration
     Half-Open Requests: 3
 
   Messages:
-    - CreatePaymentRequest (COMMAND)
+    - CreatePaymentRequest (command)
       Schema: PaymentRequestSchema v1.0
       Fields: amount, currency, payment_method, metadata
 
-    - PaymentSucceededEvent (EVENT)
+    - PaymentSucceededEvent (event)
       Schema: PaymentEventSchema v1.0
       Fields: payment_id, status, amount, timestamp
 
-    - RefundPaymentRequest (COMMAND)
-    - PaymentFailedEvent (EVENT)
+    - RefundPaymentRequest (command)
+    - PaymentFailedEvent (event)
 
   Contract: StripeAPIContract
-    Type: OPENAPI
+    Type: openapi
     Version: 2023-10-16
     Definition: OpenAPI 3.0 specification
 

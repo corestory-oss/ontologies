@@ -25,7 +25,7 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 - **has_root_entity**: The root `DomainEntity` (required, single)
 - **enforced_by_invariant_rules**: `Rule` entities that enforce aggregate invariants
 - **persisted_in_stores**: `DataStore` entities where this aggregate is persisted
-- **produced_by_aggregate**: `DomainEvent` entities produced
+- **produces_domain_events**: `DomainEvent` entities produced
 - **contained_in_bounded_context**: Parent `BoundedContext`
 
 **Aggregate Design Principles**:
@@ -85,7 +85,7 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **cardinality** (range: `Cardinality`, required): The multiplicity of the relationship (e.g., ONE_TO_ONE, ONE_TO_MANY, MANY_TO_MANY) — wires the previously orphaned `Cardinality` enum
+- **cardinality** (range: `Cardinality`, required): The multiplicity of the relationship (e.g., `one_to_one`, `one_to_many`, `many_to_many`) — wires the previously orphaned `Cardinality` enum
 - **is_navigable** (boolean): Whether the relationship is traversable from source to target
 - **is_bidirectional** (boolean): Whether the relationship can be navigated in both directions
 - **is_composition** (boolean): Whether this represents UML composition (strong ownership) vs aggregation (weak ownership)
@@ -101,7 +101,7 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 DomainRelationship: OrderHasLineItems
   source_entity: Order
   target_entity: OrderLineItem
-  cardinality: ONE_TO_MANY
+  cardinality: one_to_many
   is_composition: true
   is_navigable: true
   is_bidirectional: true
@@ -110,7 +110,7 @@ DomainRelationship: OrderHasLineItems
 DomainRelationship: UserBelongsToOrganization
   source_entity: User
   target_entity: Organization
-  cardinality: MANY_TO_ONE
+  cardinality: many_to_one
   is_composition: false
   is_navigable: true
   is_bidirectional: true
@@ -119,7 +119,7 @@ DomainRelationship: UserBelongsToOrganization
 DomainRelationship: StudentEnrolledInCourses
   source_entity: Student
   target_entity: Course
-  cardinality: MANY_TO_MANY
+  cardinality: many_to_many
   is_composition: false
   is_navigable: true
   is_bidirectional: true
@@ -163,43 +163,43 @@ DomainRelationship: StudentEnrolledInCourses
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **category**: REQUIRED, OPTIONAL, COMPUTED, DERIVED, TRANSIENT
+- **category**: `required`, `optional`, `computed`, `derived`, `transient`
 - **data_type**: Data type (string, integer, boolean, date, etc.)
 - **is_identifier**: Whether this is an identifier attribute
 - **is_indexed**: Whether this attribute should be indexed
 - **default_value**: Default value if not specified
-- **classification**: Data classification (PUBLIC, INTERNAL, CONFIDENTIAL, PII, etc.)
+- **classification**: Data classification (`public`, `internal`, `confidential`, `pii`, etc.)
 
 **Relationships**:
 - **validated_by_rules**: `Rule` entities that validate this attribute
 - **mapped_from_element** *(v2.0)*: Back-reference to the `DataElement` that maps to this attribute
 
 **Attribute Categories**:
-- **REQUIRED**: Must have a value
-- **OPTIONAL**: May be null
-- **COMPUTED**: Calculated from other attributes
-- **DERIVED**: Derived from other entities or data
-- **TRANSIENT**: Not persisted in storage
+- `required`: Must have a value
+- `optional`: May be null
+- `computed`: Calculated from other attributes
+- `derived`: Derived from other entities or data
+- `transient`: Not persisted in storage
 
 **Data Classifications**:
-- **PUBLIC**: Publicly accessible
-- **INTERNAL**: Internal use only
-- **CONFIDENTIAL**: Sensitive information
-- **RESTRICTED**: Highly restricted
-- **PII**: Personally Identifiable Information
-- **PHI**: Protected Health Information
-- **PCI**: Payment Card Industry data
+- `public`: Publicly accessible
+- `internal`: Internal use only
+- `confidential`: Sensitive information
+- `restricted`: Highly restricted
+- `pii`: Personally Identifiable Information
+- `phi`: Protected Health Information
+- `pci`: Payment Card Industry data
 
 **Example Attributes**:
 ```
 Entity: Customer
 Attributes:
-  - id (REQUIRED, string, is_identifier=true)
-  - email (REQUIRED, string, classification=PII)
-  - name (REQUIRED, string, classification=PII)
-  - phone (OPTIONAL, string, classification=PII)
-  - loyalty_points (COMPUTED, integer)
-  - created_at (REQUIRED, timestamp)
+  - id (required, string, is_identifier=true)
+  - email (required, string, classification=pii)
+  - name (required, string, classification=pii)
+  - phone (optional, string, classification=pii)
+  - loyalty_points (computed, integer)
+  - created_at (required, timestamp)
 ```
 
 ---
@@ -407,20 +407,20 @@ Order State Machine:
 Aggregate: Order
   Root Entity: Order
     Attributes:
-      - order_id (REQUIRED, UUID, identifier)
-      - customer_id (REQUIRED, UUID)
-      - order_date (REQUIRED, timestamp)
-      - status (REQUIRED, string)
-      - total_amount (COMPUTED, Money)
+      - order_id (required, UUID, identifier)
+      - customer_id (required, UUID)
+      - order_date (required, timestamp)
+      - status (required, string)
+      - total_amount (computed, Money)
 
   Entities:
     - OrderLineItem
       Attributes:
-        - line_item_id (REQUIRED, UUID, identifier)
-        - product_id (REQUIRED, UUID)
-        - quantity (REQUIRED, integer)
-        - unit_price (REQUIRED, Money)
-        - subtotal (COMPUTED, Money)
+        - line_item_id (required, UUID, identifier)
+        - product_id (required, UUID)
+        - quantity (required, integer)
+        - unit_price (required, Money)
+        - subtotal (computed, Money)
 
   Value Objects:
     - Money (amount, currency)

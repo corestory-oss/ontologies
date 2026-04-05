@@ -722,8 +722,9 @@ A file defined for I/O in a program -- corresponds to a COBOL `SELECT`/`FD`, VSA
 | `vsam_ksds` | VSAM Key-Sequenced Data Set |
 | `vsam_esds` | VSAM Entry-Sequenced Data Set |
 | `vsam_rrds` | VSAM Relative Record Data Set |
-| `partitioned` | Partitioned Data Set (PDS/PDSE) |
+| `partitioned_dataset` | Partitioned Data Set (PDS/PDSE) |
 | `line_sequential` | Line-sequential text file |
+| `generation_data_group` | Generation data group (GDG) |
 | `heap` | Heap/unstructured file |
 
 **FileAccessMode Enum:**

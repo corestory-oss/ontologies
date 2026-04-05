@@ -296,7 +296,8 @@ read_customer:
 | `vsam_ksds` | VSAM Key-Sequenced Data Set |
 | `vsam_esds` | VSAM Entry-Sequenced Data Set |
 | `vsam_rrds` | VSAM Relative Record Data Set |
-| `partitioned` | Partitioned Data Set (PDS/PDSE) |
+| `partitioned_dataset` | Partitioned Data Set (PDS/PDSE) |
+| `generation_data_group` | Generation data group (GDG) |
 | `line_sequential` | Line-sequential text file |
 | `heap` | Heap/unstructured file |
 
@@ -601,6 +602,8 @@ log_pipeline:
 | `semaphore` | Semaphore-based synchronization |
 | `dcom` | Distributed COM |
 | `rest_call` | REST API call between processes |
+| `grpc_call` | gRPC inter-process call |
+| `event_bus` | Event bus communication |
 
 ---
 

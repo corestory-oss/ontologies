@@ -89,7 +89,7 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 - **required_features**: Features needed to enable this module
 - **mapped_from_directory**: Directory path this module is mapped from *(v2.0)*
 - **module_tested_by_suites**: `TestSuite` entities that test this module *(v2.0)*
-- **module_has_coverage**: `CoverageReport` entities for this module *(v2.0)*
+- **module_has_coverage**: `TestCoverage` entities for this module *(v2.0)*
 - **module_managed_by_package_manager**: `PackageManager` managing this module *(v2.0)*
 - **module_has_dependencies**: `Dependency` entities for this module *(v2.0)*
 
@@ -102,10 +102,10 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 - **runs_as_services**: `Service` entities that execute this module
 
 **Dependency Types**:
-- **RUNTIME**: Required at runtime for execution
-- **BUILD**: Required at build/compile time
-- **OPTIONAL**: Optional dependency for additional features
-- **DEV**: Required only for development/testing
+- `runtime`: Required at runtime for execution
+- `build`: Required at build/compile time
+- `optional`: Optional dependency for additional features
+- `dev`: Required only for development/testing
 
 **Example Use Cases**:
 - Payment processing module
@@ -132,8 +132,8 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 
 **Back-Reference Attributes** *(v2.0)*:
 - **tested_by_suites**: `TestSuite` entities that test this component
-- **has_coverage**: `CoverageReport` entities for this component
-- **component_serves_model**: `DomainModel` entities this component serves
+- **has_coverage**: `TestCoverage` entities for this component
+- **component_serves_model**: `MLModel` entities this component serves
 - **component_uses_concurrency_pattern**: `ConcurrencyPattern` entities used by this component
 
 **Relationships**:
@@ -183,7 +183,7 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **category**: Feature category (CORE, OPTIONAL, EXPERIMENTAL, DEPRECATED)
+- **category**: Feature category (`core`, `optional`, `experimental`, `deprecated`)
 
 **Relationships**:
 - **enabled_by_capabilities**: `Capability` entities that enable this feature
@@ -191,10 +191,10 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 - **accessible_by_roles**: `Role` entities that can access this feature
 
 **Feature Categories**:
-- **CORE**: Essential feature required for basic operation
-- **OPTIONAL**: Add-on feature that can be enabled/disabled
-- **EXPERIMENTAL**: Beta feature under development
-- **DEPRECATED**: Feature scheduled for removal
+- `core`: Essential feature required for basic operation
+- `optional`: Add-on feature that can be enabled/disabled
+- `experimental`: Beta feature under development
+- `deprecated`: Feature scheduled for removal
 
 **Example Use Cases**:
 - Dark mode toggle
@@ -211,7 +211,7 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 **Purpose**: Defines how actors and systems interact with the application.
 
 **Key Attributes**:
-- **category**: Interface category (USER_INTERFACE, PROGRAMMATIC_INTERFACE, EVENT_INTERFACE)
+- **category**: Interface category (`user_interface`, `programmatic_interface`, `event_interface`)
 - **authentication_required**: Whether authentication is required
 - **rate_limit**: Requests per minute limit
 
@@ -224,14 +224,14 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 User-facing interface for human interaction.
 
 **Attributes**:
-- **ui_type**: WEB_UI, MOBILE_UI, DESKTOP_UI, CLI
+- **ui_type**: `web_ui`, `mobile_ui`, `desktop_ui`, `cli`
 - **screens**: List of `Screen` entities
 
 #### ProgrammaticInterface
 Machine-to-machine API interface.
 
 **Attributes**:
-- **api_type**: REST_API, GRAPHQL_API, GRPC_API, SDK, SOAP_API
+- **api_type**: `rest_api`, `graphql_api`, `grpc_api`, `sdk`, `soap_api`
 - **base_url**: Base URL for the API
 - **has_endpoints**: `Endpoint` entities
 
@@ -239,7 +239,7 @@ Machine-to-machine API interface.
 Event-driven asynchronous interface.
 
 **Attributes**:
-- **event_type**: WEBHOOK, MESSAGE_QUEUE, EVENT_STREAM, PUB_SUB
+- **event_type**: `webhook`, `message_queue`, `event_stream`, `pub_sub`
 - **topics**: Event topics or channels
 - **has_subscriptions**: `Subscription` entities
 
@@ -277,7 +277,7 @@ Event-driven asynchronous interface.
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **service_type**: MICROSERVICE, MONOLITH, FUNCTION, JOB, DAEMON
+- **service_type**: `microservice`, `monolith`, `function`, `job`, `daemon`, `cics_transaction`, `ims_transaction`, `batch_program`, `stored_proc_service`
 - **health_checks**: Health check definitions
 - **emits_metrics**: Metrics emitted by the service
 
@@ -288,11 +288,15 @@ Event-driven asynchronous interface.
 - **deployed_as**: `Deployment` entities
 
 **Service Types**:
-- **MICROSERVICE**: Small, independently deployable service
-- **MONOLITH**: Single-tier monolithic application
-- **FUNCTION**: Serverless function or lambda
-- **JOB**: Batch processing job
-- **DAEMON**: Background service or daemon process
+- `microservice`: Small, independently deployable service
+- `monolith`: Single-tier monolithic application
+- `function`: Serverless function or lambda
+- `job`: Batch processing job
+- `daemon`: Background service or daemon process
+- `cics_transaction`: CICS online transaction
+- `ims_transaction`: IMS online transaction
+- `batch_program`: Mainframe batch program
+- `stored_proc_service`: Stored procedure exposed as service
 
 **Example Use Cases**:
 - Order processing microservice
@@ -335,7 +339,7 @@ Event-driven asynchronous interface.
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **dependency_type**: RUNTIME, BUILD, OPTIONAL, DEV
+- **dependency_type**: `runtime`, `build`, `optional`, `dev`
 - **target**: Target entity of the dependency
 - **version_constraint**: Version constraint expression
 - **is_optional**: Whether the dependency is optional

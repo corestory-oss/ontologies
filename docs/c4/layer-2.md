@@ -116,7 +116,8 @@ These relationships connect Layer 2 concepts to system-context entities:
 | Integration | `belongs_to_system` | System | System owning this integration |
 | Integration | `integrates_with_system` | ExternalSystem | External system connected via this integration |
 | Interface | `exposed_by_system` | System | System exposing this interface |
-| Policy | `enforced_by_system` | System | System enforcing this authorization policy |
+
+> **Note:** **Policy** (Layer 3) also has an upward link to Layer 1 via `enforced_by_system` → **System**. It is documented in the Layer 3 cross-layer section rather than here, since Policy is not a Layer 2 class.
 
 ### Downward links to Layer 3 (Component)
 
@@ -129,16 +130,26 @@ These relationships connect Layer 2 concepts to their component-level internals:
 | DataStore | `persists_aggregates` | Aggregate | Aggregates backed by this data store |
 | Configuration | `controls_features` | Feature | Features controlled by this config (feature flags) |
 | Service | `receives_integration_events` | IntegrationEvent | Integration events received by this service |
-| Collection | `persists_structures` | DataStructure | Code-level data structures persisted in this collection (Layer 4) |
 | Collection | `collection_structured_by_schema` | Schema | Schema defining collection structure |
-| Contract | `defines_interfaces` | Interface | Interfaces defined by this contract |
-| Contract | `implemented_by_units` | EncapsulationUnit | Code units implementing this contract (Layer 4) |
 | Module | `provides_capabilities` | Capability | Capabilities provided by this module |
-| Module | `runs_as_services` | Service | Services running this module |
 | Route | `route_renders_component` | UIComponent | UI component rendered on this route |
 | Route | `route_guarded_by` | Policy | Policies guarding this route |
 | Screen | `offers_operations` | Operation | Operations accessible from this screen |
 | Endpoint | `operations` | Operation | Operations served by this endpoint |
+
+### Intra-layer links (within Layer 2)
+
+| Layer 2 class | Attribute | Layer 2 class | Description |
+|---|---|---|---|
+| Contract | `defines_interfaces` | Interface | Interfaces defined by this contract |
+| Module | `runs_as_services` | Service | Services running this module |
+
+### Downward links to Layer 4 (Code)
+
+| Layer 2 class | Attribute | Layer 4 class | Description |
+|---|---|---|---|
+| Collection | `persists_structures` | DataStructure | Code-level data structures persisted in this collection |
+| Contract | `implemented_by_units` | EncapsulationUnit | Code units implementing this contract |
 
 ---
 
@@ -234,7 +245,7 @@ An independently deployable runtime unit.
 | `daemon` | Daemon process |
 | `cics_transaction` | CICS online transaction |
 | `ims_transaction` | IMS online transaction |
-| `batch_job` | Mainframe batch job |
+| `batch_program` | Mainframe batch program |
 | `stored_proc_service` | Stored procedure exposed as service |
 
 ---
@@ -518,6 +529,7 @@ A persistence mechanism.
 | `vsam` | IBM VSAM dataset |
 | `flat_file` | Sequential or flat file |
 | `isam` | Indexed Sequential Access Method file |
+| `dead_letter_queue` | Dead letter queue |
 
 ---
 
@@ -1051,6 +1063,8 @@ The underlying compute, storage, and network resources.
 | `dns` | DNS |
 | `cdn` | Content delivery network |
 | `firewall` | Firewall |
+| `api_gateway` | API gateway or ingress controller |
+| `service_mesh` | Service mesh control plane (Istio, Linkerd, etc.) |
 
 ---
 

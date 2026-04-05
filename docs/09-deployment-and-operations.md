@@ -15,20 +15,20 @@ The Deployment and Operations section models how software is packaged, configure
 **Definition**: A runtime context with specific configuration.
 
 **Key Attributes**:
-- **environment_type**: DEVELOPMENT, TESTING, STAGING, PRODUCTION, DR
+- **environment_type**: `development`, `testing`, `staging`, `production`, `dr`
 
 **Relationships**:
 - **hosts_deployments**: `Deployment` instances running in this environment
 - **env_configured_by**: `Configuration` entities for this environment
 - **uses_infrastructure**: `Infrastructure` resources used
-- **deployed_by_pipelines**: `Pipeline` entities that deploy to this environment (v2.0 back-reference)
+- **deployed_by_pipelines**: `BuildPipeline` entities that deploy to this environment (v2.0 back-reference)
 
 **Environment Types**:
-- **DEVELOPMENT**: For active software development
-- **TESTING**: For QA and integration testing
-- **STAGING**: Pre-production environment mirroring production
-- **PRODUCTION**: Live production environment serving users
-- **DR**: Disaster recovery environment
+- `development`: For active software development
+- `testing`: For QA and integration testing
+- `staging`: Pre-production environment mirroring production
+- `production`: Live production environment serving users
+- `dr`: Disaster recovery environment
 
 **Environment Characteristics**:
 - Different configurations (database connections, API keys)
@@ -66,7 +66,7 @@ The Deployment and Operations section models how software is packaged, configure
 **Definition**: The packaged artifact being deployed.
 
 **Key Attributes**:
-- **unit_type**: CONTAINER, VM, SERVERLESS_FUNCTION, BINARY, PACKAGE
+- **unit_type**: `container`, `vm`, `serverless_function`, `binary`, `package`
 - **artifact_uri**: Location of the deployment artifact
 - **checksum**: Artifact integrity checksum
 
@@ -74,11 +74,11 @@ The Deployment and Operations section models how software is packaged, configure
 - **deployed_in_deployments**: `Deployment` entities that deploy this unit
 
 **Deployment Unit Types**:
-- **CONTAINER**: Docker/OCI container image
-- **VM**: Virtual machine image (AMI, qcow2)
-- **SERVERLESS_FUNCTION**: Lambda/Cloud Function package
-- **BINARY**: Compiled executable binary
-- **PACKAGE**: Application package (JAR, WAR, ZIP)
+- `container`: Docker/OCI container image
+- `vm`: Virtual machine image (AMI, qcow2)
+- `serverless_function`: Lambda/Cloud Function package
+- `binary`: Compiled executable binary
+- `package`: Application package (JAR, WAR, ZIP)
 
 **Artifact Management**:
 - Store in artifact repository (Artifactory, Nexus, container registry)
@@ -94,17 +94,17 @@ The Deployment and Operations section models how software is packaged, configure
 **Definition**: Runtime parameters for a deployment.
 
 **Key Attributes**:
-- **config_type**: ENVIRONMENT_VARIABLE, CONFIG_FILE, SECRET, FEATURE_FLAG, REMOTE_CONFIG
+- **config_type**: `environment_variable`, `config_file`, `secret`, `feature_flag`, `remote_config`
 - **value**: Configuration value
 - **is_secret**: Whether this is sensitive data
 - **source**: Configuration source (vault, config service, etc.)
 
 **Configuration Types**:
-- **ENVIRONMENT_VARIABLE**: OS environment variables
-- **CONFIG_FILE**: YAML, JSON, properties files
-- **SECRET**: Sensitive values (passwords, API keys) from secret manager
-- **FEATURE_FLAG**: Feature toggle configuration
-- **REMOTE_CONFIG**: Configuration from remote service (Spring Cloud Config, AWS AppConfig)
+- `environment_variable`: OS environment variables
+- `config_file`: YAML, JSON, properties files
+- `secret`: Sensitive values (passwords, API keys) from secret manager
+- `feature_flag`: Feature toggle configuration
+- `remote_config`: Configuration from remote service (Spring Cloud Config, AWS AppConfig)
 
 **Back-Reference Attributes** (v2.0):
 - **controls_features**: `FeatureFlag` entities controlled by this configuration
@@ -125,7 +125,7 @@ The Deployment and Operations section models how software is packaged, configure
 **Definition**: The underlying compute, storage, and network resources.
 
 **Key Attributes**:
-- **infra_type**: COMPUTE, STORAGE, NETWORK, LOAD_BALANCER, DNS, CDN, FIREWALL
+- **infra_type**: `compute`, `storage`, `network`, `load_balancer`, `dns`, `cdn`, `firewall`, `api_gateway`, `service_mesh`
 - **provider**: Cloud or infrastructure provider (AWS, Azure, GCP, on-premise)
 - **region**: Geographic region
 - **specifications**: Resource specifications (instance type, size, etc.)
@@ -136,13 +136,15 @@ The Deployment and Operations section models how software is packaged, configure
 - **infrastructure_provisioned_by_iac**: `IaCDefinition` entities provisioning this infrastructure (v2.0 back-reference)
 
 **Infrastructure Types**:
-- **COMPUTE**: VMs, containers, serverless compute
-- **STORAGE**: Disks, volumes, object storage
-- **NETWORK**: VPC, subnets, routing
-- **LOAD_BALANCER**: Application/network load balancers
-- **DNS**: Domain name services
-- **CDN**: Content delivery networks
-- **FIREWALL**: Security groups, network ACLs
+- `compute`: VMs, containers, serverless compute
+- `storage`: Disks, volumes, object storage
+- `network`: VPC, subnets, routing
+- `load_balancer`: Application/network load balancers
+- `dns`: Domain name services
+- `cdn`: Content delivery networks
+- `firewall`: Security groups, network ACLs
+- `api_gateway`: API gateway or ingress controller
+- `service_mesh`: Service mesh control plane (Istio, Linkerd, etc.)
 
 **Infrastructure as Code (IaC)**:
 - Terraform, CloudFormation, Pulumi
@@ -256,8 +258,8 @@ The Deployment and Operations section models how software is packaged, configure
 
 - **Section 1 (Structural Foundation)**: Services are deployed
 - **Section 6 (Data Management)**: Data stores hosted on infrastructure
-- **Section 8 (Observability)**: Deployments emit metrics and logs
-- **Section 9 (Governance)**: Infrastructure must comply with requirements
+- **Section 9 (Observability)**: Deployments emit metrics and logs
+- **Section 10 (Governance)**: Infrastructure must comply with requirements
 
 ---
 

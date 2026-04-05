@@ -18,7 +18,7 @@ The Actors and Identity section provides a comprehensive model for representing 
 
 **Key Attributes**:
 - Inherits from `NamedEntity`
-- **category**: Actor category (HUMAN, SYSTEM)
+- **category**: Actor category (`human`, `system`)
 
 **Relationships**:
 - **has_identities**: One or more `Identity` entities associated with this actor
@@ -37,11 +37,11 @@ A human user of the system.
 
 **Attributes**:
 - **actor_type**: Type of human actor
-  - **END_USER**: Regular end user of the system
-  - **ADMINISTRATOR**: System administrator with elevated privileges
-  - **OPERATOR**: Operations personnel managing system runtime
-  - **DEVELOPER**: Software developer or engineer
-  - **AUDITOR**: Compliance or security auditor
+  - `end_user`: Regular end user of the system
+  - `administrator`: System administrator with elevated privileges
+  - `operator`: Operations personnel managing system runtime
+  - `developer`: Software developer or engineer
+  - `auditor`: Compliance or security auditor
 - **email**: Contact email address
 
 **Example Use Cases**:
@@ -55,11 +55,11 @@ A system or automated actor.
 
 **Attributes**:
 - **actor_type**: Type of system actor
-  - **INTERNAL_SERVICE**: Internal service within the system
-  - **EXTERNAL_SYSTEM**: External third-party system
-  - **SCHEDULED_PROCESS**: Scheduled or cron-based process
-  - **AI_AGENT**: Artificial intelligence agent or bot
-  - **MESSAGE_TRIGGER**: Message or event-triggered automation
+  - `internal_service`: Internal service within the system
+  - `external_system`: External third-party system
+  - `scheduled_process`: Scheduled or cron-based process
+  - `ai_agent`: Artificial intelligence agent or bot
+  - `message_trigger`: Message or event-triggered automation
 - **service_account**: Service account identifier
 
 **Example Use Cases**:
@@ -110,13 +110,13 @@ A system or automated actor.
 **Key Attributes**:
 - Inherits from `NamedEntity`
 - **credential_type**: Type of credential
-  - **PASSWORD**: Username and password credentials
-  - **TOKEN**: Token-based authentication (JWT, bearer token)
-  - **CERTIFICATE**: Digital certificate or X.509 certificate
-  - **API_KEY**: API key for service authentication
-  - **BIOMETRIC**: Biometric authentication (fingerprint, face recognition)
-  - **MFA**: Multi-factor authentication
-  - **OAUTH**: OAuth 2.0 authentication flow
+  - `password`: Username and password credentials
+  - `token`: Token-based authentication (JWT, bearer token)
+  - `certificate`: Digital certificate or X.509 certificate
+  - `api_key`: API key for service authentication
+  - `biometric`: Biometric authentication (fingerprint, face recognition)
+  - `mfa`: Multi-factor authentication
+  - `oauth`: OAuth 2.0 authentication flow
 - **expires_at**: Expiration timestamp
 - **is_active**: Whether the credential is currently active
 

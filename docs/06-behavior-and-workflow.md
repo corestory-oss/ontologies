@@ -15,7 +15,7 @@ The Behavior and Workflow section models how the system behaves, processes reque
 **Definition**: An atomic operation that can be performed.
 
 **Key Attributes**:
-- **category**: QUERY (read-only), COMMAND (state-changing), MUTATION (data modification)
+- **category**: `query` (read-only), `command` (state-changing), `mutation` (data modification)
 
 **Relationships**:
 - **allowed_by_permissions**: `Permission` entities required
@@ -40,7 +40,7 @@ Read-only action that retrieves data.
 
 #### Command
 Action that changes system state.
-- **command_type**: CREATE, UPDATE, DELETE, EXECUTE, ARCHIVE, RESTORE
+- **command_type**: `create`, `update`, `delete`, `execute`, `archive`, `restore`
 - **idempotency_key**: For idempotent execution
 - **Examples**: CreateOrder, UpdateProfile, DeleteComment
 
@@ -58,7 +58,7 @@ Action that changes system state.
 - **accepts_input_schema**: `Schema` for input
 - **produces_output_schema**: `Schema` for output
 - **offered_on_screens**: `Screen` entities offering this operation
-- **implemented_by_callables** *(v2.0)*: `Callable` entities that implement this operation
+- **implemented_by_callables** *(v2.0)*: `CallableUnit` entities that implement this operation
 - **operation_tested_by_cases** *(v2.0)*: `TestCase` entities that test this operation
 
 **Key Attributes**:
@@ -79,7 +79,7 @@ Action that changes system state.
 **Purpose**: Orchestrates multi-step business processes.
 
 **Key Attributes**:
-- **workflow_type**: SYNCHRONOUS, ASYNCHRONOUS, SAGA, CHOREOGRAPHY, ORCHESTRATION
+- **workflow_type**: `synchronous`, `asynchronous`, `saga`, `choreography`, `orchestration`
 - **steps**: Ordered list of `Step` entities
 
 **Relationships**:
@@ -87,27 +87,27 @@ Action that changes system state.
 
 **Workflow Types**:
 
-#### SYNCHRONOUS
+#### `synchronous`
 Blocking workflow that waits for completion.
 - **Use Case**: Real-time operations with immediate response
 - **Example**: User registration during signup
 
-#### ASYNCHRONOUS
+#### `asynchronous`
 Non-blocking workflow processed in background.
 - **Use Case**: Long-running operations
 - **Example**: Bulk data import
 
-#### SAGA
+#### `saga`
 Distributed transaction with compensating actions.
 - **Use Case**: Cross-service transactions
 - **Example**: Order placement with inventory reservation, payment, shipping
 
-#### CHOREOGRAPHY
+#### `choreography`
 Event-driven coordination without central orchestrator.
 - **Use Case**: Loosely coupled services
 - **Example**: Order fulfillment via events
 
-#### ORCHESTRATION
+#### `orchestration`
 Centrally coordinated workflow.
 - **Use Case**: Complex multi-step processes
 - **Example**: Employee onboarding process
@@ -147,7 +147,7 @@ Centrally coordinated workflow.
 **Definition**: A declarative constraint or trigger governing behavior.
 
 **Key Attributes**:
-- **category**: VALIDATION, BUSINESS, DERIVATION, CONSTRAINT, TRIGGER
+- **category**: `validation`, `business`, `derivation`, `constraint`, `trigger`
 - **condition**: Rule condition expression
 - **action**: Action when rule fires
 - **priority**: Evaluation priority
@@ -162,23 +162,23 @@ Centrally coordinated workflow.
 
 **Rule Categories**:
 
-#### VALIDATION Rules
+#### `validation` Rules
 Validate data integrity.
 - **Examples**: "Email must be valid format", "Age must be >= 18"
 
-#### BUSINESS Rules
+#### `business` Rules
 Encode business logic.
 - **Examples**: "Premium customers get 20% discount", "Orders over $100 ship free"
 
-#### DERIVATION Rules
+#### `derivation` Rules
 Compute derived values.
 - **Examples**: "Total = sum of line items", "Tax = subtotal * tax_rate"
 
-#### CONSTRAINT Rules
+#### `constraint` Rules
 Enforce invariants.
 - **Examples**: "Account balance cannot be negative", "Stock quantity must be non-negative"
 
-#### TRIGGER Rules
+#### `trigger` Rules
 Automate actions based on events.
 - **Examples**: "Send email when order ships", "Alert when inventory low"
 
@@ -195,7 +195,7 @@ Automate actions based on events.
 **Definition**: A notification that something occurred.
 
 **Key Attributes**:
-- **category**: DOMAIN_EVENT, INTEGRATION_EVENT, SYSTEM_EVENT, AUDIT_EVENT
+- **category**: `domain_event`, `integration_event`, `system_event`, `audit_event`
 - **correlation_id**: For tracing related events
 
 **Relationships**:
@@ -208,21 +208,21 @@ Automate actions based on events.
 
 **Event Categories**:
 
-#### DOMAIN_EVENT
+#### `domain_event`
 Significant occurrence in the domain.
 - **Naming**: Past tense (OrderPlaced, PaymentProcessed)
 - **Examples**: OrderCreated, UserRegistered, ProductUpdated
 
-#### INTEGRATION_EVENT
+#### `integration_event`
 Cross-service communication.
 - **Purpose**: Integrate bounded contexts or services
 - **Examples**: OrderShipped (from fulfillment to billing)
 
-#### SYSTEM_EVENT
+#### `system_event`
 System-level technical events.
 - **Examples**: ServiceStarted, CacheCleared, ConfigReloaded
 
-#### AUDIT_EVENT
+#### `audit_event`
 Compliance and audit trail.
 - **Examples**: UserLoggedIn, PermissionChanged, DataExported
 
@@ -269,7 +269,7 @@ For cross-service communication.
 **Definition**: A unit of work with ACID or BASE guarantees.
 
 **Key Attributes**:
-- **transaction_type**: LOCAL, DISTRIBUTED, SAGA, TWO_PHASE_COMMIT
+- **transaction_type**: `local`, `distributed`, `saga`, `two_phase_commit`
 - **isolation_level**: Transaction isolation level
 - **timeout_seconds**: Transaction timeout
 
@@ -278,21 +278,21 @@ For cross-service communication.
 
 **Transaction Types**:
 
-#### LOCAL
+#### `local`
 Single database transaction with ACID guarantees.
 
-#### DISTRIBUTED
+#### `distributed`
 Transaction across multiple resources.
 - **Challenge**: Difficult to maintain ACID guarantees
 - **Solution**: Two-phase commit or distributed transaction coordinator
 
-#### SAGA
+#### `saga`
 Pattern for long-running distributed transactions.
 - **Approach**: Sequence of local transactions
 - **Rollback**: Compensating transactions
 - **Types**: Choreography-based or orchestration-based
 
-#### TWO_PHASE_COMMIT
+#### `two_phase_commit`
 Distributed transaction protocol.
 - **Phases**: Prepare phase, Commit phase
 - **Guarantees**: Atomicity across resources
@@ -371,7 +371,7 @@ Distributed transaction protocol.
 ## Example: Order Processing Workflow
 
 ```
-Workflow: ProcessOrderWorkflow (SAGA)
+Workflow: ProcessOrderWorkflow (saga)
   Trigger: OrderPlaced event
 
   Step 1: Reserve Inventory

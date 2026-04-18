@@ -211,7 +211,7 @@ The extraction agent SHOULD use the following signals:
 | `name` | string | Aggregate name (typically same as root entity) |
 | `has_root_entity` | **DomainEntity** (required) | The root entity -- MUST be set |
 | `aggregates_entities` | **DomainEntity** list | Non-root entities in the aggregate |
-| `value_objects` | **ValueObject** list (inlined) | Value objects within the aggregate |
+| `has_value_objects` | **ValueObject** list (inlined) | Value objects within the aggregate |
 | `enforced_by_invariant_rules` | **Rule** list | Invariant rules (if known at this point) |
 | `persisted_in_stores` | **DataStore** list | Where the aggregate is persisted |
 | `contained_in_bounded_context` | **BoundedContext** | Parent bounded context from Phase 3 |
@@ -249,8 +249,8 @@ Create a **DomainRelationship** for each association between domain entities.
 | Attribute | Type | Notes |
 |---|---|---|
 | `name` | string | Descriptive name (e.g., "OrderHasLineItems") |
-| `source_entity` | **DomainEntity** | The entity that owns or originates the relationship |
-| `target_entity` | **DomainEntity** | The entity that is referenced |
+| `has_source_entity` | **DomainEntity** | The entity that owns or originates the relationship |
+| `has_target_entity` | **DomainEntity** | The entity that is referenced |
 | `cardinality` | `Cardinality` (required) | One of: `one_to_one`, `one_to_many`, `many_to_one`, `many_to_many` |
 | `is_navigable` | boolean | Whether the relationship can be traversed source → target |
 | `is_bidirectional` | boolean | Whether it can be navigated in both directions |
@@ -423,7 +423,7 @@ Create persistence infrastructure instances that capture where aggregates are st
 
 ### Creating Schema and SchemaVersion
 
-If DDL files or migration scripts exist, create a **Schema** with `schema_type` (one of: `table_schema`, `document_schema`, `event_schema`, `api_schema`, `message_schema`) and `definition` (the DDL or schema content). Add **SchemaVersion** instances to `schema_versions` for each migration, setting `version`, `migration_script`, and `is_backward_compatible`.
+If DDL files or migration scripts exist, create a **Schema** with `schema_type` (one of: `table_schema`, `document_schema`, `event_schema`, `api_schema`, `message_schema`) and `definition` (the DDL or schema content). Add **SchemaVersion** instances to `has_versions` for each migration, setting `version`, `migration_script`, and `is_backward_compatible`.
 
 ### Creating DatabaseConstraint and DatabaseIndex instances
 

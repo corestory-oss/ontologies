@@ -999,35 +999,35 @@ The following diagram summarizes how the new sections connect to existing SAO cl
 | New Class | Existing Class | Relationship |
 |---|---|---|
 | `TypeExpression` | `DataElement` | `type_of_data_elements` <-> `declared_type` |
-| `TypeExpression` | `Parameter` | `type_of_parameters` <-> `parameter_type` |
-| `TypeExpression` | `CallableUnit` | `return_type_of_callables` <-> `return_type_expression` |
+| `TypeExpression` | `Parameter` | `type_of_parameters` <-> `has_type` |
+| `TypeExpression` | `CallableUnit` | `return_type_of_callables` <-> `has_return_type` |
 | `ErrorModel` | `EncapsulationUnit` | `modules_using_error_model` <-> `error_model_for_module` |
 | `ExceptionType` | `CallableUnit` | `raised_by_callables` <-> `raises_exception_types` |
 | `ExceptionType` | `CallableUnit` | `handled_by_callables` <-> `handles_exception_types` |
 | `FileDefinition` | `CallableUnit` | `used_by_callables` <-> `uses_file_definitions` |
-| `FileDefinition` | `CodeContainer` | `file_defined_in_container` <-> `container_file_definitions` |
+| `FileDefinition` | `CodeContainer` | `file_defined_in_container` <-> `has_file_definitions` |
 | `FileDefinition` | `DataStore` | `persisted_in_store` <-> `store_file_definitions` |
-| `FileOperation` | `CallableUnit` | `performed_in_callable` <-> `callable_file_operations` |
+| `FileOperation` | `CallableUnit` | `performed_in_callable` <-> `has_file_operations` |
 | `ScreenDefinition` | `EncapsulationUnit` | `program_uses_screens` <-> `screen_used_by_programs` |
-| `ScreenDefinition` | `CodeContainer` | `screen_defined_in_container` <-> `container_screen_definitions` |
+| `ScreenDefinition` | `CodeContainer` | `screen_defined_in_container` <-> `has_screen_definitions` |
 | `ScreenField` | `DataElement` | `maps_to_data_element` |
 | `JobStep` | `EncapsulationUnit` | `step_executes_program` <-> `executed_by_job_steps` |
 | `DatasetAllocation` | `FileDefinition` | `maps_to_file_definition` <-> `mapped_from_dataset_allocations` |
-| `IPCConnection` | `EncapsulationUnit` | `ipc_source_program` <-> `outgoing_ipc_connections` |
-| `IPCConnection` | `EncapsulationUnit` | `ipc_target_program` <-> `incoming_ipc_connections` |
+| `IPCConnection` | `EncapsulationUnit` | `has_source_program` <-> `has_outgoing_ipc_connections` |
+| `IPCConnection` | `EncapsulationUnit` | `has_target_program` <-> `has_incoming_ipc_connections` |
 | `IPCConnection` | `DataStructure` | `ipc_passes_data` <-> `passed_via_ipc` |
-| `PreprocessorDirective` | `CodeContainer` | `directive_defined_in_container` <-> `container_preprocessor_directives` |
+| `PreprocessorDirective` | `CodeContainer` | `directive_defined_in_container` <-> `has_preprocessor_directives` |
 | `PreprocessorDirective` | `EncapsulationUnit` | `directive_affects_encapsulation_units` <-> `affected_by_directives` |
 | `PreprocessorDirective` | `CallableUnit` | `directive_affects_callables` <-> `callable_affected_by_directives` |
 | `MemoryModel` | `EncapsulationUnit` | `modules_using_memory_model` <-> `memory_model_for_module` |
 | `OwnershipAnnotation` | `DataElement` | `annotates_data_element` |
-| `DomainRelationship` | `DomainEntity` | `source_entity` <-> `outgoing_relationships` |
-| `DomainRelationship` | `DomainEntity` | `target_entity` <-> `incoming_relationships` |
+| `DomainRelationship` | `DomainEntity` | `has_source_entity` <-> `has_outgoing_relationships` |
+| `DomainRelationship` | `DomainEntity` | `has_target_entity` <-> `has_incoming_relationships` |
 | `DatabaseConstraint` | `Collection` | `constraint_on_collection` <-> `has_constraints` |
 | `DatabaseIndex` | `Collection` | `index_on_collection` <-> `has_indexes` |
 | `ProgrammingLanguage` | `CodeContainer` | `language_used_by_containers` <-> `written_in_language` |
-| `ProgrammingLanguage` | `ErrorModel` | `default_error_model` |
-| `ProgrammingLanguage` | `MemoryModel` | `default_memory_model` |
+| `ProgrammingLanguage` | `ErrorModel` | `has_default_error_model` |
+| `ProgrammingLanguage` | `MemoryModel` | `has_default_memory_model` |
 
 ### Connections Between New Sections
 
@@ -1035,8 +1035,8 @@ The following diagram summarizes how the new sections connect to existing SAO cl
 |---|---|---|
 | Section 22 (DatasetAllocation) | Section 20 (FileDefinition) | `maps_to_file_definition` |
 | Section 22 (DatasetAllocation) | Section 20 (RecordFormat) | Shared `RecordFormat` enum |
-| Section 28 (ProgrammingLanguage) | Section 19 (ErrorModel) | `default_error_model` |
-| Section 28 (ProgrammingLanguage) | Section 25 (MemoryModel) | `default_memory_model` |
+| Section 28 (ProgrammingLanguage) | Section 19 (ErrorModel) | `has_default_error_model` |
+| Section 28 (ProgrammingLanguage) | Section 25 (MemoryModel) | `has_default_memory_model` |
 | Section 20 (FileOperation) | Section 20 (FileDefinition) | `operates_on_file` |
 
 ---
@@ -1048,7 +1048,7 @@ The following table lists all attributes deprecated by Sections 18-28, along wit
 | Deprecated Attribute | On Class | Replaced By | New Type | Section |
 |---|---|---|---|---|
 | `data_type` (string) | `DataElement` | `declared_type` | `TypeExpression` | 18 |
-| `data_type` (string) | `Parameter` | `parameter_type` | `TypeExpression` | 18 |
+| `data_type` (string) | `Parameter` | `has_type` | `TypeExpression` | 18 |
 | `raises_exceptions` (string[]) | `CallableUnit` | `raises_exception_types` | `ExceptionType[]` | 19 |
 | `handles_exceptions` (string[]) | `CallableUnit` | `handles_exception_types` | `ExceptionType[]` | 19 |
 | `indexes` (string[]) | `Collection` | `has_indexes` | `DatabaseIndex[]` | 27 |

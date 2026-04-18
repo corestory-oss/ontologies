@@ -1214,7 +1214,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `Annotation` | `annotates_element` | `DataStructure` | `annotated_by` |
 | `Annotation` | `annotates_element` | `DataElement` | `annotated_by` |
 | `CallableUnit` | `callable_affected_by_directives` | `PreprocessorDirective` | `directive_affects_callables` |
-| `CallableUnit` | `callable_file_operations` | `FileOperation` | `performed_in_callable` |
+| `CallableUnit` | `has_file_operations` | `FileOperation` | `performed_in_callable` |
 | `CallableUnit` | `contains_blocks` | `CodeBlock` | `contained_in_callable` |
 | `CallableUnit` | `defined_in_container` | `CodeContainer` | `contains_code_elements` |
 | `CallableUnit` | `handles_exception_types` | `ExceptionType` | `handled_by_callables` |
@@ -1223,16 +1223,16 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `CallableUnit` | `invokes_callables` | `CallableUnit` | `invoked_by_callables` |
 | `CallableUnit` | `overrides_callable` | `CallableUnit` | `overridden_by_callables` |
 | `CallableUnit` | `raises_exception_types` | `ExceptionType` | `raised_by_callables` |
-| `CallableUnit` | `return_type_expression` | `TypeExpression` | `return_type_of_callables` |
+| `CallableUnit` | `has_return_type` | `TypeExpression` | `return_type_of_callables` |
 | `CallableUnit` | `tested_by_cases` | `TestCase` | `tests_callable` |
 | `CallableUnit` | `uses_concurrency_primitives` | `ConcurrencyPrimitive` | `used_by_callables` |
 | `CallableUnit` | `uses_file_definitions` | `FileDefinition` | `used_by_callables` |
 | `CodeBlock` | `contains_statements` | `Statement` | `contained_in_block` |
-| `CodeBlock` | `parent_block` | `CodeBlock` | `child_blocks` |
+| `CodeBlock` | `has_parent_block` | `CodeBlock` | `has_child_blocks` |
 | `CodeContainer` | `contained_in_storage_location` | `StorageLocation` | `contains_containers` |
-| `CodeContainer` | `container_file_definitions` | `FileDefinition` | `file_defined_in_container` |
-| `CodeContainer` | `container_preprocessor_directives` | `PreprocessorDirective` | `directive_defined_in_container` |
-| `CodeContainer` | `container_screen_definitions` | `ScreenDefinition` | `screen_defined_in_container` |
+| `CodeContainer` | `has_file_definitions` | `FileDefinition` | `file_defined_in_container` |
+| `CodeContainer` | `has_preprocessor_directives` | `PreprocessorDirective` | `directive_defined_in_container` |
+| `CodeContainer` | `has_screen_definitions` | `ScreenDefinition` | `screen_defined_in_container` |
 | `CodeContainer` | `contains_knowledge_artifacts` | `KnowledgeArtifact` | `stored_in_container` |
 | `CodeContainer` | `has_references` | `DefinitionReference` | `referencing_container` |
 | `CodeContainer` | `implements_component` | `Component` | `implemented_by_code` |
@@ -1244,14 +1244,14 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `DataElement` | `declared_type` | `TypeExpression` | `type_of_data_elements` |
 | `DataElement` | `mapped_from_screen_fields` | `ScreenField` | `maps_to_data_element` |
 | `DataElement` | `maps_to_attribute` | `Attribute` | `mapped_from_element` |
-| `DataElement` | `ownership_annotations` | `OwnershipAnnotation` | `annotates_data_element` |
-| `DataElement` | `parent_element` | `DataElement` | `child_elements` |
+| `DataElement` | `has_ownership_annotations` | `OwnershipAnnotation` | `annotates_data_element` |
+| `DataElement` | `has_parent_element` | `DataElement` | `has_child_elements` |
 | `DataElement` | `protected_by_primitive` | `ConcurrencyPrimitive` | `protects_data_elements` |
 | `DataStructure` | `contained_in_unit` | `EncapsulationUnit` | `contains_callable_units` |
 | `DataStructure` | `defined_in_container` | `CodeContainer` | `contains_code_elements` |
 | `DataStructure` | `maps_to_domain_entity` | `DomainEntity` | `mapped_from_structure` |
 | `DataStructure` | `maps_to_value_object` | `ValueObject` | `mapped_from_structure_vo` |
-| `DataStructure` | `parent_structure` | `DataStructure` | `child_structures` |
+| `DataStructure` | `has_parent_structure` | `DataStructure` | `has_child_structures` |
 | `DataStructure` | `passed_via_ipc` | `IPCConnection` | `ipc_passes_data` |
 | `DataStructure` | `persisted_in_collection` | `Collection` | `persists_structures` |
 | `DataStructure` | `structure_contains_elements` | `DataElement` | `contained_in_structure` |
@@ -1267,21 +1267,21 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `EncapsulationUnit` | `extends_units` | `EncapsulationUnit` | `extended_by_units` |
 | `EncapsulationUnit` | `implements_component` | `Component` | `implemented_by_code` |
 | `EncapsulationUnit` | `implements_contracts` | `Contract` | `implemented_by_units` |
-| `EncapsulationUnit` | `incoming_ipc_connections` | `IPCConnection` | `ipc_target_program` |
+| `EncapsulationUnit` | `has_incoming_ipc_connections` | `IPCConnection` | `has_target_program` |
 | `EncapsulationUnit` | `memory_model_for_module` | `MemoryModel` | `modules_using_memory_model` |
-| `EncapsulationUnit` | `outgoing_ipc_connections` | `IPCConnection` | `ipc_source_program` |
+| `EncapsulationUnit` | `has_outgoing_ipc_connections` | `IPCConnection` | `has_source_program` |
 | `EncapsulationUnit` | `screen_used_by_programs` | `ScreenDefinition` | `program_uses_screens` |
-| `ErrorModel` | `error_model_for_languages` | `ProgrammingLanguage` | `default_error_model` |
-| `ExceptionType` | `parent_exception` | `ExceptionType` | `child_exceptions` |
+| `ErrorModel` | `error_model_for_languages` | `ProgrammingLanguage` | `has_default_error_model` |
+| `ExceptionType` | `has_parent_exception` | `ExceptionType` | `has_child_exceptions` |
 | `FileDefinition` | `file_operations` | `FileOperation` | `operates_on_file` |
 | `FileDefinition` | `mapped_from_dataset_allocations` | `DatasetAllocation` | `maps_to_file_definition` |
 | `JobDefinition` | `contains_job_steps` | `JobStep` | `step_in_job` |
 | `JobDefinition` | `depends_on_jobs` | `JobDefinition` | `depended_on_by_jobs` |
 | `JobStep` | `allocates_datasets` | `DatasetAllocation` | `allocated_in_step` |
-| `MemoryModel` | `memory_model_for_languages` | `ProgrammingLanguage` | `default_memory_model` |
-| `Parameter` | `parameter_type` | `TypeExpression` | `type_of_parameters` |
+| `MemoryModel` | `memory_model_for_languages` | `ProgrammingLanguage` | `has_default_memory_model` |
+| `Parameter` | `has_type` | `TypeExpression` | `type_of_parameters` |
 | `ScreenDefinition` | `contains_screen_fields` | `ScreenField` | `field_on_screen` |
-| `StorageLocation` | `parent_location` | `StorageLocation` | `contains_locations` |
+| `StorageLocation` | `has_parent_location` | `StorageLocation` | `contains_locations` |
 
 ### Layer 4: Architecture and integration (47 pairs)
 
@@ -1299,7 +1299,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `Component` | `exposes_operations` | `Operation` | `exposed_by_component` |
 | `Component` | `has_coverage` | `TestCoverage` | `coverage_for_component` |
 | `Component` | `tested_by_suites` | `TestSuite` | `tests_component` |
-| `Contract` | `contract_versions` | `ContractVersion` | `version_of_contract` |
+| `Contract` | `has_versions` | `ContractVersion` | `version_of_contract` |
 | `EventInterface` | `has_subscriptions` | `Subscription` | `subscribes_to_interface` |
 | `ExternalSystem` | `integrated_via` | `Integration` | `integrates_with_system` |
 | `Integration` | `integration_documented_by_artifacts` | `KnowledgeArtifact` | `documents_integration` |
@@ -1333,7 +1333,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `System` | `has_integrations` | `Integration` | `belongs_to_system` |
 | `System` | `must_comply_with` | `ComplianceRequirement` | `applies_to_systems` |
 | `System` | `system_documented_by_artifacts` | `KnowledgeArtifact` | `documents_system` |
-| `UserInterface` | `ui_screens` | `Screen` | `part_of_ui` |
+| `UserInterface` | `contains_screens` | `Screen` | `part_of_ui` |
 
 ### Layer 5: Domain model (41 pairs)
 
@@ -1360,8 +1360,8 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `DomainEntity` | `governed_by_lifecycle` | `Lifecycle` | `governs_entities` |
 | `DomainEntity` | `governed_by_rules` | `Rule` | `governs_domain_entities` |
 | `DomainEntity` | `in_state` | `State` | `current_for_entities` |
-| `DomainEntity` | `incoming_relationships` | `DomainRelationship` | `target_entity` |
-| `DomainEntity` | `outgoing_relationships` | `DomainRelationship` | `source_entity` |
+| `DomainEntity` | `has_incoming_relationships` | `DomainRelationship` | `has_target_entity` |
+| `DomainEntity` | `has_outgoing_relationships` | `DomainRelationship` | `has_source_entity` |
 | `Record` | `conforms_to_schema` | `Schema` | `validates_records` |
 | `Record` | `has_lineage` | `DataLineage` | `tracks_record` |
 | `Record` | `source_of_lineage` | `DataLineage` | `derived_from_records` |
@@ -1371,7 +1371,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `ResourceType` | `structured_by_schema` | `Schema` | `structures_resource_types` |
 | `RetentionPolicy` | `governs_audit_logs` | `AuditLog` | `auditlog_governed_by_retention` |
 | `RetentionPolicy` | `governs_logs` | `Log` | `log_governed_by_retention` |
-| `Schema` | `schema_versions` | `SchemaVersion` | `version_of_schema` |
+| `Schema` | `has_versions` | `SchemaVersion` | `version_of_schema` |
 | `Schema` | `structures_messages` | `Message` | `message_structured_by_schema` |
 | `State` | `allows_actions_in_state` | `Action` | `allowed_in_states` |
 | `State` | `initial_for_lifecycle` | `Lifecycle` | `starts_with_state` |
@@ -1391,7 +1391,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `Action` | `executes_in_transaction` | `Transaction` | `executes_actions` |
 | `Action` | `recorded_in_audit` | `AuditEntry` | `records_action` |
 | `Action` | `validated_by_action_rules` | `Rule` | `validates_actions` |
-| `Actor` | `actor_subscriptions` | `Subscription` | `subscribed_by_actor` |
+| `Actor` | `has_subscriptions` | `Subscription` | `subscribed_by_actor` |
 | `Actor` | `audit_actions_performed` | `AuditEntry` | `audit_performed_by_actor` |
 | `Actor` | `has_identities` | `Identity` | `represents_actor` |
 | `Actor` | `owns_controls` | `Control` | `owned_by_actor` |
@@ -1415,7 +1415,7 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 
 | Class A | Attribute (forward) | Class B | Attribute (inverse) |
 |---|---|---|---|
-| `AuditLog` | `audit_log_entries` | `AuditEntry` | `entry_in_audit_log` |
+| `AuditLog` | `contains_entries` | `AuditEntry` | `entry_in_audit_log` |
 | `BuildArtifact` | `artifact_stored_in_registry` | `ArtifactRegistry` | `stores_artifacts` |
 | `BuildPipeline` | `pipeline_produces_artifacts` | `BuildArtifact` | `artifact_produced_by_pipeline` |
 | `BuildPipeline` | `pipeline_trains_model` | `MLModel` | `model_trained_by_pipeline` |
@@ -1432,10 +1432,10 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `Policy` | `guards_routes` | `Route` | `route_guarded_by` |
 | `Role` | `grants_permissions` | `Permission` | `granted_by_roles` |
 | `Role` | `inherits_from_role` | `Role` | `inherited_by_roles` |
-| `Route` | `parent_route` | `Route` | `child_routes` |
+| `Route` | `has_parent_route` | `Route` | `has_child_routes` |
 | `TestSuite` | `contains_test_cases` | `TestCase` | `belongs_to_suite` |
 | `UIComponent` | `managed_by_state` | `StateStore` | `manages_ui_components` |
-| `UIComponent` | `parent_ui_component` | `UIComponent` | `child_ui_components` |
+| `UIComponent` | `has_parent_ui_component` | `UIComponent` | `has_child_ui_components` |
 | `UIComponent` | `renders_on_route` | `Route` | `route_renders_component` |
 
 ### Cross-cutting: Runtime, ops, infrastructure (18 pairs)
@@ -1453,10 +1453,10 @@ Every bidirectional relationship in the SAO. Each row shows one pair: the forwar
 | `Environment` | `hosts_deployments` | `Deployment` | `deployed_in_environment` |
 | `Environment` | `uses_infrastructure` | `Infrastructure` | `used_by_environments` |
 | `Infrastructure` | `infrastructure_provisioned_by_iac` | `IaCDefinition` | `iac_provisions_infrastructure` |
-| `Log` | `log_entries` | `LogEntry` | `entry_in_log` |
+| `Log` | `contains_entries` | `LogEntry` | `entry_in_log` |
 | `MLModel` | `model_trained_by_pipeline` | `DataPipeline` | `pipeline_trains_model` |
 | `MLModel` | `model_uses_feature_store` | `FeatureStore` | `provides_features_to_models` |
 | `Metric` | `monitored_by_alert_rules` | `AlertRule` | `monitors_metrics` |
 | `Span` | `child_of_span` | `Span` | `parent_of_spans` |
 | `Trace` | `starts_with_span` | `Span` | `root_of_trace` |
-| `Trace` | `trace_spans` | `Span` | `belongs_to_trace` |
+| `Trace` | `contains_spans` | `Span` | `belongs_to_trace` |

@@ -254,9 +254,9 @@ Event-driven asynchronous interface.
 **Key Attributes**:
 - Inherits from `NamedEntity` *(v2.0 change: Screen no longer inherits from UserInterface)*
 - **route**: URL route or navigation path
-- **part_of_ui**: The `UserInterface` this screen belongs to (range: UserInterface, inverse: `ui_screens`)
+- **part_of_ui**: The `UserInterface` this screen belongs to (range: UserInterface, inverse: `contains_screens`)
 
-> **v2.0 Note**: Screen's parent class changed from `UserInterface` to `NamedEntity`. The relationship to a UserInterface is now expressed via the `part_of_ui` attribute. Correspondingly, UserInterface now has a `ui_screens` attribute to reference its screens.
+> **v2.1 Note**: Screen's parent class is `NamedEntity` (changed from `UserInterface` in v2.0). The relationship to a UserInterface is expressed via the `part_of_ui` attribute. UserInterface has a `contains_screens` attribute to reference its screens. In v2.1, this relationship was renamed from `ui_screens` to `contains_screens` and a duplicate `screens` attribute was removed.
 
 **Relationships**:
 - **offers_operations**: `Operation` entities available on this screen

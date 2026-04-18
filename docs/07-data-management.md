@@ -243,7 +243,7 @@ The Data Management section provides comprehensive modeling of data persistence,
 
 **Definition**: A single record within an audit log.
 
-> **v2.0 Change**: `AuditEntry` is now `is_a: NamedEntity` (previously `is_a: AuditLog`). Instead of inheriting from `AuditLog`, it uses the `entry_in_audit_log` attribute to reference its parent `AuditLog`. Conversely, `AuditLog` now has the `audit_log_entries` back-reference attribute.
+> **v2.0 Change**: `AuditEntry` is now `is_a: NamedEntity` (previously `is_a: AuditLog`). Instead of inheriting from `AuditLog`, it uses the `entry_in_audit_log` attribute to reference its parent `AuditLog`. Conversely, `AuditLog` now has the `contains_entries` back-reference attribute.
 
 **Key Attributes**:
 - **timestamp**: When the event occurred (required)

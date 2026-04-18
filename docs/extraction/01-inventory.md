@@ -39,9 +39,9 @@ The extraction agent MUST choose the most specific applicable value. For a Java 
 
 ### Establishing the hierarchy
 
-- Set `parent_location` on each child to reference its parent **StorageLocation**.
+- Set `has_parent_location` on each child to reference its parent **StorageLocation**.
 - Set `contains_locations` on each parent to list its children.
-- The root **StorageLocation** (the repository root) has no `parent_location`.
+- The root **StorageLocation** (the repository root) has no `has_parent_location`.
 
 ### Module mapping
 
@@ -358,7 +358,7 @@ package_dependencies:
 After Phase 1 completes, verify the following:
 
 - [ ] Every source-relevant directory has a **StorageLocation** instance
-- [ ] The **StorageLocation** hierarchy (via `parent_location` / `contains_locations`) matches the actual directory structure
+- [ ] The **StorageLocation** hierarchy (via `has_parent_location` / `contains_locations`) matches the actual directory structure
 - [ ] Every source file has a **CodeContainer** instance with `container_path` and `container_type` set
 - [ ] Every **CodeContainer** is linked to its parent **StorageLocation** via `contained_in_storage_location`
 - [ ] Every source-code **CodeContainer** has `written_in_language` set to a **ProgrammingLanguage** instance

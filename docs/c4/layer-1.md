@@ -66,7 +66,7 @@ These relationships connect Layer 1 concepts to component-level and behavioral a
 | System | `enforces_policies` | Policy | Authorization policies enforced at the system level |
 | Actor | `performs_actions` | Action | Actions initiated by this actor |
 | Identity | `has_roles` | Role | Roles assigned to this identity |
-| Actor | `actor_subscriptions` | Subscription | Event subscriptions registered by this actor |
+| Actor | `has_subscriptions` | Subscription | Event subscriptions registered by this actor |
 
 ---
 
@@ -129,7 +129,7 @@ Any entity that can initiate actions. This is the abstract base class for HumanA
 | `has_identities` | Identity | Yes | `represents_actor` | Verified identities for this actor |
 | `performs_actions` | Action | Yes | `performed_by_actor` | Actions initiated (Layer 3) |
 | `audit_actions_performed` | AuditEntry | Yes | `audit_performed_by_actor` | Audit trail of actions |
-| `actor_subscriptions` | Subscription | Yes | `subscribed_by_actor` | Event subscriptions (Layer 3) |
+| `has_subscriptions` | Subscription | Yes | `subscribed_by_actor` | Event subscriptions (Layer 3) |
 | `owns_controls` | Control | Yes | `owned_by_actor` | Compliance controls owned |
 | `verifies_evidence` | Evidence | Yes | `verified_by_actor` | Evidence verified by this actor |
 

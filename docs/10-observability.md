@@ -135,7 +135,7 @@ Use structured formats (JSON) instead of plain text:
 - **level**: Log level (DEBUG, INFO, WARN, ERROR)
 - **message**: Log message
 - **context**: Additional context (trace ID, user ID, etc.)
-- **entry_in_log**: The `Log` this entry belongs to (range: Log, inverse: `log_entries`)
+- **entry_in_log**: The `Log` this entry belongs to (range: Log, inverse: `contains_entries`)
 
 **Best Practices**:
 1. **Correlation IDs**: Include trace/request ID in all logs
@@ -185,7 +185,7 @@ Use structured formats (JSON) instead of plain text:
 - **end_time**: Operation end timestamp
 - **status**: Span status (OK, ERROR, etc.)
 - **attributes**: Key-value pairs with additional context
-- **belongs_to_trace**: The `Trace` this span belongs to (range: Trace, inverse: `trace_spans`)
+- **belongs_to_trace**: The `Trace` this span belongs to (range: Trace, inverse: `contains_spans`)
 
 **Relationships**:
 - **child_of_span**: Parent span (for nested operations)

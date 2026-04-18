@@ -96,9 +96,9 @@ A physical container of source code -- a file, library member, or other storage 
 | `referenced_via` | DefinitionReference | Yes | `referenced_container` | Import/include statements targeting here |
 | `written_in_language` | ProgrammingLanguage | No | `language_used_by_containers` | Programming language |
 | `implements_component` | Component | No | `implemented_by_code` | Architectural component (global slot, Layer 2+) |
-| `container_file_definitions` | FileDefinition | Yes | `file_defined_in_container` | File I/O definitions (Legacy) |
-| `container_screen_definitions` | ScreenDefinition | Yes | `screen_defined_in_container` | Screen definitions (Legacy) |
-| `container_preprocessor_directives` | PreprocessorDirective | Yes | `directive_defined_in_container` | Preprocessor directives (Legacy) |
+| `has_file_definitions` | FileDefinition | Yes | `file_defined_in_container` | File I/O definitions (Legacy) |
+| `has_screen_definitions` | ScreenDefinition | Yes | `screen_defined_in_container` | Screen definitions (Legacy) |
+| `has_preprocessor_directives` | PreprocessorDirective | Yes | `directive_defined_in_container` | Preprocessor directives (Legacy) |
 
 **CodeContainerType Enum:**
 
@@ -135,8 +135,8 @@ A logical or physical location for storing code containers.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `parent_location` | StorageLocation | No | `contains_locations` | Parent in hierarchy |
-| `contains_locations` | StorageLocation | Yes | `parent_location` | Child locations |
+| `has_parent_location` | StorageLocation | No | `contains_locations` | Parent in hierarchy |
+| `contains_locations` | StorageLocation | Yes | `has_parent_location` | Child locations |
 | `contains_containers` | CodeContainer | Yes | `contained_in_storage_location` | Code containers in this location |
 | `maps_to_module` | Module | No | `mapped_from_directory` | Architectural module (Layer 2+) |
 
@@ -188,8 +188,8 @@ A logical boundary that groups related code and data. This is the cornerstone of
 | `error_model_for_module` | ErrorModel | No | `modules_using_error_model` | Error handling strategy |
 | `memory_model_for_module` | MemoryModel | No | `modules_using_memory_model` | Memory management model |
 | `screen_used_by_programs` | ScreenDefinition | Yes | `program_uses_screens` | Terminal screens (Legacy) |
-| `outgoing_ipc_connections` | IPCConnection | Yes | `ipc_source_program` | Outbound IPC (Legacy) |
-| `incoming_ipc_connections` | IPCConnection | Yes | `ipc_target_program` | Inbound IPC (Legacy) |
+| `has_outgoing_ipc_connections` | IPCConnection | Yes | `has_source_program` | Outbound IPC (Legacy) |
+| `has_incoming_ipc_connections` | IPCConnection | Yes | `has_target_program` | Inbound IPC (Legacy) |
 | `affected_by_directives` | PreprocessorDirective | Yes | `directive_affects_encapsulation_units` | Preprocessor (Legacy) |
 | `executed_by_job_steps` | JobStep | Yes | `step_executes_program` | JCL execution (Legacy) |
 | `encapsulation_unit_renders_ui` | UIComponent | No | `ui_implements_encapsulation_unit` | UI component link |
@@ -304,9 +304,9 @@ A named, invocable unit of code. Paradigm-agnostic representation of methods, fu
 | `implements_operation` | Operation | No | `implemented_by_callables` | API operation (Modern) |
 | `raises_exception_types` | ExceptionType | Yes | `raised_by_callables` | Exceptions thrown (Modern) |
 | `handles_exception_types` | ExceptionType | Yes | `handled_by_callables` | Exceptions caught (Modern) |
-| `return_type_expression` | TypeExpression | No | `return_type_of_callables` | Structured return type (Modern) |
+| `has_return_type` | TypeExpression | No | `return_type_of_callables` | Structured return type (Modern) |
 | `uses_file_definitions` | FileDefinition | Yes | `used_by_callables` | Files used (Legacy) |
-| `callable_file_operations` | FileOperation | Yes | `performed_in_callable` | I/O operations (Legacy) |
+| `has_file_operations` | FileOperation | Yes | `performed_in_callable` | I/O operations (Legacy) |
 | `callable_affected_by_directives` | PreprocessorDirective | Yes | `directive_affects_callables` | Preprocessor (Legacy) |
 
 **CallableType Enum (53 values):**
@@ -446,8 +446,8 @@ A composite data type grouping related data elements.
 | `defined_in_container` | CodeContainer | No | `contains_code_elements` | Source file (global slot) |
 | `structure_contains_elements` | DataElement | Yes | `contained_in_structure` | Fields in this structure |
 | `contains_data_elements` | DataElement | Yes | -- | Fields (global slot) |
-| `parent_structure` | DataStructure | No | `child_structures` | Parent (nested structures) |
-| `child_structures` | DataStructure | Yes | `parent_structure` | Children (nested structures) |
+| `has_parent_structure` | DataStructure | No | `has_child_structures` | Parent (nested structures) |
+| `has_child_structures` | DataStructure | Yes | `has_parent_structure` | Children (nested structures) |
 | `maps_to_domain_entity` | DomainEntity | No | `mapped_from_structure` | Domain entity link (Layer 2+) |
 | `maps_to_value_object` | ValueObject | No | `mapped_from_structure_vo` | Value object link (Layer 2+) |
 | `persisted_in_collection` | Collection | No | `persists_structures` | Database collection (Layer 2+) |
@@ -511,12 +511,12 @@ An individual data field, variable, or constant.
 |---|---|---|---|---|
 | `contained_in_unit` | EncapsulationUnit | No | -- | Parent unit (global slot) |
 | `contained_in_structure` | DataStructure | No | `structure_contains_elements` | Parent structure |
-| `parent_element` | DataElement | No | `child_elements` | Parent (nested fields) |
-| `child_elements` | DataElement | Yes | `parent_element` | Children (nested fields) |
+| `has_parent_element` | DataElement | No | `has_child_elements` | Parent (nested fields) |
+| `has_child_elements` | DataElement | Yes | `has_parent_element` | Children (nested fields) |
 | `maps_to_attribute` | Attribute | No | `mapped_from_element` | Domain attribute (Layer 2+) |
 | `annotated_by` | Annotation | Yes | `annotates_element` | Annotations (global slot) |
 | `declared_type` | TypeExpression | No | `type_of_data_elements` | Structured type (Modern) |
-| `ownership_annotations` | OwnershipAnnotation | Yes | `annotates_data_element` | Ownership (Rust/C++) |
+| `has_ownership_annotations` | OwnershipAnnotation | Yes | `annotates_data_element` | Ownership (Rust/C++) |
 | `mapped_from_screen_fields` | ScreenField | Yes | `maps_to_data_element` | Screen field mapping (Legacy) |
 | `protected_by_primitive` | ConcurrencyPrimitive | Yes | `protects_data_elements` | Concurrency guards |
 
@@ -539,7 +539,7 @@ An input/output parameter for a callable unit. Inherits from `DataElement` (all 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `parameter_of` | CallableUnit | No | `has_parameters` | Owning callable |
-| `parameter_type` | TypeExpression | No | `type_of_parameters` | Structured type (Modern) |
+| `has_type` | TypeExpression | No | `type_of_parameters` | Structured type (Modern) |
 
 ---
 
@@ -559,10 +559,10 @@ Control flow between code elements -- calls, branches, jumps.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `source_callable` | CallableUnit | No | -- | Calling callable |
-| `target_callable` | CallableUnit | No | -- | Called callable |
-| `source_statement` | Statement | No | -- | Source statement (fine-grained) |
-| `target_statement` | Statement | No | -- | Target statement (fine-grained) |
+| `has_source_callable` | CallableUnit | No | -- | Calling callable |
+| `has_target_callable` | CallableUnit | No | -- | Called callable |
+| `has_source_statement` | Statement | No | -- | Source statement (fine-grained) |
+| `has_target_statement` | Statement | No | -- | Target statement (fine-grained) |
 
 ---
 
@@ -580,10 +580,10 @@ Data flow between code elements -- reads, writes, assignments.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `source_element` | DataElement | No | -- | Data source |
-| `target_element` | DataElement | No | -- | Data target |
-| `through_callable` | CallableUnit | No | -- | Callable where flow occurs |
-| `through_statement` | Statement | No | -- | Statement where flow occurs |
+| `has_source_element` | DataElement | No | -- | Data source |
+| `has_target_element` | DataElement | No | -- | Data target |
+| `has_through_callable` | CallableUnit | No | -- | Callable where flow occurs |
+| `has_through_statement` | Statement | No | -- | Statement where flow occurs |
 
 ---
 
@@ -601,7 +601,7 @@ A recursive type model for expressing complex types (generics, unions, pointers,
 |---|---|---|---|
 | `type_kind` | TypeKind | **Yes** | Kind of type expression |
 | `base_type` | string | No | Base type name (e.g., `List`, `int`, `String`) |
-| `type_parameters` | TypeExpression[] | No | Recursive generic parameters (e.g., `T` in `List<T>`) |
+| `has_type_parameters` | TypeExpression[] | No | Recursive generic parameters (e.g., `T` in `List<T>`) |
 | `type_constraints` | string[] | No | Constraints (e.g., `T: Comparable`) |
 | `is_nullable` | boolean | No | Whether type permits null |
 | `nullability_model` | string | No | How nullability is expressed (`optional`, `nullable`, `Option<T>`) |
@@ -612,8 +612,8 @@ A recursive type model for expressing complex types (generics, unions, pointers,
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `type_of_data_elements` | DataElement | Yes | `declared_type` | Elements with this type |
-| `type_of_parameters` | Parameter | Yes | `parameter_type` | Parameters with this type |
-| `return_type_of_callables` | CallableUnit | Yes | `return_type_expression` | Callables returning this type |
+| `type_of_parameters` | Parameter | Yes | `has_type` | Parameters with this type |
+| `return_type_of_callables` | CallableUnit | Yes | `has_return_type` | Callables returning this type |
 
 **TypeKind Enum:**
 
@@ -650,8 +650,8 @@ A declared exception or error type with hierarchy support.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `parent_exception` | ExceptionType | No | `child_exceptions` | Parent in hierarchy |
-| `child_exceptions` | ExceptionType | Yes | `parent_exception` | Children in hierarchy |
+| `has_parent_exception` | ExceptionType | No | `has_child_exceptions` | Parent in hierarchy |
+| `has_child_exceptions` | ExceptionType | Yes | `has_parent_exception` | Children in hierarchy |
 | `raised_by_callables` | CallableUnit | Yes | `raises_exception_types` | Callables that throw this |
 | `handled_by_callables` | CallableUnit | Yes | `handles_exception_types` | Callables that catch this |
 
@@ -707,7 +707,7 @@ A file defined for I/O in a program -- corresponds to a COBOL `SELECT`/`FD`, VSA
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `used_by_callables` | CallableUnit | Yes | `uses_file_definitions` | Callables that do I/O on this file |
-| `file_defined_in_container` | CodeContainer | No | `container_file_definitions` | Source file where defined |
+| `file_defined_in_container` | CodeContainer | No | `has_file_definitions` | Source file where defined |
 | `persisted_in_store` | DataStore | No | `store_file_definitions` | Backing data store (Layer 2+) |
 | `file_operations` | FileOperation | Yes | `operates_on_file` | I/O operations on this file |
 | `mapped_from_dataset_allocations` | DatasetAllocation | Yes | `maps_to_file_definition` | JCL DD mappings |
@@ -763,7 +763,7 @@ An individual I/O operation on a file definition -- a single READ, WRITE, REWRIT
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `operates_on_file` | FileDefinition | No | `file_operations` | Target file |
-| `performed_in_callable` | CallableUnit | No | `callable_file_operations` | Callable performing the I/O |
+| `performed_in_callable` | CallableUnit | No | `has_file_operations` | Callable performing the I/O |
 
 **FileOperationType Enum:**
 
@@ -800,7 +800,7 @@ A terminal screen or map definition -- BMS maps (CICS), RPG display files, MFS f
 |---|---|---|---|---|
 | `contains_screen_fields` | ScreenField | Yes | `field_on_screen` | Fields on this screen |
 | `program_uses_screens` | EncapsulationUnit | Yes | `screen_used_by_programs` | Programs using this screen |
-| `screen_defined_in_container` | CodeContainer | No | `container_screen_definitions` | Source container |
+| `screen_defined_in_container` | CodeContainer | No | `has_screen_definitions` | Source container |
 
 **ScreenType Enum:**
 
@@ -948,8 +948,8 @@ A communication link between two programs or processes at runtime.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `ipc_source_program` | EncapsulationUnit | No | `outgoing_ipc_connections` | Calling program |
-| `ipc_target_program` | EncapsulationUnit | No | `incoming_ipc_connections` | Called program |
+| `has_source_program` | EncapsulationUnit | No | `has_outgoing_ipc_connections` | Calling program |
+| `has_target_program` | EncapsulationUnit | No | `has_incoming_ipc_connections` | Called program |
 | `ipc_passes_data` | DataStructure | Yes | `passed_via_ipc` | Data structures passed |
 
 **IPCMechanism Enum:**
@@ -990,7 +990,7 @@ A preprocessor directive, macro, or metaprogramming construct that modifies code
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `directive_defined_in_container` | CodeContainer | No | `container_preprocessor_directives` | Source container |
+| `directive_defined_in_container` | CodeContainer | No | `has_preprocessor_directives` | Source container |
 | `directive_affects_encapsulation_units` | EncapsulationUnit | Yes | `affected_by_directives` | Units affected |
 | `directive_affects_callables` | CallableUnit | Yes | `callable_affected_by_directives` | Callables affected |
 
@@ -1118,8 +1118,8 @@ A logical grouping of statements within a callable unit -- conditionals, loops, 
 |---|---|---|---|---|
 | `contained_in_callable` | CallableUnit | No | `contains_blocks` | Parent callable |
 | `contains_statements` | Statement | Yes | `contained_in_block` | Statements in this block |
-| `parent_block` | CodeBlock | No | `child_blocks` | Parent block (nesting) |
-| `child_blocks` | CodeBlock | Yes | `parent_block` | Child blocks (nesting) |
+| `has_parent_block` | CodeBlock | No | `has_child_blocks` | Parent block (nesting) |
+| `has_child_blocks` | CodeBlock | Yes | `has_parent_block` | Child blocks (nesting) |
 
 **CodeBlockType Enum:** `sequential`, `conditional`, `loop`, `try_catch`, `transaction`, `critical_section`, `scope`
 
@@ -1170,8 +1170,8 @@ A programming language modeled as a first-class entity, replacing bare string fi
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `language_used_by_containers` | CodeContainer | Yes | `written_in_language` | Code containers written in this language |
-| `default_error_model` | ErrorModel | No | `error_model_for_languages` | Default error handling model |
-| `default_memory_model` | MemoryModel | No | `memory_model_for_languages` | Default memory management model |
+| `has_default_error_model` | ErrorModel | No | `error_model_for_languages` | Default error handling model |
+| `has_default_memory_model` | MemoryModel | No | `memory_model_for_languages` | Default memory management model |
 
 **ProgrammingParadigm Enum:** `object_oriented`, `procedural`, `functional`, `logic`, `concatenative`, `data_driven`, `multi_paradigm`
 
@@ -1193,7 +1193,7 @@ Describes how a module or language handles errors.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `modules_using_error_model` | EncapsulationUnit | Yes | `error_model_for_module` | Modules using this model |
-| `error_model_for_languages` | ProgrammingLanguage | Yes | `default_error_model` | Languages using this as default |
+| `error_model_for_languages` | ProgrammingLanguage | Yes | `has_default_error_model` | Languages using this as default |
 
 **ErrorHandlingStrategy Enum:** `exception_based`, `return_value_based`, `condition_based`, `error_code_based`, `panic_recover`, `monadic`
 
@@ -1218,7 +1218,7 @@ Describes the memory management strategy for a module or language.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `modules_using_memory_model` | EncapsulationUnit | Yes | `memory_model_for_module` | Modules using this model |
-| `memory_model_for_languages` | ProgrammingLanguage | Yes | `default_memory_model` | Languages using this as default |
+| `memory_model_for_languages` | ProgrammingLanguage | Yes | `has_default_memory_model` | Languages using this as default |
 
 **OwnershipModel Enum:** `owned`, `borrowed_shared`, `borrowed_mutable`, `moved`, `copied`, `reference_counted`, `garbage_collected`, `manual`, `stack_allocated`
 
@@ -1240,7 +1240,7 @@ An ownership or lifetime annotation on a specific data element. Primarily for Ru
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `annotates_data_element` | DataElement | No | `ownership_annotations` | Data element this applies to |
+| `annotates_data_element` | DataElement | No | `has_ownership_annotations` | Data element this applies to |
 
 **LifetimeScope Enum:** `static_lifetime`, `function_scope`, `block_scope`, `named_lifetime`, `heap_lifetime`
 

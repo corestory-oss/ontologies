@@ -93,8 +93,8 @@ The Domain Modeling section provides a comprehensive framework for modeling busi
 - **join_entity** (string): For many-to-many relationships, the join table or entity
 
 **Relationships**:
-- **source_entity**: The `DomainEntity` that owns or originates the relationship (inverse: `outgoing_relationships` on DomainEntity)
-- **target_entity**: The `DomainEntity` that is referenced by the relationship (inverse: `incoming_relationships` on DomainEntity)
+- **source_entity**: The `DomainEntity` that owns or originates the relationship (inverse: `has_outgoing_relationships` on DomainEntity)
+- **target_entity**: The `DomainEntity` that is referenced by the relationship (inverse: `has_incoming_relationships` on DomainEntity)
 
 **Example Domain Relationships**:
 ```

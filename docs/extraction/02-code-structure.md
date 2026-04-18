@@ -170,7 +170,7 @@ For each **EncapsulationUnit**, extract every method, function, paragraph, proce
 | `callable_type` | `CallableType` | MUST set. See enum values below. |
 | `visibility` | `VisibilityType` | SHOULD set when the language has visibility modifiers. |
 | `return_type` | string | SHOULD set (use the source-level type name as-is). |
-| `return_type_expression` | **TypeExpression** | MAY set for structured type modeling (see sub-phase 2c). |
+| `has_return_type` | **TypeExpression** | MAY set for structured type modeling (see sub-phase 2c). |
 | `is_async` | boolean | MUST set to `true` for async/await functions. |
 | `is_static` | boolean | MUST set to `true` for static/class methods. |
 | `is_pure` | boolean | MAY set if determinable (no side effects). |
@@ -292,7 +292,7 @@ For each parameter of a **CallableUnit**, create a **Parameter** instance.
 | `direction` | `ParameterDirection` | SHOULD set. Values: `input`, `output`, `input_output`, `return`. |
 | `position` | integer | MUST set (0-based or 1-based, be consistent). |
 | `passing_mechanism` | `PassingMechanism` | SHOULD set. Values: `by_value`, `by_reference`, `by_name`, `by_result`. |
-| `parameter_type` | **TypeExpression** | MAY set for structured type modeling. |
+| `has_type` | **TypeExpression** | MAY set for structured type modeling. |
 | `data_type` | string | SHOULD set (inherited from **DataElement**; use source-level type name). |
 | `is_nullable` | boolean | SHOULD set when determinable. |
 | `default_value` | string | SHOULD set when a default is declared. |
@@ -461,8 +461,8 @@ Extract struct/record/group declarations and their fields from each **Encapsulat
 |---|---|---|
 | `contained_in_unit` | **EncapsulationUnit** | MUST link to the containing unit. |
 | `structure_contains_elements` | **DataElement** | Populated below. |
-| `parent_structure` | **DataStructure** | MUST set for nested structures. |
-| `child_structures` | **DataStructure** | Inverse of `parent_structure`. |
+| `has_parent_structure` | **DataStructure** | MUST set for nested structures. |
+| `has_child_structures` | **DataStructure** | Inverse of `has_parent_structure`. |
 
 ### DataElement attributes
 
@@ -498,8 +498,8 @@ For each field, variable, or constant within a **DataStructure** (or directly wi
 |---|---|---|
 | `contained_in_structure` | **DataStructure** | MUST link when element belongs to a structure. |
 | `contained_in_unit` | **EncapsulationUnit** | MUST link when element is at the unit level. |
-| `parent_element` | **DataElement** | MUST set for COBOL hierarchical data items. |
-| `child_elements` | **DataElement** | Inverse of `parent_element`. |
+| `has_parent_element` | **DataElement** | MUST set for COBOL hierarchical data items. |
+| `has_child_elements` | **DataElement** | Inverse of `has_parent_element`. |
 | `declared_type` | **TypeExpression** | MAY set for structured type modeling. |
 
 ### TypeExpression
@@ -510,7 +510,7 @@ For complex types (generics, unions, optional wrappers, function types), create 
 |---|---|---|
 | `type_kind` | `TypeKind` | MUST set. |
 | `base_type` | string | MUST set (e.g., `List`, `int`, `String`). |
-| `type_parameters` | **TypeExpression**[] | MUST set for generic types (recursive). |
+| `has_type_parameters` | **TypeExpression**[] | MUST set for generic types (recursive). |
 | `type_constraints` | string[] | MAY set (e.g., `T: Comparable`). |
 | `is_nullable` | boolean | SHOULD set. |
 | `nullability_model` | string | MAY set (e.g., `option_type`, `nullable_annotation`). |
@@ -539,7 +539,7 @@ For complex types (generics, unions, optional wrappers, function types), create 
 3. For each field within the structure, create a **DataElement** and link via `structure_contains_elements` / `contained_in_structure`.
 4. For fields at the unit level (e.g., Java class fields not inside an inner struct), link directly via `contains_data_elements` on the **EncapsulationUnit**.
 5. For complex types, create a **TypeExpression** and link via `declared_type` on the **DataElement**.
-6. For COBOL group items, preserve the level-number hierarchy using `parent_element` / `child_elements`.
+6. For COBOL group items, preserve the level-number hierarchy using `has_parent_element` / `has_child_elements`.
 
 ### Example
 
@@ -730,10 +730,10 @@ For each **CallableUnit**, identify what it calls and build the call graph using
 
 | Relationship | Target | Rule |
 |---|---|---|
-| `source_callable` | **CallableUnit** | MUST set (the caller). |
-| `target_callable` | **CallableUnit** | MUST set (the callee). |
-| `source_statement` | **Statement** | MAY set for statement-level precision. |
-| `target_statement` | **Statement** | MAY set for statement-level precision. |
+| `has_source_callable` | **CallableUnit** | MUST set (the caller). |
+| `has_target_callable` | **CallableUnit** | MUST set (the callee). |
+| `has_source_statement` | **Statement** | MAY set for statement-level precision. |
+| `has_target_statement` | **Statement** | MAY set for statement-level precision. |
 
 ### Bidirectional call links
 
@@ -809,10 +809,10 @@ For each **CallableUnit**, identify which **DataElements** it reads, writes, or 
 
 | Relationship | Target | Rule |
 |---|---|---|
-| `source_element` | **DataElement** | MUST set (the data being read from or defined). |
-| `target_element` | **DataElement** | MUST set (the data being written to or consumed). |
-| `through_callable` | **CallableUnit** | SHOULD set (the callable performing the flow). |
-| `through_statement` | **Statement** | MAY set for statement-level precision. |
+| `has_source_element` | **DataElement** | MUST set (the data being read from or defined). |
+| `has_target_element` | **DataElement** | MUST set (the data being written to or consumed). |
+| `has_through_callable` | **CallableUnit** | SHOULD set (the callable performing the flow). |
+| `has_through_statement` | **Statement** | MAY set for statement-level precision. |
 
 ### Bidirectional data links
 
@@ -1086,7 +1086,7 @@ Extract for CICS LINK/XCTL, MQ calls, shared memory references, or any inter-pro
 | `is_synchronous` | Whether the call is synchronous |
 | `transaction_scoped` | Whether the IPC participates in a transaction boundary |
 
-Link `ipc_source_program` and `ipc_target_program` to **EncapsulationUnit** instances. Link `ipc_passes_data` to the **DataStructure** being exchanged (typically a COMMAREA or message structure).
+Link `has_source_program` and `has_target_program` to **EncapsulationUnit** instances. Link `ipc_passes_data` to the **DataStructure** being exchanged (typically a COMMAREA or message structure).
 
 ```yaml
 link_to_validation:
@@ -1183,7 +1183,7 @@ Create an **ExceptionType** for each declared exception or error type in the cod
 |---|---|
 | `qualified_name` | Fully qualified exception name |
 | `is_checked` | Whether this is a checked exception |
-| `parent_exception` | Parent in the exception hierarchy |
+| `has_parent_exception` | Parent in the exception hierarchy |
 
 Link `raised_by_callables` and `handled_by_callables` to the relevant **CallableUnit** instances.
 
@@ -1235,7 +1235,7 @@ Before proceeding to Phase 3, verify the following:
 
 - **Missing nested types.** Inner classes, companion objects, and anonymous classes are easily skipped. Ensure the AST walker recurses into nested type declarations.
 - **Unresolved call targets.** Dynamic dispatch, reflection, and dependency injection make call graph construction incomplete. Create stub **CallableUnit** instances for unresolvable targets and annotate them.
-- **COBOL hierarchy.** COBOL data items use level numbers (01, 05, 10, etc.) to express hierarchy. Map these to `parent_element` / `child_elements` rather than flattening.
+- **COBOL hierarchy.** COBOL data items use level numbers (01, 05, 10, etc.) to express hierarchy. Map these to `has_parent_element` / `has_child_elements` rather than flattening.
 - **Generic types.** Do not flatten `List<Map<String, Order>>` to a string. Use nested **TypeExpression** instances.
 - **Visibility defaults.** Languages have different default visibilities (Java: `package`, Python: `public`, C++: `private` for class members). Apply the correct default when no modifier is present.
 

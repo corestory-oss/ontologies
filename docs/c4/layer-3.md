@@ -230,8 +230,8 @@ A UI component in a modern component-tree framework (React, Angular, Vue, Svelte
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `parent_ui_component` | UIComponent | No | `child_ui_components` | Parent in component tree |
-| `child_ui_components` | UIComponent | Yes | `parent_ui_component` | Children in component tree |
+| `has_parent_ui_component` | UIComponent | No | `has_child_ui_components` | Parent in component tree |
+| `has_child_ui_components` | UIComponent | Yes | `has_parent_ui_component` | Children in component tree |
 | `renders_on_route` | Route | Yes | `route_renders_component` | Routes rendering this component |
 | `managed_by_state` | StateStore | Yes | `manages_ui_components` | State stores managing this component |
 | `ui_implements_encapsulation_unit` | EncapsulationUnit | No | `encapsulation_unit_renders_ui` | Code implementation (Layer 4) |
@@ -263,7 +263,7 @@ A cluster of domain entities treated as a single transactional unit. The fundame
 
 | Attribute | Type | Required | Description |
 |---|---|---|---|
-| `value_objects` | ValueObject[] | No | Value objects within this aggregate (inline) |
+| `has_value_objects` | ValueObject[] | No | Value objects within this aggregate (inline) |
 
 **Relationships:**
 
@@ -302,8 +302,8 @@ A uniquely identifiable object within the domain. Entities have identity, lifecy
 | `in_state` | State | No | `current_for_entities` | Current lifecycle state |
 | `governed_by_rules` | Rule | Yes | `governs_domain_entities` | Business rules governing this entity |
 | `mapped_from_structure` | DataStructure | Yes | `maps_to_domain_entity` | Code structures (Layer 4) |
-| `outgoing_relationships` | DomainRelationship | Yes | `source_entity` | Relationships originating from this entity |
-| `incoming_relationships` | DomainRelationship | Yes | `target_entity` | Relationships targeting this entity |
+| `has_outgoing_relationships` | DomainRelationship | Yes | `has_source_entity` | Relationships originating from this entity |
+| `has_incoming_relationships` | DomainRelationship | Yes | `has_target_entity` | Relationships targeting this entity |
 
 ---
 
@@ -378,8 +378,8 @@ A named, typed relationship between two domain entities with cardinality, naviga
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `source_entity` | DomainEntity | No | `outgoing_relationships` | Entity originating the relationship |
-| `target_entity` | DomainEntity | No | `incoming_relationships` | Entity referenced |
+| `has_source_entity` | DomainEntity | No | `has_outgoing_relationships` | Entity originating the relationship |
+| `has_target_entity` | DomainEntity | No | `has_incoming_relationships` | Entity referenced |
 
 **Cardinality Enum:**
 
@@ -678,7 +678,7 @@ A registration to receive events of a certain type.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `subscribes_to_event_types` | Event | Yes | `subscribed_by_subscriptions` | Event types subscribed to |
-| `subscribed_by_actor` | Actor | No | `actor_subscriptions` | Subscribing actor (Layer 2) |
+| `subscribed_by_actor` | Actor | No | `has_subscriptions` | Subscribing actor (Layer 2) |
 | `subscribes_to_interface` | EventInterface | No | `has_subscriptions` | Delivery interface |
 
 ---
@@ -910,7 +910,7 @@ A versioned data structure definition used by operations, resources, events, and
 |---|---|---|---|
 | `schema_type` | SchemaType | No | Kind of schema |
 | `definition` | string | No | Schema definition content |
-| `schema_versions` | SchemaVersion[] | No | Version history (inline) |
+| `has_versions` | SchemaVersion[] | No | Version history (inline) |
 
 **Relationships:**
 
@@ -953,7 +953,7 @@ A specific version of a schema, with migration support.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `version_of_schema` | Schema | No | `schema_versions` | Parent schema |
+| `version_of_schema` | Schema | No | `has_versions` | Parent schema |
 
 ---
 

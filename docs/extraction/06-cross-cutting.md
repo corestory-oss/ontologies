@@ -269,8 +269,8 @@ Map frontend component hierarchies, routing structure, and state management.
 
 | Class | Key attributes | Links |
 |---|---|---|
-| **UIComponent** | `component_type` (required), `framework`, `is_lazy_loaded`, `is_server_rendered`, `source_location` | `parent_ui_component` / `child_ui_components` -> **UIComponent**, `renders_on_route` -> **Route**, `managed_by_state` -> **StateStore** |
-| **Route** | `path_pattern` (required), `route_type`, `is_dynamic`, `is_authenticated` | `route_renders_component` -> **UIComponent**, `parent_route` / `child_routes` -> **Route**, `route_guarded_by` -> **Policy** |
+| **UIComponent** | `component_type` (required), `framework`, `is_lazy_loaded`, `is_server_rendered`, `source_location` | `has_parent_ui_component` / `has_child_ui_components` -> **UIComponent**, `renders_on_route` -> **Route**, `managed_by_state` -> **StateStore** |
+| **Route** | `path_pattern` (required), `route_type`, `is_dynamic`, `is_authenticated` | `route_renders_component` -> **UIComponent**, `has_parent_route` / `has_child_routes` -> **Route**, `route_guarded_by` -> **Policy** |
 | **StateStore** | `management_type` (required), `framework`, `actions`, `selectors` | `manages_ui_components` -> **UIComponent** |
 
 **`component_type` permissible values** (enum `UIComponentType`):
@@ -306,7 +306,7 @@ Map frontend component hierarchies, routing structure, and state management.
 
 **Sources:** Frontend component files (`.tsx`, `.vue`, `.svelte`), routing configuration (`react-router`, `vue-router`, Next.js `app/` directory), state management setup (Redux store, Vuex/Pinia modules, Zustand stores).
 
-**Extraction guidance:** Walk the frontend source tree and create a **UIComponent** for each component file. Set `parent_ui_component` / `child_ui_components` from import analysis and JSX/template usage. Extract routes from routing configuration; for file-based routing (Next.js, Nuxt), derive `path_pattern` from directory structure. If a route requires authentication, set `is_authenticated` to `true` and link `route_guarded_by` to the relevant **Policy**.
+**Extraction guidance:** Walk the frontend source tree and create a **UIComponent** for each component file. Set `has_parent_ui_component` / `has_child_ui_components` from import analysis and JSX/template usage. Extract routes from routing configuration; for file-based routing (Next.js, Nuxt), derive `path_pattern` from directory structure. If a route requires authentication, set `is_authenticated` to `true` and link `route_guarded_by` to the relevant **Policy**.
 
 ```yaml
 ui_components:
@@ -608,9 +608,9 @@ Document metrics, logs, traces, health checks, alerts, and incidents.
 | Class | Key attributes | Links |
 |---|---|---|
 | **Metric** | `metric_type`, `unit`, `labels` | `metric_emitted_by_component` -> **Component**, `monitored_by_alert_rules` -> **AlertRule** |
-| **Log** | `log_type` | `log_entries` -> **LogEntry**, `log_governed_by_retention` -> **RetentionPolicy** |
+| **Log** | `log_type` | `contains_entries` -> **LogEntry**, `log_governed_by_retention` -> **RetentionPolicy** |
 | **LogEntry** | `timestamp`, `level`, `message` | `entry_in_log` -> **Log** |
-| **Trace** | `trace_id` | `trace_spans` -> **Span**, `starts_with_span` -> **Span** |
+| **Trace** | `trace_id` | `contains_spans` -> **Span**, `starts_with_span` -> **Span** |
 | **Span** | `span_id`, `operation_name`, `start_time`, `end_time`, `status` | `belongs_to_trace` -> **Trace**, `child_of_span` / `parent_of_spans` -> **Span** |
 | **HealthCheck** | `check_type`, `endpoint`, `interval_seconds`, `timeout_seconds` | -- |
 | **Alert** | `severity`, `triggered_at`, `acknowledged_at`, `resolved_at` | `triggered_by_rule` -> **AlertRule**, `escalates_to_incident` -> **Incident** |

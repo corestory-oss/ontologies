@@ -65,9 +65,9 @@ Represents the physical storage of source code - files, library members, or othe
 - `line_count` - Number of lines
 - `encoding` - Character encoding
 - `checksum` - Content hash for version tracking
-- `container_file_definitions` - **(v2.0)** FileDefinition[] associated with this container
-- `container_screen_definitions` - **(v2.0)** ScreenDefinition[] associated with this container
-- `container_preprocessor_directives` - **(v2.0)** PreprocessorDirective[] associated with this container
+- `has_file_definitions` - **(v2.0)** FileDefinition[] associated with this container
+- `has_screen_definitions` - **(v2.0)** ScreenDefinition[] associated with this container
+- `has_preprocessor_directives` - **(v2.0)** PreprocessorDirective[] associated with this container
 
 **Container Types:**
 - `source_file` - Standard source code file
@@ -111,7 +111,7 @@ Represents a logical or physical location for storing code containers.
 - `module_path` - Module search path
 
 **Relationships:**
-- `parent_location` - Parent storage location (hierarchical)
+- `has_parent_location` - Parent storage location (hierarchical)
 - `contains_locations` - Child storage locations
 - `contains_containers` - Code containers in this location
 - `maps_to_module` - Corresponding architectural Module
@@ -145,8 +145,8 @@ A logical boundary that groups related code and data. This is the cornerstone of
 - `is_final` - Whether this can be extended
 - `error_model_for_module` - **(v2.0)** ErrorModel associated with this unit
 - `screen_used_by_programs` - **(v2.0)** ScreenDefinition[] used by this unit
-- `outgoing_ipc_connections` - **(v2.0)** IPCConnection[] originating from this unit
-- `incoming_ipc_connections` - **(v2.0)** IPCConnection[] targeting this unit
+- `has_outgoing_ipc_connections` - **(v2.0)** IPCConnection[] originating from this unit
+- `has_incoming_ipc_connections` - **(v2.0)** IPCConnection[] targeting this unit
 - `affected_by_directives` - **(v2.0)** PreprocessorDirective[] affecting this unit
 - `memory_model_for_module` - **(v2.0)** MemoryModel associated with this unit
 - `executed_by_job_steps` - **(v2.0)** JobStep[] that execute this unit
@@ -244,9 +244,9 @@ A named, invocable unit of code - the paradigm-agnostic representation of functi
 - `is_virtual` - Whether this is virtual/overridable
 - `complexity_score` - Cyclomatic complexity or similar metric
 - `entry_point_type` - If this is an entry point (main, constructor, handler, etc.)
-- `return_type_expression` - **(v2.0)** TypeExpression for the return type
+- `has_return_type` - **(v2.0)** TypeExpression for the return type
 - `uses_file_definitions` - **(v2.0)** FileDefinition[] used by this callable
-- `callable_file_operations` - **(v2.0)** FileOperation[] performed by this callable
+- `has_file_operations` - **(v2.0)** FileOperation[] performed by this callable
 - `callable_affected_by_directives` - **(v2.0)** PreprocessorDirective[] affecting this callable
 
 **CallableType Values** (53 total):
@@ -434,8 +434,8 @@ Represents organized data storage - the paradigm-agnostic representation of clas
 **Relationships:**
 - `contained_in_unit` - Encapsulation unit containing this structure
 - `contains_data_elements` - Data elements in this structure
-- `parent_structure` - Parent structure (for nested structures)
-- `child_structures` - Child/nested structures
+- `has_parent_structure` - Parent structure (for nested structures)
+- `has_child_structures` - Child/nested structures
 - `maps_to_domain_entity` - Domain entity this maps to
 - `maps_to_value_object` - Value object this maps to
 - `persisted_in_collection` - Collection where this is persisted
@@ -472,13 +472,13 @@ Individual data fields, variables, or constants.
 - `is_constant` - Whether this is a constant/immutable
 - `is_nullable` - Whether this can be null
 - `default_value` - Default value
-- `ownership_annotations` - **(v2.0)** OwnershipAnnotation[] for this element
+- `has_ownership_annotations` - **(v2.0)** OwnershipAnnotation[] for this element
 - `mapped_from_screen_fields` - **(v2.0)** ScreenField[] mapped to this element
 
 **Relationships:**
 - `contained_in_unit` - Encapsulation unit containing this element
 - `contained_in_structure` - Data structure containing this element
-- `parent_element` - Parent element (for nested fields)
+- `has_parent_element` - Parent element (for nested fields)
 - `has_type_definition` - Type definition reference
 
 **Example:**
@@ -540,10 +540,10 @@ Control flow between code elements (calls, branches, etc.).
 - `condition` - Condition expression
 
 **Relationships:**
-- `source_callable` - Source callable
-- `target_callable` - Target callable
-- `source_statement` - Source statement
-- `target_statement` - Target statement
+- `has_source_callable` - Source callable
+- `has_target_callable` - Target callable
+- `has_source_statement` - Source statement
+- `has_target_statement` - Target statement
 
 ### DataFlow
 
@@ -553,8 +553,8 @@ Data flow between elements.
 - `flow_type` - Type (read, write, modify, define, use)
 
 **Relationships:**
-- `source_element` - Source data element
-- `target_element` - Target data element
+- `has_source_element` - Source data element
+- `has_target_element` - Target data element
 
 ## Mapping to Architecture
 
@@ -814,7 +814,7 @@ A recursive type model capable of representing generics, unions, pointers, and f
 **Key Attributes:**
 - `type_kind` - TypeKind (e.g., primitive, generic, union, pointer, function_type, array)
 - `base_type` - Base type name or reference
-- `type_parameters` - TypeExpression[] (self-referential, multivalued) for generic parameters
+- `has_type_parameters` - TypeExpression[] (self-referential, multivalued) for generic parameters
 - `type_constraints` - Constraints on type parameters
 - `is_nullable` - Whether this type is nullable
 - `nullability_model` - Nullability model (e.g., optional, nullable_reference, maybe)
@@ -822,8 +822,8 @@ A recursive type model capable of representing generics, unions, pointers, and f
 
 **Relationships:**
 - Connected to DataElement via `declared_type` / `type_of_data_elements`
-- Connected to Parameter via `parameter_type` / `type_of_parameters`
-- Connected to CallableUnit via `return_type_expression` / `return_type_of_callables`
+- Connected to Parameter via `has_type` / `type_of_parameters`
+- Connected to CallableUnit via `has_return_type` / `return_type_of_callables`
 
 ### Error Handling Model (Section 19)
 
@@ -848,8 +848,8 @@ Represents a specific exception or error type in the exception hierarchy.
 **Key Attributes:**
 - `qualified_name` - Fully qualified exception class name
 - `is_checked` - Whether this is a checked exception
-- `parent_exception` - Parent ExceptionType in the hierarchy
-- `child_exceptions` - Child ExceptionType[] in the hierarchy
+- `has_parent_exception` - Parent ExceptionType in the hierarchy
+- `has_child_exceptions` - Child ExceptionType[] in the hierarchy
 
 **Relationships:**
 - Connected to CallableUnit via `raises_exception_types` / `handles_exception_types`
@@ -872,7 +872,7 @@ Represents a declared file or dataset used by a program.
 
 **Relationships:**
 - Connected to CallableUnit via `uses_file_definitions`
-- Connected to CodeContainer via `container_file_definitions`
+- Connected to CodeContainer via `has_file_definitions`
 - Connected to DataStore
 
 ---
@@ -887,7 +887,7 @@ Represents an individual file I/O operation within code.
 
 **Relationships:**
 - Connected to FileDefinition
-- Connected to CallableUnit via `callable_file_operations`
+- Connected to CallableUnit via `has_file_operations`
 
 ### Screen / Terminal Interaction (Section 21)
 
@@ -904,7 +904,7 @@ Represents a terminal screen or display definition (e.g., BMS map, DDS display f
 **Relationships:**
 - Connected to ScreenField (contains fields)
 - Connected to EncapsulationUnit via `screen_used_by_programs`
-- Connected to CodeContainer via `container_screen_definitions`
+- Connected to CodeContainer via `has_screen_definitions`
 
 ---
 
@@ -987,7 +987,7 @@ Represents a communication channel between processes or programs.
 - `transaction_scoped` - Whether the connection is scoped to a transaction
 
 **Relationships:**
-- Connects source EncapsulationUnit (`outgoing_ipc_connections`) to target EncapsulationUnit (`incoming_ipc_connections`)
+- Connects source EncapsulationUnit (`has_outgoing_ipc_connections`) to target EncapsulationUnit (`has_incoming_ipc_connections`)
 - Passes DataStructure[] via `passed_via_ipc`
 
 ### Preprocessor / Metaprogramming (Section 24)
@@ -1002,7 +1002,7 @@ Represents a preprocessor directive or metaprogramming construct.
 - `expansion` - Expanded text or result
 
 **Relationships:**
-- Connected to CodeContainer via `container_preprocessor_directives`
+- Connected to CodeContainer via `has_preprocessor_directives`
 - Connected to EncapsulationUnit via `affected_by_directives`
 - Connected to CallableUnit via `callable_affected_by_directives`
 
@@ -1033,7 +1033,7 @@ Represents an ownership or lifetime annotation on a data element.
 - `lifetime_name` - Named lifetime identifier (e.g., `'a` in Rust)
 
 **Relationships:**
-- Connected to DataElement via `ownership_annotations`
+- Connected to DataElement via `has_ownership_annotations`
 
 ### Database Schema Objects (Section 27)
 

@@ -224,7 +224,7 @@ An independently deployable runtime unit.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `health_checks` | HealthCheck | Yes | -- | Health check probes (inline) |
+| `has_health_checks` | HealthCheck | Yes | -- | Health check probes (inline) |
 | `emits_metrics` | Metric | Yes | -- | Metrics emitted |
 | `exposes_endpoints` | Endpoint | Yes | `exposed_by_service` | Endpoints exposed (inline) |
 | `depends_on_service` | Service | Yes | `depended_on_by_service` | Services this one depends on |
@@ -314,13 +314,13 @@ A user-facing interface. Inherits all Interface attributes and relationships.
 | Attribute | Type | Required | Description |
 |---|---|---|---|
 | `ui_type` | UserInterfaceType | No | Kind of user interface |
-| `screens` | Screen[] | No | Screens (inline) |
+| `contains_screens` | Screen | Yes | Screens in this interface |
 
 **Additional Relationships:**
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `ui_screens` | Screen | Yes | `part_of_ui` | Screens in this interface |
+| `contains_screens` | Screen | Yes | `part_of_ui` | Screens in this interface |
 
 **UserInterfaceType Enum:**
 
@@ -404,7 +404,7 @@ A single screen or view in a user interface.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `part_of_ui` | UserInterface | No | `ui_screens` | Parent user interface |
+| `part_of_ui` | UserInterface | No | `contains_screens` | Parent user interface |
 | `offers_operations` | Operation | Yes | `offered_on_screens` | Operations accessible from this screen (Layer 3) |
 
 ---
@@ -471,8 +471,8 @@ A navigation route or URL path in a frontend application.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `route_renders_component` | UIComponent | No | `renders_on_route` | UI component rendered (Layer 3) |
-| `parent_route` | Route | No | `child_routes` | Parent route |
-| `child_routes` | Route | Yes | `parent_route` | Child routes |
+| `has_parent_route` | Route | No | `has_child_routes` | Parent route |
+| `has_child_routes` | Route | Yes | `has_parent_route` | Child routes |
 | `route_guarded_by` | Policy | Yes | `guards_routes` | Policies guarding this route (Layer 3) |
 
 **RouteType Enum:**
@@ -660,7 +660,7 @@ A tamper-evident record of system activities.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `auditlog_governed_by_retention` | RetentionPolicy | No | `governs_audit_logs` | Retention policy |
-| `audit_log_entries` | AuditEntry | Yes | `entry_in_audit_log` | Audit entries |
+| `contains_entries` | AuditEntry | Yes | `entry_in_audit_log` | Audit entries |
 
 ---
 
@@ -680,7 +680,7 @@ A single record within an audit log.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `entry_in_audit_log` | AuditLog | No | `audit_log_entries` | Parent audit log |
+| `entry_in_audit_log` | AuditLog | No | `contains_entries` | Parent audit log |
 | `audit_performed_by_actor` | Actor | No | `audit_actions_performed` | Actor who performed the action |
 | `records_action` | Action | No | `recorded_in_audit` | Action recorded (Layer 3) |
 | `affects_resource` | Resource | No | `affected_in_audit` | Resource affected (Layer 3) |
@@ -826,7 +826,7 @@ A formal specification of integration behavior.
 |---|---|---|---|
 | `contract_type` | ContractType | No | Kind of contract |
 | `definition` | string | No | Contract definition content |
-| `contract_versions` | ContractVersion[] | No | Version history (inline) |
+| `has_versions` | ContractVersion[] | No | Version history (inline) |
 
 **Relationships:**
 
@@ -867,7 +867,7 @@ A specific iteration of a contract. Typically inlined within Contract.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `version_of_contract` | Contract | No | `contract_versions` | Parent contract |
+| `version_of_contract` | Contract | No | `has_versions` | Parent contract |
 
 ---
 
@@ -1138,7 +1138,7 @@ A timestamped record of discrete events.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `log_governed_by_retention` | RetentionPolicy | No | `governs_logs` | Retention policy |
-| `log_entries` | LogEntry | Yes | `entry_in_log` | Log entries |
+| `contains_entries` | LogEntry | Yes | `entry_in_log` | Log entries |
 
 **LogType Enum:**
 
@@ -1170,7 +1170,7 @@ A single record within a log. Typically inlined within Log.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `entry_in_log` | Log | No | `log_entries` | Parent log |
+| `entry_in_log` | Log | No | `contains_entries` | Parent log |
 
 ---
 
@@ -1190,7 +1190,7 @@ A causal chain of operations across services.
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
 | `starts_with_span` | Span | No | `root_of_trace` | Root span |
-| `trace_spans` | Span | Yes | `belongs_to_trace` | All spans |
+| `contains_spans` | Span | Yes | `belongs_to_trace` | All spans |
 
 ---
 
@@ -1213,7 +1213,7 @@ A single unit of work within a trace. Typically inlined within Trace.
 
 | Relationship | Range | Multi | Inverse | Description |
 |---|---|---|---|---|
-| `belongs_to_trace` | Trace | No | `trace_spans` | Parent trace |
+| `belongs_to_trace` | Trace | No | `contains_spans` | Parent trace |
 | `child_of_span` | Span | No | `parent_of_spans` | Parent span |
 | `parent_of_spans` | Span | Yes | `child_of_span` | Child spans |
 | `root_of_trace` | Trace | No | `starts_with_span` | Trace where this is root |
@@ -1504,7 +1504,7 @@ A declared dependency on an external package or library.
 | `scope` | DependencyScope | No | Dependency scope |
 | `is_direct` | boolean | No | Whether this is a direct dependency |
 | `license` | string | No | Package license |
-| `known_vulnerabilities` | KnownVulnerability[] | No | Known vulnerabilities (inline) |
+| `has_known_vulnerabilities` | KnownVulnerability[] | No | Known vulnerabilities (inline) |
 
 **Relationships:**
 
@@ -1607,7 +1607,7 @@ A reusable module of IaC definitions.
 | `source` | string | No | Module source (registry path, git URL, etc.) |
 | `input_variables` | string[] | No | Input variable names |
 | `output_values` | string[] | No | Output value names |
-| `child_resources` | IaCResource[] | No | Resources within this module (inline) |
+| `has_child_resources` | IaCResource[] | No | Resources within this module (inline) |
 
 ---
 
@@ -1920,7 +1920,7 @@ A frontend state management store or container.
 |---|---|---|---|
 | `management_type` | StateManagementType | **Yes** | Kind of state management |
 | `framework` | string | No | State management framework (Redux, Vuex, Zustand, etc.) |
-| `state_shape` | DataStructure | No | Shape of the state tree (Layer 4) |
+| `has_state_shape` | DataStructure | No | Shape of the state tree (Layer 4) |
 | `actions` | string[] | No | Action names |
 | `selectors` | string[] | No | Selector names |
 

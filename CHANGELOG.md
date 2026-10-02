@@ -5,6 +5,17 @@ All notable changes to the Software Application Ontology (SAO) are documented he
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- Replace the placeholder schema ID and term prefix with `https://sao.corestory.ai/`.
+  Consumers using the old namespace must update schema references and term IRIs.
+- Prepare the repository for Apache License 2.0 distribution: replace the
+  proprietary license, add attribution, and align project metadata.
+- Refresh the README for schema version 2.1.0 and add validated instance examples.
+- Add contribution guidance and CI checks for schema and example validation.
+
 ## [2.1.0] - 2026-04-18
 
 This release standardizes the naming convention for relationship attributes. Every plain-noun relationship attribute has been renamed to a verb-prefixed form so the ontology reads uniformly across all layers.

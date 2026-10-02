@@ -1,0 +1,201 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/ui
+name: sao-ui
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  UIComponentType:
+    description: Types of UI components
+    permissible_values:
+      page: {}
+      layout: {}
+      form: {}
+      widget: {}
+      modal: {}
+      navigation: {}
+      data_display: {}
+      composite: {}
+      higher_order: {}
+      provider: {}
+
+  StateManagementType:
+    description: Types of frontend state management
+    permissible_values:
+      local_state: {}
+      global_store: {}
+      context: {}
+      url_state: {}
+      server_state: {}
+      form_state: {}
+
+  RouteType:
+    description: Types of routes/navigation paths
+    permissible_values:
+      page_route: {}
+      api_route: {}
+      layout_route: {}
+      redirect: {}
+      catch_all: {}
+      guarded: {}
+
+
+classes:
+  UIComponent:
+    is_a: NamedEntity
+    description: >-
+      A frontend user interface component that renders visual elements.
+    attributes:
+      component_type:
+        description: "Kind of UI component."
+        range: UIComponentType
+        required: true
+      framework:
+        description: "Framework (React, Angular, Vue, etc.)."
+        range: string
+      has_props:
+        description: "Component properties."
+        range: UIProperty
+        multivalued: true
+      emitted_events:
+        description: "Events this component emits."
+        range: string
+        multivalued: true
+      is_lazy_loaded:
+        description: "Whether lazily loaded."
+        range: boolean
+      is_server_rendered:
+        description: "Whether server-side rendered."
+        range: boolean
+      accessibility_role:
+        description: "ARIA role."
+        range: string
+      source_location:
+        description: "Source path."
+        range: string
+      has_parent_ui_component:
+        description: "Parent in component tree."
+        range: UIComponent
+        inverse: has_child_ui_components
+      has_child_ui_components:
+        description: "Children in component tree."
+        range: UIComponent
+        multivalued: true
+        inverse: has_parent_ui_component
+      renders_on_route:
+        description: "Routes rendering this component."
+        range: Route
+        multivalued: true
+        inverse: route_renders_component
+      managed_by_state:
+        description: "State stores managing this component."
+        range: StateStore
+        multivalued: true
+        inverse: manages_ui_components
+      ui_implements_encapsulation_unit:
+        description: "Code implementation."
+        range: EncapsulationUnit
+        inverse: encapsulation_unit_renders_ui
+
+  UIProperty:
+    is_a: NamedEntity
+    description: >-
+      A property (prop) passed to a UI component
+    attributes:
+      data_type:
+        description: "Property data type."
+        range: string
+      is_required:
+        description: "Whether the prop is required."
+        range: boolean
+      default_value:
+        description: "Default value."
+        range: string
+      is_reactive:
+        description: "Whether the prop is reactive."
+        range: boolean
+
+  Route:
+    is_a: NamedEntity
+    description: >-
+      A navigation route or URL path in a frontend application.
+    attributes:
+      path_pattern:
+        description: "URL path pattern."
+        range: string
+        required: true
+      route_type:
+        description: "Kind of route."
+        range: RouteType
+      http_methods:
+        description: "Allowed HTTP methods."
+        range: string
+        multivalued: true
+      is_dynamic:
+        description: "Whether the route has dynamic segments."
+        range: boolean
+      is_authenticated:
+        description: "Whether authentication is required."
+        range: boolean
+      route_renders_component:
+        description: "UI component rendered."
+        range: UIComponent
+        inverse: renders_on_route
+      has_parent_route:
+        description: "Parent route."
+        range: Route
+        inverse: has_child_routes
+      has_child_routes:
+        description: "Child routes."
+        range: Route
+        multivalued: true
+        inverse: has_parent_route
+      route_guarded_by:
+        description: "Policies guarding this route."
+        range: Policy
+        multivalued: true
+        inverse: guards_routes
+
+  StateStore:
+    is_a: NamedEntity
+    description: >-
+      A frontend state management store or container.
+    attributes:
+      management_type:
+        description: "Kind of state management."
+        range: StateManagementType
+        required: true
+      framework:
+        description: "State management framework (Redux, Vuex, Zustand, etc.)."
+        range: string
+      has_state_shape:
+        description: "Shape of the state tree."
+        range: DataStructure
+      actions:
+        description: "Action names."
+        range: string
+        multivalued: true
+      selectors:
+        description: "Selector names."
+        range: string
+        multivalued: true
+      manages_ui_components:
+        description: "UI components managed."
+        range: UIComponent
+        multivalued: true
+        inverse: managed_by_state
+

@@ -1,0 +1,440 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/behavior
+name: sao-behavior
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ActionCategory:
+    description: Categories of actions
+    permissible_values:
+      query:
+        description: "Read-only query action."
+      command:
+        description: "State-changing command action."
+      mutation:
+        description: "Data mutation or modification action."
+
+  CommandType:
+    description: Types of commands
+    permissible_values:
+      create:
+        description: "Create a new entity."
+      update:
+        description: "Update an existing entity."
+      delete:
+        description: "Delete an entity."
+      execute:
+        description: "Execute an operation or process."
+      archive:
+        description: "Archive an entity for retention."
+      restore:
+        description: "Restore an archived entity."
+
+  WorkflowType:
+    description: Types of workflows
+    permissible_values:
+      synchronous:
+        description: "Synchronous blocking workflow."
+      asynchronous:
+        description: "Asynchronous non-blocking workflow."
+      saga:
+        description: Saga pattern for distributed transactions
+      choreography:
+        description: Event-driven choreography workflow
+      orchestration:
+        description: "Centrally orchestrated workflow."
+
+  RuleCategory:
+    description: Categories of business rules
+    permissible_values:
+      validation:
+        description: "Validation rule for data integrity."
+      business:
+        description: "Business logic or domain rule."
+      derivation:
+        description: "Derivation rule for computed values."
+      constraint:
+        description: "Constraint or invariant rule."
+      trigger:
+        description: "Event trigger or automation rule."
+
+  EventCategory:
+    description: Categories of events
+    permissible_values:
+      domain_event:
+        description: "Domain-specific business event."
+      integration_event:
+        description: "Integration or cross-service event."
+      system_event:
+        description: "System-level technical event."
+      audit_event:
+        description: "Audit trail or compliance event."
+
+  TransactionType:
+    description: Types of transactions
+    permissible_values:
+      local:
+        description: "Local transaction within a single database."
+      distributed:
+        description: "Distributed transaction across multiple resources."
+      saga:
+        description: Saga pattern with compensating transactions
+      two_phase_commit:
+        description: "Two-phase commit protocol."
+
+
+classes:
+  Action:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      An atomic operation that can be performed
+    attributes:
+      category:
+        description: "`query` (read-only), `command` (state-changing), `mutation` (data modification)."
+        range: ActionCategory
+      allowed_by_permissions:
+        description: "`Permission` entities required."
+        range: Permission
+        multivalued: true
+        inverse: allows_actions
+      performed_by_actor:
+        description: "`Actor` performing the action."
+        range: Actor
+        inverse: performs_actions
+      targets_resources:
+        description: "`Resource` entities affected."
+        range: Resource
+        multivalued: true
+        inverse: targeted_by_actions
+      emits_events_from_action:
+        description: "`Event` entities emitted."
+        range: Event
+        multivalued: true
+        inverse: emitted_by_action
+      validated_by_action_rules:
+        description: "`Rule` entities that validate."
+        range: Rule
+        multivalued: true
+        inverse: validates_actions
+      executes_in_transaction:
+        description: "`Transaction` context."
+        range: Transaction
+        inverse: executes_actions
+      allowed_in_states:
+        description: "Back-reference to `State` entities that allow this action."
+        range: State
+        multivalued: true
+        inverse: allows_actions_in_state
+      executed_during_transition:
+        description: "Back-reference to `Transition` entities that execute this action."
+        range: Transition
+        multivalued: true
+        inverse: executes_actions_on_transition
+      executed_by_operation:
+        description: "Back-reference to `Operation` entities that execute this action."
+        range: Operation
+        multivalued: true
+        inverse: executes_operation_actions
+      executed_in_step:
+        description: "Back-reference to `Step` entities that execute this action."
+        range: Step
+        multivalued: true
+        inverse: executes_actions_in_step
+      recorded_in_audit:
+        description: "Back-reference to `AuditEntry` entities that record this action."
+        range: AuditEntry
+        multivalued: true
+        inverse: records_action
+
+  Query:
+    is_a: Action
+    description: A read-only action that retrieves data
+    attributes:
+      filters:
+        description: "Query filters."
+        range: string
+        multivalued: true
+      projections:
+        description: "Fields to return."
+        range: string
+        multivalued: true
+
+  Command:
+    is_a: Action
+    description: An action that changes system state
+    attributes:
+      command_type:
+        description: "Kind of command."
+        range: CommandType
+      idempotency_key:
+        description: "For idempotent execution."
+        range: string
+
+  Operation:
+    comments:
+      - "Represents a callable operation on a component or service."
+    is_a: NamedEntity
+    description: >-
+      A named, invocable unit of behavior exposed via an interface
+    attributes:
+      errors:
+        description: "Possible error responses."
+        range: string
+        multivalued: true
+      exposed_by_component:
+        description: "`Component` providing this operation."
+        range: Component
+        inverse: exposes_operations
+      executes_operation_actions:
+        description: "`Action` entities performed."
+        range: Action
+        multivalued: true
+        inverse: executed_by_operation
+      accepts_input_schema:
+        description: "`Schema` for input."
+        range: Schema
+        inverse: defines_operation_input
+      produces_output_schema:
+        description: "`Schema` for output."
+        range: Schema
+        inverse: defines_operation_output
+      implemented_by_callables:
+        description: "`CallableUnit` entities that implement this operation."
+        range: CallableUnit
+        multivalued: true
+        inverse: implements_operation
+      offered_on_screens:
+        description: "`Screen` entities offering this operation."
+        range: Screen
+        multivalued: true
+        inverse: offers_operations
+      operation_tested_by_cases:
+        description: "`TestCase` entities that test this operation."
+        range: TestCase
+        multivalued: true
+        inverse: tests_operation
+
+  Workflow:
+    comments:
+      - "Orchestrates multi-step business processes."
+    is_a: NamedEntity
+    description: >-
+      A coordinated sequence of actions achieving a business goal
+    attributes:
+      workflow_type:
+        description: "Coordination pattern."
+        range: WorkflowType
+      has_steps:
+        description: "Ordered list of `Step` entities."
+        range: Step
+        multivalued: true
+      triggered_by_workflow_events:
+        description: "`Event` entities that start the workflow."
+        range: Event
+        multivalued: true
+        inverse: triggers_workflows
+
+  Step:
+    is_a: NamedEntity
+    description: >-
+      A discrete stage within a workflow
+    attributes:
+      order:
+        description: "Execution order."
+        range: integer
+      condition:
+        description: "Condition for execution."
+        range: string
+      timeout_seconds:
+        description: "Step timeout."
+        range: integer
+      executes_actions_in_step:
+        description: "`Action` entities executed."
+        range: Action
+        multivalued: true
+        inverse: executed_in_step
+      followed_by_steps:
+        description: "Next steps in sequence."
+        range: Step
+        multivalued: true
+        inverse: follows_step
+      follows_step:
+        description: "Previous steps."
+        range: Step
+        multivalued: true
+        inverse: followed_by_steps
+      compensated_by_step:
+        description: "Compensating step for rollback."
+        range: Step
+        inverse: compensates_for_step
+      compensates_for_step:
+        description: "Step this compensates for."
+        range: Step
+        inverse: compensated_by_step
+
+  Rule:
+    is_a: NamedEntity
+    description: >-
+      A declarative constraint or trigger governing behavior
+    attributes:
+      category:
+        description: "Kind of rule."
+        range: RuleCategory
+      condition:
+        description: "Rule condition expression."
+        range: string
+      action:
+        description: "Action when rule fires."
+        range: string
+      priority:
+        description: "Evaluation priority."
+        range: integer
+      is_active:
+        description: "Whether rule is currently active."
+        range: boolean
+      validates_attributes:
+        description: "Back-reference to `Attribute` entities validated by this rule."
+        range: Attribute
+        multivalued: true
+        inverse: validated_by_rules
+      enforces_aggregate_invariants:
+        description: "Back-reference to `Aggregate` entities whose invariants this rule enforces."
+        range: Aggregate
+        multivalued: true
+        inverse: enforced_by_invariant_rules
+      governs_domain_entities:
+        description: "Back-reference to `DomainEntity` entities governed by this rule."
+        range: DomainEntity
+        multivalued: true
+        inverse: governed_by_rules
+      validates_actions:
+        description: "Back-reference to `Action` entities validated by this rule."
+        range: Action
+        multivalued: true
+        inverse: validated_by_action_rules
+      guards_transitions:
+        description: "Back-reference to `Transition` entities guarded by this rule."
+        range: Transition
+        multivalued: true
+        inverse: guarded_by_rules
+
+  Event:
+    is_a: NamedEntity
+    description: >-
+      A notification that something occurred
+    attributes:
+      category:
+        description: "Kind of event."
+        range: EventCategory
+      correlation_id:
+        description: "For tracing related events."
+        range: string
+      emitted_by_component:
+        description: "`Component` that produced the event."
+        range: Component
+        inverse: emits_events
+      event_structured_by_schema:
+        description: "`Schema` defining event payload."
+        range: Schema
+        inverse: structures_events
+      emitted_by_action:
+        description: "Back-reference to `Action` entities that emit this event."
+        range: Action
+        multivalued: true
+        inverse: emits_events_from_action
+      triggers_transitions:
+        description: "Back-reference to `Transition` entities triggered by this event."
+        range: Transition
+        multivalued: true
+        inverse: triggered_by_events
+      triggers_workflows:
+        description: "Back-reference to `Workflow` entities triggered by this event."
+        range: Workflow
+        multivalued: true
+        inverse: triggered_by_workflow_events
+      subscribed_by_subscriptions:
+        description: "Back-reference to `Subscription` entities that subscribe to this event."
+        range: Subscription
+        multivalued: true
+        inverse: subscribes_to_event_types
+
+  DomainEvent:
+    is_a: Event
+    description: A significant occurrence in the domain
+    attributes:
+      produced_by_aggregate:
+        description: "Source `Aggregate`."
+        range: Aggregate
+        inverse: produces_domain_events
+
+  IntegrationEvent:
+    is_a: Event
+    description: An event for cross-service communication
+    attributes:
+      targeted_at_services:
+        description: "Target `Service` entities."
+        range: Service
+        multivalued: true
+        inverse: receives_integration_events
+
+  Subscription:
+    is_a: NamedEntity
+    description: >-
+      A registration to receive events of a certain type
+    attributes:
+      filter:
+        description: "Filter expression for event selection."
+        range: string
+      delivery_mode:
+        description: "Push or pull delivery."
+        range: string
+      subscribes_to_event_types:
+        description: "`Event` types subscribed to."
+        range: Event
+        multivalued: true
+        inverse: subscribed_by_subscriptions
+      subscribed_by_actor:
+        description: "`Actor` subscribing."
+        range: Actor
+        inverse: has_subscriptions
+      subscribes_to_interface:
+        description: "`EventInterface` for delivery."
+        range: EventInterface
+        inverse: has_subscriptions
+
+  Transaction:
+    is_a: NamedEntity
+    description: >-
+      A unit of work with ACID or BASE guarantees
+    attributes:
+      transaction_type:
+        description: "Kind of transaction."
+        range: TransactionType
+      isolation_level:
+        description: "Transaction isolation level."
+        range: string
+      timeout_seconds:
+        description: "Transaction timeout."
+        range: integer
+      executes_actions:
+        description: "`Action` entities in this transaction."
+        range: Action
+        multivalued: true
+        inverse: executes_in_transaction
+

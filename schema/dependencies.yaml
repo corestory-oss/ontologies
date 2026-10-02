@@ -1,0 +1,149 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/dependencies
+name: sao-dependencies
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  PackageManagerType:
+    description: Types of package managers
+    permissible_values:
+      npm: {}
+      pip: {}
+      maven: {}
+      gradle: {}
+      nuget: {}
+      cargo: {}
+      go_modules: {}
+      bundler: {}
+      composer: {}
+      conan: {}
+      none: {}
+
+  DependencyScope:
+    description: Scope/context of a dependency
+    permissible_values:
+      production: {}
+      development: {}
+      test: {}
+      build: {}
+      optional: {}
+      provided: {}
+
+  VulnerabilitySeverity:
+    description: Severity of a known vulnerability
+    permissible_values:
+      critical: {}
+      high: {}
+      medium: {}
+      low: {}
+      none: {}
+
+
+classes:
+  PackageManager:
+    is_a: NamedEntity
+    description: >-
+      A package/dependency management tool
+    attributes:
+      manager_type:
+        description: "Kind of package manager."
+        range: PackageManagerType
+        required: true
+      manifest_file:
+        description: "Manifest file name (package.json, pom.xml, etc.)."
+        range: string
+      lock_file:
+        description: "Lock file name."
+        range: string
+      registry_url:
+        description: "Package registry URL."
+        range: URI
+      manages_dependencies_for_module:
+        description: "Modules managed."
+        range: Module
+        multivalued: true
+        inverse: module_managed_by_package_manager
+
+  PackageDependency:
+    is_a: NamedEntity
+    description: >-
+      A declared dependency on an external package or library
+    attributes:
+      package_name:
+        description: "Package name."
+        range: string
+        required: true
+      version_constraint:
+        description: "Version constraint (e.g., ^1.2.0)."
+        range: string
+      resolved_version:
+        description: "Resolved version."
+        range: string
+      scope:
+        description: "Dependency scope."
+        range: DependencyScope
+      is_direct:
+        description: "Whether this is a direct dependency."
+        range: boolean
+      license:
+        description: "Package license."
+        range: string
+      has_known_vulnerabilities:
+        description: "Known vulnerabilities."
+        range: KnownVulnerability
+        multivalued: true
+      dependency_of_module:
+        description: "Module declaring this dependency."
+        range: Module
+        inverse: module_has_dependencies
+      has_transitive_dependencies:
+        description: "Transitive dependencies."
+        range: PackageDependency
+        multivalued: true
+        inverse: transitive_dependency_of
+      transitive_dependency_of:
+        description: "Packages depending on this transitively."
+        range: PackageDependency
+        multivalued: true
+        inverse: has_transitive_dependencies
+
+  KnownVulnerability:
+    is_a: NamedEntity
+    description: >-
+      A known security vulnerability in a dependency
+    attributes:
+      cve_id:
+        description: "CVE identifier."
+        range: string
+      severity:
+        description: "Severity level."
+        range: VulnerabilitySeverity
+        required: true
+      cvss_score:
+        description: "CVSS score."
+        range: float
+      affected_versions:
+        description: "Affected version range."
+        range: string
+      fixed_version:
+        description: "Version with fix."
+        range: string
+      advisory_url:
+        description: "Security advisory URL."
+        range: URI
+

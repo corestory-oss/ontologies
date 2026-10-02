@@ -1,0 +1,258 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/operations
+name: sao-operations
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  EnvironmentType:
+    description: Types of deployment environments
+    permissible_values:
+      development:
+        description: "Development environment for active development."
+      testing:
+        description: "Testing environment for QA and integration testing."
+      staging:
+        description: "Pre-production staging environment."
+      production:
+        description: "Live production environment."
+      dr:
+        description: Disaster Recovery
+
+  DeploymentUnitType:
+    description: Types of deployment units
+    permissible_values:
+      container:
+        description: "Container image (Docker, etc.)."
+      vm:
+        description: "Virtual machine image."
+      serverless_function:
+        description: "Serverless function deployment package."
+      binary:
+        description: "Compiled binary executable."
+      package:
+        description: "Application package (JAR, WAR, etc.)."
+
+  ConfigurationType:
+    description: Types of configuration
+    permissible_values:
+      environment_variable:
+        description: "Environment variable configuration."
+      config_file:
+        description: "Configuration file (YAML, JSON, properties)."
+      secret:
+        description: "Secret or sensitive configuration value."
+      feature_flag:
+        description: "Feature flag or toggle."
+      remote_config:
+        description: "Remote configuration service."
+
+  InfrastructureType:
+    description: Types of infrastructure
+    permissible_values:
+      compute:
+        description: "Compute resources (VMs, containers)."
+      storage:
+        description: "Storage resources (disks, volumes)."
+      network:
+        description: "Network infrastructure."
+      load_balancer:
+        description: "Load balancer."
+      dns:
+        description: "DNS service."
+      cdn:
+        description: "Content Delivery Network."
+      firewall:
+        description: "Firewall or security group."
+      api_gateway:
+        description: API gateway or ingress controller
+      service_mesh:
+        description: Service mesh control plane (Istio, Linkerd, etc.)
+
+
+classes:
+  Environment:
+    is_a: NamedEntity
+    description: >-
+      A runtime context with specific configuration
+    attributes:
+      environment_type:
+        description: "Kind of environment."
+        range: EnvironmentType
+      hosts_deployments:
+        description: "`Deployment` instances running in this environment."
+        range: Deployment
+        multivalued: true
+        inverse: deployed_in_environment
+      env_configured_by:
+        description: "`Configuration` entities for this environment."
+        range: Configuration
+        multivalued: true
+        inverse: configures_environments
+      uses_infrastructure:
+        description: "`Infrastructure` resources used."
+        range: Infrastructure
+        multivalued: true
+        inverse: used_by_environments
+      deployed_by_pipelines:
+        description: "`BuildPipeline` entities that deploy to this environment."
+        range: BuildPipeline
+        multivalued: true
+        inverse: pipeline_deploys_to_environments
+
+  Deployment:
+    is_a: NamedEntity
+    description: >-
+      An instance of a service running in an environment
+    attributes:
+      replicas:
+        description: "Number of instances/replicas running."
+        range: integer
+      deploys_service:
+        description: "The `Service` being deployed."
+        range: Service
+        inverse: deployed_as
+      deployed_in_environment:
+        description: "Target `Environment`."
+        range: Environment
+        inverse: hosts_deployments
+      deploys_unit:
+        description: "`DeploymentUnit` being deployed."
+        range: DeploymentUnit
+        inverse: deployed_in_deployments
+      deployment_configured_by:
+        description: "`Configuration` entities."
+        range: Configuration
+        multivalued: true
+        inverse: configures_deployments
+      deploys_release:
+        description: "`Release` version being deployed."
+        range: Release
+        inverse: deployed_in_deployments_as_release
+
+  DeploymentUnit:
+    is_a: NamedEntity
+    description: >-
+      The packaged artifact being deployed
+    attributes:
+      unit_type:
+        description: "Kind of deployment unit."
+        range: DeploymentUnitType
+      artifact_uri:
+        description: "Location of the deployment artifact."
+        range: URI
+      checksum:
+        description: "Artifact integrity checksum."
+        range: string
+      deployed_in_deployments:
+        description: "`Deployment` entities that deploy this unit."
+        range: Deployment
+        multivalued: true
+        inverse: deploys_unit
+
+  Configuration:
+    is_a: NamedEntity
+    description: >-
+      Runtime parameters for a deployment
+    attributes:
+      config_type:
+        description: "Kind of configuration."
+        range: ConfigurationType
+      value:
+        description: "Configuration value."
+        range: string
+      is_secret:
+        description: "Whether this is sensitive data."
+        range: boolean
+      source:
+        description: "Configuration source (vault, config service, etc.)."
+        range: string
+      controls_features:
+        description: "Features controlled."
+        range: Feature
+        multivalued: true
+        inverse: controlled_by_configs
+      configures_environments:
+        description: "`Environment` entities configured."
+        range: Environment
+        multivalued: true
+        inverse: env_configured_by
+      configures_deployments:
+        description: "`Deployment` entities configured."
+        range: Deployment
+        multivalued: true
+        inverse: deployment_configured_by
+      setting_for_tenant:
+        range: Tenant
+        inverse: has_settings
+
+  Infrastructure:
+    is_a: NamedEntity
+    description: >-
+      The underlying compute, storage, and network resources
+    attributes:
+      infra_type:
+        description: "Kind of infrastructure."
+        range: InfrastructureType
+      provider:
+        description: "Cloud or infrastructure provider (AWS, Azure, GCP, on-premise)."
+        range: string
+      region:
+        description: "Geographic region."
+        range: string
+      specifications:
+        description: "Resource specifications (instance type, size, etc.)."
+        range: string
+      hosts_datastores:
+        description: "`DataStore` entities hosted."
+        range: DataStore
+        multivalued: true
+        inverse: hosted_on_infrastructure
+      used_by_environments:
+        description: "`Environment` entities using this infrastructure."
+        range: Environment
+        multivalued: true
+        inverse: uses_infrastructure
+      infrastructure_provisioned_by_iac:
+        description: "`IaCDefinition` entities provisioning this infrastructure."
+        range: IaCDefinition
+        multivalued: true
+        inverse: iac_provisions_infrastructure
+
+  Release:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A versioned, deployable package of changes
+    attributes:
+      version:
+        description: "Semantic version number."
+        range: SemanticVersion
+      changelog:
+        description: "Release notes describing changes."
+        range: string
+      has_artifacts:
+        description: "List of `DeploymentUnit` entities."
+        range: DeploymentUnit
+        multivalued: true
+      deployed_in_deployments_as_release:
+        description: "`Deployment` entities that deploy this release."
+        range: Deployment
+        multivalued: true
+        inverse: deploys_release
+

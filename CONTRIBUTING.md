@@ -1,7 +1,8 @@
 # Contributing to SAO
 
-SAO is a LinkML schema and documentation project. `sao.yml` is the authoritative
-schema; `CHANGELOG.md` records changes and migration guidance.
+SAO is a LinkML schema and documentation project. `sao.yml` is the entry point
+for the authoritative schema modules in `schema/`; `CHANGELOG.md` records changes
+and migration guidance.
 
 ## Setup and checks
 
@@ -10,6 +11,7 @@ Install uv, then run from the repository root:
 ```bash
 uv sync --locked
 uv run linkml-lint --validate-only sao.yml
+uv run python scripts/check_schema.py
 uv run gen-json-schema sao.yml > /tmp/sao.schema.json
 uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
 uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
@@ -19,6 +21,28 @@ uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration example
 The metamodel check validates schema structure. Instance validation checks the
 selected target class; it does not verify that every referenced ID exists in a
 complete graph or that inverse relationships have been populated.
+
+## Editing schema modules
+
+Edit the existing definition in its topic file under `schema/`. Shared enums,
+types, base classes, and global slots belong in `schema/common.yaml`. If you add
+a module, add its extension-free relative path to the imports in `sao.yml`.
+Imported files use `.yaml`, as expected by LinkML's relative-import resolver.
+Keep the `sao` prefix and default range consistent across modules. Validate and
+generate from the root entry point so cross-topic references resolve.
+
+The import check rejects duplicate definitions that LinkML could otherwise
+silently shadow. For a mechanical reorganization, compare against an earlier
+schema snapshot as well:
+
+```bash
+uv run python scripts/check_schema.py --compare /tmp/sao-before.yml
+```
+
+This compares resolved definitions (including descriptions and comments),
+inherited attributes and constraints, root metadata, and expanded term IRIs.
+Only source-file and import provenance are excluded from the comparison. A
+baseline with local imports must retain its accompanying module files.
 
 ## Proposing a change
 

@@ -17,7 +17,14 @@ jobs:
           version: "0.11.2"
       - run: uv sync --locked
       - run: uv run linkml-lint --validate-only sao.yml
+      - run: uv run python scripts/check_schema.py
+      - name: Validate schema modules
+        run: |
+          for module in schema/*.yaml; do
+            uv run linkml-lint --validate-only "$module"
+          done
       - run: uv run gen-json-schema sao.yml > /tmp/sao.schema.json
+      - run: uv run gen-doc --render-imports --directory /tmp/sao-reference sao.yml
       - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
       - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
       - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration examples/integration.yaml

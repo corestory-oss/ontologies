@@ -1,0 +1,150 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/governance
+name: sao-governance
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ComplianceFramework:
+    description: Compliance frameworks
+    permissible_values:
+      gdpr:
+        description: "General Data Protection Regulation (EU)."
+      hipaa:
+        description: "Health Insurance Portability and Accountability Act."
+      soc2:
+        description: "Service Organization Control 2."
+      pci_dss:
+        description: "Payment Card Industry Data Security Standard."
+      iso27001:
+        description: "ISO 27001 Information Security Management."
+      sox:
+        description: "Sarbanes-Oxley Act."
+      ccpa:
+        description: "California Consumer Privacy Act."
+      fedramp:
+        description: "Federal Risk and Authorization Management Program."
+
+
+classes:
+  ComplianceRequirement:
+    comments:
+      - "Documents requirements from compliance frameworks that the system must satisfy."
+    is_a: NamedEntity
+    description: >-
+      A regulatory or policy obligation
+    attributes:
+      framework:
+        description: "Compliance framework this requirement belongs to."
+        range: ComplianceFramework
+      has_controls:
+        description: "List of `Control` entities implementing this requirement."
+        range: Control
+        multivalued: true
+      effective_date:
+        description: "When requirement became effective."
+        range: Timestamp
+      applies_to_systems:
+        description: "`System` entities that must comply."
+        range: System
+        multivalued: true
+        inverse: must_comply_with
+
+  Control:
+    comments:
+      - "Specific security or compliance controls implemented to satisfy requirements."
+    is_a: NamedEntity
+    description: >-
+      A measure implementing a compliance requirement
+    attributes:
+      control_id:
+        description: "Identifier (e.g., SOC2-CC6.1, ISO27001-A.9.2.1)."
+        range: string
+      implementation:
+        description: "How control is implemented."
+        range: string
+      has_evidence:
+        description: "List of `Evidence` entities demonstrating effectiveness."
+        range: Evidence
+        multivalued: true
+      frequency:
+        range: string
+      owned_by_actor:
+        description: "`Actor` responsible for this control."
+        range: Actor
+        inverse: owns_controls
+      mitigates_risks:
+        description: "`RiskAssessment` entities mitigated."
+        range: RiskAssessment
+        multivalued: true
+        inverse: mitigated_by_controls
+
+  Evidence:
+    comments:
+      - "Demonstrates to auditors that controls are implemented and effective."
+    is_a: NamedEntity
+    description: >-
+      Proof that a control is operating effectively
+    attributes:
+      evidence_type:
+        description: "Type of evidence (screenshot, log export, test result, policy document)."
+        range: string
+      collected_at:
+        description: "Collection timestamp."
+        range: Timestamp
+      artifact_uri:
+        description: "Location of evidence artifact."
+        range: URI
+      verified_by_actor:
+        description: "`Actor` who verified the evidence."
+        range: Actor
+        inverse: verifies_evidence
+
+  RiskAssessment:
+    comments:
+      - "Identify, analyze, and prioritize risks to the system."
+    is_a: NamedEntity
+    description: >-
+      An evaluation of threats and vulnerabilities
+    attributes:
+      assessed_at:
+        description: "Assessment date."
+        range: Timestamp
+      risk_level:
+        description: "Overall risk level (e.g., \"low\", \"medium\", \"high\", \"critical\")."
+        range: string
+      threats:
+        description: "List of identified threats."
+        range: string
+        multivalued: true
+      vulnerabilities:
+        description: "List of identified vulnerabilities."
+        range: string
+        multivalued: true
+      residual_risk:
+        description: "Remaining risk after mitigations."
+        range: string
+      mitigated_by_controls:
+        description: "`Control` entities mitigating risks."
+        range: Control
+        multivalued: true
+        inverse: mitigates_risks
+      assesses_system:
+        description: "`System` being assessed."
+        range: System
+        inverse: assessed_by
+

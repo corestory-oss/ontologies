@@ -1,0 +1,395 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/common
+name: sao-common
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  DataClassificationType:
+    description: Data sensitivity classifications
+    permissible_values:
+      public:
+        description: "Publicly accessible information."
+      internal:
+        description: "Internal use only information."
+      confidential:
+        description: "Confidential sensitive information."
+      restricted:
+        description: "Highly restricted information."
+      pii:
+        description: Personally Identifiable Information
+      phi:
+        description: Protected Health Information
+      pci:
+        description: Payment Card Industry data
+
+  ProtocolType:
+    description: Communication protocols
+    permissible_values:
+      http:
+        description: "Hypertext Transfer Protocol."
+      https:
+        description: "HTTP Secure (TLS/SSL)."
+      websocket:
+        description: "WebSocket protocol for bidirectional communication."
+      grpc:
+        description: "gRPC protocol."
+      amqp:
+        description: "Advanced Message Queuing Protocol."
+      mqtt:
+        description: "Message Queuing Telemetry Transport."
+      kafka:
+        description: "Apache Kafka protocol."
+      sftp:
+        description: "Secure File Transfer Protocol."
+      tcp:
+        description: "Transmission Control Protocol."
+      udp:
+        description: "User Datagram Protocol."
+      corba:
+        description: Common Object Request Broker Architecture
+      dcom:
+        description: Distributed Component Object Model
+      rmi:
+        description: Java Remote Method Invocation
+      named_pipe:
+        description: "Named pipe protocol."
+      shared_memory:
+        description: "Shared memory protocol."
+
+  DatabaseType:
+    description: Types of database management systems
+    permissible_values:
+      oracle:
+        description: "Oracle database."
+      postgresql:
+        description: "PostgreSQL database."
+      sql_server:
+        description: "SQL Server database."
+      mysql:
+        description: "MySQL database."
+      db2:
+        description: "IBM DB2 database."
+      teradata:
+        description: "Teradata database."
+      sybase:
+        description: "Sybase database."
+      informix:
+        description: "Informix database."
+      mongodb:
+        description: "MongoDB database."
+      cassandra:
+        description: "Cassandra database."
+      sqlite:
+        description: "SQLite database."
+      ims_db:
+        description: IBM IMS hierarchical database
+      adabas:
+        description: Software AG Adabas
+      idms:
+        description: CA IDMS network database
+
+  LinkageType:
+    description: Types of callable linkage
+    permissible_values:
+      static:
+        description: "Static linkage."
+      dynamic:
+        description: "Dynamic linkage."
+      inline:
+        description: "Inline linkage."
+      late_binding:
+        description: "Late binding linkage."
+
+  SecurityType:
+    description: Database security context types
+    permissible_values:
+      definer:
+        description: "Executes with definer's privileges."
+      invoker:
+        description: "Executes with invoker's privileges."
+
+  StructureLayout:
+    description: Memory layout strategies for structures
+    permissible_values:
+      sequential:
+        description: "Sequential layout."
+      explicit:
+        description: "Explicit layout with offsets."
+      auto:
+        description: "Automatic layout."
+      packed:
+        description: "Packed layout (no padding)."
+
+  EqualitySemantics:
+    description: How equality is determined for value types
+    permissible_values:
+      by_value:
+        description: "Value/structural equality."
+      by_reference:
+        description: "Reference equality."
+      by_identity:
+        description: "Identity equality."
+      custom:
+        description: "Custom equality logic."
+
+  MessageFormat:
+    description: Message serialization formats
+    permissible_values:
+      json:
+        description: "JSON format."
+      xml:
+        description: "XML format."
+      protobuf:
+        description: "Protocol Buffers."
+      avro:
+        description: "Apache Avro."
+      thrift:
+        description: "Apache Thrift."
+      msgpack:
+        description: "MessagePack."
+      custom_binary:
+        description: "Custom binary format."
+
+  RecordFormat:
+    description: Physical record format on storage
+    permissible_values:
+      fixed:
+        description: "Fixed-length records."
+      variable:
+        description: "Variable-length records."
+      undefined:
+        description: "Undefined-length records."
+      spanned:
+        description: Records spanning multiple blocks
+      stream:
+        description: "Stream format."
+
+
+types:
+  SemanticVersion:
+    typeof: string
+    description: Semantic version string (e.g., 1.2.3)
+    pattern: "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$"
+
+  URI:
+    typeof: uriorcurie
+    description: Universal Resource Identifier
+
+  Timestamp:
+    typeof: datetime
+    description: ISO 8601 timestamp
+
+# CLASSES
+
+
+classes:
+  NamedEntity:
+    abstract: true
+    description: >-
+      Abstract base class for all named entities in the ontology
+    attributes:
+      id:
+        description: "Unique identifier."
+        identifier: true
+        range: string
+        required: true
+      name:
+        description: "Human-readable name."
+        range: string
+        required: true
+      description:
+        description: "Free-text description."
+        range: string
+      tags:
+        description: "Freeform tags."
+        range: string
+        multivalued: true
+      metadata:
+        description: "Created/updated timestamps and version."
+        range: Metadata
+        inlined: true
+
+  Metadata:
+    description: Common metadata for entities
+    attributes:
+      created_at:
+        range: Timestamp
+      updated_at:
+        range: Timestamp
+      created_by:
+        range: string
+      version:
+        range: SemanticVersion
+
+  Versionable:
+    mixin: true
+    description: Mixin for entities that support versioning
+    attributes:
+      version:
+        description: "Semantic version."
+        range: SemanticVersion
+      effective_from:
+        description: "Version start date."
+        range: Timestamp
+      effective_to:
+        description: "Version end date."
+        range: Timestamp
+      is_current:
+        description: "Whether this is the current version."
+        range: boolean
+
+  Auditable:
+    mixin: true
+    description: Mixin for entities requiring audit trails
+    attributes:
+      audit_log:
+        range: AuditLog
+
+
+slots:
+  id:
+    identifier: true
+    range: string
+
+  name:
+    range: string
+
+  description:
+    range: string
+
+  version:
+    range: SemanticVersion
+
+  created_at:
+    range: Timestamp
+
+  updated_at:
+    range: Timestamp
+
+  tags:
+    range: string
+    multivalued: true
+
+  is_active:
+    range: boolean
+
+  is_optional:
+    range: boolean
+
+  defined_in_container:
+    range: CodeContainer
+    inverse: contains_code_elements
+    description: Code container where this element is defined
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+
+  contains_code_elements:
+    description: "All code elements defined in this container."
+    domain: CodeContainer
+    multivalued: true
+    inverse: defined_in_container
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+
+  contained_in_unit:
+    description: "The parent encapsulation unit."
+    range: EncapsulationUnit
+    inverse: contains_callable_units
+    domain_of:
+      - CallableUnit
+      - DataStructure
+      - DataElement
+
+  contains_data_elements:
+    description: "Fields or variables contained in this unit or structure."
+    range: DataElement
+    multivalued: true
+    domain_of:
+      - EncapsulationUnit
+      - DataStructure
+
+  implements_component:
+    description: "Architectural component implemented by this code."
+    range: Component
+    inverse: implemented_by_code
+    domain_of:
+      - CodeContainer
+      - EncapsulationUnit
+
+  implemented_by_code:
+    description: "Code implementations of this component."
+    domain: Component
+    multivalued: true
+    inverse: implements_component
+    any_of:
+      - range: CodeContainer
+      - range: EncapsulationUnit
+
+  annotates_element:
+    description: "Code elements bearing this annotation."
+    domain: Annotation
+    inverse: annotated_by
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+      - range: DataElement
+
+  annotated_by:
+    description: "Annotations applied to this code element."
+    range: Annotation
+    multivalued: true
+    inverse: annotates_element
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+      - DataElement
+
+  affects_behavior_of:
+    description: "Code elements whose behavior is altered by this annotation."
+    domain: Annotation
+    multivalued: true
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+
+  imports_symbols:
+    description: "Symbols imported by this definition reference."
+    domain: DefinitionReference
+    multivalued: true
+    inverse: imported_via
+    any_of:
+      - range: EncapsulationUnit
+      - range: CallableUnit
+      - range: DataStructure
+
+  imported_via:
+    description: "Definition references importing this code element."
+    range: DefinitionReference
+    multivalued: true
+    inverse: imports_symbols
+    domain_of:
+      - EncapsulationUnit
+      - CallableUnit
+      - DataStructure
+

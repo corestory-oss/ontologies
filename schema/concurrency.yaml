@@ -1,0 +1,103 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/concurrency
+name: sao-concurrency
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ConcurrencyPrimitiveType:
+    description: Types of concurrency primitives
+    permissible_values:
+      mutex: {}
+      semaphore: {}
+      read_write_lock: {}
+      spin_lock: {}
+      condition_variable: {}
+      barrier: {}
+      latch: {}
+      atomic: {}
+
+  ConcurrencyPatternType:
+    description: Types of concurrency patterns
+    permissible_values:
+      thread_pool: {}
+      actor: {}
+      channel: {}
+      future_promise: {}
+      async_await: {}
+      fork_join: {}
+      producer_consumer: {}
+      reactor: {}
+      proactor: {}
+      csp: {}
+
+
+classes:
+  ConcurrencyPrimitive:
+    is_a: NamedEntity
+    description: >-
+      A low-level synchronization primitive used in concurrent code.
+    attributes:
+      primitive_type:
+        description: "Kind of primitive."
+        range: ConcurrencyPrimitiveType
+        required: true
+      is_reentrant:
+        description: "Whether reentrant."
+        range: boolean
+      timeout_ms:
+        description: "Lock timeout."
+        range: integer
+      line_number:
+        description: "Source line."
+        range: integer
+      used_by_callables:
+        description: "Callables using this."
+        range: CallableUnit
+        multivalued: true
+        inverse: uses_concurrency_primitives
+      protects_data_elements:
+        description: "Data elements guarded."
+        range: DataElement
+        multivalued: true
+        inverse: protected_by_primitive
+
+  ConcurrencyPattern:
+    is_a: NamedEntity
+    description: >-
+      A high-level concurrency pattern used in the system.
+    attributes:
+      pattern_type:
+        description: "Kind of pattern."
+        range: ConcurrencyPatternType
+        required: true
+      max_concurrency:
+        description: "Maximum concurrency level."
+        range: integer
+      framework:
+        description: "Framework or library."
+        range: string
+      shared_resources:
+        description: "Shared resources."
+        range: string
+        multivalued: true
+      pattern_used_by_component:
+        description: "Components using this pattern."
+        range: Component
+        multivalued: true
+        inverse: component_uses_concurrency_pattern
+

@@ -1,0 +1,672 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/structure
+name: sao-structure
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  InterfaceCategory:
+    description: Categories of system interfaces
+    permissible_values:
+      user_interface:
+        description: "Human-facing interface for user interaction."
+      programmatic_interface:
+        description: "Machine-to-machine API interface."
+      event_interface:
+        description: "Event-driven asynchronous interface."
+
+  UserInterfaceType:
+    description: Types of user interfaces
+    permissible_values:
+      web_ui:
+        description: "Web browser-based user interface."
+      mobile_ui:
+        description: "Mobile device (iOS/Android) user interface."
+      desktop_ui:
+        description: "Desktop application user interface."
+      cli:
+        description: "Command-line interface."
+
+  APIType:
+    description: Types of programmatic interfaces
+    permissible_values:
+      rest_api:
+        description: "RESTful HTTP-based API."
+      graphql_api:
+        description: "GraphQL query language API."
+      grpc_api:
+        description: "gRPC remote procedure call API."
+      sdk:
+        description: "Software development kit for programmatic access."
+      soap_api:
+        description: "SOAP protocol-based web service API."
+
+  EventInterfaceType:
+    description: Types of event interfaces
+    permissible_values:
+      webhook:
+        description: "HTTP callback for event notifications."
+      message_queue:
+        description: "Queue-based asynchronous messaging."
+      event_stream:
+        description: "Continuous stream of events."
+      pub_sub:
+        description: "Publish-subscribe messaging pattern."
+
+  ServiceType:
+    description: Types of runtime services
+    permissible_values:
+      microservice:
+        description: "Small, independently deployable service."
+      monolith:
+        description: "Single-tier monolithic application."
+      function:
+        description: Serverless function or lambda
+      job:
+        description: Batch processing job
+      daemon:
+        description: "Background service or daemon process."
+      cics_transaction:
+        description: CICS online transaction
+      ims_transaction:
+        description: IMS online transaction
+      batch_program:
+        description: Mainframe batch program
+      stored_proc_service:
+        description: Stored procedure exposed as service
+
+  DependencyType:
+    description: Types of dependencies
+    permissible_values:
+      runtime:
+        description: "Required at runtime for execution."
+      build:
+        description: "Required at build or compile time."
+      optional:
+        description: "Optional dependency for additional features."
+      dev:
+        description: "Required only for development or testing."
+
+  FeatureCategory:
+    description: Categories of features
+    permissible_values:
+      core:
+        description: "Essential feature required for basic operation."
+      optional:
+        description: "Add-on feature that can be enabled or disabled."
+      experimental:
+        description: "Beta feature under development."
+      deprecated:
+        description: "Feature scheduled for removal."
+
+  ArchitecturalPatternType:
+    description: Types of architectural patterns
+    permissible_values:
+      cqrs:
+        description: Command Query Responsibility Segregation
+      event_sourcing:
+        description: Event sourcing pattern
+      hexagonal:
+        description: Hexagonal (ports and adapters) architecture
+      clean_architecture:
+        description: Clean architecture (Uncle Bob)
+      layered:
+        description: Traditional layered architecture
+      microservice:
+        description: Microservice architecture
+      modular_monolith:
+        description: Modular monolith architecture
+      pipe_and_filter:
+        description: Pipe and filter architecture
+      saga:
+        description: Saga pattern for distributed transactions
+      strangler_fig:
+        description: Strangler fig migration pattern
+      bff:
+        description: Backend for Frontend pattern
+      api_gateway:
+        description: API gateway pattern
+      sidecar:
+        description: Sidecar pattern
+      event_driven:
+        description: Event-driven architecture
+      batch_sequential:
+        description: Batch sequential processing
+      transaction_script:
+        description: Transaction script pattern
+      table_module:
+        description: Table module pattern
+      domain_model:
+        description: Domain model pattern
+      repository:
+        description: Repository pattern
+      plugin:
+        description: Plugin architecture
+
+
+classes:
+  System:
+    comments:
+      - "The system is the root entity that encapsulates its bounded contexts, integrations, policies, and compliance requirements."
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      Top-level container representing a software product, platform, or application
+    attributes:
+      contains_bounded_contexts:
+        description: "Bounded contexts within the system."
+        range: BoundedContext
+        multivalued: true
+        inlined_as_list: true
+        inverse: contained_in_system
+      has_integrations:
+        description: "Integrations with external systems."
+        range: Integration
+        multivalued: true
+        inverse: belongs_to_system
+      enforces_policies:
+        description: "Policies that govern access control."
+        range: Policy
+        multivalued: true
+        inverse: enforced_by_system
+      must_comply_with:
+        description: "Compliance requirements the system must comply with."
+        range: ComplianceRequirement
+        multivalued: true
+        inverse: applies_to_systems
+      assessed_by:
+        description: "Risk assessments for the system."
+        range: RiskAssessment
+        multivalued: true
+        inverse: assesses_system
+      exposes_interfaces:
+        description: "Interfaces exposed to users and other systems."
+        range: Interface
+        multivalued: true
+        inverse: exposed_by_system
+      system_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_system
+
+  BoundedContext:
+    comments:
+      - "Isolates domain models to prevent ambiguity and maintain consistency within a specific business domain or subdomain."
+    is_a: NamedEntity
+    description: >-
+      A semantic boundary within which a domain model applies consistently.
+      Corresponds to DDD bounded context concept.
+    attributes:
+      contained_in_system:
+        description: "The parent system."
+        range: System
+        inverse: contains_bounded_contexts
+      contains_modules:
+        description: "Modules within this bounded context."
+        range: Module
+        multivalued: true
+        inlined_as_list: true
+        inverse: contained_in_context
+      upstream_from:
+        range: BoundedContext
+        multivalued: true
+        inverse: downstream_from
+        description: Contexts upstream from this one (this context depends on them)
+      downstream_from:
+        description: "Bounded contexts that depend on this one."
+        range: BoundedContext
+        multivalued: true
+        inverse: upstream_from
+      contains_aggregates:
+        description: "Aggregates within this bounded context."
+        range: Aggregate
+        multivalued: true
+        inlined_as_list: true
+        inverse: contained_in_bounded_context
+      ubiquitous_language:
+        range: string
+        multivalued: true
+        description: Key terms in the ubiquitous language for this context
+      context_map_relationship:
+        range: string
+        description: Relationship pattern (e.g., Customer-Supplier, Partnership)
+      architectural_patterns:
+        range: ArchitecturalPatternType
+        multivalued: true
+      context_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_bounded_context
+
+  Module:
+    comments:
+      - "Provides a logical grouping of related components that can be independently versioned and deployed."
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A deployable, cohesive unit of functionality within a bounded context
+    attributes:
+      contained_in_context:
+        description: "The parent bounded context."
+        range: BoundedContext
+        inverse: contains_modules
+      contains_components:
+        description: "Components within this module."
+        range: Component
+        multivalued: true
+        inlined_as_list: true
+        inverse: contained_in_module
+      depends_on_module:
+        description: "Other modules this module depends on."
+        range: Module
+        multivalued: true
+        inverse: depended_on_by_module
+      depended_on_by_module:
+        description: "Modules that depend on this module."
+        range: Module
+        multivalued: true
+        inverse: depends_on_module
+      provides_capabilities:
+        description: "Capabilities offered by this module."
+        range: Capability
+        multivalued: true
+        inverse: provided_by_modules
+      runs_as_services:
+        description: "Services that execute this module."
+        range: Service
+        multivalued: true
+        inverse: runs_module
+      has_dependencies:
+        description: "List of module dependencies with types (runtime, build, optional, dev)."
+        range: Dependency
+        multivalued: true
+      is_optional:
+        description: "Whether the module is optional."
+        range: boolean
+      required_features:
+        description: "Features needed to enable this module."
+        range: string
+        multivalued: true
+      mapped_from_directory:
+        range: StorageLocation
+        inverse: maps_to_module
+      module_tested_by_suites:
+        description: "Test suites that test this module."
+        range: TestSuite
+        multivalued: true
+        inverse: tests_module
+      module_has_coverage:
+        description: "Test coverage for this module."
+        range: TestCoverage
+        inverse: coverage_for_module
+      module_managed_by_package_manager:
+        description: "The package manager managing this module."
+        range: PackageManager
+        inverse: manages_dependencies_for_module
+      module_has_dependencies:
+        description: "Package dependencies."
+        range: PackageDependency
+        multivalued: true
+        inverse: dependency_of_module
+      architectural_patterns:
+        range: ArchitecturalPatternType
+        multivalued: true
+      module_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_module
+
+  Component:
+    is_a: NamedEntity
+    description: >-
+      A logical building block within a module (class, function group, etc.)
+    slots:
+      - implemented_by_code
+    attributes:
+      contained_in_module:
+        description: "The parent module."
+        range: Module
+        inverse: contains_components
+      exposes_operations:
+        description: "Operations that can be invoked on this component."
+        range: Operation
+        multivalued: true
+        inverse: exposed_by_component
+      emits_events:
+        description: "Events produced by this component."
+        range: Event
+        multivalued: true
+        inverse: emitted_by_component
+      component_type:
+        description: "Type of component, such as a class, service, or handler."
+        range: string
+      language:
+        range: string
+        description: Implementation language (DEPRECATED -- use written_in_language on CodeContainer)
+      source_location:
+        description: "Path to the source code."
+        range: string
+      has_dependencies:
+        description: "Component-level dependencies."
+        range: Dependency
+        multivalued: true
+      emits_metrics:
+        description: "Metrics emitted by this component."
+        range: Metric
+        multivalued: true
+      generates_logs:
+        description: "Logs generated by this component."
+        range: Log
+        multivalued: true
+      tested_by_suites:
+        description: "Test suites that test this component."
+        range: TestSuite
+        multivalued: true
+        inverse: tests_component
+      has_coverage:
+        description: "Test coverage for this component."
+        range: TestCoverage
+        inverse: coverage_for_component
+      emits_metric:
+        description: "Named metric link."
+        range: Metric
+        multivalued: true
+        inverse: metric_emitted_by_component
+      component_serves_model:
+        description: "ML models served by this component."
+        range: MLModel
+        multivalued: true
+        inverse: model_served_by_component
+      component_uses_concurrency_pattern:
+        description: "Concurrency patterns used by this component."
+        range: ConcurrencyPattern
+        multivalued: true
+        inverse: pattern_used_by_component
+      component_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_component
+
+  Capability:
+    comments:
+      - "Represents what the system can do, abstracting the implementation details."
+    is_a: NamedEntity
+    description: >-
+      A discrete business or technical ability the system provides
+    attributes:
+      realizes_features:
+        description: "Features enabled by this capability."
+        range: Feature
+        multivalued: true
+        inverse: realized_by_capabilities
+      requires_permissions:
+        description: "Permissions needed to use this capability."
+        range: Permission
+        multivalued: true
+        inverse: required_by_capabilities
+      provided_by_modules:
+        description: "Modules providing this."
+        range: Module
+        multivalued: true
+        inverse: provides_capabilities
+      enables_features:
+        description: "Features enabled by this capability."
+        range: Feature
+        multivalued: true
+        inverse: enabled_by_capabilities
+
+  Feature:
+    comments:
+      - "Represents functionality as perceived by end users or consumers of the system."
+    is_a: NamedEntity
+    description: >-
+      A user-facing manifestation of one or more capabilities
+    attributes:
+      category:
+        description: "Feature category: core, optional, experimental, or deprecated."
+        range: FeatureCategory
+      enabled_by_capabilities:
+        description: "Capabilities that enable this feature."
+        range: Capability
+        multivalued: true
+        inverse: enables_features
+      controlled_by_configs:
+        description: "Configurations that control feature availability."
+        range: Configuration
+        multivalued: true
+        inverse: controls_features
+      accessible_by_roles:
+        description: "Roles that can access this feature."
+        range: Role
+        multivalued: true
+        inverse: can_access_features
+      realized_by_capabilities:
+        description: "Capabilities realizing this feature."
+        range: Capability
+        multivalued: true
+        inverse: realizes_features
+
+  Interface:
+    comments:
+      - "Defines how actors and systems interact with the application."
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      A contract-defined boundary through which interaction occurs
+    attributes:
+      category:
+        description: "Interface category: user interface, programmatic interface, or event interface."
+        range: InterfaceCategory
+      authentication_required:
+        description: "Whether authentication is required."
+        range: boolean
+      rate_limit:
+        description: "Requests per minute limit."
+        range: integer
+      defined_by_contract:
+        description: "The contract specifying the interface."
+        range: Contract
+        inverse: defines_interfaces
+      exposed_by_system:
+        description: "System exposing this interface."
+        range: System
+        inverse: exposes_interfaces
+
+  UserInterface:
+    comments:
+      - "User-facing interface for human interaction."
+    is_a: Interface
+    description: User-facing interface
+    attributes:
+      ui_type:
+        description: "Type of user-facing interface."
+        range: UserInterfaceType
+      contains_screens:
+        description: "Screens in this interface."
+        range: Screen
+        multivalued: true
+        inverse: part_of_ui
+
+  Screen:
+    comments:
+      - "Represents a specific UI view that offers operations to users."
+    is_a: NamedEntity
+    description: A single screen or view in a user interface
+    attributes:
+      route:
+        description: "URL route or navigation path."
+        range: string
+      part_of_ui:
+        description: "The user interface this screen belongs to."
+        range: UserInterface
+        inverse: contains_screens
+      offers_operations:
+        description: "Operations available on this screen."
+        range: Operation
+        multivalued: true
+        inverse: offered_on_screens
+
+  ProgrammaticInterface:
+    comments:
+      - "Machine-to-machine API interface."
+    is_a: Interface
+    description: Machine-to-machine interface
+    attributes:
+      api_type:
+        description: "Type of machine-to-machine API interface."
+        range: APIType
+      base_url:
+        description: "Base URL for the API."
+        range: URI
+      has_endpoints:
+        description: "Endpoints belonging to this programmatic interface."
+        range: Endpoint
+        multivalued: true
+        inlined_as_list: true
+        inverse: belongs_to_interface
+
+  EventInterface:
+    comments:
+      - "Event-driven asynchronous interface."
+    is_a: Interface
+    description: Event-driven interface
+    attributes:
+      event_type:
+        description: "Type of event-driven interface."
+        range: EventInterfaceType
+      topics:
+        description: "Event topics or channels."
+        range: string
+        multivalued: true
+      has_subscriptions:
+        description: "Subscriptions to this event interface."
+        range: Subscription
+        multivalued: true
+        inverse: subscribes_to_interface
+
+  Service:
+    comments:
+      - "Represents a running process that exposes endpoints and can be deployed independently."
+    is_a: NamedEntity
+    description: >-
+      An independently deployable runtime unit
+    attributes:
+      service_type:
+        description: "Type of independently deployable runtime unit."
+        range: ServiceType
+      has_health_checks:
+        description: "Health check definitions."
+        range: HealthCheck
+        multivalued: true
+      emits_metrics:
+        description: "Metrics emitted by the service."
+        range: Metric
+        multivalued: true
+      exposes_endpoints:
+        description: "Endpoints exposed by the service."
+        range: Endpoint
+        multivalued: true
+        inlined_as_list: true
+        inverse: exposed_by_service
+      depends_on_service:
+        description: "Services this service depends on."
+        range: Service
+        multivalued: true
+        inverse: depended_on_by_service
+      depended_on_by_service:
+        description: "Services that depend on this one."
+        range: Service
+        multivalued: true
+        inverse: depends_on_service
+      deployed_as:
+        description: "Deployments of this service."
+        range: Deployment
+        multivalued: true
+        inverse: deploys_service
+      runs_module:
+        description: "Module this service runs."
+        range: Module
+        inverse: runs_as_services
+      receives_integration_events:
+        description: "Integration events received."
+        range: IntegrationEvent
+        multivalued: true
+        inverse: targeted_at_services
+      affected_by_incidents:
+        description: "Incidents affecting this service."
+        range: Incident
+        multivalued: true
+        inverse: affects_services
+      service_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_service
+
+  Endpoint:
+    comments:
+      - "Represents a concrete API endpoint or service entry point."
+    is_a: NamedEntity
+    description: >-
+      A specific addressable entry point on a service
+    attributes:
+      path:
+        description: "URL path or route."
+        range: string
+      method:
+        description: "HTTP method or operation type."
+        range: string
+      has_operations:
+        description: "Operations available at this endpoint."
+        range: Operation
+        multivalued: true
+      protocol:
+        description: "Communication protocol."
+        range: ProtocolType
+      port:
+        description: "Port number."
+        range: integer
+      exposed_by_service:
+        description: "The parent service."
+        range: Service
+        inverse: exposes_endpoints
+      belongs_to_interface:
+        description: "The programmatic interface this endpoint belongs to."
+        range: ProgrammaticInterface
+        inverse: has_endpoints
+
+  Dependency:
+    comments:
+      - "Documents dependencies for build, deployment, and runtime management."
+    is_a: NamedEntity
+    description: >-
+      A lightweight dependency reference between components or services
+    attributes:
+      dependency_type:
+        description: "Type of dependency: runtime, build, optional, or dev."
+        range: DependencyType
+      has_target:
+        description: "Target entity of the dependency."
+        range: NamedEntity
+      version_constraint:
+        description: "Version constraint expression."
+        range: string
+      is_optional:
+        description: "Whether the dependency is optional."
+        range: boolean
+

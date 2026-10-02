@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Enrich LinkML attribute, shared-slot, and enum value descriptions from the
+  existing documentation, and add class-purpose comments without changing the model.
 - Replace the placeholder schema ID and term prefix with `https://sao.corestory.ai/`.
   Consumers using the old namespace must update schema references and term IRIs.
 - Prepare the repository for Apache License 2.0 distribution: replace the

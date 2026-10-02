@@ -2,9 +2,9 @@
 
 A comprehensive, language-agnostic ontology for modeling software applications — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
 
-* **Version**: 2.0.0
+* **Version**: 2.1.0
 * **Author**: Charath Ranganathan
-* **License**: Proprietary - Copyright (c) 2025 CoreStory, Inc.
+* **License**: [Apache License 2.0](LICENSE)
 * **Schema**: LinkML (YAML)
 
 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships
@@ -54,56 +54,87 @@ A comprehensive, language-agnostic ontology for modeling software applications �
 4. Map domain **Aggregates** and **Entities**
 5. Document **Integrations**, **Authorization**, and **Compliance** metadata
 
-Use LinkML tools to generate artifacts from the schema:
-- `linkml-validate` — validate YAML instances
-- `gen-pydantic` / `gen-typescript` — generate typed models
-- `gen-json-schema` — generate JSON Schema for validation
-- `gen-graphql` — generate GraphQL schema
+### Local setup and validation
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
+these commands from the repository root. `uv sync` installs Python 3.13 if needed
+and the LinkML toolchain pinned in `uv.lock`.
+
+```bash
+uv sync --locked
+uv run linkml-lint --validate-only sao.yml
+uv run gen-json-schema sao.yml > /tmp/sao.schema.json
+uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
+uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
+uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration examples/integration.yaml
+```
+
+This repository contains an ontology and documentation; it does not include a
+codebase extractor or a deployed application. The [extraction playbook](docs/extraction/00-overview.md)
+describes how to populate the ontology. Multi-class snippets in the guides are
+conceptual illustrations; validate an individual instance with an explicit
+`-C` target class as shown above.
+
+Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
 
 ## Examples
 
+The files under [examples/](examples/) are standalone instances checked against
+the schema. Reference relationships use entity IDs; relationships declared with
+`inlined_as_list: true` embed objects. See the examples for both representations.
+
 ### Simple E-Commerce System
+
 ```yaml
-System:
-  id: ecommerce-platform
-  name: E-Commerce Platform
-  contains_bounded_contexts:
-    - Catalog Context
-    - Order Context
-    - Customer Context
-    - Payment Context
+id: ecommerce-platform
+name: E-Commerce Platform
+contains_bounded_contexts:
+  - id: catalog-context
+    name: Catalog Context
+  - id: order-context
+    name: Order Context
+  - id: customer-context
+    name: Customer Context
+  - id: payment-context
+    name: Payment Context
 ```
 
-### Bounded Context with Aggregate
-```yaml
-BoundedContext:
-  id: order-context
-  name: Order Management
-  contains_aggregates:
-    - Order Aggregate
+### Order Aggregate
 
-Aggregate:
-  id: order-aggregate
-  name: Order
-  has_root_entity: Order
-  aggregates_entities:
-    - OrderLineItem
-  value_objects:
-    - Money
-    - Address
+```yaml
+id: order-aggregate
+name: Order
+has_root_entity: order
+aggregates_entities:
+  - id: order
+    name: Order
+  - id: order-line-item
+    name: Order Line Item
+has_value_objects:
+  - money
+  - address
 ```
 
 ### Integration with External Service
+
 ```yaml
-Integration:
-  id: stripe-integration
-  integration_type: bidirectional
-  protocol: https
-  integrates_with_system: Stripe Payment Gateway
-  uses_adapter: Stripe Adapter
-  protected_by_breaker: Payment Circuit Breaker
-  integration_governed_by_contract: Stripe API Contract v2023
+id: stripe-integration
+name: Stripe Integration
+integration_type: bidirectional
+protocol: https
+integrates_with_system: stripe-payment-gateway
+uses_adapter: stripe-adapter
+protected_by_breaker: payment-circuit-breaker
+integration_governed_by_contract: stripe-api-contract
 ```
+
+### Schema namespace
+
+The schema ID and `sao` term prefix are both `https://sao.corestory.ai/`.
+For example, the **System** class IRI is `https://sao.corestory.ai/System`.
+Applications using the earlier `ontology.example.org` namespace should migrate
+their schema references and term IRIs. The documentation site will be rendered
+to the `site` branch and published through CoreStory's CDN.
 
 ## Technical Details
 
@@ -114,7 +145,12 @@ Integration:
 
 ## Version History
 
-### Version 2.0.0 (Current)
+### Version 2.1.0 (Current)
+- Relationship attributes standardized to verb-prefixed names
+- Duplicate relationship attributes removed and ML training inverse corrected
+- See [CHANGELOG.md](CHANGELOG.md) for the complete migration guide
+
+### Version 2.0.0
 - Structural refactor: ~340 single-use global slots inlined as class attributes
 - 18 new classes spanning type system, error handling, file I/O, screen definitions, job control, IPC, preprocessor, memory model, domain relationships, database schema, and programming language
 - 17 new enums for type kinds, error strategies, file organization, screen types, job steps, IPC mechanisms, ownership models, and more
@@ -131,13 +167,15 @@ Integration:
 
 ## Contributing
 
-We welcome contributions! Areas of interest: additional compliance framework mappings, domain-specific extensions, example implementations, documentation improvements, validation rules, and code generators.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation, and submission guidance. Areas of interest: additional compliance framework mappings, domain-specific extensions, example implementations, documentation improvements, validation rules, and code generators.
 
 ## License
 
-Proprietary and Confidential - Copyright (c) 2025 CoreStory, Inc. All rights reserved.
+Copyright (c) 2025 CoreStory, Inc.
 
-See LICENSE file for complete terms.
+The schema, documentation, and examples in this repository are licensed under
+[Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
+Third-party tools and dependencies retain their respective licenses.
 
 ## References
 
@@ -150,11 +188,12 @@ See LICENSE file for complete terms.
 
 ```
 Software Application Ontology (SAO)
-Version 2.0.0
-Copyright (c) 2025 CoreStory, Inc. All rights reserved.
+Version 2.1.0
+Copyright (c) 2025 CoreStory, Inc.
+Licensed under the Apache License, Version 2.0.
 ```
 
 ---
 
-**Last Updated**: 2026-04-04
-**Schema Version**: 2.0.0
+**Last Updated**: 2026-10-02
+**Schema Version**: 2.1.0

@@ -1,0 +1,13 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+id: order-aggregate
+name: Order
+has_root_entity: order
+aggregates_entities:
+  - id: order
+    name: Order
+  - id: order-line-item
+    name: Order Line Item
+has_value_objects:
+  - money
+  - address

@@ -12,3 +12,10 @@ wheels/
 # Miscellaneous
 .DS_Store
 
+
+# Local credentials and generated artifacts
+.env
+.env.*
+!.env.example
+*.pem
+*.key

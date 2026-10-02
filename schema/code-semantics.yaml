@@ -1,0 +1,307 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/code-semantics
+name: sao-code-semantics
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  CodeBlockType:
+    description: Types of code blocks
+    permissible_values:
+      sequential:
+        description: "Sequential block."
+      conditional:
+        description: "Conditional block (if/else)."
+      loop:
+        description: "Loop block (for/while)."
+      try_catch:
+        description: "Exception handling block."
+      transaction:
+        description: "Transaction block."
+      critical_section:
+        description: "Critical section (synchronized/locked block)."
+      scope:
+        description: "Scoping block."
+
+  StatementCategory:
+    description: Categories of statements
+    permissible_values:
+      declaration:
+        description: "Variable/constant declaration."
+      assignment:
+        description: "Assignment statement."
+      invocation:
+        description: "Method/function call."
+      control_transfer:
+        description: "Control transfer statement."
+      io_operation:
+        description: "I/O operation statement."
+      data_manipulation:
+        description: "Data manipulation statement."
+      transaction_control:
+        description: "Transaction control statement."
+      exception_handling:
+        description: "Exception handling statement."
+
+  ReferenceType:
+    description: Types of definition references
+    permissible_values:
+      import_module:
+        description: "Import module reference."
+      import_symbol:
+        description: "Import symbol reference."
+      include_source:
+        description: "Include source reference."
+      inherit:
+        description: "Inheritance reference."
+      implement:
+        description: "Implementation reference."
+
+  ControlFlowType:
+    description: Types of control flow
+    permissible_values:
+      call:
+        description: "Function/method call."
+      async_call:
+        description: "Asynchronous call."
+      branch:
+        description: "Conditional branch."
+      jump:
+        description: "Unconditional jump."
+      return:
+        description: "Return from callable."
+      throw:
+        description: "Exception throw."
+      yield:
+        description: "Yield control."
+
+  DataFlowType:
+    description: Types of data flow
+    permissible_values:
+      read:
+        description: "Read data."
+      write:
+        description: "Write data."
+      modify:
+        description: "Modify data."
+      define:
+        description: "Define data."
+      use:
+        description: "Use data."
+
+
+classes:
+  CodeBlock:
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of statements within a callable unit.
+    attributes:
+      block_type:
+        description: "Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope)."
+        range: CodeBlockType
+      line_start:
+        description: "Starting line."
+        range: integer
+      line_end:
+        description: "Ending line."
+        range: integer
+      contained_in_callable:
+        description: "Parent callable."
+        range: CallableUnit
+        inverse: contains_blocks
+      contains_statements:
+        description: "Statements in this block."
+        range: Statement
+        multivalued: true
+        inverse: contained_in_block
+      has_parent_block:
+        description: "Parent block (nesting)."
+        range: CodeBlock
+        inverse: has_child_blocks
+      has_child_blocks:
+        description: "Child blocks (nesting)."
+        range: CodeBlock
+        multivalued: true
+        inverse: has_parent_block
+
+  Statement:
+    is_a: NamedEntity
+    description: >-
+      A single executable instruction or declaration.
+    attributes:
+      statement_category:
+        description: "Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling)."
+        range: StatementCategory
+      line_number:
+        description: "Source line number."
+        range: integer
+      is_conditional:
+        description: "Whether conditional."
+        range: boolean
+      text:
+        range: string
+        description: Source text of statement
+      contained_in_block:
+        description: "Parent block."
+        range: CodeBlock
+        inverse: contains_statements
+      operates_on_elements:
+        description: "Data elements operated on."
+        range: DataElement
+        multivalued: true
+      invokes_callable:
+        description: "Callable invoked."
+        range: CallableUnit
+      transfers_control_to:
+        description: "Control transfer target."
+        range: Statement
+
+  DefinitionReference:
+    is_a: NamedEntity
+    description: >-
+      A reference from one code container to shared definitions.
+      Maps to: Import (Python/Java), Include (C/C++), COPY (COBOL),
+      Using (C#), Require (Ruby), Use (Rust).
+    slots:
+      - imports_symbols
+    attributes:
+      reference_type:
+        description: "`import_module`, `import_symbol`, `include_source`, `inherit`, `implement`."
+        range: ReferenceType
+      reference_path:
+        description: "Path or module name."
+        range: string
+      alias:
+        description: "Import alias."
+        range: string
+      is_wildcard:
+        description: "Wildcard import (e.g., `import *`)."
+        range: boolean
+      scope:
+        description: "Import scope."
+        range: string
+      referencing_container:
+        description: "Source container."
+        range: CodeContainer
+        inverse: has_references
+      referenced_container:
+        description: "Target container."
+        range: CodeContainer
+        inverse: referenced_via
+
+  ControlFlow:
+    is_a: NamedEntity
+    description: >-
+      Represents control flow between code elements.
+    attributes:
+      flow_type:
+        description: "Type (call, async_call, branch, jump, return, throw, yield)."
+        range: ControlFlowType
+      is_conditional:
+        description: "Whether flow is conditional."
+        range: boolean
+      condition:
+        description: "Condition expression."
+        range: string
+      has_source_callable:
+        description: "Source callable."
+        range: CallableUnit
+      has_target_callable:
+        description: "Target callable."
+        range: CallableUnit
+      has_source_statement:
+        description: "Source statement."
+        range: Statement
+      has_target_statement:
+        description: "Target statement."
+        range: Statement
+
+  DataFlow:
+    is_a: NamedEntity
+    description: >-
+      Represents data flow between code elements.
+    attributes:
+      flow_type:
+        description: "Type (read, write, modify, define, use)."
+        range: DataFlowType
+      has_source_element:
+        description: "Source data element."
+        range: DataElement
+      has_target_element:
+        description: "Target data element."
+        range: DataElement
+      has_through_callable:
+        description: "Callable where flow occurs."
+        range: CallableUnit
+      has_through_statement:
+        description: "Statement where flow occurs."
+        range: Statement
+
+  PlatformExtension:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      Base class for platform-specific extensions
+    attributes:
+      platform:
+        description: "Platform identifier."
+        range: string
+
+  ExecutionEnvironmentDirective:
+    is_a: PlatformExtension
+    description: >-
+      Platform-specific execution directives.
+      Maps to: JCL (mainframe), Docker Compose, Kubernetes manifests,
+      Shell scripts, Makefiles, build files.
+    attributes:
+      directive_type:
+        description: "Type of directive."
+        range: string
+      configuration:
+        description: "Configuration content."
+        range: string
+      orchestrates_units:
+        description: "Units orchestrated."
+        range: EncapsulationUnit
+        multivalued: true
+      defines_execution_order:
+        description: "Execution ordering."
+        range: CallableUnit
+        multivalued: true
+      allocates_resources:
+        description: "Resources allocated."
+        range: Infrastructure
+        multivalued: true
+
+  Annotation:
+    is_a: NamedEntity
+    description: >-
+      Metadata attached to code elements.
+      Maps to: Annotations (Java), Decorators (Python),
+      Attributes (C#), Pragmas (C/C++), Compiler directives.
+    slots:
+      - annotates_element
+      - affects_behavior_of
+    attributes:
+      annotation_syntax:
+        description: "Syntax form (e.g., `@Override`, `#[derive(Debug)]`)."
+        range: string
+      parameters:
+        description: "Annotation parameters."
+        range: string
+        multivalued: true
+

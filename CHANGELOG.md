@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Split the LinkML schema into topic modules under `schema/`, preserving `sao.yml`
+  as the entry point and keeping definitions, constraints, and term IRIs unchanged.
+  Module schema IDs now identify definition provenance.
 - Enrich LinkML attribute, shared-slot, and enum value descriptions from the
   existing documentation, and add class-purpose comments without changing the model.
 - Replace the placeholder schema ID and term prefix with `https://sao.corestory.ai/`.

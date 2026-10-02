@@ -1,0 +1,194 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/code-containers
+name: sao-code-containers
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  CodeContainerType:
+    description: Types of code containers
+    permissible_values:
+      source_file:
+        description: "Standard source code file."
+      library_member:
+        description: Member of a partitioned dataset or library
+      include_file:
+        description: Shared definitions file (header, copybook)
+      script:
+        description: "Executable script."
+      configuration:
+        description: "Configuration file."
+      schema_definition:
+        description: "Database or API schema definition."
+      notebook_cell:
+        description: "Jupyter/computational notebook cell."
+      inline_code:
+        description: "Embedded code (e.g., JavaScript in HTML, SQL in code)."
+      jcl_member:
+        description: JCL member in a PDS
+      rpg_source:
+        description: "RPG source."
+      pli_source:
+        description: "PL/I source."
+      assembler_source:
+        description: "Assembler source."
+      cl_source:
+        description: IBM CL (Control Language) source
+
+  StorageLocationType:
+    description: Types of storage locations
+    permissible_values:
+      directory:
+        description: "Filesystem directory."
+      library:
+        description: Partitioned dataset or library (mainframe)
+      package:
+        description: "Language package or module."
+      namespace:
+        description: "Logical namespace grouping."
+      module_path:
+        description: "Module search path."
+
+
+classes:
+  CodeContainer:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A physical container of source code - may be a file, member in a library,
+      or other storage unit depending on the platform.
+    slots:
+      - implements_component
+      - contains_code_elements
+    attributes:
+      container_path:
+        description: "Path or identifier for the container."
+        range: string
+        required: true
+      container_type:
+        description: "Type of container (source_file, library_member, copybook, script, etc.)."
+        range: CodeContainerType
+      format:
+        range: string
+        description: >-
+          Format or language (DEPRECATED -- use written_in_language relationship)
+      size_bytes:
+        description: "Size in bytes."
+        range: integer
+      line_count:
+        description: "Number of lines."
+        range: integer
+      encoding:
+        description: "Character encoding."
+        range: string
+      checksum:
+        description: "Content hash for version tracking."
+        range: string
+      contained_in_storage_location:
+        description: "Parent directory or library."
+        range: StorageLocation
+        inverse: contains_containers
+      contains_encapsulation_units:
+        description: "Logical units defined in this file."
+        range: EncapsulationUnit
+        multivalued: true
+      references_containers:
+        description: "Containers this one references."
+        range: CodeContainer
+        multivalued: true
+        inverse: referenced_by_containers
+      referenced_by_containers:
+        description: "Containers that reference this one."
+        range: CodeContainer
+        multivalued: true
+        inverse: references_containers
+      includes_definitions:
+        description: "Included/copied definitions."
+        range: CodeContainer
+        multivalued: true
+        inverse: included_in_containers
+      included_in_containers:
+        description: "Containers that include this one."
+        range: CodeContainer
+        multivalued: true
+        inverse: includes_definitions
+      has_references:
+        description: "Import/include statements originating here."
+        range: DefinitionReference
+        multivalued: true
+        inverse: referencing_container
+      referenced_via:
+        description: "Import/include statements targeting here."
+        range: DefinitionReference
+        multivalued: true
+        inverse: referenced_container
+      written_in_language:
+        description: "Programming language."
+        range: ProgrammingLanguage
+        inverse: language_used_by_containers
+      has_file_definitions:
+        description: "FileDefinition[] associated with this container."
+        range: FileDefinition
+        multivalued: true
+        inverse: file_defined_in_container
+      has_screen_definitions:
+        description: "ScreenDefinition[] associated with this container."
+        range: ScreenDefinition
+        multivalued: true
+        inverse: screen_defined_in_container
+      has_preprocessor_directives:
+        description: "PreprocessorDirective[] associated with this container."
+        range: PreprocessorDirective
+        multivalued: true
+        inverse: directive_defined_in_container
+      contains_knowledge_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: stored_in_container
+
+  StorageLocation:
+    is_a: NamedEntity
+    description: >-
+      A logical or physical location for storing code containers.
+    attributes:
+      location_path:
+        description: "Path or identifier."
+        range: string
+        required: true
+      location_type:
+        description: "Type (directory, library, package, namespace, module_path)."
+        range: StorageLocationType
+      has_parent_location:
+        description: "Parent storage location (hierarchical)."
+        range: StorageLocation
+        inverse: contains_locations
+      contains_locations:
+        description: "Child storage locations."
+        range: StorageLocation
+        multivalued: true
+        inverse: has_parent_location
+      contains_containers:
+        description: "Code containers in this location."
+        range: CodeContainer
+        multivalued: true
+        inverse: contained_in_storage_location
+      maps_to_module:
+        description: "Corresponding architectural Module."
+        range: Module
+        inverse: mapped_from_directory
+

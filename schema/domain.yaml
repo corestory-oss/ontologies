@@ -1,0 +1,398 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/domain
+name: sao-domain
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  Cardinality:
+    description: Relationship cardinality options
+    permissible_values:
+      one_to_one:
+        description: "One-to-one relationship."
+      one_to_many:
+        description: "One-to-many relationship."
+      many_to_one:
+        description: "Many-to-one relationship."
+      many_to_many:
+        description: "Many-to-many relationship."
+
+  AttributeCategory:
+    description: Categories of entity attributes
+    permissible_values:
+      required:
+        description: "Required attribute that must have a value."
+      optional:
+        description: "Optional attribute that may be null."
+      computed:
+        description: "Computed or calculated attribute."
+      derived:
+        description: "Derived from other attributes."
+      transient:
+        description: "Transient attribute not persisted."
+
+
+classes:
+  Aggregate:
+    comments:
+      - "Enforces consistency boundaries and transactional integrity within the domain model."
+    is_a: NamedEntity
+    description: >-
+      A cluster of domain entities treated as a single transactional unit.
+      Corresponds to DDD aggregate concept.
+    attributes:
+      has_value_objects:
+        description: "List of value objects within the aggregate."
+        range: ValueObject
+        multivalued: true
+        inverse: belongs_to_aggregate
+      aggregates_entities:
+        description: "`DomainEntity` instances within this aggregate."
+        range: DomainEntity
+        multivalued: true
+        inlined_as_list: true
+        inverse: aggregated_by
+      has_root_entity:
+        description: "The root `DomainEntity` (required, single)."
+        range: DomainEntity
+        required: true
+        inverse: is_root_of_aggregate
+      enforced_by_invariant_rules:
+        description: "`Rule` entities that enforce aggregate invariants."
+        range: Rule
+        multivalued: true
+        inverse: enforces_aggregate_invariants
+      persisted_in_stores:
+        description: "`DataStore` entities where this aggregate is persisted."
+        range: DataStore
+        multivalued: true
+        inverse: persists_aggregates
+      contained_in_bounded_context:
+        description: "Parent `BoundedContext`."
+        range: BoundedContext
+        inverse: contains_aggregates
+      produces_domain_events:
+        description: "`DomainEvent` entities produced."
+        range: DomainEvent
+        multivalued: true
+        inverse: produced_by_aggregate
+      aggregate_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_aggregate
+
+  DomainEntity:
+    comments:
+      - "Represents business objects with distinct identity that persists over time."
+    is_a: NamedEntity
+    mixins:
+      - Auditable
+    description: >-
+      A uniquely identifiable object within the domain
+    attributes:
+      attributes:
+        description: "List of `Attribute` entities."
+        range: Attribute
+        multivalued: true
+        inlined_as_list: true
+      classifications:
+        description: "Data classification types applied."
+        range: DataClassificationType
+        multivalued: true
+      aggregated_by:
+        description: "Parent `Aggregate`."
+        range: Aggregate
+        inverse: aggregates_entities
+      exposes_as_resource:
+        description: "`Resource` entities that expose this entity externally."
+        range: Resource
+        multivalued: true
+        inverse: represents_entity
+      governed_by_lifecycle:
+        description: "`Lifecycle` defining valid states and transitions."
+        range: Lifecycle
+        inverse: governs_entities
+      in_state:
+        description: "Current `State` in the lifecycle."
+        range: State
+        inverse: current_for_entities
+      governed_by_rules:
+        description: "`Rule` entities governing this entity."
+        range: Rule
+        multivalued: true
+        inverse: governs_domain_entities
+      is_root_of_aggregate:
+        description: "Aggregate for which this is the root entity."
+        range: Aggregate
+        inverse: has_root_entity
+      mapped_from_structure:
+        description: "Code structures."
+        range: DataStructure
+        multivalued: true
+        inverse: maps_to_domain_entity
+      has_outgoing_relationships:
+        description: "`DomainRelationship` entities where this entity is the source."
+        range: DomainRelationship
+        multivalued: true
+        inverse: has_source_entity
+      has_incoming_relationships:
+        description: "`DomainRelationship` entities where this entity is the target."
+        range: DomainRelationship
+        multivalued: true
+        inverse: has_target_entity
+      entity_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_domain_entity
+
+  ValueObject:
+    comments:
+      - "Represents descriptive aspects of the domain with no conceptual identity."
+    is_a: NamedEntity
+    description: >-
+      An immutable domain object defined by its attributes
+    attributes:
+      has_attributes:
+        description: "List of `Attribute` entities defining the value object."
+        range: Attribute
+        multivalued: true
+      mapped_from_structure_vo:
+        description: "Back-reference to the `DataStructure` that maps to this value object."
+        range: DataStructure
+        multivalued: true
+        inverse: maps_to_value_object
+      belongs_to_aggregate:
+        range: Aggregate
+        inverse: has_value_objects
+
+  Attribute:
+    comments:
+      - "Defines the data fields and their characteristics within domain objects."
+    is_a: NamedEntity
+    description: >-
+      A named property of an entity or value object
+    attributes:
+      category:
+        description: "`required`, `optional`, `computed`, `derived`, `transient`."
+        range: AttributeCategory
+      data_type:
+        description: "Data type (string, integer, boolean, date, etc.)."
+        range: string
+        required: true
+      is_identifier:
+        description: "Whether this is an identifier attribute."
+        range: boolean
+      is_indexed:
+        description: "Whether this attribute should be indexed."
+        range: boolean
+      default_value:
+        description: "Default value if not specified."
+        range: string
+      classification:
+        description: "Data classification (`public`, `internal`, `confidential`, `pii`, etc.)."
+        range: DataClassificationType
+      validated_by_rules:
+        description: "`Rule` entities that validate this attribute."
+        range: Rule
+        multivalued: true
+        inverse: validates_attributes
+      mapped_from_element:
+        description: "Back-reference to the `DataElement` that maps to this attribute."
+        range: DataElement
+        multivalued: true
+        inverse: maps_to_attribute
+
+  Resource:
+    comments:
+      - "Represents the external API representation of domain objects."
+    is_a: NamedEntity
+    description: >-
+      A domain entity or value object exposed for external interaction
+    attributes:
+      represents_entity:
+        description: "The `DomainEntity` this resource represents."
+        range: DomainEntity
+        inverse: exposes_as_resource
+      classified_as_type:
+        description: "`ResourceType` classification."
+        range: ResourceType
+        inverse: classifies_resources
+      targeted_by_actions:
+        description: "`Action` entities that can target this resource."
+        range: Action
+        multivalued: true
+        inverse: targets_resources
+      affected_in_audit:
+        description: "Audit trail entries."
+        range: AuditEntry
+        multivalued: true
+        inverse: affects_resource
+
+  ResourceType:
+    comments:
+      - "Groups similar resources and defines their schema."
+    is_a: NamedEntity
+    description: >-
+      A classification of resources sharing common structure and behavior
+    attributes:
+      structured_by_schema:
+        description: "`Schema` defining the structure."
+        range: Schema
+        inverse: structures_resource_types
+      classifies_resources:
+        description: "`Resource` instances of this type."
+        range: Resource
+        multivalued: true
+        inverse: classified_as_type
+      governed_by_permissions:
+        description: "`Permission` entities that apply."
+        range: Permission
+        multivalued: true
+        inverse: applies_to_resource_types
+
+  State:
+    comments:
+      - "Represents a specific stage in an entity's lifecycle with allowed actions."
+    is_a: NamedEntity
+    description: >-
+      A discrete condition in an entity's lifecycle
+    attributes:
+      is_initial:
+        description: "Whether this is the initial state."
+        range: boolean
+      is_terminal:
+        description: "Whether this is a final/terminal state."
+        range: boolean
+      allows_actions_in_state:
+        description: "`Action` entities allowed in this state."
+        range: Action
+        multivalued: true
+        inverse: allowed_in_states
+      current_for_entities:
+        description: "`DomainEntity` instances currently in this state."
+        range: DomainEntity
+        multivalued: true
+        inverse: in_state
+      source_of_transitions:
+        description: "`Transition` entities starting from this state."
+        range: Transition
+        multivalued: true
+        inverse: transitions_from_state
+      target_of_transitions:
+        description: "`Transition` entities ending in this state."
+        range: Transition
+        multivalued: true
+        inverse: transitions_to_state
+      initial_for_lifecycle:
+        description: "Back-reference to the `Lifecycle` for which this is the initial state."
+        range: Lifecycle
+        inverse: starts_with_state
+
+  Transition:
+    comments:
+      - "Defines allowed state changes and their conditions."
+    is_a: NamedEntity
+    description: >-
+      A valid movement between states
+    attributes:
+      transitions_from_state:
+        description: "Source `State` (required)."
+        range: State
+        required: true
+        inverse: source_of_transitions
+      transitions_to_state:
+        description: "Target `State` (required)."
+        range: State
+        required: true
+        inverse: target_of_transitions
+      triggered_by_events:
+        description: "`Event` entities that trigger this transition."
+        range: Event
+        multivalued: true
+        inverse: triggers_transitions
+      guarded_by_rules:
+        description: "`Rule` entities that must be satisfied."
+        range: Rule
+        multivalued: true
+        inverse: guards_transitions
+      executes_actions_on_transition:
+        description: "`Action` entities executed during transition."
+        range: Action
+        multivalued: true
+        inverse: executed_during_transition
+
+  Lifecycle:
+    comments:
+      - "Defines the full state machine governing entity lifecycle."
+    is_a: NamedEntity
+    description: >-
+      The complete set of states and transitions for an entity type
+    attributes:
+      has_states:
+        description: "List of all `State` entities in the lifecycle."
+        range: State
+        multivalued: true
+      has_transitions:
+        description: "List of all `Transition` entities."
+        range: Transition
+        multivalued: true
+      starts_with_state:
+        description: "Initial `State`."
+        range: State
+        inverse: initial_for_lifecycle
+      governs_entities:
+        description: "`DomainEntity` instances following this lifecycle."
+        range: DomainEntity
+        multivalued: true
+        inverse: governed_by_lifecycle
+
+  DomainRelationship:
+    comments:
+      - "Explicitly captures how domain entities relate to each other, including cardinality, navigability, and composition semantics."
+    is_a: NamedEntity
+    description: >-
+      A named, typed relationship between two domain entities
+      (e.g., Order has many OrderLines, User belongs to Organization)
+    attributes:
+      cardinality:
+        description: "The multiplicity of the relationship."
+        range: Cardinality
+        required: true
+      is_navigable:
+        range: boolean
+        description: Whether the relationship can be traversed from source to target
+      is_bidirectional:
+        description: "Whether the relationship can be navigated in both directions."
+        range: boolean
+      is_composition:
+        range: boolean
+        description: Whether the target's lifecycle depends on the source (UML composition)
+      foreign_key_field:
+        range: string
+        description: The field implementing this relationship in the data layer
+      join_entity:
+        range: string
+        description: For many-to-many, the name of the join table/entity
+      has_source_entity:
+        description: "The `DomainEntity` that owns or originates the relationship (inverse: `has_outgoing_relationships` on DomainEntity)."
+        range: DomainEntity
+        inverse: has_outgoing_relationships
+      has_target_entity:
+        description: "The `DomainEntity` that is referenced by the relationship (inverse: `has_incoming_relationships` on DomainEntity)."
+        range: DomainEntity
+        inverse: has_incoming_relationships
+

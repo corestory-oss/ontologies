@@ -1,0 +1,239 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/ml
+name: sao-ml
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  MLModelType:
+    description: Types of machine learning models
+    permissible_values:
+      classification: {}
+      regression: {}
+      clustering: {}
+      recommendation: {}
+      nlp: {}
+      computer_vision: {}
+      generative: {}
+      reinforcement_learning: {}
+      time_series: {}
+      anomaly_detection: {}
+
+  DataPipelineType:
+    description: Types of data pipelines
+    permissible_values:
+      etl: {}
+      elt: {}
+      streaming: {}
+      feature_engineering: {}
+      training: {}
+      inference: {}
+      data_quality: {}
+
+  DataPipelineStepType:
+    description: Types of data pipeline steps
+    permissible_values:
+      extract: {}
+      transform: {}
+      load: {}
+      validate: {}
+      deduplicate: {}
+      enrich: {}
+      aggregate: {}
+      partition: {}
+      train: {}
+      evaluate: {}
+      deploy_model: {}
+
+
+classes:
+  MLModel:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A machine learning model defined, trained, or served by the system
+    attributes:
+      model_type:
+        description: "Kind of ML model."
+        range: MLModelType
+        required: true
+      framework:
+        description: "ML framework (TensorFlow, PyTorch, etc.)."
+        range: string
+      model_format:
+        description: "Serialization format (ONNX, SavedModel, etc.)."
+        range: string
+      model_uri:
+        description: "Model artifact location."
+        range: URI
+      has_input_schema:
+        description: "Input data structure."
+        range: DataStructure
+      has_output_schema:
+        description: "Output data structure."
+        range: DataStructure
+      has_metrics:
+        description: "Performance metrics."
+        range: MLModelMetric
+        multivalued: true
+      model_trained_by_pipeline:
+        description: "Training pipeline."
+        range: DataPipeline
+        inverse: pipeline_trains_model
+      model_served_by_component:
+        description: "Serving component."
+        range: Component
+        inverse: component_serves_model
+      model_uses_feature_store:
+        description: "Feature stores used."
+        range: FeatureStore
+        multivalued: true
+        inverse: provides_features_to_models
+
+  MLModelMetric:
+    is_a: NamedEntity
+    description: >-
+      A performance metric for an ML model
+    attributes:
+      metric_name:
+        description: "Metric name (accuracy, F1, RMSE, etc.)."
+        range: string
+        required: true
+      value:
+        description: "Metric value."
+        range: float
+      dataset:
+        description: "Evaluation dataset name."
+        range: string
+
+  Dataset:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A dataset used for training, evaluation, or inference
+    attributes:
+      format:
+        description: "Data format (CSV, Parquet, etc.)."
+        range: string
+      storage_uri:
+        description: "Storage location."
+        range: URI
+      row_count:
+        description: "Number of rows/records."
+        range: integer
+      has_schema:
+        description: "Dataset schema."
+        range: Schema
+      classification:
+        description: "Data classification."
+        range: DataClassificationType
+      dataset_used_by_pipeline:
+        description: "Pipelines using this dataset."
+        range: DataPipeline
+        multivalued: true
+        inverse: pipeline_uses_dataset
+
+  FeatureStore:
+    is_a: NamedEntity
+    description: >-
+      A centralized store for computed ML features.
+    attributes:
+      platform:
+        description: "Feature store platform (Feast, Tecton, etc.)."
+        range: string
+      storage_backend:
+        description: "Storage backend."
+        range: string
+      feature_count:
+        description: "Number of features."
+        range: integer
+      provides_features_to_models:
+        description: "Models using this feature store."
+        range: MLModel
+        multivalued: true
+        inverse: model_uses_feature_store
+
+  DataPipeline:
+    is_a: NamedEntity
+    description: >-
+      A data processing pipeline for ETL, feature engineering, or model training.
+    attributes:
+      pipeline_type:
+        description: "Kind of pipeline."
+        range: DataPipelineType
+        required: true
+      orchestrator:
+        description: "Orchestrator (Airflow, Dagster, etc.)."
+        range: string
+      schedule:
+        description: "Cron expression or schedule."
+        range: string
+      source_file:
+        description: "Pipeline definition file."
+        range: string
+      has_steps:
+        description: "Pipeline steps."
+        range: DataPipelineStep
+        multivalued: true
+      pipeline_reads_from_stores:
+        description: "Data stores read from."
+        range: DataStore
+        multivalued: true
+        inverse: store_read_by_pipelines
+      pipeline_writes_to_stores:
+        description: "Data stores written to."
+        range: DataStore
+        multivalued: true
+        inverse: store_written_by_pipelines
+      pipeline_uses_dataset:
+        description: "Datasets used."
+        range: Dataset
+        multivalued: true
+        inverse: dataset_used_by_pipeline
+      pipeline_trains_model:
+        range: MLModel
+        multivalued: true
+        inverse: model_trained_by_pipeline
+
+  DataPipelineStep:
+    is_a: NamedEntity
+    description: >-
+      A discrete step within a data pipeline
+    attributes:
+      step_type:
+        description: "Kind of step."
+        range: DataPipelineStepType
+        required: true
+      order:
+        description: "Execution order."
+        range: integer
+      depends_on_steps:
+        description: "Step dependencies (by name)."
+        range: string
+        multivalued: true
+      transformation_logic:
+        description: "Transformation description."
+        range: string
+      input_schema:
+        description: "Input schema."
+        range: string
+      output_schema:
+        description: "Output schema."
+        range: string
+

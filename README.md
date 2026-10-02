@@ -63,6 +63,7 @@ and the LinkML toolchain pinned in `uv.lock`.
 ```bash
 uv sync --locked
 uv run linkml-lint --validate-only sao.yml
+uv run python scripts/check_schema.py
 uv run gen-json-schema sao.yml > /tmp/sao.schema.json
 uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
 uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
@@ -76,6 +77,28 @@ conceptual illustrations; validate an individual instance with an explicit
 `-C` target class as shown above.
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
+
+## Schema layout
+
+`sao.yml` is the entry point for the complete ontology. It imports the topic
+modules in [schema/](schema/); continue passing `sao.yml` to validators and
+generators. Each definition has one home. Enums used in one topic live with
+that topic; shared enums, types, base classes, and global slots live in
+[schema/common.yaml](schema/common.yaml). Cross-topic references are resolved
+through the entry point, so the topic files are not standalone schemas.
+
+The split preserves the public `sao` term namespace. Each module has its own
+schema ID under `https://sao.corestory.ai/schema/`, used by LinkML for definition
+provenance; these IDs do not change class or property IRIs.
+
+Generate the full Markdown reference, including imported definitions, with:
+
+```bash
+uv run gen-doc --render-imports --directory /tmp/sao-reference sao.yml
+```
+
+`--render-imports` also includes the standard LinkML types. Without this flag,
+the documentation generator omits definitions in the topic modules.
 
 ## Examples
 

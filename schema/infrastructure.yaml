@@ -1,0 +1,130 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/infrastructure
+name: sao-infrastructure
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  IaCToolType:
+    description: Types of infrastructure-as-code tools
+    permissible_values:
+      terraform: {}
+      cloudformation: {}
+      pulumi: {}
+      ansible: {}
+      chef: {}
+      puppet: {}
+      kubernetes_manifest: {}
+      helm: {}
+      docker_compose: {}
+      bicep: {}
+      cdk: {}
+
+  IaCResourceType:
+    description: Types of infrastructure resources defined in code
+    permissible_values:
+      compute: {}
+      network: {}
+      storage: {}
+      database: {}
+      messaging: {}
+      identity: {}
+      monitoring: {}
+      dns: {}
+      cdn: {}
+      secret: {}
+
+
+classes:
+  IaCDefinition:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      An infrastructure-as-code definition that declaratively specifies
+      infrastructure resources.
+    attributes:
+      tool:
+        description: "IaC tool."
+        range: IaCToolType
+        required: true
+      source_file:
+        description: "Source file path."
+        range: string
+      provider:
+        description: "Cloud provider."
+        range: string
+      has_resources:
+        description: "Resources defined."
+        range: IaCResource
+        multivalued: true
+      iac_provisions_infrastructure:
+        description: "Infrastructure provisioned."
+        range: Infrastructure
+        multivalued: true
+        inverse: infrastructure_provisioned_by_iac
+      iac_used_by_pipeline:
+        description: "Pipelines using this definition."
+        range: BuildPipeline
+        multivalued: true
+        inverse: pipeline_uses_iac
+
+  IaCResource:
+    is_a: NamedEntity
+    description: >-
+      A single infrastructure resource defined in code
+    attributes:
+      resource_type:
+        description: "Kind of resource."
+        range: IaCResourceType
+        required: true
+      provider_resource_type:
+        description: "Provider-specific type (e.g., aws_instance, azurerm_storage_account)."
+        range: string
+      properties:
+        description: "Resource properties."
+        range: string
+        multivalued: true
+      depends_on_resources:
+        description: "Resource dependencies (by name)."
+        range: string
+        multivalued: true
+      is_managed:
+        description: "Whether Terraform/IaC manages lifecycle."
+        range: boolean
+
+  IaCModule:
+    is_a: NamedEntity
+    description: >-
+      A reusable module of IaC definitions.
+    attributes:
+      source:
+        description: "Module source (registry path, git URL, etc.)."
+        range: string
+      input_variables:
+        description: "Input variable names."
+        range: string
+        multivalued: true
+      output_values:
+        description: "Output value names."
+        range: string
+        multivalued: true
+      has_child_resources:
+        description: "Resources within this module."
+        range: IaCResource
+        multivalued: true
+

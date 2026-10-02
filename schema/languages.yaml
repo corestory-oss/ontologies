@@ -1,0 +1,80 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/languages
+name: sao-languages
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ProgrammingParadigm:
+    description: Programming paradigms
+    permissible_values:
+      object_oriented:
+        description: "Object-oriented programming."
+      procedural:
+        description: "Procedural programming."
+      functional:
+        description: "Functional programming."
+      logic:
+        description: "Logic programming."
+      concatenative:
+        description: "Concatenative programming."
+      data_driven:
+        description: "Data-driven programming."
+      multi_paradigm:
+        description: "Multi-paradigm programming."
+
+# TYPE DEFINITIONS
+
+
+classes:
+  ProgrammingLanguage:
+    comments:
+      - "Enables structured cross-language analysis. Query \"show me all Rust modules\" without resorting to string matching on format or language fields."
+    is_a: NamedEntity
+    description: >-
+      A programming language with its paradigms, type system, and runtime characteristics
+    attributes:
+      paradigms:
+        description: "Programming paradigms supported."
+        range: ProgrammingParadigm
+        multivalued: true
+      type_discipline:
+        range: string
+        description: Type system characterization (e.g., "static_strong", "dynamic_strong")
+      has_preprocessor:
+        description: "Whether the language has a preprocessor."
+        range: boolean
+      has_gc:
+        description: "Whether the language has garbage collection."
+        range: boolean
+      year_introduced:
+        description: "Year the language was first released."
+        range: integer
+      language_used_by_containers:
+        description: "Code containers written in this language."
+        range: CodeContainer
+        multivalued: true
+        inverse: written_in_language
+      has_default_error_model:
+        description: "The default error handling model for this language."
+        range: ErrorModel
+        inverse: error_model_for_languages
+      has_default_memory_model:
+        description: "The default memory management model for this language."
+        range: MemoryModel
+        inverse: memory_model_for_languages
+

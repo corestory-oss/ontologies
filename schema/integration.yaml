@@ -1,0 +1,258 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/integration
+name: sao-integration
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  IntegrationType:
+    description: Types of integrations
+    permissible_values:
+      inbound:
+        description: "Inbound integration receiving data."
+      outbound:
+        description: "Outbound integration sending data."
+      bidirectional:
+        description: "Bidirectional two-way integration."
+
+  ExternalSystemType:
+    description: Types of external systems
+    permissible_values:
+      third_party_service:
+        description: "Third-party external service."
+      partner_system:
+        description: "Partner or vendor system."
+      legacy_system:
+        description: "Legacy system being integrated."
+      saas_application:
+        description: "Software-as-a-Service application."
+
+  MessageType:
+    description: Types of messages
+    permissible_values:
+      request:
+        description: "Request message expecting a response."
+      response:
+        description: "Response message to a request."
+      notification:
+        description: "One-way notification message."
+      command:
+        description: "Command message for action execution."
+      event:
+        description: "Event notification message."
+      query:
+        description: "Query message for data retrieval."
+
+  ContractType:
+    description: Types of API contracts
+    permissible_values:
+      openapi:
+        description: "OpenAPI (Swagger) specification."
+      asyncapi:
+        description: "AsyncAPI specification for async APIs."
+      json_schema:
+        description: "JSON Schema specification."
+      protobuf:
+        description: "Protocol Buffers schema."
+      avro:
+        description: "Apache Avro schema."
+      graphql_schema:
+        description: "GraphQL schema definition."
+      wsdl:
+        description: "Web Services Description Language."
+
+
+classes:
+  ExternalSystem:
+    is_a: NamedEntity
+    description: >-
+      A system outside this system's boundary
+    attributes:
+      system_type:
+        description: "Category of external system."
+        range: ExternalSystemType
+      owner:
+        description: "System owner or vendor."
+        range: string
+      sla:
+        description: "Service level agreement."
+        range: string
+      documentation_url:
+        description: "API documentation URL."
+        range: URI
+      integrated_via:
+        description: "`Integration[]` connecting to this system."
+        range: Integration
+        multivalued: true
+        inverse: integrates_with_system
+
+  Integration:
+    is_a: NamedEntity
+    description: >-
+      A configured connection to an external system
+    attributes:
+      integration_type:
+        description: "`inbound` (receiving data), `outbound` (sending data), `bidirectional`."
+        range: IntegrationType
+      protocol:
+        description: "Communication protocol (HTTP, GRPC, KAFKA, etc.)."
+        range: ProtocolType
+      has_messages:
+        description: "List of messages exchanged."
+        range: Message
+        multivalued: true
+      integrates_with_system:
+        description: "Target `ExternalSystem`."
+        range: ExternalSystem
+        inverse: integrated_via
+      uses_adapter:
+        description: "`Adapter` for protocol translation."
+        range: Adapter
+        inverse: used_by_integrations
+      protected_by_breaker:
+        description: "`CircuitBreaker` for resilience."
+        range: CircuitBreaker
+        inverse: protects_integrations
+      integration_governed_by_contract:
+        description: "`Contract` defining API."
+        range: Contract
+        inverse: governs_integrations
+      belongs_to_system:
+        description: "Parent `System`."
+        range: System
+        inverse: has_integrations
+      integration_documented_by_artifacts:
+        range: KnowledgeArtifact
+        multivalued: true
+        inverse: documents_integration
+
+  Message:
+    is_a: NamedEntity
+    description: >-
+      A unit of data exchanged in integration
+    attributes:
+      message_type:
+        description: "Kind of message."
+        range: MessageType
+      message_structured_by_schema:
+        description: "`Schema` defining message structure."
+        range: Schema
+        inverse: structures_messages
+      validated_by_contract:
+        description: "`Contract` validating message."
+        range: Contract
+        inverse: validates_messages
+
+  Contract:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A formal specification of integration behavior
+    attributes:
+      contract_type:
+        description: "Kind of contract."
+        range: ContractType
+      definition:
+        description: "Contract definition."
+        range: string
+      has_versions:
+        description: "List of contract versions."
+        range: ContractVersion
+        multivalued: true
+        inverse: version_of_contract
+      defines_interfaces:
+        description: "`Interface` entities defined."
+        range: Interface
+        multivalued: true
+        inverse: defined_by_contract
+      implemented_by_units:
+        description: "`EncapsulationUnit` entities implementing this contract."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: implements_contracts
+      validates_messages:
+        description: "`Message` entities validated."
+        range: Message
+        multivalued: true
+        inverse: validated_by_contract
+      governs_integrations:
+        description: "`Integration` entities governed."
+        range: Integration
+        multivalued: true
+        inverse: integration_governed_by_contract
+
+  ContractVersion:
+    is_a: NamedEntity
+    description: >-
+      A specific iteration of a contract
+    attributes:
+      version:
+        description: "Semantic version number."
+        range: SemanticVersion
+      definition:
+        description: "Contract at this version."
+        range: string
+      breaking_changes:
+        description: "List of breaking changes from previous version."
+        range: string
+        multivalued: true
+      version_of_contract:
+        description: "`Contract` that this version belongs to."
+        range: Contract
+        inverse: has_versions
+
+  Adapter:
+    is_a: Component
+    description: >-
+      A component that translates between system and external protocols
+    attributes:
+      source_protocol:
+        description: "Protocol to translate from."
+        range: ProtocolType
+      target_protocol:
+        description: "Protocol to translate to."
+        range: ProtocolType
+      transformation:
+        description: "Data transformation logic."
+        range: string
+      used_by_integrations:
+        description: "`Integration` entities using this adapter."
+        range: Integration
+        multivalued: true
+        inverse: uses_adapter
+
+  CircuitBreaker:
+    is_a: NamedEntity
+    description: >-
+      A resilience pattern preventing cascade failures
+    attributes:
+      failure_threshold:
+        description: "Number of failures before opening circuit."
+        range: integer
+      reset_timeout_seconds:
+        description: "Seconds before attempting half-open."
+        range: integer
+      half_open_requests:
+        description: "Requests allowed in half-open state."
+        range: integer
+      protects_integrations:
+        description: "`Integration` entities protected."
+        range: Integration
+        multivalued: true
+        inverse: protected_by_breaker
+

@@ -1,0 +1,208 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://sao.corestory.ai/schema/authorization
+name: sao-authorization
+license: Apache-2.0
+
+prefixes:
+  sao: https://sao.corestory.ai/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  PolicyType:
+    description: Types of authorization policies
+    permissible_values:
+      rbac:
+        description: Role-Based Access Control
+      abac:
+        description: Attribute-Based Access Control
+      rebac:
+        description: Relationship-Based Access Control
+      pbac:
+        description: Policy-Based Access Control
+
+  ScopeType:
+    description: Types of permission scopes
+    permissible_values:
+      global:
+        description: "System-wide global scope."
+      tenant:
+        description: "Limited to a specific tenant."
+      organization:
+        description: "Limited to an organization within a tenant."
+      resource:
+        description: "Limited to a specific resource or resource type."
+      field:
+        description: "Limited to specific fields within a resource."
+
+  ConstraintType:
+    description: Types of authorization constraints
+    permissible_values:
+      temporal:
+        description: "Time-based constraint (date/time ranges)."
+      spatial:
+        description: "Location or geography-based constraint."
+      attribute:
+        description: "Attribute or property-based constraint."
+      context:
+        description: Context-dependent constraint (device, IP, etc.)
+      rate_limit:
+        description: "Rate limiting or quota-based constraint."
+
+
+classes:
+  Role:
+    comments:
+      - "Groups permissions into meaningful job functions or responsibilities that can be assigned to identities."
+    is_a: NamedEntity
+    description: >-
+      A named collection of permissions assignable to actors
+    attributes:
+      is_system_role:
+        description: "Whether this is a built-in system role."
+        range: boolean
+      grants_permissions:
+        description: "`Permission` entities included in this role."
+        range: Permission
+        multivalued: true
+        inverse: granted_by_roles
+      assigned_to_identities:
+        description: "`Identity` entities that have this role."
+        range: Identity
+        multivalued: true
+        inverse: has_roles
+      inherits_from_role:
+        description: "Parent role for role hierarchy."
+        range: Role
+        inverse: inherited_by_roles
+      inherited_by_roles:
+        description: "Child roles that inherit from this role."
+        range: Role
+        multivalued: true
+        inverse: inherits_from_role
+      can_access_features:
+        description: "`Feature` entities accessible to this role."
+        range: Feature
+        multivalued: true
+        inverse: accessible_by_roles
+
+  Permission:
+    comments:
+      - "Represents atomic units of access that can be granted or denied."
+    is_a: NamedEntity
+    description: >-
+      A specific allowed action on a resource type or instance
+    attributes:
+      has_constraints:
+        description: "List of conditions that must be satisfied."
+        range: Constraint
+        multivalued: true
+      allows_actions:
+        description: "`Action` entities permitted by this permission."
+        range: Action
+        multivalued: true
+        inverse: allowed_by_permissions
+      granted_by_roles:
+        description: "`Role` entities that grant this permission."
+        range: Role
+        multivalued: true
+        inverse: grants_permissions
+      applies_to_resource_types:
+        description: "`ResourceType` entities this permission governs."
+        range: ResourceType
+        multivalued: true
+        inverse: governed_by_permissions
+      limited_by_scope:
+        description: "`Scope` entity defining boundaries."
+        range: Scope
+        inverse: limits_permissions
+      required_by_capabilities:
+        description: "`Capability` entities requiring this permission."
+        range: Capability
+        multivalued: true
+        inverse: requires_permissions
+      evaluated_by_policies:
+        description: "`Policy` entities evaluating this permission."
+        range: Policy
+        multivalued: true
+        inverse: evaluates_permissions
+
+  Policy:
+    comments:
+      - "Implements complex authorization logic that cannot be expressed through simple role-permission mappings."
+    is_a: NamedEntity
+    description: >-
+      A rule set governing access decisions
+    attributes:
+      policy_type:
+        description: "Type of policy."
+        range: PolicyType
+      has_rules:
+        description: "List of rules within this policy."
+        range: Rule
+        multivalued: true
+      priority:
+        description: "Evaluation priority (higher priority policies evaluated first)."
+        range: integer
+      evaluates_permissions:
+        description: "`Permission` entities evaluated by this policy."
+        range: Permission
+        multivalued: true
+        inverse: evaluated_by_policies
+      enforced_by_system:
+        description: "`System` that enforces this policy."
+        range: System
+        inverse: enforces_policies
+      guards_routes:
+        description: "`Route` entities guarded by this policy."
+        range: Route
+        multivalued: true
+        inverse: route_guarded_by
+
+  Scope:
+    comments:
+      - "Restricts permissions to specific contexts, reducing the blast radius of access grants."
+    is_a: NamedEntity
+    description: >-
+      A boundary limiting where a permission applies
+    attributes:
+      scope_type:
+        description: "Type of scope."
+        range: ScopeType
+      resource_pattern:
+        description: "Pattern matching resources in scope (e.g., regex, glob)."
+        range: string
+      limits_permissions:
+        description: "`Permission` entities limited by this scope."
+        range: Permission
+        multivalued: true
+        inverse: limited_by_scope
+
+  Constraint:
+    comments:
+      - "Adds contextual or temporal restrictions to permissions."
+    is_a: NamedEntity
+    description: >-
+      A condition that must be satisfied for authorization
+    attributes:
+      constraint_type:
+        description: "Type of constraint."
+        range: ConstraintType
+      expression:
+        description: "Constraint expression (e.g., \"hour >= 9 AND hour <= 17\")."
+        range: string
+      parameters:
+        description: "Constraint parameters."
+        range: string
+        multivalued: true
+

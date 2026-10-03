@@ -2,12 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # See LICENSE for the full license text.
 
-id: https://sao.corestory.ai/schema/database
+id: https://ontologies.corestory.ai/sao/schema/database
 name: sao-database
 license: Apache-2.0
 
 prefixes:
-  sao: https://sao.corestory.ai/
+  sao: https://ontologies.corestory.ai/sao/
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
   rdfs: http://www.w3.org/2000/01/rdf-schema#

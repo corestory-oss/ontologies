@@ -88,8 +88,8 @@ that topic; shared enums, types, base classes, and global slots live in
 through the entry point, so the topic files are not standalone schemas.
 
 The split preserves the public `sao` term namespace. Each module has its own
-schema ID under `https://sao.corestory.ai/schema/`, used by LinkML for definition
-provenance; these IDs do not change class or property IRIs.
+schema ID under `https://ontologies.corestory.ai/sao/schema/`, used by LinkML
+for definition provenance; these IDs do not change class or property IRIs.
 
 Generate the full Markdown reference, including imported definitions, with:
 
@@ -153,11 +153,12 @@ integration_governed_by_contract: stripe-api-contract
 
 ### Schema namespace
 
-The schema ID and `sao` term prefix are both `https://sao.corestory.ai/`.
-For example, the **System** class IRI is `https://sao.corestory.ai/System`.
-Applications using the earlier `ontology.example.org` namespace should migrate
-their schema references and term IRIs. The documentation site will be rendered
-to the `site` branch and published through CoreStory's CDN.
+The schema ID and `sao` term prefix are both `https://ontologies.corestory.ai/sao/`.
+For example, the **System** class IRI is `https://ontologies.corestory.ai/sao/System`.
+Applications using the earlier `ontology.example.org` or `https://sao.corestory.ai/`
+namespaces should migrate their schema references and term IRIs. The
+documentation site will be rendered to the `site` branch and published through
+CoreStory's CDN.
 
 ## Technical Details
 

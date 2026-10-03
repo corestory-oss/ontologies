@@ -14,8 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Module schema IDs now identify definition provenance.
 - Enrich LinkML attribute, shared-slot, and enum value descriptions from the
   existing documentation, and add class-purpose comments without changing the model.
-- Replace the placeholder schema ID and term prefix with `https://sao.corestory.ai/`.
-  Consumers using the old namespace must update schema references and term IRIs.
+- Replace the placeholder schema ID and term prefix with
+  `https://ontologies.corestory.ai/sao/`, using the shared CoreStory ontology host.
+  Update all module schema IDs to the same URI space. Consumers using
+  `ontology.example.org` or `https://sao.corestory.ai/` must update schema references
+  and term IRIs.
 - Prepare the repository for Apache License 2.0 distribution: replace the
   proprietary license, add attribution, and align project metadata.
 - Refresh the README for schema version 2.1.0 and add validated instance examples.

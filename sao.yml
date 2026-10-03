@@ -7,7 +7,7 @@
 # This ontology provides a comprehensive framework for modeling software
 # applications, covering structure, behavior, security, data, and operations.
 
-id: https://sao.corestory.ai/
+id: https://ontologies.corestory.ai/sao/
 name: software-application-ontology
 title: Software Application Ontology
 description: >-
@@ -18,7 +18,7 @@ version: 2.1.0
 license: Apache-2.0
 
 prefixes:
-  sao: https://sao.corestory.ai/
+  sao: https://ontologies.corestory.ai/sao/
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
   rdfs: http://www.w3.org/2000/01/rdf-schema#

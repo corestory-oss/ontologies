@@ -1,6 +1,6 @@
 # Enumerations
 
-This document describes all enumeration types defined in the Software Application Ontology (SAO).
+This document describes all enumeration types defined in the Systems Abstraction Ontology (SAO).
 
 ## Table of Contents
 - [Cardinality](#cardinality)

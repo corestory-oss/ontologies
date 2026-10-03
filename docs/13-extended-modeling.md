@@ -1,6 +1,6 @@
 # Extended Modeling (Sections 18-28)
 
-This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent any software application -- legacy (COBOL, RPG, Assembler, PL/I), recent legacy (C#, Java), and modern (Python, Go, Rust).
+This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL, RPG, Assembler, PL/I), recent legacy (C#, Java), and modern (Python, Go, Rust).
 
 > **v2.0 Note**: Sections 18-28 are entirely new in SAO v2.0.0. They introduce first-class modeling for type systems, error handling, file I/O, screen definitions, batch orchestration, inter-process communication, preprocessor constructs, memory models, domain relationships, database schema objects, and programming languages. Several of these sections deprecate older string-based attributes in favor of typed object references.
 

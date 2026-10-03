@@ -1,6 +1,9 @@
-# Software Application Ontology (SAO)
+# Systems Abstraction Ontology (SAO)
 
-A comprehensive, language-agnostic ontology for modeling software applications — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
+A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
+
+SAO describes software systems—their structure, behavior, domain concepts, and
+operating context—including libraries, services, batch programs, and applications.
 
 * **Version**: 2.1.0
 * **Author**: Charath Ranganathan
@@ -11,7 +14,7 @@ A comprehensive, language-agnostic ontology for modeling software applications �
 
 ## Key Features
 
-- **Comprehensive Coverage**: Models all aspects of modern software applications
+- **Comprehensive Coverage**: Models all aspects of software systems
 - **DDD-Aligned**: Built on Domain-Driven Design principles (Aggregates, Bounded Contexts, Ubiquitous Language)
 - **Cloud-Native**: Supports microservices, containers, serverless, and cloud deployment
 - **Compliance-Ready**: Includes models for GDPR, HIPAA, SOC2, PCI-DSS, ISO 27001, and more
@@ -211,7 +214,7 @@ Third-party tools and dependencies retain their respective licenses.
 ## Citation
 
 ```
-Software Application Ontology (SAO)
+Systems Abstraction Ontology (SAO)
 Version 2.1.0
 Copyright (c) 2025 CoreStory, Inc.
 Licensed under the Apache License, Version 2.0.

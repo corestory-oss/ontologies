@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Software Application Ontology (SAO) are documented here.
+All notable changes to the Systems Abstraction Ontology (SAO) are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Rename SAO to Systems Abstraction Ontology to make its scope explicit across
+  libraries, services, batch programs, and applications. Update the LinkML schema
+  name and project metadata to `systems-abstraction-ontology`; the SAO acronym,
+  term namespace, and model definitions are unchanged.
 - Split the LinkML schema into topic modules under `schema/`, preserving `sao.yml`
   as the entry point and keeping definitions, constraints, and term IRIs unchanged.
   Module schema IDs now identify definition provenance.

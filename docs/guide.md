@@ -1,4 +1,4 @@
-# Software Application Ontology: A Guide
+# Systems Abstraction Ontology: A Guide
 
 **Author:** Charath Ranganathan  
 **CoreStory, Inc.**  
@@ -55,7 +55,7 @@ LinkML Schema · Apache 2.0 License
 
 ## 1. Introduction
 
-The Software Application Ontology (SAO) is a LinkML schema that provides a comprehensive, language-agnostic framework for modeling software applications. It covers everything from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments, from database constraints to compliance requirements.
+The Systems Abstraction Ontology (SAO) is a LinkML schema that provides a comprehensive, language-agnostic framework for modeling software systems. It covers everything from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments, from database constraints to compliance requirements.
 
 This guide explains the SAO by organizing its 147 classes into six conceptual layers, ordered by abstraction. The lowest layers describe what a code parser can directly extract. The highest layers describe what the system means to the business. The layers in between bridge the two.
 

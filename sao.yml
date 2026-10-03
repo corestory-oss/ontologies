@@ -2,16 +2,16 @@
 # SPDX-License-Identifier: Apache-2.0
 # See LICENSE for the full license text.
 #
-# SOFTWARE APPLICATION ONTOLOGY (SAO)
+# SYSTEMS ABSTRACTION ONTOLOGY (SAO)
 # LinkML Schema Definition
 # This ontology provides a comprehensive framework for modeling software
-# applications, covering structure, behavior, security, data, and operations.
+# systems, covering structure, behavior, security, data, and operations.
 
 id: https://ontologies.corestory.ai/sao/
-name: software-application-ontology
-title: Software Application Ontology
+name: systems-abstraction-ontology
+title: Systems Abstraction Ontology
 description: >-
-  A comprehensive ontology for modeling software applications, including
+  A comprehensive ontology for modeling software systems, including
   structural components, domain modeling (DDD), security, data management,
   integration, deployment, and observability concerns.
 version: 2.1.0

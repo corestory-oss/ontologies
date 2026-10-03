@@ -965,7 +965,7 @@ wheels = [
 ]
 
 [[package]]
-name = "software-application-ontology"
+name = "systems-abstraction-ontology"
 version = "2.1.0"
 source = { virtual = "." }
 dependencies = [

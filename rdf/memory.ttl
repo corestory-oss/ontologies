@@ -1,0 +1,164 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:MemoryModel a rdfs:Class ;
+    rdfs:label "MemoryModel" ;
+    rdfs:comment "Describes how a language or module manages memory" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Enables analysis of memory safety, ownership transfer, and resource management patterns across codebases." .
+
+sao:OwnershipAnnotation a rdfs:Class ;
+    rdfs:label "OwnershipAnnotation" ;
+    rdfs:comment "An ownership/lifetime annotation on a data element" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures fine-grained ownership and lifetime information, particularly for Rust and C++ codebases." .
+
+sao:annotates_data_element a rdf:Property ;
+    rdfs:label "annotates_data_element" ;
+    rdfs:comment "The data element this annotation applies to.",
+        "[OwnershipAnnotation] The data element this annotation applies to." ;
+    rdfs:domain sao:OwnershipAnnotation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:gc_type a rdf:Property ;
+    rdfs:label "gc_type" ;
+    rdfs:comment "GC algorithm if applicable (e.g., \"generational\", \"mark-sweep\")",
+        "[MemoryModel] GC algorithm if applicable (e.g., \"generational\", \"mark-sweep\")" ;
+    rdfs:domain sao:MemoryModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:lifetime a rdf:Property ;
+    rdfs:label "lifetime" ;
+    rdfs:comment "The lifetime scope.",
+        "[OwnershipAnnotation] The lifetime scope." ;
+    rdfs:domain sao:OwnershipAnnotation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:LifetimeScope .
+
+sao:lifetime_name a rdf:Property ;
+    rdfs:label "lifetime_name" ;
+    rdfs:comment "Named lifetime identifier (e.g., 'a in Rust)",
+        "[OwnershipAnnotation] Named lifetime identifier (e.g., 'a in Rust)" ;
+    rdfs:domain sao:OwnershipAnnotation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:memory_model_for_languages a rdf:Property ;
+    rdfs:label "memory_model_for_languages" ;
+    rdfs:comment "Languages that use this as their default memory model.",
+        "[MemoryModel] Languages that use this as their default memory model." ;
+    rdfs:domain sao:MemoryModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ProgrammingLanguage .
+
+sao:modules_using_memory_model a rdf:Property ;
+    rdfs:label "modules_using_memory_model" ;
+    rdfs:comment "Modules that use this memory model.",
+        "[MemoryModel] Modules that use this memory model." ;
+    rdfs:domain sao:MemoryModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:ownership a rdf:Property ;
+    rdfs:label "ownership" ;
+    rdfs:comment "The ownership model for this element.",
+        "[OwnershipAnnotation] The ownership model for this element." ;
+    rdfs:domain sao:OwnershipAnnotation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:OwnershipModel .
+
+sao:primary_model a rdf:Property ;
+    rdfs:label "primary_model" ;
+    rdfs:comment "The primary memory management approach.",
+        "[MemoryModel] The primary memory management approach." ;
+    rdfs:domain sao:MemoryModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:OwnershipModel .
+
+sao:supports_unsafe a rdf:Property ;
+    rdfs:label "supports_unsafe" ;
+    rdfs:comment "Whether the model allows unsafe/manual memory access",
+        "[MemoryModel] Whether the model allows unsafe/manual memory access" ;
+    rdfs:domain sao:MemoryModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:LifetimeScope a rdfs:Datatype ;
+    rdfs:label "LifetimeScope" ;
+    rdfs:comment "Lifetime/scope of a value" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/LifetimeScope/block_scope>,
+        <https://ontologies.corestory.ai/sao/export/values/LifetimeScope/function_scope>,
+        <https://ontologies.corestory.ai/sao/export/values/LifetimeScope/heap_lifetime>,
+        <https://ontologies.corestory.ai/sao/export/values/LifetimeScope/named_lifetime>,
+        <https://ontologies.corestory.ai/sao/export/values/LifetimeScope/static_lifetime> .
+
+<https://ontologies.corestory.ai/sao/export/values/LifetimeScope/block_scope> rdf:value "block_scope" ;
+    rdfs:comment "Block scope." .
+
+<https://ontologies.corestory.ai/sao/export/values/LifetimeScope/function_scope> rdf:value "function_scope" ;
+    rdfs:comment "Function scope." .
+
+<https://ontologies.corestory.ai/sao/export/values/LifetimeScope/heap_lifetime> rdf:value "heap_lifetime" ;
+    rdfs:comment "Heap lifetime." .
+
+<https://ontologies.corestory.ai/sao/export/values/LifetimeScope/named_lifetime> rdf:value "named_lifetime" ;
+    rdfs:comment "Rust named lifetime ('a)" .
+
+<https://ontologies.corestory.ai/sao/export/values/LifetimeScope/static_lifetime> rdf:value "static_lifetime" ;
+    rdfs:comment "Static lifetime." .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/borrowed_mutable> rdf:value "borrowed_mutable" ;
+    rdfs:comment "Exclusive mutable borrow (Rust &mut T)" .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/borrowed_shared> rdf:value "borrowed_shared" ;
+    rdfs:comment "Shared/immutable borrow (Rust &T)" .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/copied> rdf:value "copied" ;
+    rdfs:comment "Copied value." .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/garbage_collected> rdf:value "garbage_collected" ;
+    rdfs:comment "Garbage-collected." .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/manual> rdf:value "manual" ;
+    rdfs:comment "Manual malloc/free" .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/moved> rdf:value "moved" ;
+    rdfs:comment "Moved value." .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/owned> rdf:value "owned" ;
+    rdfs:comment "Owned value." .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/reference_counted> rdf:value "reference_counted" ;
+    rdfs:comment "Rc/Arc (Rust), shared_ptr (C++)" .
+
+<https://ontologies.corestory.ai/sao/export/values/OwnershipModel/stack_allocated> rdf:value "stack_allocated" ;
+    rdfs:comment "Stack-allocated." .
+
+sao:OwnershipModel a rdfs:Datatype ;
+    rdfs:label "OwnershipModel" ;
+    rdfs:comment "Memory ownership models" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/borrowed_mutable>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/borrowed_shared>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/copied>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/garbage_collected>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/manual>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/moved>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/owned>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/reference_counted>,
+        <https://ontologies.corestory.ai/sao/export/values/OwnershipModel/stack_allocated> .
+

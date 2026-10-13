@@ -1,0 +1,199 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:IaCDefinition a rdfs:Class ;
+    rdfs:label "IaCDefinition" ;
+    rdfs:comment "An infrastructure-as-code definition that declaratively specifies infrastructure resources." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:IaCModule a rdfs:Class ;
+    rdfs:label "IaCModule" ;
+    rdfs:comment "A reusable module of IaC definitions." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:IaCResource a rdfs:Class ;
+    rdfs:label "IaCResource" ;
+    rdfs:comment "A single infrastructure resource defined in code" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:depends_on_resources a rdf:Property ;
+    rdfs:label "depends_on_resources" ;
+    rdfs:comment "Resource dependencies (by name).",
+        "[IaCResource] Resource dependencies (by name)." ;
+    rdfs:domain sao:IaCResource ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_child_resources a rdf:Property ;
+    rdfs:label "has_child_resources" ;
+    rdfs:comment "Resources within this module.",
+        "[IaCModule] Resources within this module." ;
+    rdfs:domain sao:IaCModule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCResource .
+
+sao:has_resources a rdf:Property ;
+    rdfs:label "has_resources" ;
+    rdfs:comment "Resources defined.",
+        "[IaCDefinition] Resources defined." ;
+    rdfs:domain sao:IaCDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCResource .
+
+sao:iac_provisions_infrastructure a rdf:Property ;
+    rdfs:label "iac_provisions_infrastructure" ;
+    rdfs:comment "Infrastructure provisioned.",
+        "[IaCDefinition] Infrastructure provisioned." ;
+    rdfs:domain sao:IaCDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Infrastructure .
+
+sao:iac_used_by_pipeline a rdf:Property ;
+    rdfs:label "iac_used_by_pipeline" ;
+    rdfs:comment "Pipelines using this definition.",
+        "[IaCDefinition] Pipelines using this definition." ;
+    rdfs:domain sao:IaCDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BuildPipeline .
+
+sao:input_variables a rdf:Property ;
+    rdfs:label "input_variables" ;
+    rdfs:comment "Input variable names.",
+        "[IaCModule] Input variable names." ;
+    rdfs:domain sao:IaCModule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:is_managed a rdf:Property ;
+    rdfs:label "is_managed" ;
+    rdfs:comment "Whether Terraform/IaC manages lifecycle.",
+        "[IaCResource] Whether Terraform/IaC manages lifecycle." ;
+    rdfs:domain sao:IaCResource ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:output_values a rdf:Property ;
+    rdfs:label "output_values" ;
+    rdfs:comment "Output value names.",
+        "[IaCModule] Output value names." ;
+    rdfs:domain sao:IaCModule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:properties a rdf:Property ;
+    rdfs:label "properties" ;
+    rdfs:comment "Resource properties.",
+        "[IaCResource] Resource properties." ;
+    rdfs:domain sao:IaCResource ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:provider_resource_type a rdf:Property ;
+    rdfs:label "provider_resource_type" ;
+    rdfs:comment "Provider-specific type (e.g., aws_instance, azurerm_storage_account).",
+        "[IaCResource] Provider-specific type (e.g., aws_instance, azurerm_storage_account)." ;
+    rdfs:domain sao:IaCResource ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:resource_type a rdf:Property ;
+    rdfs:label "resource_type" ;
+    rdfs:comment "Kind of resource.",
+        "[IaCResource] Kind of resource." ;
+    rdfs:domain sao:IaCResource ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCResourceType .
+
+sao:tool a rdf:Property ;
+    rdfs:label "tool" ;
+    rdfs:comment "IaC tool.",
+        "[IaCDefinition] IaC tool." ;
+    rdfs:domain sao:IaCDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCToolType .
+
+sao:IaCResourceType a rdfs:Datatype ;
+    rdfs:label "IaCResourceType" ;
+    rdfs:comment "Types of infrastructure resources defined in code" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/cdn>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/compute>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/database>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/dns>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/identity>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/messaging>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/monitoring>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/network>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/secret>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCResourceType/storage> .
+
+sao:IaCToolType a rdfs:Datatype ;
+    rdfs:label "IaCToolType" ;
+    rdfs:comment "Types of infrastructure-as-code tools" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/IaCToolType/ansible>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/bicep>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/cdk>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/chef>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/cloudformation>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/docker_compose>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/helm>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/kubernetes_manifest>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/pulumi>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/puppet>,
+        <https://ontologies.corestory.ai/sao/export/values/IaCToolType/terraform> .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/cdn> rdf:value "cdn" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/compute> rdf:value "compute" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/database> rdf:value "database" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/dns> rdf:value "dns" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/identity> rdf:value "identity" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/messaging> rdf:value "messaging" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/monitoring> rdf:value "monitoring" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/network> rdf:value "network" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/secret> rdf:value "secret" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCResourceType/storage> rdf:value "storage" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/ansible> rdf:value "ansible" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/bicep> rdf:value "bicep" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/cdk> rdf:value "cdk" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/chef> rdf:value "chef" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/cloudformation> rdf:value "cloudformation" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/docker_compose> rdf:value "docker_compose" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/helm> rdf:value "helm" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/kubernetes_manifest> rdf:value "kubernetes_manifest" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/pulumi> rdf:value "pulumi" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/puppet> rdf:value "puppet" .
+
+<https://ontologies.corestory.ai/sao/export/values/IaCToolType/terraform> rdf:value "terraform" .
+

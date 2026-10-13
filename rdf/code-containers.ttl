@@ -1,0 +1,288 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:CodeContainer a rdfs:Class ;
+    rdfs:label "CodeContainer" ;
+    rdfs:comment "A physical container of source code - may be a file, member in a library, or other storage unit depending on the platform." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:StorageLocation a rdfs:Class ;
+    rdfs:label "StorageLocation" ;
+    rdfs:comment "A logical or physical location for storing code containers." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:contained_in_storage_location a rdf:Property ;
+    rdfs:label "contained_in_storage_location" ;
+    rdfs:comment "Parent directory or library.",
+        "[CodeContainer] Parent directory or library." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StorageLocation .
+
+sao:container_path a rdf:Property ;
+    rdfs:label "container_path" ;
+    rdfs:comment "Path or identifier for the container.",
+        "[CodeContainer] Path or identifier for the container." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:container_type a rdf:Property ;
+    rdfs:label "container_type" ;
+    rdfs:comment "Type of container (source_file, library_member, copybook, script, etc.).",
+        "[CodeContainer] Type of container (source_file, library_member, copybook, script, etc.)." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainerType .
+
+sao:contains_containers a rdf:Property ;
+    rdfs:label "contains_containers" ;
+    rdfs:comment "Code containers in this location.",
+        "[StorageLocation] Code containers in this location." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:contains_encapsulation_units a rdf:Property ;
+    rdfs:label "contains_encapsulation_units" ;
+    rdfs:comment "Logical units defined in this file.",
+        "[CodeContainer] Logical units defined in this file." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:contains_knowledge_artifacts a rdf:Property ;
+    rdfs:label "contains_knowledge_artifacts" ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:KnowledgeArtifact .
+
+sao:contains_locations a rdf:Property ;
+    rdfs:label "contains_locations" ;
+    rdfs:comment "Child storage locations.",
+        "[StorageLocation] Child storage locations." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StorageLocation .
+
+sao:encoding a rdf:Property ;
+    rdfs:label "encoding" ;
+    rdfs:comment "Character encoding.",
+        "[CodeContainer] Character encoding." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_file_definitions a rdf:Property ;
+    rdfs:label "has_file_definitions" ;
+    rdfs:comment "FileDefinition[] associated with this container.",
+        "[CodeContainer] FileDefinition[] associated with this container." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileDefinition .
+
+sao:has_parent_location a rdf:Property ;
+    rdfs:label "has_parent_location" ;
+    rdfs:comment "Parent storage location (hierarchical).",
+        "[StorageLocation] Parent storage location (hierarchical)." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StorageLocation .
+
+sao:has_preprocessor_directives a rdf:Property ;
+    rdfs:label "has_preprocessor_directives" ;
+    rdfs:comment "PreprocessorDirective[] associated with this container.",
+        "[CodeContainer] PreprocessorDirective[] associated with this container." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PreprocessorDirective .
+
+sao:has_references a rdf:Property ;
+    rdfs:label "has_references" ;
+    rdfs:comment "Import/include statements originating here.",
+        "[CodeContainer] Import/include statements originating here." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DefinitionReference .
+
+sao:has_screen_definitions a rdf:Property ;
+    rdfs:label "has_screen_definitions" ;
+    rdfs:comment "ScreenDefinition[] associated with this container.",
+        "[CodeContainer] ScreenDefinition[] associated with this container." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ScreenDefinition .
+
+sao:included_in_containers a rdf:Property ;
+    rdfs:label "included_in_containers" ;
+    rdfs:comment "Containers that include this one.",
+        "[CodeContainer] Containers that include this one." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:includes_definitions a rdf:Property ;
+    rdfs:label "includes_definitions" ;
+    rdfs:comment "Included/copied definitions.",
+        "[CodeContainer] Included/copied definitions." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:line_count a rdf:Property ;
+    rdfs:label "line_count" ;
+    rdfs:comment "Number of lines.",
+        "[CodeContainer] Number of lines." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:location_path a rdf:Property ;
+    rdfs:label "location_path" ;
+    rdfs:comment "Path or identifier.",
+        "[StorageLocation] Path or identifier." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:location_type a rdf:Property ;
+    rdfs:label "location_type" ;
+    rdfs:comment "Type (directory, library, package, namespace, module_path).",
+        "[StorageLocation] Type (directory, library, package, namespace, module_path)." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StorageLocationType .
+
+sao:maps_to_module a rdf:Property ;
+    rdfs:label "maps_to_module" ;
+    rdfs:comment "Corresponding architectural Module.",
+        "[StorageLocation] Corresponding architectural Module." ;
+    rdfs:domain sao:StorageLocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:referenced_by_containers a rdf:Property ;
+    rdfs:label "referenced_by_containers" ;
+    rdfs:comment "Containers that reference this one.",
+        "[CodeContainer] Containers that reference this one." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:referenced_via a rdf:Property ;
+    rdfs:label "referenced_via" ;
+    rdfs:comment "Import/include statements targeting here.",
+        "[CodeContainer] Import/include statements targeting here." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DefinitionReference .
+
+sao:references_containers a rdf:Property ;
+    rdfs:label "references_containers" ;
+    rdfs:comment "Containers this one references.",
+        "[CodeContainer] Containers this one references." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:written_in_language a rdf:Property ;
+    rdfs:label "written_in_language" ;
+    rdfs:comment "Programming language.",
+        "[CodeContainer] Programming language." ;
+    rdfs:domain sao:CodeContainer ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ProgrammingLanguage .
+
+sao:CodeContainerType a rdfs:Datatype ;
+    rdfs:label "CodeContainerType" ;
+    rdfs:comment "Types of code containers" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/assembler_source>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/cl_source>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/configuration>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/include_file>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/inline_code>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/jcl_member>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/library_member>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/notebook_cell>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/pli_source>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/rpg_source>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/schema_definition>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/script>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeContainerType/source_file> .
+
+sao:StorageLocationType a rdfs:Datatype ;
+    rdfs:label "StorageLocationType" ;
+    rdfs:comment "Types of storage locations" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/StorageLocationType/directory>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageLocationType/library>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageLocationType/module_path>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageLocationType/namespace>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageLocationType/package> .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/assembler_source> rdf:value "assembler_source" ;
+    rdfs:comment "Assembler source." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/cl_source> rdf:value "cl_source" ;
+    rdfs:comment "IBM CL (Control Language) source" .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/configuration> rdf:value "configuration" ;
+    rdfs:comment "Configuration file." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/include_file> rdf:value "include_file" ;
+    rdfs:comment "Shared definitions file (header, copybook)" .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/inline_code> rdf:value "inline_code" ;
+    rdfs:comment "Embedded code (e.g., JavaScript in HTML, SQL in code)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/jcl_member> rdf:value "jcl_member" ;
+    rdfs:comment "JCL member in a PDS" .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/library_member> rdf:value "library_member" ;
+    rdfs:comment "Member of a partitioned dataset or library" .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/notebook_cell> rdf:value "notebook_cell" ;
+    rdfs:comment "Jupyter/computational notebook cell." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/pli_source> rdf:value "pli_source" ;
+    rdfs:comment "PL/I source." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/rpg_source> rdf:value "rpg_source" ;
+    rdfs:comment "RPG source." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/schema_definition> rdf:value "schema_definition" ;
+    rdfs:comment "Database or API schema definition." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/script> rdf:value "script" ;
+    rdfs:comment "Executable script." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeContainerType/source_file> rdf:value "source_file" ;
+    rdfs:comment "Standard source code file." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageLocationType/directory> rdf:value "directory" ;
+    rdfs:comment "Filesystem directory." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageLocationType/library> rdf:value "library" ;
+    rdfs:comment "Partitioned dataset or library (mainframe)" .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageLocationType/module_path> rdf:value "module_path" ;
+    rdfs:comment "Module search path." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageLocationType/namespace> rdf:value "namespace" ;
+    rdfs:comment "Logical namespace grouping." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageLocationType/package> rdf:value "package" ;
+    rdfs:comment "Language package or module." .
+

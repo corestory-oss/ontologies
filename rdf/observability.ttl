@@ -1,0 +1,470 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Alert a rdfs:Class ;
+    rdfs:label "Alert" ;
+    rdfs:comment "A notification triggered by metric thresholds or anomalies" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:AlertRule a rdfs:Class ;
+    rdfs:label "AlertRule" ;
+    rdfs:comment "The condition that triggers an alert" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:Rule .
+
+sao:HealthCheck a rdfs:Class ;
+    rdfs:label "HealthCheck" ;
+    rdfs:comment "A probe verifying service availability" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Incident a rdfs:Class ;
+    rdfs:label "Incident" ;
+    rdfs:comment "A tracked degradation or outage event" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Log a rdfs:Class ;
+    rdfs:label "Log" ;
+    rdfs:comment "A timestamped record of discrete events" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:LogEntry a rdfs:Class ;
+    rdfs:label "LogEntry" ;
+    rdfs:comment "A single record within a log" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Metric a rdfs:Class ;
+    rdfs:label "Metric" ;
+    rdfs:comment "A quantitative measurement over time" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Span a rdfs:Class ;
+    rdfs:label "Span" ;
+    rdfs:comment "A single unit of work within a trace" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Trace a rdfs:Class ;
+    rdfs:label "Trace" ;
+    rdfs:comment "A causal chain of operations across services" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Track requests as they flow through distributed systems." .
+
+sao:acknowledged_at a rdf:Property ;
+    rdfs:label "acknowledged_at" ;
+    rdfs:comment "When alert was acknowledged.",
+        "[Alert] When alert was acknowledged." ;
+    rdfs:domain sao:Alert ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:affects_services a rdf:Property ;
+    rdfs:label "affects_services" ;
+    rdfs:comment "[Incident] `Service` entities impacted.",
+        "`Service` entities impacted." ;
+    rdfs:domain sao:Incident ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Service .
+
+sao:belongs_to_trace a rdf:Property ;
+    rdfs:label "belongs_to_trace" ;
+    rdfs:comment "Parent trace.",
+        "[Span] Parent trace." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Trace .
+
+sao:check_type a rdf:Property ;
+    rdfs:label "check_type" ;
+    rdfs:comment "Kind of health check.",
+        "[HealthCheck] Kind of health check." ;
+    rdfs:domain sao:HealthCheck ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:HealthCheckType .
+
+sao:child_of_span a rdf:Property ;
+    rdfs:label "child_of_span" ;
+    rdfs:comment "Parent span (for nested operations).",
+        "[Span] Parent span (for nested operations)." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Span .
+
+sao:contains_spans a rdf:Property ;
+    rdfs:label "contains_spans" ;
+    rdfs:comment "List of `Span` entities representing operations (inverse: `belongs_to_trace`).",
+        "[Trace] List of `Span` entities representing operations (inverse: `belongs_to_trace`)." ;
+    rdfs:domain sao:Trace ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Span .
+
+sao:context a rdf:Property ;
+    rdfs:label "context" ;
+    rdfs:comment "Additional context (trace ID, user ID, etc.).",
+        "[LogEntry] Additional context (trace ID, user ID, etc.)." ;
+    rdfs:domain sao:LogEntry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:duration_seconds a rdf:Property ;
+    rdfs:label "duration_seconds" ;
+    rdfs:comment "Duration before alerting (avoid flapping).",
+        "[AlertRule] Duration before alerting (avoid flapping)." ;
+    rdfs:domain sao:AlertRule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:end_time a rdf:Property ;
+    rdfs:label "end_time" ;
+    rdfs:comment "Operation end timestamp.",
+        "[Span] Operation end timestamp." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:endpoint a rdf:Property ;
+    rdfs:label "endpoint" ;
+    rdfs:comment "Health check endpoint URL.",
+        "[HealthCheck] Health check endpoint URL." ;
+    rdfs:domain sao:HealthCheck ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:entry_in_log a rdf:Property ;
+    rdfs:label "entry_in_log" ;
+    rdfs:comment "Parent log.",
+        "[LogEntry] Parent log." ;
+    rdfs:domain sao:LogEntry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Log .
+
+sao:escalated_from_alerts a rdf:Property ;
+    rdfs:label "escalated_from_alerts" ;
+    rdfs:comment "[Incident] `Alert` entities that led to incident.",
+        "`Alert` entities that led to incident." ;
+    rdfs:domain sao:Incident ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Alert .
+
+sao:escalates_to_incident a rdf:Property ;
+    rdfs:label "escalates_to_incident" ;
+    rdfs:comment "[Alert] `Incident` if escalated.",
+        "`Incident` if escalated." ;
+    rdfs:domain sao:Alert ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Incident .
+
+sao:interval_seconds a rdf:Property ;
+    rdfs:label "interval_seconds" ;
+    rdfs:comment "Check frequency.",
+        "[HealthCheck] Check frequency." ;
+    rdfs:domain sao:HealthCheck ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:labels a rdf:Property ;
+    rdfs:label "labels" ;
+    rdfs:comment "Metric labels for dimensionality.",
+        "[Metric] Metric labels for dimensionality." ;
+    rdfs:domain sao:Metric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:level a rdf:Property ;
+    rdfs:label "level" ;
+    rdfs:comment "Log level (DEBUG, INFO, WARN, ERROR).",
+        "[LogEntry] Log level (DEBUG, INFO, WARN, ERROR)." ;
+    rdfs:domain sao:LogEntry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:log_governed_by_retention a rdf:Property ;
+    rdfs:label "log_governed_by_retention" ;
+    rdfs:comment "[Log] `RetentionPolicy` for log retention.",
+        "`RetentionPolicy` for log retention." ;
+    rdfs:domain sao:Log ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:RetentionPolicy .
+
+sao:log_type a rdf:Property ;
+    rdfs:label "log_type" ;
+    rdfs:comment "Kind of log.",
+        "[Log] Kind of log." ;
+    rdfs:domain sao:Log ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:LogType .
+
+sao:message a rdf:Property ;
+    rdfs:label "message" ;
+    rdfs:comment "Log message.",
+        "[LogEntry] Log message." ;
+    rdfs:domain sao:LogEntry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:metric_emitted_by_component a rdf:Property ;
+    rdfs:label "metric_emitted_by_component" ;
+    rdfs:comment "[Metric] `Component` emitting this metric.",
+        "`Component` emitting this metric." ;
+    rdfs:domain sao:Metric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Component .
+
+sao:metric_type a rdf:Property ;
+    rdfs:label "metric_type" ;
+    rdfs:comment "Kind of metric.",
+        "[Metric] Kind of metric." ;
+    rdfs:domain sao:Metric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MetricType .
+
+sao:monitored_by_alert_rules a rdf:Property ;
+    rdfs:label "monitored_by_alert_rules" ;
+    rdfs:comment "[Metric] `AlertRule` entities monitoring this metric.",
+        "`AlertRule` entities monitoring this metric." ;
+    rdfs:domain sao:Metric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:AlertRule .
+
+sao:monitors_metrics a rdf:Property ;
+    rdfs:label "monitors_metrics" ;
+    rdfs:comment "[AlertRule] `Metric` entities being monitored.",
+        "`Metric` entities being monitored." ;
+    rdfs:domain sao:AlertRule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Metric .
+
+sao:notification_channels a rdf:Property ;
+    rdfs:label "notification_channels" ;
+    rdfs:comment "Where to send alerts (email, Slack, PagerDuty).",
+        "[AlertRule] Where to send alerts (email, Slack, PagerDuty)." ;
+    rdfs:domain sao:AlertRule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:operation_name a rdf:Property ;
+    rdfs:label "operation_name" ;
+    rdfs:comment "Name of the operation.",
+        "[Span] Name of the operation." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:parent_of_spans a rdf:Property ;
+    rdfs:label "parent_of_spans" ;
+    rdfs:comment "Child spans.",
+        "[Span] Child spans." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Span .
+
+sao:postmortem_url a rdf:Property ;
+    rdfs:label "postmortem_url" ;
+    rdfs:comment "Link to incident postmortem.",
+        "[Incident] Link to incident postmortem." ;
+    rdfs:domain sao:Incident ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:resolved_at a rdf:Property ;
+    rdfs:label "resolved_at" ;
+    schema:domainIncludes sao:Alert,
+        sao:Incident ;
+    rdfs:comment "When issue was resolved.",
+        "[Alert] When issue was resolved.",
+        "[Incident] Resolution time." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:root_cause a rdf:Property ;
+    rdfs:label "root_cause" ;
+    rdfs:comment "Root cause analysis.",
+        "[Incident] Root cause analysis." ;
+    rdfs:domain sao:Incident ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:root_of_trace a rdf:Property ;
+    rdfs:label "root_of_trace" ;
+    rdfs:comment "Trace this is the root span of.",
+        "[Span] Trace this is the root span of." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Trace .
+
+sao:span_id a rdf:Property ;
+    rdfs:label "span_id" ;
+    rdfs:comment "Unique identifier for this span.",
+        "[Span] Unique identifier for this span." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:start_time a rdf:Property ;
+    rdfs:label "start_time" ;
+    rdfs:comment "Operation start timestamp.",
+        "[Span] Operation start timestamp." ;
+    rdfs:domain sao:Span ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:started_at a rdf:Property ;
+    rdfs:label "started_at" ;
+    rdfs:comment "Incident start time.",
+        "[Incident] Incident start time." ;
+    rdfs:domain sao:Incident ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:starts_with_span a rdf:Property ;
+    rdfs:label "starts_with_span" ;
+    rdfs:comment "Root `Span` of the trace.",
+        "[Trace] Root `Span` of the trace." ;
+    rdfs:domain sao:Trace ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Span .
+
+sao:success_threshold a rdf:Property ;
+    rdfs:label "success_threshold" ;
+    rdfs:comment "Successes before marking healthy.",
+        "[HealthCheck] Successes before marking healthy." ;
+    rdfs:domain sao:HealthCheck ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:threshold a rdf:Property ;
+    rdfs:label "threshold" ;
+    rdfs:comment "Threshold value.",
+        "[AlertRule] Threshold value." ;
+    rdfs:domain sao:AlertRule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:trace_id a rdf:Property ;
+    rdfs:label "trace_id" ;
+    rdfs:comment "Unique identifier for the entire trace.",
+        "[Trace] Unique identifier for the entire trace." ;
+    rdfs:domain sao:Trace ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:triggered_at a rdf:Property ;
+    rdfs:label "triggered_at" ;
+    rdfs:comment "When alert was triggered.",
+        "[Alert] When alert was triggered." ;
+    rdfs:domain sao:Alert ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:triggered_by_rule a rdf:Property ;
+    rdfs:label "triggered_by_rule" ;
+    rdfs:comment "[Alert] `AlertRule` that triggered this alert.",
+        "`AlertRule` that triggered this alert." ;
+    rdfs:domain sao:Alert ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:AlertRule .
+
+sao:triggers_alerts a rdf:Property ;
+    rdfs:label "triggers_alerts" ;
+    rdfs:comment "[AlertRule] `Alert` entities triggered.",
+        "`Alert` entities triggered." ;
+    rdfs:domain sao:AlertRule ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Alert .
+
+sao:unit a rdf:Property ;
+    rdfs:label "unit" ;
+    rdfs:comment "Unit of measurement (seconds, bytes, requests, etc.).",
+        "[Metric] Unit of measurement (seconds, bytes, requests, etc.)." ;
+    rdfs:domain sao:Metric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:HealthCheckType a rdfs:Datatype ;
+    rdfs:label "HealthCheckType" ;
+    rdfs:comment "Types of health checks" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/HealthCheckType/dependency>,
+        <https://ontologies.corestory.ai/sao/export/values/HealthCheckType/liveness>,
+        <https://ontologies.corestory.ai/sao/export/values/HealthCheckType/readiness>,
+        <https://ontologies.corestory.ai/sao/export/values/HealthCheckType/startup> .
+
+sao:LogType a rdfs:Datatype ;
+    rdfs:label "LogType" ;
+    rdfs:comment "Types of logs" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/LogType/access>,
+        <https://ontologies.corestory.ai/sao/export/values/LogType/application>,
+        <https://ontologies.corestory.ai/sao/export/values/LogType/audit>,
+        <https://ontologies.corestory.ai/sao/export/values/LogType/debug>,
+        <https://ontologies.corestory.ai/sao/export/values/LogType/error>,
+        <https://ontologies.corestory.ai/sao/export/values/LogType/security> .
+
+sao:MetricType a rdfs:Datatype ;
+    rdfs:label "MetricType" ;
+    rdfs:comment "Types of metrics" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/MetricType/counter>,
+        <https://ontologies.corestory.ai/sao/export/values/MetricType/gauge>,
+        <https://ontologies.corestory.ai/sao/export/values/MetricType/histogram>,
+        <https://ontologies.corestory.ai/sao/export/values/MetricType/summary> .
+
+<https://ontologies.corestory.ai/sao/export/values/HealthCheckType/dependency> rdf:value "dependency" ;
+    rdfs:comment "Health check for dependencies." .
+
+<https://ontologies.corestory.ai/sao/export/values/HealthCheckType/liveness> rdf:value "liveness" ;
+    rdfs:comment "Liveness probe for service health." .
+
+<https://ontologies.corestory.ai/sao/export/values/HealthCheckType/readiness> rdf:value "readiness" ;
+    rdfs:comment "Readiness probe for traffic acceptance." .
+
+<https://ontologies.corestory.ai/sao/export/values/HealthCheckType/startup> rdf:value "startup" ;
+    rdfs:comment "Startup probe during initialization." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/access> rdf:value "access" ;
+    rdfs:comment "Access and request logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/application> rdf:value "application" ;
+    rdfs:comment "Application-level logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/audit> rdf:value "audit" ;
+    rdfs:comment "Audit trail logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/debug> rdf:value "debug" ;
+    rdfs:comment "Debug and diagnostic logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/error> rdf:value "error" ;
+    rdfs:comment "Error and exception logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/LogType/security> rdf:value "security" ;
+    rdfs:comment "Security event logs." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetricType/counter> rdf:value "counter" ;
+    rdfs:comment "Monotonically increasing counter." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetricType/gauge> rdf:value "gauge" ;
+    rdfs:comment "Value that can increase or decrease." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetricType/histogram> rdf:value "histogram" ;
+    rdfs:comment "Distribution of values in buckets." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetricType/summary> rdf:value "summary" ;
+    rdfs:comment "Summary statistics (quantiles, etc.)." .
+

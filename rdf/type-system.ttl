@@ -1,0 +1,147 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:TypeExpression a rdfs:Class ;
+    rdfs:label "TypeExpression" ;
+    rdfs:comment "A recursive type model for expressing complex types (generics, unions, pointers, function types, etc.) across all languages." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Replaces flat `data_type` strings with structured, queryable type information. Enables cross-language type analysis and compatibility checking." .
+
+sao:base_type a rdf:Property ;
+    rdfs:label "base_type" ;
+    rdfs:comment "Base type name (e.g., \"List\", \"int\", \"String\")",
+        "[TypeExpression] Base type name (e.g., \"List\", \"int\", \"String\")" ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_type_parameters a rdf:Property ;
+    rdfs:label "has_type_parameters" ;
+    rdfs:comment "Generic type parameters (e.g., T in List<T>)",
+        "[TypeExpression] Generic type parameters (e.g., T in List<T>)" ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TypeExpression .
+
+sao:nullability_model a rdf:Property ;
+    rdfs:label "nullability_model" ;
+    rdfs:comment "How nullability is expressed (e.g., \"optional\", \"nullable\", \"Option<T>\")",
+        "[TypeExpression] How nullability is expressed (e.g., \"optional\", \"nullable\", \"Option<T>\")" ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:pointer_semantics a rdf:Property ;
+    rdfs:label "pointer_semantics" ;
+    rdfs:comment "Pointer/reference semantics (e.g., \"raw\", \"smart\", \"weak\")",
+        "[TypeExpression] Pointer/reference semantics (e.g., \"raw\", \"smart\", \"weak\")" ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:return_type_of_callables a rdf:Property ;
+    rdfs:label "return_type_of_callables" ;
+    rdfs:comment "Callables that return this type.",
+        "[TypeExpression] Callables that return this type." ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:type_constraints a rdf:Property ;
+    rdfs:label "type_constraints" ;
+    rdfs:comment "Constraints on type parameters",
+        "[TypeExpression] Constraints on type parameters" ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:type_kind a rdf:Property ;
+    rdfs:label "type_kind" ;
+    rdfs:comment "The kind of type expression.",
+        "[TypeExpression] The kind of type expression." ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TypeKind .
+
+sao:type_of_data_elements a rdf:Property ;
+    rdfs:label "type_of_data_elements" ;
+    rdfs:comment "Data elements that have this type.",
+        "[TypeExpression] Data elements that have this type." ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:type_of_parameters a rdf:Property ;
+    rdfs:label "type_of_parameters" ;
+    rdfs:comment "Parameters that have this type.",
+        "[TypeExpression] Parameters that have this type." ;
+    rdfs:domain sao:TypeExpression ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Parameter .
+
+sao:TypeKind a rdfs:Datatype ;
+    rdfs:label "TypeKind" ;
+    rdfs:comment "Classification of type expressions" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/TypeKind/alias>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/array_of>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/constrained>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/function_type>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/generic>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/intersection>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/opaque>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/optional_type>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/pointer>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/primitive>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/reference>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/tuple_type>,
+        <https://ontologies.corestory.ai/sao/export/values/TypeKind/union> .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/alias> rdf:value "alias" ;
+    rdfs:comment "Type alias." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/array_of> rdf:value "array_of" ;
+    rdfs:comment "Array type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/constrained> rdf:value "constrained" ;
+    rdfs:comment "Type with constraints (e.g., sized, bounded)" .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/function_type> rdf:value "function_type" ;
+    rdfs:comment "Function type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/generic> rdf:value "generic" ;
+    rdfs:comment "Generic/parameterized type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/intersection> rdf:value "intersection" ;
+    rdfs:comment "Intersection type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/opaque> rdf:value "opaque" ;
+    rdfs:comment "Opaque type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/optional_type> rdf:value "optional_type" ;
+    rdfs:comment "Optional/nullable type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/pointer> rdf:value "pointer" ;
+    rdfs:comment "Pointer type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/primitive> rdf:value "primitive" ;
+    rdfs:comment "Primitive type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/reference> rdf:value "reference" ;
+    rdfs:comment "Reference type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/tuple_type> rdf:value "tuple_type" ;
+    rdfs:comment "Tuple type." .
+
+<https://ontologies.corestory.ai/sao/export/values/TypeKind/union> rdf:value "union" ;
+    rdfs:comment "Union type." .
+

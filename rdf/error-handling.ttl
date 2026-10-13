@@ -1,0 +1,144 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:ErrorModel a rdfs:Class ;
+    rdfs:label "ErrorModel" ;
+    rdfs:comment "Describes how a module or language handles errors" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Enables cross-language comparison of error handling strategies and identification of mixed paradigms within a codebase." .
+
+sao:ExceptionType a rdfs:Class ;
+    rdfs:label "ExceptionType" ;
+    rdfs:comment "A declared exception or error type in a codebase" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Models exception class hierarchies and connects them to the callables that raise or handle them." .
+
+sao:checkedness a rdf:Property ;
+    rdfs:label "checkedness" ;
+    rdfs:comment "Whether exceptions are checked or unchecked.",
+        "[ErrorModel] Whether exceptions are checked or unchecked." ;
+    rdfs:domain sao:ErrorModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExceptionCheckedness .
+
+sao:error_model_for_languages a rdf:Property ;
+    rdfs:label "error_model_for_languages" ;
+    rdfs:comment "Languages that use this as their default error model.",
+        "[ErrorModel] Languages that use this as their default error model." ;
+    rdfs:domain sao:ErrorModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ProgrammingLanguage .
+
+sao:handled_by_callables a rdf:Property ;
+    rdfs:label "handled_by_callables" ;
+    rdfs:comment "Callables that handle this exception.",
+        "[ExceptionType] Callables that handle this exception." ;
+    rdfs:domain sao:ExceptionType ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:has_child_exceptions a rdf:Property ;
+    rdfs:label "has_child_exceptions" ;
+    rdfs:comment "Children in the exception hierarchy.",
+        "[ExceptionType] Children in the exception hierarchy." ;
+    rdfs:domain sao:ExceptionType ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExceptionType .
+
+sao:has_parent_exception a rdf:Property ;
+    rdfs:label "has_parent_exception" ;
+    rdfs:comment "Parent in the exception hierarchy.",
+        "[ExceptionType] Parent in the exception hierarchy." ;
+    rdfs:domain sao:ExceptionType ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExceptionType .
+
+sao:is_checked a rdf:Property ;
+    rdfs:label "is_checked" ;
+    rdfs:comment "Whether this is a checked exception.",
+        "[ExceptionType] Whether this is a checked exception." ;
+    rdfs:domain sao:ExceptionType ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:modules_using_error_model a rdf:Property ;
+    rdfs:label "modules_using_error_model" ;
+    rdfs:comment "Modules that use this error model.",
+        "[ErrorModel] Modules that use this error model." ;
+    rdfs:domain sao:ErrorModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:raised_by_callables a rdf:Property ;
+    rdfs:label "raised_by_callables" ;
+    rdfs:comment "Callables that may raise this exception.",
+        "[ExceptionType] Callables that may raise this exception." ;
+    rdfs:domain sao:ExceptionType ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:strategy a rdf:Property ;
+    rdfs:label "strategy" ;
+    rdfs:comment "The error handling paradigm used.",
+        "[ErrorModel] The error handling paradigm used." ;
+    rdfs:domain sao:ErrorModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ErrorHandlingStrategy .
+
+sao:ErrorHandlingStrategy a rdfs:Datatype ;
+    rdfs:label "ErrorHandlingStrategy" ;
+    rdfs:comment "Language-level error handling paradigms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/condition_based>,
+        <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/error_code_based>,
+        <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/exception_based>,
+        <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/monadic>,
+        <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/panic_recover>,
+        <https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/return_value_based> .
+
+sao:ExceptionCheckedness a rdfs:Datatype ;
+    rdfs:label "ExceptionCheckedness" ;
+    rdfs:comment "Whether exceptions must be declared/caught" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/checked>,
+        <https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/not_applicable>,
+        <https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/unchecked> .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/condition_based> rdf:value "condition_based" ;
+    rdfs:comment "Common Lisp condition system" .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/error_code_based> rdf:value "error_code_based" ;
+    rdfs:comment "Integer/enum error codes (C, COBOL)" .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/exception_based> rdf:value "exception_based" ;
+    rdfs:comment "Exception-based error handling." .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/monadic> rdf:value "monadic" ;
+    rdfs:comment "Haskell Either/Maybe, Rust Result" .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/panic_recover> rdf:value "panic_recover" ;
+    rdfs:comment "Go-style panic/recover" .
+
+<https://ontologies.corestory.ai/sao/export/values/ErrorHandlingStrategy/return_value_based> rdf:value "return_value_based" ;
+    rdfs:comment "Errors returned as values (Go, Rust Result)" .
+
+<https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/checked> rdf:value "checked" ;
+    rdfs:comment "Compiler-enforced handling (Java checked)" .
+
+<https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/not_applicable> rdf:value "not_applicable" ;
+    rdfs:comment "Language does not use exceptions" .
+
+<https://ontologies.corestory.ai/sao/export/values/ExceptionCheckedness/unchecked> rdf:value "unchecked" ;
+    rdfs:comment "No compile-time enforcement" .
+

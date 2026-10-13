@@ -1,0 +1,1552 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:CallableUnit a rdfs:Class ;
+    rdfs:label "CallableUnit" ;
+    rdfs:comment "A named, invocable unit of code that performs a specific task. Maps to: Method (OOP), Function (procedural/functional), Paragraph (COBOL), Procedure (SQL), Subroutine (Fortran), Lambda (functional)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DataElement a rdfs:Class ;
+    rdfs:label "DataElement" ;
+    rdfs:comment "An individual data field or variable. Maps to: Field (OOP), Variable (procedural), Column (database), Data item (COBOL), Property (C#), Attribute (Python)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DataStructure a rdfs:Class ;
+    rdfs:label "DataStructure" ;
+    rdfs:comment "A composite data type grouping related data elements. Maps to: Struct (C), Record (Pascal/COBOL), Class data (OOP), Type (Haskell), Dictionary (Python), Hash (Ruby)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:EncapsulationUnit a rdfs:Class ;
+    rdfs:label "EncapsulationUnit" ;
+    rdfs:comment "A logical boundary that groups related code and data. Maps to: Class (OOP), Program (COBOL), Module (functional), Package (Java), Namespace (C#), Record module (ML)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Parameter a rdfs:Class ;
+    rdfs:label "Parameter" ;
+    rdfs:comment "An input/output parameter for a callable unit." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:DataElement .
+
+sao:accesses_data_elements a rdf:Property ;
+    rdfs:label "accesses_data_elements" ;
+    rdfs:comment "Data elements accessed (read).",
+        "[CallableUnit] Data elements accessed (read)." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:affected_by_directives a rdf:Property ;
+    rdfs:label "affected_by_directives" ;
+    rdfs:comment "PreprocessorDirective[] affecting this unit.",
+        "[EncapsulationUnit] PreprocessorDirective[] affecting this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PreprocessorDirective .
+
+sao:alignment a rdf:Property ;
+    rdfs:label "alignment" ;
+    rdfs:comment "Memory alignment in bytes.",
+        "[DataStructure] Memory alignment in bytes." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:callable_affected_by_directives a rdf:Property ;
+    rdfs:label "callable_affected_by_directives" ;
+    rdfs:comment "PreprocessorDirective[] affecting this callable.",
+        "[CallableUnit] PreprocessorDirective[] affecting this callable." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PreprocessorDirective .
+
+sao:callable_category a rdf:Property ;
+    rdfs:label "callable_category" ;
+    rdfs:comment "[CallableUnit] `normal`, `operator`, or `main_entry`.",
+        "`normal`, `operator`, or `main_entry`." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableCategory .
+
+sao:callable_type a rdf:Property ;
+    rdfs:label "callable_type" ;
+    rdfs:comment "**Required.** The paradigm-specific type (see CallableType enum).",
+        "[CallableUnit] **Required.** The paradigm-specific type (see CallableType enum)." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableType .
+
+sao:calling_convention a rdf:Property ;
+    rdfs:label "calling_convention" ;
+    rdfs:comment "ABI calling convention.",
+        "[CallableUnit] ABI calling convention." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:complexity_score a rdf:Property ;
+    rdfs:label "complexity_score" ;
+    rdfs:comment "Cyclomatic complexity or similar metric",
+        "[CallableUnit] Cyclomatic complexity or similar metric" ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:contained_in_structure a rdf:Property ;
+    rdfs:label "contained_in_structure" ;
+    rdfs:comment "Data structure containing this element.",
+        "[DataElement] Data structure containing this element." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:contains_blocks a rdf:Property ;
+    rdfs:label "contains_blocks" ;
+    rdfs:comment "Nested code blocks.",
+        "[CallableUnit] Nested code blocks." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeBlock .
+
+sao:contains_callable_units a rdf:Property ;
+    rdfs:label "contains_callable_units" ;
+    rdfs:comment "Callable units (methods, functions, etc.) in this unit.",
+        "[EncapsulationUnit] Callable units (methods, functions, etc.) in this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:contains_data_structures a rdf:Property ;
+    rdfs:label "contains_data_structures" ;
+    rdfs:comment "Data structures in this unit.",
+        "[EncapsulationUnit] Data structures in this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:declared_type a rdf:Property ;
+    rdfs:label "declared_type" ;
+    rdfs:comment "TypeExpression for the declared type.",
+        "[DataElement] TypeExpression for the declared type." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TypeExpression .
+
+sao:direction a rdf:Property ;
+    rdfs:label "direction" ;
+    rdfs:comment "Direction (range: `ParameterDirection`): `input`, `output`, `input_output`, `return`.",
+        "[Parameter] Direction (range: `ParameterDirection`): `input`, `output`, `input_output`, `return`." ;
+    rdfs:domain sao:Parameter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ParameterDirection .
+
+sao:documentation a rdf:Property ;
+    rdfs:label "documentation" ;
+    rdfs:comment "Docstring or comment.",
+        "[CallableUnit] Docstring or comment." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:element_category a rdf:Property ;
+    rdfs:label "element_category" ;
+    rdfs:comment "Category of element (field, static_field, local_variable, parameter, constant, global_variable, computed, temporary).",
+        "[DataElement] Category of element (field, static_field, local_variable, parameter, constant, global_variable, computed, temporary)." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElementCategory .
+
+sao:encapsulation_type a rdf:Property ;
+    rdfs:label "encapsulation_type" ;
+    rdfs:comment "**Required.** The paradigm-specific type (see EncapsulationType enum).",
+        "[EncapsulationUnit] **Required.** The paradigm-specific type (see EncapsulationType enum)." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationType .
+
+sao:encapsulation_unit_renders_ui a rdf:Property ;
+    rdfs:label "encapsulation_unit_renders_ui" ;
+    rdfs:comment "UI component link.",
+        "[EncapsulationUnit] UI component link." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIComponent .
+
+sao:entry_point_type a rdf:Property ;
+    rdfs:label "entry_point_type" ;
+    rdfs:comment "If this is an entry point (main, constructor, handler, etc.).",
+        "[CallableUnit] If this is an entry point (main, constructor, handler, etc.)." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EntryPointType .
+
+sao:error_model_for_module a rdf:Property ;
+    rdfs:label "error_model_for_module" ;
+    rdfs:comment "ErrorModel associated with this unit.",
+        "[EncapsulationUnit] ErrorModel associated with this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ErrorModel .
+
+sao:executed_by_job_steps a rdf:Property ;
+    rdfs:label "executed_by_job_steps" ;
+    rdfs:comment "JobStep[] that execute this unit.",
+        "[EncapsulationUnit] JobStep[] that execute this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobStep .
+
+sao:extended_by_units a rdf:Property ;
+    rdfs:label "extended_by_units" ;
+    rdfs:comment "Subclasses.",
+        "[EncapsulationUnit] Subclasses." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:extends_units a rdf:Property ;
+    rdfs:label "extends_units" ;
+    rdfs:comment "Units this extends/inherits from.",
+        "[EncapsulationUnit] Units this extends/inherits from." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:handles_exception_types a rdf:Property ;
+    rdfs:label "handles_exception_types" ;
+    rdfs:comment "ExceptionType[] that are handled.",
+        "[CallableUnit] ExceptionType[] that are handled." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExceptionType .
+
+sao:handles_exceptions a rdf:Property ;
+    rdfs:label "handles_exceptions" ;
+    rdfs:comment "Exception names handled (DEPRECATED -- use handles_exception_types)",
+        "[CallableUnit] Exception names handled (DEPRECATED -- use handles_exception_types)" ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_child_elements a rdf:Property ;
+    rdfs:label "has_child_elements" ;
+    rdfs:comment "Children (nested fields).",
+        "[DataElement] Children (nested fields)." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:has_child_structures a rdf:Property ;
+    rdfs:label "has_child_structures" ;
+    rdfs:comment "Child/nested structures.",
+        "[DataStructure] Child/nested structures." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:has_incoming_ipc_connections a rdf:Property ;
+    rdfs:label "has_incoming_ipc_connections" ;
+    rdfs:comment "IPCConnection[] targeting this unit.",
+        "[EncapsulationUnit] IPCConnection[] targeting this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IPCConnection .
+
+sao:has_outgoing_ipc_connections a rdf:Property ;
+    rdfs:label "has_outgoing_ipc_connections" ;
+    rdfs:comment "IPCConnection[] originating from this unit.",
+        "[EncapsulationUnit] IPCConnection[] originating from this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IPCConnection .
+
+sao:has_ownership_annotations a rdf:Property ;
+    rdfs:label "has_ownership_annotations" ;
+    rdfs:comment "OwnershipAnnotation[] for this element.",
+        "[DataElement] OwnershipAnnotation[] for this element." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:OwnershipAnnotation .
+
+sao:has_parameters a rdf:Property ;
+    rdfs:label "has_parameters" ;
+    rdfs:comment "Parameters of this callable.",
+        "[CallableUnit] Parameters of this callable." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Parameter .
+
+sao:has_parent_element a rdf:Property ;
+    rdfs:label "has_parent_element" ;
+    rdfs:comment "Parent element (for nested fields).",
+        "[DataElement] Parent element (for nested fields)." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:has_parent_structure a rdf:Property ;
+    rdfs:label "has_parent_structure" ;
+    rdfs:comment "Parent structure (for nested structures).",
+        "[DataStructure] Parent structure (for nested structures)." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:has_return_type a rdf:Property ;
+    rdfs:label "has_return_type" ;
+    rdfs:comment "TypeExpression for the return type.",
+        "[CallableUnit] TypeExpression for the return type." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TypeExpression .
+
+sao:has_type a rdf:Property ;
+    rdfs:label "has_type" ;
+    rdfs:comment "Structured type.",
+        "[Parameter] Structured type." ;
+    rdfs:domain sao:Parameter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TypeExpression .
+
+sao:implements_contracts a rdf:Property ;
+    rdfs:label "implements_contracts" ;
+    rdfs:comment "Contracts (interfaces) this implements.",
+        "[EncapsulationUnit] Contracts (interfaces) this implements." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Contract .
+
+sao:implements_operation a rdf:Property ;
+    rdfs:label "implements_operation" ;
+    rdfs:comment "Architectural Operation this implements.",
+        "[CallableUnit] Architectural Operation this implements." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Operation .
+
+sao:invoked_by_callables a rdf:Property ;
+    rdfs:label "invoked_by_callables" ;
+    rdfs:comment "Inbound callers.",
+        "[CallableUnit] Inbound callers." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:invokes_callables a rdf:Property ;
+    rdfs:label "invokes_callables" ;
+    rdfs:comment "Other callables invoked by this one.",
+        "[CallableUnit] Other callables invoked by this one." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:is_abstract a rdf:Property ;
+    rdfs:label "is_abstract" ;
+    rdfs:comment "Whether this is abstract/incomplete.",
+        "[EncapsulationUnit] Whether this is abstract/incomplete." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_async a rdf:Property ;
+    rdfs:label "is_async" ;
+    rdfs:comment "Whether this is asynchronous.",
+        "[CallableUnit] Whether this is asynchronous." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_constant a rdf:Property ;
+    rdfs:label "is_constant" ;
+    rdfs:comment "Whether this is a constant/immutable.",
+        "[DataElement] Whether this is a constant/immutable." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_final a rdf:Property ;
+    rdfs:label "is_final" ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_inline a rdf:Property ;
+    rdfs:label "is_inline" ;
+    rdfs:comment "Inline expansion.",
+        "[CallableUnit] Inline expansion." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_mutable a rdf:Property ;
+    rdfs:label "is_mutable" ;
+    rdfs:comment "Whether data can be modified.",
+        "[DataStructure] Whether data can be modified." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_nested a rdf:Property ;
+    rdfs:label "is_nested" ;
+    rdfs:comment "Whether nested inside another structure.",
+        "[DataStructure] Whether nested inside another structure." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_override a rdf:Property ;
+    rdfs:label "is_override" ;
+    rdfs:comment "Overrides parent.",
+        "[CallableUnit] Overrides parent." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_packed a rdf:Property ;
+    rdfs:label "is_packed" ;
+    rdfs:comment "Packed/compressed layout.",
+        "[DataStructure] Packed/compressed layout." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_pure a rdf:Property ;
+    rdfs:label "is_pure" ;
+    rdfs:comment "Whether function is pure (no side effects)",
+        "[CallableUnit] Whether function is pure (no side effects)" ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_recursive a rdf:Property ;
+    rdfs:label "is_recursive" ;
+    rdfs:comment "Self-referencing.",
+        "[CallableUnit] Self-referencing." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_reusable a rdf:Property ;
+    rdfs:label "is_reusable" ;
+    rdfs:comment "Whether designed for reuse.",
+        "[EncapsulationUnit] Whether designed for reuse." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_serializable a rdf:Property ;
+    rdfs:label "is_serializable" ;
+    rdfs:comment "Whether this can be serialized.",
+        "[DataStructure] Whether this can be serialized." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_static a rdf:Property ;
+    rdfs:label "is_static" ;
+    rdfs:comment "Whether this is static.",
+        "[CallableUnit] Whether this is static." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_virtual a rdf:Property ;
+    rdfs:label "is_virtual" ;
+    rdfs:comment "Whether this is virtual/overridable.",
+        "[CallableUnit] Whether this is virtual/overridable." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:mapped_from_screen_fields a rdf:Property ;
+    rdfs:label "mapped_from_screen_fields" ;
+    rdfs:comment "ScreenField[] mapped to this element.",
+        "[DataElement] ScreenField[] mapped to this element." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ScreenField .
+
+sao:maps_to_attribute a rdf:Property ;
+    rdfs:label "maps_to_attribute" ;
+    rdfs:comment "Domain attribute.",
+        "[DataElement] Domain attribute." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Attribute .
+
+sao:maps_to_domain_entity a rdf:Property ;
+    rdfs:label "maps_to_domain_entity" ;
+    rdfs:comment "Domain entity this maps to.",
+        "[DataStructure] Domain entity this maps to." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DomainEntity .
+
+sao:maps_to_value_object a rdf:Property ;
+    rdfs:label "maps_to_value_object" ;
+    rdfs:comment "Value object this maps to.",
+        "[DataStructure] Value object this maps to." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ValueObject .
+
+sao:memory_model_for_module a rdf:Property ;
+    rdfs:label "memory_model_for_module" ;
+    rdfs:comment "MemoryModel associated with this unit.",
+        "[EncapsulationUnit] MemoryModel associated with this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MemoryModel .
+
+sao:modifies_data_elements a rdf:Property ;
+    rdfs:label "modifies_data_elements" ;
+    rdfs:comment "Data elements modified (written).",
+        "[CallableUnit] Data elements modified (written)." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:nesting_level a rdf:Property ;
+    rdfs:label "nesting_level" ;
+    rdfs:comment "Nesting depth (for hierarchical structures like COBOL)",
+        "[DataStructure] Nesting depth (for hierarchical structures like COBOL)" ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:overridden_by_callables a rdf:Property ;
+    rdfs:label "overridden_by_callables" ;
+    rdfs:comment "Overriding children.",
+        "[CallableUnit] Overriding children." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:overrides_callable a rdf:Property ;
+    rdfs:label "overrides_callable" ;
+    rdfs:comment "Callable in parent this overrides.",
+        "[CallableUnit] Callable in parent this overrides." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:parameter_of a rdf:Property ;
+    rdfs:label "parameter_of" ;
+    rdfs:comment "Owning callable.",
+        "[Parameter] Owning callable." ;
+    rdfs:domain sao:Parameter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:passed_via_ipc a rdf:Property ;
+    rdfs:label "passed_via_ipc" ;
+    rdfs:comment "IPCConnection[] through which this structure is passed.",
+        "[DataStructure] IPCConnection[] through which this structure is passed." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IPCConnection .
+
+sao:passing_mechanism a rdf:Property ;
+    rdfs:label "passing_mechanism" ;
+    rdfs:comment "How passed (by_value, by_reference, by_name, by_result).",
+        "[Parameter] How passed (by_value, by_reference, by_name, by_result)." ;
+    rdfs:domain sao:Parameter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PassingMechanism .
+
+sao:persisted_in_collection a rdf:Property ;
+    rdfs:label "persisted_in_collection" ;
+    rdfs:comment "Collection where this is persisted.",
+        "[DataStructure] Collection where this is persisted." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Collection .
+
+sao:persistence_type a rdf:Property ;
+    rdfs:label "persistence_type" ;
+    rdfs:comment "How this is persisted (transient, database, file, memory, cache).",
+        "[DataStructure] How this is persisted (transient, database, file, memory, cache)." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PersistenceType .
+
+sao:position a rdf:Property ;
+    rdfs:label "position" ;
+    rdfs:comment "Position in parameter list.",
+        "[Parameter] Position in parameter list." ;
+    rdfs:domain sao:Parameter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:protected_by_primitive a rdf:Property ;
+    rdfs:label "protected_by_primitive" ;
+    rdfs:comment "Concurrency guards.",
+        "[DataElement] Concurrency guards." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ConcurrencyPrimitive .
+
+sao:raises_exception_types a rdf:Property ;
+    rdfs:label "raises_exception_types" ;
+    rdfs:comment "ExceptionType[] that may be raised.",
+        "[CallableUnit] ExceptionType[] that may be raised." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExceptionType .
+
+sao:raises_exceptions a rdf:Property ;
+    rdfs:label "raises_exceptions" ;
+    rdfs:comment "Exception names that may be raised (DEPRECATED -- use raises_exception_types)",
+        "[CallableUnit] Exception names that may be raised (DEPRECATED -- use raises_exception_types)" ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:return_type a rdf:Property ;
+    rdfs:label "return_type" ;
+    rdfs:comment "Return type (if applicable).",
+        "[CallableUnit] Return type (if applicable)." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:screen_used_by_programs a rdf:Property ;
+    rdfs:label "screen_used_by_programs" ;
+    rdfs:comment "ScreenDefinition[] used by this unit.",
+        "[EncapsulationUnit] ScreenDefinition[] used by this unit." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ScreenDefinition .
+
+sao:size_specification a rdf:Property ;
+    rdfs:label "size_specification" ;
+    rdfs:comment "Size/length specification (e.g., COBOL PIC, array dimensions)",
+        "[DataElement] Size/length specification (e.g., COBOL PIC, array dimensions)" ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:stereotype a rdf:Property ;
+    rdfs:label "stereotype" ;
+    rdfs:comment "Additional stereotype or pattern (e.g., Service, Repository, DTO)",
+        "[EncapsulationUnit] Additional stereotype or pattern (e.g., Service, Repository, DTO)" ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:storage_class a rdf:Property ;
+    rdfs:label "storage_class" ;
+    rdfs:comment "Storage class.",
+        "[DataElement] Storage class." ;
+    rdfs:domain sao:DataElement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StorageClass .
+
+sao:structure_category a rdf:Property ;
+    rdfs:label "structure_category" ;
+    rdfs:comment "[DataStructure] `composite`, `collection`, `hierarchical`, `value_type`, `reference_type`, `union`.",
+        "`composite`, `collection`, `hierarchical`, `value_type`, `reference_type`, `union`." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructureCategory .
+
+sao:structure_contains_elements a rdf:Property ;
+    rdfs:label "structure_contains_elements" ;
+    rdfs:comment "Fields in this structure.",
+        "[DataStructure] Fields in this structure." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:structure_type a rdf:Property ;
+    rdfs:label "structure_type" ;
+    rdfs:comment "**Required.** The paradigm-specific type (see DataStructureType enum).",
+        "[DataStructure] **Required.** The paradigm-specific type (see DataStructureType enum)." ;
+    rdfs:domain sao:DataStructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructureType .
+
+sao:tested_by_cases a rdf:Property ;
+    rdfs:label "tested_by_cases" ;
+    rdfs:comment "Test cases.",
+        "[CallableUnit] Test cases." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TestCase .
+
+sao:uses_concurrency_primitives a rdf:Property ;
+    rdfs:label "uses_concurrency_primitives" ;
+    rdfs:comment "Locks, semaphores, etc.",
+        "[CallableUnit] Locks, semaphores, etc." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ConcurrencyPrimitive .
+
+sao:uses_definitions a rdf:Property ;
+    rdfs:label "uses_definitions" ;
+    rdfs:comment "Definition references (imports, includes) used.",
+        "[EncapsulationUnit] Definition references (imports, includes) used." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DefinitionReference .
+
+sao:uses_file_definitions a rdf:Property ;
+    rdfs:label "uses_file_definitions" ;
+    rdfs:comment "FileDefinition[] used by this callable.",
+        "[CallableUnit] FileDefinition[] used by this callable." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileDefinition .
+
+sao:visibility a rdf:Property ;
+    rdfs:label "visibility" ;
+    schema:domainIncludes sao:CallableUnit,
+        sao:DataElement,
+        sao:DataStructure,
+        sao:EncapsulationUnit ;
+    rdfs:comment "Visibility level (public, private, protected, internal, package).",
+        "[CallableUnit] Visibility level.",
+        "[DataElement] Visibility level.",
+        "[DataStructure] Access level.",
+        "[EncapsulationUnit] Visibility level (public, private, protected, internal, package)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:VisibilityType .
+
+sao:CallableCategory a rdfs:Datatype ;
+    rdfs:label "CallableCategory" ;
+    rdfs:comment "Behavioral-role categories of callable units" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/CallableCategory/main_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableCategory/normal>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableCategory/operator> .
+
+sao:CallableType a rdfs:Datatype ;
+    rdfs:label "CallableType" ;
+    rdfs:comment "Types of callable units across different paradigms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/CallableType/abstract_method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/assembler_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/async_function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/callback>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/closure>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/command>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/constructor>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/conversion_operator>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/coroutine>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/curried_function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/cursor>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/delegate>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/destructor>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/event_handler>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/exception_handler>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/extension_method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/factory_method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/finalizer>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/functor>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/generator>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/generic_method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/higher_order_function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/indexer>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/interrupt_handler>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/lambda>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/macro>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/main_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/mock>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/operator_overload>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/other>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/paragraph>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/pli_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/procedure>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/property_getter>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/property_setter>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/rpg_subprocedure>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/rpg_subroutine>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/script_function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/section>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/signal_handler>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/static_method>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/stored_function>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/stored_procedure>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/subroutine>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/task>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/template>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/test_case>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/test_fixture>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/thread_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/trigger_body>,
+        <https://ontologies.corestory.ai/sao/export/values/CallableType/virtual_method> .
+
+sao:DataElementCategory a rdfs:Datatype ;
+    rdfs:label "DataElementCategory" ;
+    rdfs:comment "Categories of data elements" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/computed>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/constant>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/field>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/global_variable>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/local_variable>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/parameter>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/static_field>,
+        <https://ontologies.corestory.ai/sao/export/values/DataElementCategory/temporary> .
+
+sao:DataStructureCategory a rdfs:Datatype ;
+    rdfs:label "DataStructureCategory" ;
+    rdfs:comment "Categories of data structures" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/collection>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/composite>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/hierarchical>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/reference_type>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/union>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/value_type> .
+
+sao:DataStructureType a rdfs:Datatype ;
+    rdfs:label "DataStructureType" ;
+    rdfs:comment "Types of data structures across different paradigms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataStructureType/algebraic_data_type>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/anonymous_class>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/array>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/assembler_dsect>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/avro_record>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/class_data>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/cobol_file_descriptor>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/command>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/commarea>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/configuration_object>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/copybook_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/cursor_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/dictionary>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/dto>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/dynamic_array>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/enum>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/event>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/flags>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/graph>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/group_item>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/inner_class>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/json_schema>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/linkage_section>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/list>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/message>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/opaque_type>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/other>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/pair>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/pli_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/product_type>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/protobuf_message>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/queue>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/record>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/reference_wrapper>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/rowtype>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/rpg_data_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/set>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/smart_pointer>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/stack>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/struct>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/sum_type>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/table_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/tree>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/tuple>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/type_class>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/union>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/value_object>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/variant>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/view_structure>,
+        <https://ontologies.corestory.ai/sao/export/values/DataStructureType/xml_schema> .
+
+sao:EncapsulationType a rdfs:Datatype ;
+    rdfs:label "EncapsulationType" ;
+    rdfs:comment "Types of encapsulation units across different paradigms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/abstract_class>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/assembler_csect>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/batch_program>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/class>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/component>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/composite>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/controller>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/copybook>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/enum_class>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/function_package>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/interface>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/library>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/module>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/namespace>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/object>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/online_program>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/other>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/package>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/pli_package>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/pli_procedure>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/program>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/record_class>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/rpg_module>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/rpg_service_program>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/script>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/service>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/singleton>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/stored_procedure>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/subprogram>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/trait>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/trigger>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/unit>,
+        <https://ontologies.corestory.ai/sao/export/values/EncapsulationType/view> .
+
+sao:EntryPointType a rdfs:Datatype ;
+    rdfs:label "EntryPointType" ;
+    rdfs:comment "Types of program entry points" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/EntryPointType/api_endpoint>,
+        <https://ontologies.corestory.ai/sao/export/values/EntryPointType/event_handler>,
+        <https://ontologies.corestory.ai/sao/export/values/EntryPointType/main_program>,
+        <https://ontologies.corestory.ai/sao/export/values/EntryPointType/scheduled_entry>,
+        <https://ontologies.corestory.ai/sao/export/values/EntryPointType/transaction_entry> .
+
+sao:ParameterDirection a rdfs:Datatype ;
+    rdfs:label "ParameterDirection" ;
+    rdfs:comment "Parameter passing direction" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ParameterDirection/input>,
+        <https://ontologies.corestory.ai/sao/export/values/ParameterDirection/input_output>,
+        <https://ontologies.corestory.ai/sao/export/values/ParameterDirection/output>,
+        <https://ontologies.corestory.ai/sao/export/values/ParameterDirection/return> .
+
+sao:PassingMechanism a rdfs:Datatype ;
+    rdfs:label "PassingMechanism" ;
+    rdfs:comment "Parameter passing mechanisms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_name>,
+        <https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_reference>,
+        <https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_result>,
+        <https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_value> .
+
+sao:PersistenceType a rdfs:Datatype ;
+    rdfs:label "PersistenceType" ;
+    rdfs:comment "How a data structure is persisted" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/PersistenceType/cached>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/database_table>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/database_view>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/distributed_cache>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/document_store>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/file_record>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/graph_database>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/key_value_store>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/message_queue>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/object_store>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/serialized>,
+        <https://ontologies.corestory.ai/sao/export/values/PersistenceType/transient> .
+
+sao:StorageClass a rdfs:Datatype ;
+    rdfs:label "StorageClass" ;
+    rdfs:comment "Storage classes for data elements" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/StorageClass/automatic>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageClass/external>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageClass/heap>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageClass/register>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageClass/static>,
+        <https://ontologies.corestory.ai/sao/export/values/StorageClass/thread_local> .
+
+sao:VisibilityType a rdfs:Datatype ;
+    rdfs:label "VisibilityType" ;
+    rdfs:comment "Visibility modifiers for code elements" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/VisibilityType/internal>,
+        <https://ontologies.corestory.ai/sao/export/values/VisibilityType/package>,
+        <https://ontologies.corestory.ai/sao/export/values/VisibilityType/private>,
+        <https://ontologies.corestory.ai/sao/export/values/VisibilityType/protected>,
+        <https://ontologies.corestory.ai/sao/export/values/VisibilityType/public> .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableCategory/main_entry> rdf:value "main_entry" ;
+    rdfs:comment "Main entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableCategory/normal> rdf:value "normal" ;
+    rdfs:comment "Normal callable." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableCategory/operator> rdf:value "operator" ;
+    rdfs:comment "Operator overload." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/abstract_method> rdf:value "abstract_method" ;
+    rdfs:comment "Abstract method declaration." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/assembler_entry> rdf:value "assembler_entry" ;
+    rdfs:comment "Assembler entry point" .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/async_function> rdf:value "async_function" ;
+    rdfs:comment "Async/await function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/callback> rdf:value "callback" ;
+    rdfs:comment "Callback function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/closure> rdf:value "closure" ;
+    rdfs:comment "Closure." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/command> rdf:value "command" ;
+    rdfs:comment "Command/action function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/constructor> rdf:value "constructor" ;
+    rdfs:comment "Object constructor." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/conversion_operator> rdf:value "conversion_operator" ;
+    rdfs:comment "Type conversion operator." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/coroutine> rdf:value "coroutine" ;
+    rdfs:comment "Coroutine." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/curried_function> rdf:value "curried_function" ;
+    rdfs:comment "Curried function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/cursor> rdf:value "cursor" ;
+    rdfs:comment "Database cursor." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/delegate> rdf:value "delegate" ;
+    rdfs:comment "Delegate." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/destructor> rdf:value "destructor" ;
+    rdfs:comment "Object destructor/finalizer." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/event_handler> rdf:value "event_handler" ;
+    rdfs:comment "Event handler." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/exception_handler> rdf:value "exception_handler" ;
+    rdfs:comment "Exception handler." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/extension_method> rdf:value "extension_method" ;
+    rdfs:comment "Extension method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/factory_method> rdf:value "factory_method" ;
+    rdfs:comment "Factory method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/finalizer> rdf:value "finalizer" ;
+    rdfs:comment "Finalizer/cleanup method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/function> rdf:value "function" ;
+    rdfs:comment "Function (procedural or functional programming)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/functor> rdf:value "functor" ;
+    rdfs:comment "Functor." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/generator> rdf:value "generator" ;
+    rdfs:comment "Generator function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/generic_method> rdf:value "generic_method" ;
+    rdfs:comment "Generic method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/higher_order_function> rdf:value "higher_order_function" ;
+    rdfs:comment "Higher-order function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/indexer> rdf:value "indexer" ;
+    rdfs:comment "Indexer/subscript operator." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/interrupt_handler> rdf:value "interrupt_handler" ;
+    rdfs:comment "Interrupt service routine." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/lambda> rdf:value "lambda" ;
+    rdfs:comment "Anonymous lambda function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/macro> rdf:value "macro" ;
+    rdfs:comment "Preprocessor macro." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/main_entry> rdf:value "main_entry" ;
+    rdfs:comment "Main entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/method> rdf:value "method" ;
+    rdfs:comment "Instance method in OOP." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/mock> rdf:value "mock" ;
+    rdfs:comment "Mock function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/operator_overload> rdf:value "operator_overload" ;
+    rdfs:comment "Operator overloading method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/other> rdf:value "other" ;
+    rdfs:comment "Other callable types." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/paragraph> rdf:value "paragraph" ;
+    rdfs:comment "COBOL paragraph" .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/pli_entry> rdf:value "pli_entry" ;
+    rdfs:comment "PL/I ENTRY point" .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/procedure> rdf:value "procedure" ;
+    rdfs:comment "Procedure/subroutine." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/property_getter> rdf:value "property_getter" ;
+    rdfs:comment "Property getter method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/property_setter> rdf:value "property_setter" ;
+    rdfs:comment "Property setter method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/rpg_subprocedure> rdf:value "rpg_subprocedure" ;
+    rdfs:comment "RPG subprocedure." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/rpg_subroutine> rdf:value "rpg_subroutine" ;
+    rdfs:comment "RPG subroutine." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/script_function> rdf:value "script_function" ;
+    rdfs:comment "Script function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/section> rdf:value "section" ;
+    rdfs:comment "COBOL section or similar grouping" .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/signal_handler> rdf:value "signal_handler" ;
+    rdfs:comment "Signal handler." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/static_method> rdf:value "static_method" ;
+    rdfs:comment "Static/class method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/stored_function> rdf:value "stored_function" ;
+    rdfs:comment "Database function." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/stored_procedure> rdf:value "stored_procedure" ;
+    rdfs:comment "Database stored procedure." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/subroutine> rdf:value "subroutine" ;
+    rdfs:comment "Subroutine." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/task> rdf:value "task" ;
+    rdfs:comment "Task/future/promise." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/template> rdf:value "template" ;
+    rdfs:comment "Template function (C++)" .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/test_case> rdf:value "test_case" ;
+    rdfs:comment "Unit test case." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/test_fixture> rdf:value "test_fixture" ;
+    rdfs:comment "Test fixture/setup method." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/thread_entry> rdf:value "thread_entry" ;
+    rdfs:comment "Thread entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/trigger_body> rdf:value "trigger_body" ;
+    rdfs:comment "Trigger implementation." .
+
+<https://ontologies.corestory.ai/sao/export/values/CallableType/virtual_method> rdf:value "virtual_method" ;
+    rdfs:comment "Virtual/overridable method." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/computed> rdf:value "computed" ;
+    rdfs:comment "Computed data element." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/constant> rdf:value "constant" ;
+    rdfs:comment "Constant value." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/field> rdf:value "field" ;
+    rdfs:comment "Class/struct field." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/global_variable> rdf:value "global_variable" ;
+    rdfs:comment "Global variable." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/local_variable> rdf:value "local_variable" ;
+    rdfs:comment "Local variable." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/parameter> rdf:value "parameter" ;
+    rdfs:comment "Function/method parameter." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/static_field> rdf:value "static_field" ;
+    rdfs:comment "Static field." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataElementCategory/temporary> rdf:value "temporary" ;
+    rdfs:comment "Temporary data element." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/collection> rdf:value "collection" ;
+    rdfs:comment "Collection of items." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/composite> rdf:value "composite" ;
+    rdfs:comment "Composite/aggregate data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/hierarchical> rdf:value "hierarchical" ;
+    rdfs:comment "Hierarchical data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/reference_type> rdf:value "reference_type" ;
+    rdfs:comment "Reference type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/union> rdf:value "union" ;
+    rdfs:comment "Union type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureCategory/value_type> rdf:value "value_type" ;
+    rdfs:comment "Value type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/algebraic_data_type> rdf:value "algebraic_data_type" ;
+    rdfs:comment "Algebraic data type (Haskell, ML)." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/anonymous_class> rdf:value "anonymous_class" ;
+    rdfs:comment "Anonymous class." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/array> rdf:value "array" ;
+    rdfs:comment "Fixed-size array." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/assembler_dsect> rdf:value "assembler_dsect" ;
+    rdfs:comment "Assembler dummy section" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/avro_record> rdf:value "avro_record" ;
+    rdfs:comment "Avro record." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/class_data> rdf:value "class_data" ;
+    rdfs:comment "Data members of a class." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/cobol_file_descriptor> rdf:value "cobol_file_descriptor" ;
+    rdfs:comment "COBOL FD (File Description) entry" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/command> rdf:value "command" ;
+    rdfs:comment "Command data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/commarea> rdf:value "commarea" ;
+    rdfs:comment "CICS communication area" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/configuration_object> rdf:value "configuration_object" ;
+    rdfs:comment "Configuration data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/copybook_structure> rdf:value "copybook_structure" ;
+    rdfs:comment "COBOL copybook structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/cursor_structure> rdf:value "cursor_structure" ;
+    rdfs:comment "Cursor structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/dictionary> rdf:value "dictionary" ;
+    rdfs:comment "Dictionary/map/hash table." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/dto> rdf:value "dto" ;
+    rdfs:comment "Data Transfer Object." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/dynamic_array> rdf:value "dynamic_array" ;
+    rdfs:comment "Dynamic/resizable array." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/enum> rdf:value "enum" ;
+    rdfs:comment "Enumeration." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/event> rdf:value "event" ;
+    rdfs:comment "Event data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/flags> rdf:value "flags" ;
+    rdfs:comment "Bit flags." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/graph> rdf:value "graph" ;
+    rdfs:comment "Graph structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/group_item> rdf:value "group_item" ;
+    rdfs:comment "COBOL group item (composite)" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/inner_class> rdf:value "inner_class" ;
+    rdfs:comment "Inner/nested class." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/json_schema> rdf:value "json_schema" ;
+    rdfs:comment "JSON schema structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/linkage_section> rdf:value "linkage_section" ;
+    rdfs:comment "COBOL linkage section structure" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/list> rdf:value "list" ;
+    rdfs:comment "List structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/message> rdf:value "message" ;
+    rdfs:comment "Message structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/opaque_type> rdf:value "opaque_type" ;
+    rdfs:comment "Opaque type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/other> rdf:value "other" ;
+    rdfs:comment "Other data structure types." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/pair> rdf:value "pair" ;
+    rdfs:comment "Key-value pair." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/pli_structure> rdf:value "pli_structure" ;
+    rdfs:comment "PL/I structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/product_type> rdf:value "product_type" ;
+    rdfs:comment "Product type (tuple-like)." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/protobuf_message> rdf:value "protobuf_message" ;
+    rdfs:comment "Protocol Buffers message." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/queue> rdf:value "queue" ;
+    rdfs:comment "Queue structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/record> rdf:value "record" ;
+    rdfs:comment "Pascal/Ada record or COBOL record." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/reference_wrapper> rdf:value "reference_wrapper" ;
+    rdfs:comment "Reference wrapper." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/rowtype> rdf:value "rowtype" ;
+    rdfs:comment "Database row type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/rpg_data_structure> rdf:value "rpg_data_structure" ;
+    rdfs:comment "RPG data structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/set> rdf:value "set" ;
+    rdfs:comment "Set structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/smart_pointer> rdf:value "smart_pointer" ;
+    rdfs:comment "Smart pointer wrapper." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/stack> rdf:value "stack" ;
+    rdfs:comment "Stack structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/struct> rdf:value "struct" ;
+    rdfs:comment "C/C++ struct." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/sum_type> rdf:value "sum_type" ;
+    rdfs:comment "Sum/variant type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/table_structure> rdf:value "table_structure" ;
+    rdfs:comment "Database table structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/tree> rdf:value "tree" ;
+    rdfs:comment "Tree structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/tuple> rdf:value "tuple" ;
+    rdfs:comment "Tuple." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/type_class> rdf:value "type_class" ;
+    rdfs:comment "Type class." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/union> rdf:value "union" ;
+    rdfs:comment "C union." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/value_object> rdf:value "value_object" ;
+    rdfs:comment "DDD value object." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/variant> rdf:value "variant" ;
+    rdfs:comment "Variant type." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/view_structure> rdf:value "view_structure" ;
+    rdfs:comment "Database view structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataStructureType/xml_schema> rdf:value "xml_schema" ;
+    rdfs:comment "XML schema structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/abstract_class> rdf:value "abstract_class" ;
+    rdfs:comment "Abstract base class." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/assembler_csect> rdf:value "assembler_csect" ;
+    rdfs:comment "Assembler control section" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/batch_program> rdf:value "batch_program" ;
+    rdfs:comment "Batch processing program." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/class> rdf:value "class" ;
+    rdfs:comment "Object-oriented class." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/component> rdf:value "component" ;
+    rdfs:comment "Component (React, Angular, Vue)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/composite> rdf:value "composite" ;
+    rdfs:comment "Composite structure." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/controller> rdf:value "controller" ;
+    rdfs:comment "Controller (MVC pattern)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/copybook> rdf:value "copybook" ;
+    rdfs:comment "COBOL copybook or include file" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/enum_class> rdf:value "enum_class" ;
+    rdfs:comment "Enumeration class." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/function_package> rdf:value "function_package" ;
+    rdfs:comment "PL/SQL or T-SQL package" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/interface> rdf:value "interface" ;
+    rdfs:comment "Interface or contract definition." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/library> rdf:value "library" ;
+    rdfs:comment "Library module." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/module> rdf:value "module" ;
+    rdfs:comment "Functional module (Haskell, OCaml, F#)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/namespace> rdf:value "namespace" ;
+    rdfs:comment "Namespace grouping." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/object> rdf:value "object" ;
+    rdfs:comment "JavaScript/prototype-based object" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/online_program> rdf:value "online_program" ;
+    rdfs:comment "Online transaction program (CICS, IMS)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/other> rdf:value "other" ;
+    rdfs:comment "Other encapsulation types." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/package> rdf:value "package" ;
+    rdfs:comment "Package (Ada, Go)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/pli_package> rdf:value "pli_package" ;
+    rdfs:comment "PL/I package." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/pli_procedure> rdf:value "pli_procedure" ;
+    rdfs:comment "PL/I procedure." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/program> rdf:value "program" ;
+    rdfs:comment "Standalone program (COBOL, Fortran)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/record_class> rdf:value "record_class" ;
+    rdfs:comment "Record or data class (Java records, Python dataclass)" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/rpg_module> rdf:value "rpg_module" ;
+    rdfs:comment "RPG module." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/rpg_service_program> rdf:value "rpg_service_program" ;
+    rdfs:comment "RPG service program." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/script> rdf:value "script" ;
+    rdfs:comment "Script module." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/service> rdf:value "service" ;
+    rdfs:comment "Service class." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/singleton> rdf:value "singleton" ;
+    rdfs:comment "Singleton pattern implementation." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/stored_procedure> rdf:value "stored_procedure" ;
+    rdfs:comment "Database stored procedure package." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/subprogram> rdf:value "subprogram" ;
+    rdfs:comment "Callable subprogram or subroutine library" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/trait> rdf:value "trait" ;
+    rdfs:comment "Trait (Rust, Scala) or mixin" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/trigger> rdf:value "trigger" ;
+    rdfs:comment "Database trigger." .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/unit> rdf:value "unit" ;
+    rdfs:comment "Pascal/Delphi unit" .
+
+<https://ontologies.corestory.ai/sao/export/values/EncapsulationType/view> rdf:value "view" ;
+    rdfs:comment "Database view definition" .
+
+<https://ontologies.corestory.ai/sao/export/values/EntryPointType/api_endpoint> rdf:value "api_endpoint" ;
+    rdfs:comment "API endpoint entry." .
+
+<https://ontologies.corestory.ai/sao/export/values/EntryPointType/event_handler> rdf:value "event_handler" ;
+    rdfs:comment "Event handler entry." .
+
+<https://ontologies.corestory.ai/sao/export/values/EntryPointType/main_program> rdf:value "main_program" ;
+    rdfs:comment "Main program entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/EntryPointType/scheduled_entry> rdf:value "scheduled_entry" ;
+    rdfs:comment "Scheduled entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/EntryPointType/transaction_entry> rdf:value "transaction_entry" ;
+    rdfs:comment "Transaction entry point." .
+
+<https://ontologies.corestory.ai/sao/export/values/ParameterDirection/input> rdf:value "input" ;
+    rdfs:comment "Input parameter (read-only)." .
+
+<https://ontologies.corestory.ai/sao/export/values/ParameterDirection/input_output> rdf:value "input_output" ;
+    rdfs:comment "Input/output parameter (read-write)." .
+
+<https://ontologies.corestory.ai/sao/export/values/ParameterDirection/output> rdf:value "output" ;
+    rdfs:comment "Output parameter (write-only)." .
+
+<https://ontologies.corestory.ai/sao/export/values/ParameterDirection/return> rdf:value "return" ;
+    rdfs:comment "Return value." .
+
+<https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_name> rdf:value "by_name" ;
+    rdfs:comment "Pass by name (lazy evaluation)" .
+
+<https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_reference> rdf:value "by_reference" ;
+    rdfs:comment "Pass by reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_result> rdf:value "by_result" ;
+    rdfs:comment "Pass by result (copy-out)" .
+
+<https://ontologies.corestory.ai/sao/export/values/PassingMechanism/by_value> rdf:value "by_value" ;
+    rdfs:comment "Pass by value (copy)." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/cached> rdf:value "cached" ;
+    rdfs:comment "Cached storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/database_table> rdf:value "database_table" ;
+    rdfs:comment "Persisted in database table." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/database_view> rdf:value "database_view" ;
+    rdfs:comment "Persisted as database view." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/distributed_cache> rdf:value "distributed_cache" ;
+    rdfs:comment "Distributed cache." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/document_store> rdf:value "document_store" ;
+    rdfs:comment "Document store persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/file_record> rdf:value "file_record" ;
+    rdfs:comment "Persisted as file record." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/graph_database> rdf:value "graph_database" ;
+    rdfs:comment "Graph database persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/key_value_store> rdf:value "key_value_store" ;
+    rdfs:comment "Key-value store persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/message_queue> rdf:value "message_queue" ;
+    rdfs:comment "Message queue persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/object_store> rdf:value "object_store" ;
+    rdfs:comment "Object store persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/serialized> rdf:value "serialized" ;
+    rdfs:comment "Serialized persistence." .
+
+<https://ontologies.corestory.ai/sao/export/values/PersistenceType/transient> rdf:value "transient" ;
+    rdfs:comment "Not persisted." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/automatic> rdf:value "automatic" ;
+    rdfs:comment "Automatic/stack storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/external> rdf:value "external" ;
+    rdfs:comment "External storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/heap> rdf:value "heap" ;
+    rdfs:comment "Heap-allocated storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/register> rdf:value "register" ;
+    rdfs:comment "Register storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/static> rdf:value "static" ;
+    rdfs:comment "Static storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/StorageClass/thread_local> rdf:value "thread_local" ;
+    rdfs:comment "Thread-local storage." .
+
+<https://ontologies.corestory.ai/sao/export/values/VisibilityType/internal> rdf:value "internal" ;
+    rdfs:comment "Internal to assembly/package." .
+
+<https://ontologies.corestory.ai/sao/export/values/VisibilityType/package> rdf:value "package" ;
+    rdfs:comment "Package-level visibility." .
+
+<https://ontologies.corestory.ai/sao/export/values/VisibilityType/private> rdf:value "private" ;
+    rdfs:comment "Private to containing unit." .
+
+<https://ontologies.corestory.ai/sao/export/values/VisibilityType/protected> rdf:value "protected" ;
+    rdfs:comment "Protected (accessible to subclasses)." .
+
+<https://ontologies.corestory.ai/sao/export/values/VisibilityType/public> rdf:value "public" ;
+    rdfs:comment "Publicly accessible." .
+

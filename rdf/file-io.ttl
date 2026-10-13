@@ -1,0 +1,233 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:FileDefinition a rdfs:Class ;
+    rdfs:label "FileDefinition" ;
+    rdfs:comment "A file defined for I/O in a program (COBOL SELECT, C fopen, etc.)" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures the physical and logical characteristics of files used by programs, enabling impact analysis when file structures change." .
+
+sao:FileOperation a rdfs:Class ;
+    rdfs:label "FileOperation" ;
+    rdfs:comment "A specific I/O operation on a file definition" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:access_mode a rdf:Property ;
+    rdfs:label "access_mode" ;
+    rdfs:comment "How the file is accessed.",
+        "[FileDefinition] How the file is accessed." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileAccessMode .
+
+sao:block_size a rdf:Property ;
+    rdfs:label "block_size" ;
+    rdfs:comment "Block size in bytes.",
+        "[FileDefinition] Block size in bytes." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:condition_handling a rdf:Property ;
+    rdfs:label "condition_handling" ;
+    rdfs:comment "How I/O status conditions are handled",
+        "[FileOperation] How I/O status conditions are handled" ;
+    rdfs:domain sao:FileOperation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:file_defined_in_container a rdf:Property ;
+    rdfs:label "file_defined_in_container" ;
+    rdfs:comment "Container where this file is defined.",
+        "[FileDefinition] Container where this file is defined." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:file_status_field a rdf:Property ;
+    rdfs:label "file_status_field" ;
+    rdfs:comment "Variable receiving I/O status codes",
+        "[FileDefinition] Variable receiving I/O status codes" ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:key_fields a rdf:Property ;
+    rdfs:label "key_fields" ;
+    rdfs:comment "Key field names for indexed files",
+        "[FileDefinition] Key field names for indexed files" ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:mapped_from_dataset_allocations a rdf:Property ;
+    rdfs:label "mapped_from_dataset_allocations" ;
+    rdfs:comment "JCL dataset allocations that map to this file.",
+        "[FileDefinition] JCL dataset allocations that map to this file." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DatasetAllocation .
+
+sao:operates_on_file a rdf:Property ;
+    rdfs:label "operates_on_file" ;
+    rdfs:comment "The file being operated on.",
+        "[FileOperation] The file being operated on." ;
+    rdfs:domain sao:FileOperation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileDefinition .
+
+sao:operation_type a rdf:Property ;
+    rdfs:label "operation_type" ;
+    rdfs:comment "The type of I/O operation.",
+        "[FileOperation] The type of I/O operation." ;
+    rdfs:domain sao:FileOperation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileOperationType .
+
+sao:organization a rdf:Property ;
+    rdfs:label "organization" ;
+    rdfs:comment "Physical organization of the file.",
+        "[FileDefinition] Physical organization of the file." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileOrganization .
+
+sao:performed_in_callable a rdf:Property ;
+    rdfs:label "performed_in_callable" ;
+    rdfs:comment "The callable performing the operation.",
+        "[FileOperation] The callable performing the operation." ;
+    rdfs:domain sao:FileOperation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:persisted_in_store a rdf:Property ;
+    rdfs:label "persisted_in_store" ;
+    rdfs:comment "Data store backing this file.",
+        "[FileDefinition] Data store backing this file." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStore .
+
+sao:record_length a rdf:Property ;
+    rdfs:label "record_length" ;
+    rdfs:comment "Record length in bytes.",
+        "[FileDefinition] Record length in bytes." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:FileAccessMode a rdfs:Datatype ;
+    rdfs:label "FileAccessMode" ;
+    rdfs:comment "How records are accessed during I/O" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/FileAccessMode/dynamic_access>,
+        <https://ontologies.corestory.ai/sao/export/values/FileAccessMode/random_access>,
+        <https://ontologies.corestory.ai/sao/export/values/FileAccessMode/sequential_access> .
+
+sao:FileOperationType a rdfs:Datatype ;
+    rdfs:label "FileOperationType" ;
+    rdfs:comment "Types of file I/O operations" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/FileOperationType/close>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/delete>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/merge>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/open>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/read>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/rewrite>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/sort>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/start>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOperationType/write> .
+
+sao:FileOrganization a rdfs:Datatype ;
+    rdfs:label "FileOrganization" ;
+    rdfs:comment "How records are organized within a file" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/FileOrganization/generation_data_group>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/heap>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/indexed>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/line_sequential>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/partitioned_dataset>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/relative>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/sequential>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_esds>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_ksds>,
+        <https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_rrds> .
+
+<https://ontologies.corestory.ai/sao/export/values/FileAccessMode/dynamic_access> rdf:value "dynamic_access" ;
+    rdfs:comment "Both sequential and random in same open" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileAccessMode/random_access> rdf:value "random_access" ;
+    rdfs:comment "Random access." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileAccessMode/sequential_access> rdf:value "sequential_access" ;
+    rdfs:comment "Sequential access." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/close> rdf:value "close" ;
+    rdfs:comment "Close operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/delete> rdf:value "delete" ;
+    rdfs:comment "Delete operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/merge> rdf:value "merge" ;
+    rdfs:comment "Merge operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/open> rdf:value "open" ;
+    rdfs:comment "Open operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/read> rdf:value "read" ;
+    rdfs:comment "Read operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/rewrite> rdf:value "rewrite" ;
+    rdfs:comment "Update existing record in place" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/sort> rdf:value "sort" ;
+    rdfs:comment "Sort operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/start> rdf:value "start" ;
+    rdfs:comment "Position cursor for sequential read" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOperationType/write> rdf:value "write" ;
+    rdfs:comment "Write operation." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/generation_data_group> rdf:value "generation_data_group" ;
+    rdfs:comment "Generation data group (GDG)" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/heap> rdf:value "heap" ;
+    rdfs:comment "Heap organization." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/indexed> rdf:value "indexed" ;
+    rdfs:comment "Indexed organization." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/line_sequential> rdf:value "line_sequential" ;
+    rdfs:comment "Line-sequential organization." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/partitioned_dataset> rdf:value "partitioned_dataset" ;
+    rdfs:comment "Partitioned dataset (PDS/PDSE)" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/relative> rdf:value "relative" ;
+    rdfs:comment "Relative organization." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/sequential> rdf:value "sequential" ;
+    rdfs:comment "Sequential organization." .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_esds> rdf:value "vsam_esds" ;
+    rdfs:comment "VSAM Entry-Sequenced Data Set" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_ksds> rdf:value "vsam_ksds" ;
+    rdfs:comment "VSAM Key-Sequenced Data Set" .
+
+<https://ontologies.corestory.ai/sao/export/values/FileOrganization/vsam_rrds> rdf:value "vsam_rrds" ;
+    rdfs:comment "VSAM Relative Record Data Set" .
+

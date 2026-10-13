@@ -1,0 +1,188 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:KnowledgeArtifact a rdfs:Class ;
+    rdfs:label "KnowledgeArtifact" ;
+    rdfs:comment "A knowledge artifact that documents some aspect of the system" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:KnowledgeArtifactStatus a rdfs:Datatype ;
+    rdfs:label "KnowledgeArtifactStatus" ;
+    rdfs:comment "Status of a knowledge artifact" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/accepted>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/archived>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/deprecated>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/draft>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/published>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/superseded> .
+
+sao:KnowledgeArtifactType a rdfs:Datatype ;
+    rdfs:label "KnowledgeArtifactType" ;
+    rdfs:comment "Types of knowledge artifacts" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/adr>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/api_doc>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/changelog>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/comment>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/design_doc>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/diagram>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/onboarding_guide>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/postmortem>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/readme>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/rfc>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/runbook>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/sop>,
+        <https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/wiki_page> .
+
+sao:authored_at a rdf:Property ;
+    rdfs:label "authored_at" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:authored_by a rdf:Property ;
+    rdfs:label "authored_by" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:content a rdf:Property ;
+    rdfs:label "content" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:documents_aggregate a rdf:Property ;
+    rdfs:label "documents_aggregate" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Aggregate .
+
+sao:documents_bounded_context a rdf:Property ;
+    rdfs:label "documents_bounded_context" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BoundedContext .
+
+sao:documents_component a rdf:Property ;
+    rdfs:label "documents_component" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Component .
+
+sao:documents_domain_entity a rdf:Property ;
+    rdfs:label "documents_domain_entity" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DomainEntity .
+
+sao:documents_integration a rdf:Property ;
+    rdfs:label "documents_integration" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Integration .
+
+sao:documents_module a rdf:Property ;
+    rdfs:label "documents_module" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:documents_service a rdf:Property ;
+    rdfs:label "documents_service" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Service .
+
+sao:documents_system a rdf:Property ;
+    rdfs:label "documents_system" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:System .
+
+sao:stored_in_container a rdf:Property ;
+    rdfs:label "stored_in_container" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:superseded_by a rdf:Property ;
+    rdfs:label "superseded_by" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:KnowledgeArtifact .
+
+sao:supersedes a rdf:Property ;
+    rdfs:label "supersedes" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:KnowledgeArtifact .
+
+sao:uri a rdf:Property ;
+    rdfs:label "uri" ;
+    rdfs:domain sao:KnowledgeArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/accepted> rdf:value "accepted" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/archived> rdf:value "archived" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/deprecated> rdf:value "deprecated" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/draft> rdf:value "draft" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/published> rdf:value "published" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactStatus/superseded> rdf:value "superseded" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/adr> rdf:value "adr" ;
+    rdfs:comment "Architecture Decision Record" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/api_doc> rdf:value "api_doc" ;
+    rdfs:comment "API documentation" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/changelog> rdf:value "changelog" ;
+    rdfs:comment "Changelog" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/comment> rdf:value "comment" ;
+    rdfs:comment "Code or review comment" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/design_doc> rdf:value "design_doc" ;
+    rdfs:comment "Design document" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/diagram> rdf:value "diagram" ;
+    rdfs:comment "Architecture or design diagram" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/onboarding_guide> rdf:value "onboarding_guide" ;
+    rdfs:comment "Onboarding guide" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/postmortem> rdf:value "postmortem" ;
+    rdfs:comment "Incident postmortem" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/readme> rdf:value "readme" ;
+    rdfs:comment "README documentation" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/rfc> rdf:value "rfc" ;
+    rdfs:comment "Request for Comments" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/runbook> rdf:value "runbook" ;
+    rdfs:comment "Operational runbook" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/sop> rdf:value "sop" ;
+    rdfs:comment "Standard Operating Procedure" .
+
+<https://ontologies.corestory.ai/sao/export/values/KnowledgeArtifactType/wiki_page> rdf:value "wiki_page" ;
+    rdfs:comment "Wiki page" .
+

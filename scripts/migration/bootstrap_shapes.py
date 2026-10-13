@@ -117,7 +117,7 @@ def bootstrap(schema_path, output):
             constraints(graph, node, slot)
             counts["property_shapes"] += 1
     for name, graph in graphs.items():
-        (output / (name + ".ttl")).write_text("# Editable SHACL source, initially bootstrapped from SAO 2.1.0.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n" + graph.serialize(format="turtle"))
+        (output / (name + ".ttl")).write_text(("# Editable SHACL source, initially bootstrapped from SAO 2.1.0.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n" + graph.serialize(format="turtle")).rstrip() + "\n")
     report = {"baseline_version": str(view.schema.version), "classes": len(classes), "constraints": dict(counts),
               "status": "Initial translation; semantic equivalence has not been established",
               "deferred": ["Inverse relationship entailments and inconsistent inverse declarations", "Identifier-to-RDF-subject mapping and JSON/YAML inlining", "Abstract classes and mixin serialization", "Closed-world validation policy (initial shapes are open)", "Full validation equivalence and arbitrary LinkML metamodel features"]}

@@ -780,4 +780,3 @@ saosh:StatementShape a sh:NodeShape ;
     sh:description "Control transfer target." ;
     sh:maxCount 1 ;
     sh:path sao:transfers_control_to .
-

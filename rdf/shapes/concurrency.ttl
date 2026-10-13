@@ -215,4 +215,3 @@ saosh:ConcurrencyPrimitiveShape a sh:NodeShape ;
     sh:class sao:CallableUnit ;
     sh:description "Callables using this." ;
     sh:path sao:used_by_callables .
-

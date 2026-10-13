@@ -408,4 +408,3 @@ saosh:ScopeShape a sh:NodeShape ;
     sh:datatype xsd:string ;
     sh:description "Freeform tags." ;
     sh:path sao:tags .
-

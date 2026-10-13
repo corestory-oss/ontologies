@@ -833,4 +833,3 @@ saosh:TraceShape a sh:NodeShape ;
     sh:description "Unique identifier for the entire trace." ;
     sh:maxCount 1 ;
     sh:path sao:trace_id .
-

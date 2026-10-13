@@ -461,4 +461,3 @@ saosh:TestSuiteShape a sh:NodeShape ;
     sh:description "Total test cases." ;
     sh:maxCount 1 ;
     sh:path sao:total_cases .
-

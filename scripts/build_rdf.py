@@ -49,7 +49,7 @@ def build(check=False):
                 raise ValueError(f"{output.name} is stale; run scripts/build_rdf.py")
         else:
             header = "# Generated distribution; edit rdf/ source files, then run scripts/build_rdf.py.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n"
-            output.write_text(header + graph.serialize(format="turtle"))
+            output.write_text((header + graph.serialize(format="turtle")).rstrip() + "\n")
             if not same_graph(Graph().parse(output, format="turtle"), graph):
                 raise ValueError(f"{output.name} did not round-trip")
         print(f"{name}: {len(graph)} triples {'match' if check else 'assembled'}")

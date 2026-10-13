@@ -477,4 +477,3 @@ saosh:PipelineStageShape a sh:NodeShape ;
     sh:description "Stage timeout." ;
     sh:maxCount 1 ;
     sh:path sao:timeout_minutes .
-

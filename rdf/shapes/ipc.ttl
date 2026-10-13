@@ -139,4 +139,3 @@ saosh:IPCConnectionShape a sh:NodeShape ;
     sh:description "Whether the IPC participates in a transaction boundary" ;
     sh:maxCount 1 ;
     sh:path sao:transaction_scoped .
-

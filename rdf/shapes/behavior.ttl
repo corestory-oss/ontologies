@@ -1278,4 +1278,3 @@ saosh:WorkflowShape a sh:NodeShape ;
 
 <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/4> rdf:first "orchestration" ;
     rdf:rest () .
-

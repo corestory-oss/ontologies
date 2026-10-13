@@ -121,4 +121,3 @@ saosh:ProgrammingLanguageShape a sh:NodeShape ;
     sh:description "Year the language was first released." ;
     sh:maxCount 1 ;
     sh:path sao:year_introduced .
-

@@ -329,4 +329,3 @@ saosh:RiskAssessmentShape a sh:NodeShape ;
     sh:datatype xsd:string ;
     sh:description "List of identified vulnerabilities." ;
     sh:path sao:vulnerabilities .
-

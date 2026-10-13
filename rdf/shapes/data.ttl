@@ -908,4 +908,3 @@ saosh:SchemaVersionShape a sh:NodeShape ;
     sh:description "`Schema` that this version belongs to." ;
     sh:maxCount 1 ;
     sh:path sao:version_of_schema .
-

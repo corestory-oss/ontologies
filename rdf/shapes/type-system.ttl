@@ -151,4 +151,3 @@ saosh:TypeExpressionShape a sh:NodeShape ;
     sh:class sao:Parameter ;
     sh:description "Parameters that have this type." ;
     sh:path sao:type_of_parameters .
-

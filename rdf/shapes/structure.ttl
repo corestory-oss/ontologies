@@ -1628,4 +1628,3 @@ saosh:UserInterfaceShape a sh:NodeShape ;
 
 <https://ontologies.corestory.ai/sao/shapes/UserInterface/ui_type/values/cell/3> rdf:first "cli" ;
     rdf:rest () .
-

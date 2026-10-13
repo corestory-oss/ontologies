@@ -117,4 +117,3 @@ saosh:VersionableShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:version ;
     sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
-

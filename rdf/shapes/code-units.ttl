@@ -1839,4 +1839,3 @@ saosh:ParameterShape a sh:NodeShape ;
 
 <https://ontologies.corestory.ai/sao/shapes/Parameter/visibility/values/cell/4> rdf:first "package" ;
     rdf:rest () .
-

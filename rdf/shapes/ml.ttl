@@ -668,4 +668,3 @@ saosh:MLModelShape a sh:NodeShape ;
     sh:description "Metric value." ;
     sh:maxCount 1 ;
     sh:path sao:value .
-

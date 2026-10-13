@@ -861,4 +861,3 @@ saosh:MessageShape a sh:NodeShape ;
     sh:description "`Contract` validating message." ;
     sh:maxCount 1 ;
     sh:path sao:validated_by_contract .
-

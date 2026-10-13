@@ -8,7 +8,7 @@ operating context—including libraries, services, batch programs, and applicati
 * **Version**: 2.1.0
 * **Author**: Charath Ranganathan
 * **License**: [Apache License 2.0](LICENSE)
-* **Schema**: LinkML (YAML)
+* **Schema**: LinkML (YAML), with a generated [RDFS Turtle vocabulary](sao.ttl)
 
 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships
 
@@ -78,6 +78,9 @@ codebase extractor or a deployed application. The [extraction playbook](docs/ext
 describes how to populate the ontology. Multi-class snippets in the guides are
 conceptual illustrations; validate an individual instance with an explicit
 `-C` target class as shown above.
+
+For RDFS consumers, use [`sao.ttl`](sao.ttl). Regenerate it with
+`uv run python scripts/export_rdfs.py`; see [export semantics and limits](docs/rdfs-export.md).
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
 

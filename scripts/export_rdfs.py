@@ -4,6 +4,7 @@
 """Generate an RDFS vocabulary projection of SAO, not instance data or validation shapes."""
 from __future__ import annotations
 import argparse
+import json
 from collections import defaultdict
 from urllib.parse import quote
 from pathlib import Path
@@ -147,25 +148,118 @@ def validate_projection(graph: Graph, schema_path: Path):
                    for triple in graph for term in triple), "Unexpected OWL terms"
 
 
+def partition_graph(graph: Graph, schema_path: Path) -> dict[str, Graph]:
+    """Partition the completed projection, so shared declarations keep global semantics."""
+    view = SchemaView(str(schema_path.resolve()))
+    owners = defaultdict(set)
+    module_directory = schema_path.resolve().parent / "schema"
+    topics = {"ontology", "common"}
+    for schema in view.all_schema():
+        source = Path(schema.source_file) if schema.source_file else None
+        if source is not None:
+            if not source.is_absolute():
+                source = schema_path.resolve().parent / source
+            source = source.resolve()
+        if source and source.parent == module_directory:
+            topic = source.stem
+            topics.add(topic)
+        elif source == schema_path.resolve():
+            topic = "ontology"
+        else:
+            topic = "common"  # Built-in LinkML datatypes.
+        for definitions in (schema.classes, schema.enums, schema.types, schema.slots):
+            for element in definitions.values():
+                node = URIRef(view.get_uri(element, expand=True))
+                owners[node].add(topic)
+        for cls in schema.classes.values():
+            for name in set(cls.slots) | set(cls.attributes) | set(cls.slot_usage):
+                slot = view.induced_slot(name, cls.name)
+                owners[URIRef(view.get_uri(slot, expand=True))].add(topic)
+    for enum in view.all_enums().values():
+        node = URIRef(view.get_uri(enum, expand=True))
+        for entry in graph.objects(node, EXPORT.permissibleValue):
+            owners[entry].update(owners[node])
+    owners[URIRef(view.schema.id)] = {"ontology"}
+    owners[EXPORT.permissibleValue] = {"common"}
+    pieces = {name + ".ttl": Graph() for name in sorted(topics)}
+    for piece in pieces.values():
+        for prefix, expansion in graph.namespaces():
+            piece.bind(prefix, expansion, replace=True)
+    for triple in graph:
+        candidates = owners[triple[0]]
+        # A shared property is defined once in common, after considering every
+        # module's declarations. Per-module inference would narrow it incorrectly.
+        topic = next(iter(candidates)) if len(candidates) == 1 else "common"
+        pieces[topic + ".ttl"].add(triple)
+    return pieces
+
+
+def load_manifest(manifest_path: Path) -> Graph:
+    """Load each Turtle document separately into one RDF graph."""
+    manifest = json.loads(manifest_path.read_text())
+    if manifest.get("format") != "turtle" or not manifest.get("files"):
+        raise ValueError("Invalid Turtle manifest")
+    files = manifest["files"]
+    if len(files) != len(set(files)):
+        raise ValueError("Duplicate Turtle manifest entry")
+    graph = Graph()
+    for filename in files:
+        path = (manifest_path.parent / filename).resolve()
+        if not path.is_relative_to(manifest_path.parent.resolve()) or path.suffix != ".ttl":
+            raise ValueError(f"Invalid Turtle manifest path: {filename}")
+        graph.parse(path, format="turtle")
+    return graph
+
+
+def write_or_check(graph: Graph, pieces: dict[str, Graph], output: Path,
+                   modules_dir: Path, check: bool):
+    manifest = {"format": "turtle", "files": sorted(pieces)}
+    manifest_path = modules_dir / "manifest.json"
+    expected = set(graph)
+    if check:
+        if set(Graph().parse(output, format="turtle")) != expected:
+            raise ValueError("Complete RDFS export is stale")
+        if json.loads(manifest_path.read_text()) != manifest:
+            raise ValueError("Turtle manifest is stale")
+        if {p.name for p in modules_dir.glob("*.ttl")} != set(pieces):
+            raise ValueError("Unexpected or missing Turtle module")
+        for filename, piece in pieces.items():
+            if set(Graph().parse(modules_dir / filename, format="turtle")) != set(piece):
+                raise ValueError(f"Turtle module is stale: {filename}")
+    else:
+        modules_dir.mkdir(parents=True, exist_ok=True)
+        header = "# Generated from sao.yml and its imports; edit LinkML, then regenerate.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n"
+        output.write_text(header + graph.serialize(format="turtle"))
+        for filename, piece in pieces.items():
+            (modules_dir / filename).write_text(header + piece.serialize(format="turtle"))
+        # This directory is generator-owned; remove exports for deleted modules.
+        for path in modules_dir.glob("*.ttl"):
+            if path.name not in pieces:
+                path.unlink()
+        manifest_path.write_text(json.dumps(manifest, indent=2) + "\n")
+    if set(load_manifest(manifest_path)) != expected:
+        raise ValueError("Assembled Turtle modules differ from the complete vocabulary")
+    if set(Graph().parse(output, format="turtle")) != expected:
+        raise ValueError("Complete Turtle round trip differs from the vocabulary")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--schema", type=Path, default=ROOT / "sao.yml")
     parser.add_argument("--output", type=Path, default=ROOT / "sao.ttl")
-    parser.add_argument("--check", action="store_true", help="Check the committed export matches the current schema")
+    parser.add_argument("--modules-dir", type=Path, default=ROOT / "rdf")
+    parser.add_argument("--check", action="store_true", help="Check the committed complete and modular exports")
     args = parser.parse_args()
     graph = build_graph(args.schema)
     validate_projection(graph, args.schema)
-    if args.check:
-        existing = Graph().parse(args.output, format="turtle")
-        if set(existing) != set(graph):
-            parser.exit(1, "RDFS export is stale; regenerate with scripts/export_rdfs.py.\n")
-    else:
-        text = "# Generated from sao.yml and its imports; edit LinkML, then regenerate.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n" + graph.serialize(format="turtle")
-        args.output.write_text(text)
-        assert set(Graph().parse(args.output, format="turtle")) == set(graph)
+    pieces = partition_graph(graph, args.schema)
+    try:
+        write_or_check(graph, pieces, args.output, args.modules_dir, args.check)
+    except (ValueError, OSError) as error:
+        parser.exit(1, f"{error}; regenerate with scripts/export_rdfs.py.\n")
     classes = len(set(graph.subjects(RDF.type, RDFS.Class)))
     properties = len(set(graph.subjects(RDF.type, RDF.Property)))
-    print(f"RDFS export {'matches' if args.check else 'written'}: {classes} classes, {properties} properties, {len(graph)} triples.")
+    print(f"RDFS export {'matches' if args.check else 'written'}: {classes} classes, {properties} properties, {len(graph)} triples; {len(pieces)} Turtle pieces assemble identically.")
 
 if __name__ == "__main__":
     main()

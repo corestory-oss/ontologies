@@ -1,0 +1,349 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Actor a rdfs:Class ;
+    rdfs:label "Actor" ;
+    rdfs:comment "Any entity that can initiate actions" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Provides a unified abstraction for both human users and automated systems that interact with the application." .
+
+sao:Credential a rdfs:Class ;
+    rdfs:label "Credential" ;
+    rdfs:comment "Authentication material proving an identity claim" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Represents the means by which an identity can be authenticated." .
+
+sao:HumanActor a rdfs:Class ;
+    rdfs:label "HumanActor" ;
+    rdfs:comment "A human user of the system" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:Actor .
+
+sao:Identity a rdfs:Class ;
+    rdfs:label "Identity" ;
+    rdfs:comment "A verified representation of an actor" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Represents the authenticated identity of an actor, which can have multiple roles and credentials." .
+
+sao:Organization a rdfs:Class ;
+    rdfs:label "Organization" ;
+    rdfs:comment "A logical grouping of users and resources within a tenant" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Provides hierarchical organization structure within a tenant for managing users, permissions, and resources." .
+
+sao:SystemActor a rdfs:Class ;
+    rdfs:label "SystemActor" ;
+    rdfs:comment "A system or automated actor" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:Actor .
+
+sao:Tenant a rdfs:Class ;
+    rdfs:label "Tenant" ;
+    rdfs:comment "An organizational boundary for multi-tenant systems" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Isolates data and configuration for different customers or organizational units in a multi-tenant application." .
+
+sao:ActorCategory a rdfs:Datatype ;
+    rdfs:label "ActorCategory" ;
+    rdfs:comment "Categories of actors" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ActorCategory/human>,
+        <https://ontologies.corestory.ai/sao/export/values/ActorCategory/system> .
+
+sao:actor_type a rdf:Property ;
+    rdfs:label "actor_type" ;
+    schema:domainIncludes sao:HumanActor,
+        sao:SystemActor ;
+    schema:rangeIncludes sao:HumanActorType,
+        sao:SystemActorType ;
+    rdfs:comment "Type of human actor.",
+        "[HumanActor] Type of human actor.",
+        "[SystemActor] Type of system actor." ;
+    rdfs:isDefinedBy sao: .
+
+sao:audit_actions_performed a rdf:Property ;
+    rdfs:label "audit_actions_performed" ;
+    rdfs:comment "[Actor] `AuditEntry` entities recording actions by this actor.",
+        "`AuditEntry` entities recording actions by this actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:AuditEntry .
+
+sao:belongs_to_tenant a rdf:Property ;
+    rdfs:label "belongs_to_tenant" ;
+    rdfs:comment "The `Tenant` this identity belongs to.",
+        "[Identity] The `Tenant` this identity belongs to." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Tenant .
+
+sao:contains_identities a rdf:Property ;
+    rdfs:label "contains_identities" ;
+    rdfs:comment "[Tenant] `Identity` entities within this tenant.",
+        "`Identity` entities within this tenant." ;
+    rdfs:domain sao:Tenant ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Identity .
+
+sao:credential_for_identity a rdf:Property ;
+    rdfs:label "credential_for_identity" ;
+    rdfs:domain sao:Credential ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Identity .
+
+sao:credential_type a rdf:Property ;
+    rdfs:label "credential_type" ;
+    rdfs:comment "Type of credential.",
+        "[Credential] Type of credential." ;
+    rdfs:domain sao:Credential ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CredentialType .
+
+sao:email a rdf:Property ;
+    rdfs:label "email" ;
+    rdfs:comment "Contact email address.",
+        "[HumanActor] Contact email address." ;
+    rdfs:domain sao:HumanActor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:expires_at a rdf:Property ;
+    rdfs:label "expires_at" ;
+    rdfs:comment "Expiration timestamp.",
+        "[Credential] Expiration timestamp." ;
+    rdfs:domain sao:Credential ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:has_children a rdf:Property ;
+    rdfs:label "has_children" ;
+    rdfs:comment "Child organizations.",
+        "[Organization] Child organizations." ;
+    rdfs:domain sao:Organization ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Organization .
+
+sao:has_credentials a rdf:Property ;
+    rdfs:label "has_credentials" ;
+    rdfs:comment "List of associated credentials.",
+        "[Identity] List of associated credentials." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Credential .
+
+sao:has_identities a rdf:Property ;
+    rdfs:label "has_identities" ;
+    rdfs:comment "One or more `Identity` entities associated with this actor.",
+        "[Actor] One or more `Identity` entities associated with this actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Identity .
+
+sao:has_identity_members a rdf:Property ;
+    rdfs:label "has_identity_members" ;
+    rdfs:comment "[Organization] `Identity` entities that are members of this organization.",
+        "`Identity` entities that are members of this organization." ;
+    rdfs:domain sao:Organization ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Identity .
+
+sao:has_organizations a rdf:Property ;
+    rdfs:label "has_organizations" ;
+    rdfs:comment "List of organizations within this tenant.",
+        "[Tenant] List of organizations within this tenant." ;
+    rdfs:domain sao:Tenant ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Organization .
+
+sao:has_parent a rdf:Property ;
+    rdfs:label "has_parent" ;
+    rdfs:comment "Parent organization for hierarchical structures.",
+        "[Organization] Parent organization for hierarchical structures." ;
+    rdfs:domain sao:Organization ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Organization .
+
+sao:has_roles a rdf:Property ;
+    rdfs:label "has_roles" ;
+    rdfs:comment "[Identity] `Role` entities assigned to this identity.",
+        "`Role` entities assigned to this identity." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Role .
+
+sao:has_settings a rdf:Property ;
+    rdfs:label "has_settings" ;
+    rdfs:comment "Tenant-specific configuration.",
+        "[Tenant] Tenant-specific configuration." ;
+    rdfs:domain sao:Tenant ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Configuration .
+
+sao:identity_type a rdf:Property ;
+    rdfs:label "identity_type" ;
+    rdfs:comment "Type of identity (user, service, device).",
+        "[Identity] Type of identity (user, service, device)." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:member_of_organizations a rdf:Property ;
+    rdfs:label "member_of_organizations" ;
+    rdfs:comment "[Identity] `Organization` entities this identity is a member of.",
+        "`Organization` entities this identity is a member of." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Organization .
+
+sao:organization_in_tenant a rdf:Property ;
+    rdfs:label "organization_in_tenant" ;
+    rdfs:domain sao:Organization ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Tenant .
+
+sao:owns_controls a rdf:Property ;
+    rdfs:label "owns_controls" ;
+    rdfs:comment "[Actor] `Control` entities owned by this actor.",
+        "`Control` entities owned by this actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Control .
+
+sao:performs_actions a rdf:Property ;
+    rdfs:label "performs_actions" ;
+    rdfs:comment "[Actor] `Action` entities performed by this actor.",
+        "`Action` entities performed by this actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Action .
+
+sao:represents_actor a rdf:Property ;
+    rdfs:label "represents_actor" ;
+    rdfs:comment "The `Actor` this identity represents.",
+        "[Identity] The `Actor` this identity represents." ;
+    rdfs:domain sao:Identity ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Actor .
+
+sao:service_account a rdf:Property ;
+    rdfs:label "service_account" ;
+    rdfs:comment "Service account identifier.",
+        "[SystemActor] Service account identifier." ;
+    rdfs:domain sao:SystemActor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:verifies_evidence a rdf:Property ;
+    rdfs:label "verifies_evidence" ;
+    rdfs:comment "[Actor] `Evidence` entities verified by this actor.",
+        "`Evidence` entities verified by this actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Evidence .
+
+sao:CredentialType a rdfs:Datatype ;
+    rdfs:label "CredentialType" ;
+    rdfs:comment "Types of authentication credentials" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/CredentialType/api_key>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/biometric>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/certificate>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/mfa>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/oauth>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/password>,
+        <https://ontologies.corestory.ai/sao/export/values/CredentialType/token> .
+
+sao:HumanActorType a rdfs:Datatype ;
+    rdfs:label "HumanActorType" ;
+    rdfs:comment "Types of human actors" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/HumanActorType/administrator>,
+        <https://ontologies.corestory.ai/sao/export/values/HumanActorType/auditor>,
+        <https://ontologies.corestory.ai/sao/export/values/HumanActorType/developer>,
+        <https://ontologies.corestory.ai/sao/export/values/HumanActorType/end_user>,
+        <https://ontologies.corestory.ai/sao/export/values/HumanActorType/operator> .
+
+sao:SystemActorType a rdfs:Datatype ;
+    rdfs:label "SystemActorType" ;
+    rdfs:comment "Types of system actors" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/SystemActorType/ai_agent>,
+        <https://ontologies.corestory.ai/sao/export/values/SystemActorType/external_system>,
+        <https://ontologies.corestory.ai/sao/export/values/SystemActorType/internal_service>,
+        <https://ontologies.corestory.ai/sao/export/values/SystemActorType/message_trigger>,
+        <https://ontologies.corestory.ai/sao/export/values/SystemActorType/scheduled_process> .
+
+<https://ontologies.corestory.ai/sao/export/values/ActorCategory/human> rdf:value "human" ;
+    rdfs:comment "Human user or operator." .
+
+<https://ontologies.corestory.ai/sao/export/values/ActorCategory/system> rdf:value "system" ;
+    rdfs:comment "Automated system or service." .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/api_key> rdf:value "api_key" ;
+    rdfs:comment "API key for service authentication." .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/biometric> rdf:value "biometric" ;
+    rdfs:comment "Biometric authentication (fingerprint, face recognition)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/certificate> rdf:value "certificate" ;
+    rdfs:comment "Digital certificate or X.509 certificate" .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/mfa> rdf:value "mfa" ;
+    rdfs:comment "Multi-factor authentication" .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/oauth> rdf:value "oauth" ;
+    rdfs:comment "OAuth 2.0 authentication flow" .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/password> rdf:value "password" ;
+    rdfs:comment "Username and password credentials." .
+
+<https://ontologies.corestory.ai/sao/export/values/CredentialType/token> rdf:value "token" ;
+    rdfs:comment "Token-based authentication (JWT, bearer token)" .
+
+<https://ontologies.corestory.ai/sao/export/values/HumanActorType/administrator> rdf:value "administrator" ;
+    rdfs:comment "System administrator with elevated privileges." .
+
+<https://ontologies.corestory.ai/sao/export/values/HumanActorType/auditor> rdf:value "auditor" ;
+    rdfs:comment "Compliance or security auditor." .
+
+<https://ontologies.corestory.ai/sao/export/values/HumanActorType/developer> rdf:value "developer" ;
+    rdfs:comment "Software developer or engineer." .
+
+<https://ontologies.corestory.ai/sao/export/values/HumanActorType/end_user> rdf:value "end_user" ;
+    rdfs:comment "Regular end user of the system." .
+
+<https://ontologies.corestory.ai/sao/export/values/HumanActorType/operator> rdf:value "operator" ;
+    rdfs:comment "Operations personnel managing system runtime." .
+
+<https://ontologies.corestory.ai/sao/export/values/SystemActorType/ai_agent> rdf:value "ai_agent" ;
+    rdfs:comment "Artificial intelligence agent or bot." .
+
+<https://ontologies.corestory.ai/sao/export/values/SystemActorType/external_system> rdf:value "external_system" ;
+    rdfs:comment "External third-party system." .
+
+<https://ontologies.corestory.ai/sao/export/values/SystemActorType/internal_service> rdf:value "internal_service" ;
+    rdfs:comment "Internal service within the system." .
+
+<https://ontologies.corestory.ai/sao/export/values/SystemActorType/message_trigger> rdf:value "message_trigger" ;
+    rdfs:comment "Message or event-triggered automation." .
+
+<https://ontologies.corestory.ai/sao/export/values/SystemActorType/scheduled_process> rdf:value "scheduled_process" ;
+    rdfs:comment "Scheduled or cron-based process." .
+

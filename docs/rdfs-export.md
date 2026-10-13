@@ -13,6 +13,25 @@ A property gets `rdfs:domain` or `rdfs:range` when its declarations agree on a s
 
 This is intentionally an RDFS projection, not a lossless conversion. Required fields, cardinality, identifiers, inverses, inlining, abstractness, closed enums, and value constraints remain in LinkML. Mixins become class membership via subclass edges; their LinkML implementation details are not represented. RDFS domain/range are inference statements, not validation rules. Use LinkML validation for instance conformance; SHACL can be considered separately if RDF validation is needed.
 
-The export uses RDF, RDFS, SKOS, Dublin Core and Schema.org vocabulary, plus one documented export annotation. It emits no OWL axioms or restrictions. CI checks that the committed Turtle parses and is graph-equivalent to a fresh export.
+The export uses RDF, RDFS, SKOS, Dublin Core and Schema.org vocabulary, plus one documented export annotation. It emits no OWL axioms or restrictions. CI checks that the complete export and every topic file match regeneration, and that assembling the files in the manifest yields exactly the complete graph.
 
 References: [RDFS 1.1](https://www.w3.org/TR/rdf-schema/), [Schema.org domainIncludes](https://schema.org/domainIncludes), [Schema.org rangeIncludes](https://schema.org/rangeIncludes).
+
+## Modular distribution
+
+`rdf/` is generator-owned. It contains one topic file per LinkML module, plus `ontology.ttl` for vocabulary metadata. `common.ttl` also holds built-in datatypes, the export annotation, and shared properties declared across multiple topics. This keeps each shared property's domain/range projection consistent with the complete schema. Files can reference IRIs defined in other files; one topic alone is not necessarily a complete vocabulary.
+
+`rdf/manifest.json` lists the complete assembly. Each Turtle file declares its own prefixes; load the files individually into the same graph, rather than concatenating text. No `owl:imports` or Turtle include mechanism is used. All files belong to the same SAO vocabulary and release.
+
+```python
+import json
+from pathlib import Path
+from rdflib import Graph
+
+manifest = Path("rdf/manifest.json")
+graph = Graph()
+for filename in json.loads(manifest.read_text())["files"]:
+    graph.parse(manifest.parent / filename, format="turtle")
+```
+
+The assembled graph equals `sao.ttl`, including all documentation and enum annotations. Generation partitions the completed vocabulary; it does not infer domain/range independently in each topic. There are no blank nodes in this export, and enum annotation IRIs are stable across both distributions.

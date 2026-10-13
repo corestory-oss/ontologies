@@ -1,0 +1,325 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:TestAssertion a rdfs:Class ;
+    rdfs:label "TestAssertion" ;
+    rdfs:comment "An individual assertion within a test case" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:TestCase a rdfs:Class ;
+    rdfs:label "TestCase" ;
+    rdfs:comment "A single test case that validates specific behavior" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:TestCoverage a rdfs:Class ;
+    rdfs:label "TestCoverage" ;
+    rdfs:comment "Code coverage metrics for a component or module" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:TestSuite a rdfs:Class ;
+    rdfs:label "TestSuite" ;
+    rdfs:comment "A collection of related test cases" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:TestCaseStatus a rdfs:Datatype ;
+    rdfs:label "TestCaseStatus" ;
+    rdfs:comment "Execution status of a test case" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/failing>,
+        <https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/flaky>,
+        <https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/passing>,
+        <https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/pending>,
+        <https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/skipped> .
+
+sao:assertion_type a rdf:Property ;
+    rdfs:label "assertion_type" ;
+    rdfs:comment "Kind of assertion.",
+        "[TestAssertion] Kind of assertion." ;
+    rdfs:domain sao:TestAssertion ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:AssertionType .
+
+sao:belongs_to_suite a rdf:Property ;
+    rdfs:label "belongs_to_suite" ;
+    rdfs:comment "Parent suite.",
+        "[TestCase] Parent suite." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TestSuite .
+
+sao:branch_coverage_percent a rdf:Property ;
+    rdfs:label "branch_coverage_percent" ;
+    rdfs:comment "Branch coverage percentage.",
+        "[TestCoverage] Branch coverage percentage." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:contains_test_cases a rdf:Property ;
+    rdfs:label "contains_test_cases" ;
+    rdfs:comment "Test cases in this suite.",
+        "[TestSuite] Test cases in this suite." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TestCase .
+
+sao:coverage_for_component a rdf:Property ;
+    rdfs:label "coverage_for_component" ;
+    rdfs:comment "Component measured.",
+        "[TestCoverage] Component measured." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Component .
+
+sao:coverage_for_module a rdf:Property ;
+    rdfs:label "coverage_for_module" ;
+    rdfs:comment "Module measured.",
+        "[TestCoverage] Module measured." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:coverage_tool a rdf:Property ;
+    rdfs:label "coverage_tool" ;
+    rdfs:comment "Coverage tool (Istanbul, JaCoCo, etc.).",
+        "[TestCoverage] Coverage tool (Istanbul, JaCoCo, etc.)." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:execution_time_ms a rdf:Property ;
+    rdfs:label "execution_time_ms" ;
+    rdfs:comment "Total execution time in milliseconds.",
+        "[TestSuite] Total execution time in milliseconds." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:expected_value a rdf:Property ;
+    rdfs:label "expected_value" ;
+    rdfs:comment "Expected value.",
+        "[TestAssertion] Expected value." ;
+    rdfs:domain sao:TestAssertion ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:failing_cases a rdf:Property ;
+    rdfs:label "failing_cases" ;
+    rdfs:comment "Failing test cases.",
+        "[TestSuite] Failing test cases." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:function_coverage_percent a rdf:Property ;
+    rdfs:label "function_coverage_percent" ;
+    rdfs:comment "Function coverage percentage.",
+        "[TestCoverage] Function coverage percentage." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:has_assertions a rdf:Property ;
+    rdfs:label "has_assertions" ;
+    rdfs:comment "Assertions.",
+        "[TestCase] Assertions." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TestAssertion .
+
+sao:is_automated a rdf:Property ;
+    rdfs:label "is_automated" ;
+    rdfs:comment "Whether automated.",
+        "[TestCase] Whether automated." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:line_coverage_percent a rdf:Property ;
+    rdfs:label "line_coverage_percent" ;
+    rdfs:comment "Line coverage percentage.",
+        "[TestCoverage] Line coverage percentage." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:passing_cases a rdf:Property ;
+    rdfs:label "passing_cases" ;
+    rdfs:comment "Passing test cases.",
+        "[TestSuite] Passing test cases." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:setup_fixture a rdf:Property ;
+    rdfs:label "setup_fixture" ;
+    rdfs:comment "Setup fixture name.",
+        "[TestCase] Setup fixture name." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:skipped_cases a rdf:Property ;
+    rdfs:label "skipped_cases" ;
+    rdfs:comment "Skipped test cases.",
+        "[TestSuite] Skipped test cases." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:statement_coverage_percent a rdf:Property ;
+    rdfs:label "statement_coverage_percent" ;
+    rdfs:comment "Statement coverage percentage.",
+        "[TestCoverage] Statement coverage percentage." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:suite_type a rdf:Property ;
+    rdfs:label "suite_type" ;
+    rdfs:comment "Kind of test suite.",
+        "[TestSuite] Kind of test suite." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:TestSuiteType .
+
+sao:teardown_fixture a rdf:Property ;
+    rdfs:label "teardown_fixture" ;
+    rdfs:comment "Teardown fixture name.",
+        "[TestCase] Teardown fixture name." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:tests_callable a rdf:Property ;
+    rdfs:label "tests_callable" ;
+    rdfs:comment "Callable tested.",
+        "[TestCase] Callable tested." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:tests_component a rdf:Property ;
+    rdfs:label "tests_component" ;
+    rdfs:comment "Component tested.",
+        "[TestSuite] Component tested." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Component .
+
+sao:tests_module a rdf:Property ;
+    rdfs:label "tests_module" ;
+    rdfs:comment "Module tested.",
+        "[TestSuite] Module tested." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:tests_operation a rdf:Property ;
+    rdfs:label "tests_operation" ;
+    rdfs:comment "Operation tested.",
+        "[TestCase] Operation tested." ;
+    rdfs:domain sao:TestCase ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Operation .
+
+sao:total_cases a rdf:Property ;
+    rdfs:label "total_cases" ;
+    rdfs:comment "Total test cases.",
+        "[TestSuite] Total test cases." ;
+    rdfs:domain sao:TestSuite ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:uncovered_lines a rdf:Property ;
+    rdfs:label "uncovered_lines" ;
+    rdfs:comment "Uncovered line numbers.",
+        "[TestCoverage] Uncovered line numbers." ;
+    rdfs:domain sao:TestCoverage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:AssertionType a rdfs:Datatype ;
+    rdfs:label "AssertionType" ;
+    rdfs:comment "Types of test assertions" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/AssertionType/containment>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/custom>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/equality>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/exception>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/mock_verification>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/snapshot>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/truthiness>,
+        <https://ontologies.corestory.ai/sao/export/values/AssertionType/type_check> .
+
+sao:TestSuiteType a rdfs:Datatype ;
+    rdfs:label "TestSuiteType" ;
+    rdfs:comment "Types of test suites" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/contract>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/end_to_end>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/functional>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/integration>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/performance>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/regression>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/security>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/smoke>,
+        <https://ontologies.corestory.ai/sao/export/values/TestSuiteType/unit> .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/containment> rdf:value "containment" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/custom> rdf:value "custom" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/equality> rdf:value "equality" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/exception> rdf:value "exception" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/mock_verification> rdf:value "mock_verification" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/snapshot> rdf:value "snapshot" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/truthiness> rdf:value "truthiness" .
+
+<https://ontologies.corestory.ai/sao/export/values/AssertionType/type_check> rdf:value "type_check" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/failing> rdf:value "failing" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/flaky> rdf:value "flaky" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/passing> rdf:value "passing" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/pending> rdf:value "pending" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestCaseStatus/skipped> rdf:value "skipped" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/contract> rdf:value "contract" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/end_to_end> rdf:value "end_to_end" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/functional> rdf:value "functional" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/integration> rdf:value "integration" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/performance> rdf:value "performance" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/regression> rdf:value "regression" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/security> rdf:value "security" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/smoke> rdf:value "smoke" .
+
+<https://ontologies.corestory.ai/sao/export/values/TestSuiteType/unit> rdf:value "unit" .
+

@@ -1,0 +1,388 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Configuration a rdfs:Class ;
+    rdfs:label "Configuration" ;
+    rdfs:comment "Runtime parameters for a deployment" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Deployment a rdfs:Class ;
+    rdfs:label "Deployment" ;
+    rdfs:comment "An instance of a service running in an environment" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DeploymentUnit a rdfs:Class ;
+    rdfs:label "DeploymentUnit" ;
+    rdfs:comment "The packaged artifact being deployed" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Environment a rdfs:Class ;
+    rdfs:label "Environment" ;
+    rdfs:comment "A runtime context with specific configuration" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Infrastructure a rdfs:Class ;
+    rdfs:label "Infrastructure" ;
+    rdfs:comment "The underlying compute, storage, and network resources" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Release a rdfs:Class ;
+    rdfs:label "Release" ;
+    rdfs:comment "A versioned, deployable package of changes" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:changelog a rdf:Property ;
+    rdfs:label "changelog" ;
+    rdfs:comment "Release notes describing changes.",
+        "[Release] Release notes describing changes." ;
+    rdfs:domain sao:Release ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:config_type a rdf:Property ;
+    rdfs:label "config_type" ;
+    rdfs:comment "Kind of configuration.",
+        "[Configuration] Kind of configuration." ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ConfigurationType .
+
+sao:configures_deployments a rdf:Property ;
+    rdfs:label "configures_deployments" ;
+    rdfs:comment "[Configuration] `Deployment` entities configured.",
+        "`Deployment` entities configured." ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Deployment .
+
+sao:configures_environments a rdf:Property ;
+    rdfs:label "configures_environments" ;
+    rdfs:comment "[Configuration] `Environment` entities configured.",
+        "`Environment` entities configured." ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Environment .
+
+sao:controls_features a rdf:Property ;
+    rdfs:label "controls_features" ;
+    rdfs:comment "Features controlled.",
+        "[Configuration] Features controlled." ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Feature .
+
+sao:deployed_by_pipelines a rdf:Property ;
+    rdfs:label "deployed_by_pipelines" ;
+    rdfs:comment "[Environment] `BuildPipeline` entities that deploy to this environment.",
+        "`BuildPipeline` entities that deploy to this environment." ;
+    rdfs:domain sao:Environment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BuildPipeline .
+
+sao:deployed_in_deployments a rdf:Property ;
+    rdfs:label "deployed_in_deployments" ;
+    rdfs:comment "[DeploymentUnit] `Deployment` entities that deploy this unit.",
+        "`Deployment` entities that deploy this unit." ;
+    rdfs:domain sao:DeploymentUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Deployment .
+
+sao:deployed_in_deployments_as_release a rdf:Property ;
+    rdfs:label "deployed_in_deployments_as_release" ;
+    rdfs:comment "[Release] `Deployment` entities that deploy this release.",
+        "`Deployment` entities that deploy this release." ;
+    rdfs:domain sao:Release ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Deployment .
+
+sao:deployed_in_environment a rdf:Property ;
+    rdfs:label "deployed_in_environment" ;
+    rdfs:comment "Target `Environment`.",
+        "[Deployment] Target `Environment`." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Environment .
+
+sao:deployment_configured_by a rdf:Property ;
+    rdfs:label "deployment_configured_by" ;
+    rdfs:comment "[Deployment] `Configuration` entities.",
+        "`Configuration` entities." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Configuration .
+
+sao:deploys_release a rdf:Property ;
+    rdfs:label "deploys_release" ;
+    rdfs:comment "[Deployment] `Release` version being deployed.",
+        "`Release` version being deployed." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Release .
+
+sao:deploys_service a rdf:Property ;
+    rdfs:label "deploys_service" ;
+    rdfs:comment "The `Service` being deployed.",
+        "[Deployment] The `Service` being deployed." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Service .
+
+sao:deploys_unit a rdf:Property ;
+    rdfs:label "deploys_unit" ;
+    rdfs:comment "[Deployment] `DeploymentUnit` being deployed.",
+        "`DeploymentUnit` being deployed." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DeploymentUnit .
+
+sao:env_configured_by a rdf:Property ;
+    rdfs:label "env_configured_by" ;
+    rdfs:comment "[Environment] `Configuration` entities for this environment.",
+        "`Configuration` entities for this environment." ;
+    rdfs:domain sao:Environment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Configuration .
+
+sao:environment_type a rdf:Property ;
+    rdfs:label "environment_type" ;
+    rdfs:comment "Kind of environment.",
+        "[Environment] Kind of environment." ;
+    rdfs:domain sao:Environment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EnvironmentType .
+
+sao:has_artifacts a rdf:Property ;
+    rdfs:label "has_artifacts" ;
+    rdfs:comment "List of `DeploymentUnit` entities.",
+        "[Release] List of `DeploymentUnit` entities." ;
+    rdfs:domain sao:Release ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DeploymentUnit .
+
+sao:hosts_datastores a rdf:Property ;
+    rdfs:label "hosts_datastores" ;
+    rdfs:comment "[Infrastructure] `DataStore` entities hosted.",
+        "`DataStore` entities hosted." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStore .
+
+sao:hosts_deployments a rdf:Property ;
+    rdfs:label "hosts_deployments" ;
+    rdfs:comment "[Environment] `Deployment` instances running in this environment.",
+        "`Deployment` instances running in this environment." ;
+    rdfs:domain sao:Environment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Deployment .
+
+sao:infra_type a rdf:Property ;
+    rdfs:label "infra_type" ;
+    rdfs:comment "Kind of infrastructure.",
+        "[Infrastructure] Kind of infrastructure." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:InfrastructureType .
+
+sao:infrastructure_provisioned_by_iac a rdf:Property ;
+    rdfs:label "infrastructure_provisioned_by_iac" ;
+    rdfs:comment "[Infrastructure] `IaCDefinition` entities provisioning this infrastructure.",
+        "`IaCDefinition` entities provisioning this infrastructure." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCDefinition .
+
+sao:is_secret a rdf:Property ;
+    rdfs:label "is_secret" ;
+    rdfs:comment "Whether this is sensitive data.",
+        "[Configuration] Whether this is sensitive data." ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:region a rdf:Property ;
+    rdfs:label "region" ;
+    rdfs:comment "Geographic region.",
+        "[Infrastructure] Geographic region." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:replicas a rdf:Property ;
+    rdfs:label "replicas" ;
+    rdfs:comment "Number of instances/replicas running.",
+        "[Deployment] Number of instances/replicas running." ;
+    rdfs:domain sao:Deployment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:setting_for_tenant a rdf:Property ;
+    rdfs:label "setting_for_tenant" ;
+    rdfs:domain sao:Configuration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Tenant .
+
+sao:specifications a rdf:Property ;
+    rdfs:label "specifications" ;
+    rdfs:comment "Resource specifications (instance type, size, etc.).",
+        "[Infrastructure] Resource specifications (instance type, size, etc.)." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:unit_type a rdf:Property ;
+    rdfs:label "unit_type" ;
+    rdfs:comment "Kind of deployment unit.",
+        "[DeploymentUnit] Kind of deployment unit." ;
+    rdfs:domain sao:DeploymentUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DeploymentUnitType .
+
+sao:used_by_environments a rdf:Property ;
+    rdfs:label "used_by_environments" ;
+    rdfs:comment "[Infrastructure] `Environment` entities using this infrastructure.",
+        "`Environment` entities using this infrastructure." ;
+    rdfs:domain sao:Infrastructure ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Environment .
+
+sao:uses_infrastructure a rdf:Property ;
+    rdfs:label "uses_infrastructure" ;
+    rdfs:comment "[Environment] `Infrastructure` resources used.",
+        "`Infrastructure` resources used." ;
+    rdfs:domain sao:Environment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Infrastructure .
+
+sao:ConfigurationType a rdfs:Datatype ;
+    rdfs:label "ConfigurationType" ;
+    rdfs:comment "Types of configuration" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ConfigurationType/config_file>,
+        <https://ontologies.corestory.ai/sao/export/values/ConfigurationType/environment_variable>,
+        <https://ontologies.corestory.ai/sao/export/values/ConfigurationType/feature_flag>,
+        <https://ontologies.corestory.ai/sao/export/values/ConfigurationType/remote_config>,
+        <https://ontologies.corestory.ai/sao/export/values/ConfigurationType/secret> .
+
+sao:DeploymentUnitType a rdfs:Datatype ;
+    rdfs:label "DeploymentUnitType" ;
+    rdfs:comment "Types of deployment units" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/binary>,
+        <https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/container>,
+        <https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/package>,
+        <https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/serverless_function>,
+        <https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/vm> .
+
+sao:EnvironmentType a rdfs:Datatype ;
+    rdfs:label "EnvironmentType" ;
+    rdfs:comment "Types of deployment environments" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/EnvironmentType/development>,
+        <https://ontologies.corestory.ai/sao/export/values/EnvironmentType/dr>,
+        <https://ontologies.corestory.ai/sao/export/values/EnvironmentType/production>,
+        <https://ontologies.corestory.ai/sao/export/values/EnvironmentType/staging>,
+        <https://ontologies.corestory.ai/sao/export/values/EnvironmentType/testing> .
+
+sao:InfrastructureType a rdfs:Datatype ;
+    rdfs:label "InfrastructureType" ;
+    rdfs:comment "Types of infrastructure" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/api_gateway>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/cdn>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/compute>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/dns>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/firewall>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/load_balancer>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/network>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/service_mesh>,
+        <https://ontologies.corestory.ai/sao/export/values/InfrastructureType/storage> .
+
+<https://ontologies.corestory.ai/sao/export/values/ConfigurationType/config_file> rdf:value "config_file" ;
+    rdfs:comment "Configuration file (YAML, JSON, properties)." .
+
+<https://ontologies.corestory.ai/sao/export/values/ConfigurationType/environment_variable> rdf:value "environment_variable" ;
+    rdfs:comment "Environment variable configuration." .
+
+<https://ontologies.corestory.ai/sao/export/values/ConfigurationType/feature_flag> rdf:value "feature_flag" ;
+    rdfs:comment "Feature flag or toggle." .
+
+<https://ontologies.corestory.ai/sao/export/values/ConfigurationType/remote_config> rdf:value "remote_config" ;
+    rdfs:comment "Remote configuration service." .
+
+<https://ontologies.corestory.ai/sao/export/values/ConfigurationType/secret> rdf:value "secret" ;
+    rdfs:comment "Secret or sensitive configuration value." .
+
+<https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/binary> rdf:value "binary" ;
+    rdfs:comment "Compiled binary executable." .
+
+<https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/container> rdf:value "container" ;
+    rdfs:comment "Container image (Docker, etc.)." .
+
+<https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/package> rdf:value "package" ;
+    rdfs:comment "Application package (JAR, WAR, etc.)." .
+
+<https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/serverless_function> rdf:value "serverless_function" ;
+    rdfs:comment "Serverless function deployment package." .
+
+<https://ontologies.corestory.ai/sao/export/values/DeploymentUnitType/vm> rdf:value "vm" ;
+    rdfs:comment "Virtual machine image." .
+
+<https://ontologies.corestory.ai/sao/export/values/EnvironmentType/development> rdf:value "development" ;
+    rdfs:comment "Development environment for active development." .
+
+<https://ontologies.corestory.ai/sao/export/values/EnvironmentType/dr> rdf:value "dr" ;
+    rdfs:comment "Disaster Recovery" .
+
+<https://ontologies.corestory.ai/sao/export/values/EnvironmentType/production> rdf:value "production" ;
+    rdfs:comment "Live production environment." .
+
+<https://ontologies.corestory.ai/sao/export/values/EnvironmentType/staging> rdf:value "staging" ;
+    rdfs:comment "Pre-production staging environment." .
+
+<https://ontologies.corestory.ai/sao/export/values/EnvironmentType/testing> rdf:value "testing" ;
+    rdfs:comment "Testing environment for QA and integration testing." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/api_gateway> rdf:value "api_gateway" ;
+    rdfs:comment "API gateway or ingress controller" .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/cdn> rdf:value "cdn" ;
+    rdfs:comment "Content Delivery Network." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/compute> rdf:value "compute" ;
+    rdfs:comment "Compute resources (VMs, containers)." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/dns> rdf:value "dns" ;
+    rdfs:comment "DNS service." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/firewall> rdf:value "firewall" ;
+    rdfs:comment "Firewall or security group." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/load_balancer> rdf:value "load_balancer" ;
+    rdfs:comment "Load balancer." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/network> rdf:value "network" ;
+    rdfs:comment "Network infrastructure." .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/service_mesh> rdf:value "service_mesh" ;
+    rdfs:comment "Service mesh control plane (Istio, Linkerd, etc.)" .
+
+<https://ontologies.corestory.ai/sao/export/values/InfrastructureType/storage> rdf:value "storage" ;
+    rdfs:comment "Storage resources (disks, volumes)." .
+

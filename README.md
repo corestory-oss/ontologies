@@ -79,7 +79,8 @@ describes how to populate the ontology. Multi-class snippets in the guides are
 conceptual illustrations; validate an individual instance with an explicit
 `-C` target class as shown above.
 
-For RDFS consumers, use [`sao.ttl`](sao.ttl). Regenerate it with
+For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the topic files listed in
+[`rdf/manifest.json`](rdf/manifest.json) into one graph. Regenerate both forms with
 `uv run python scripts/export_rdfs.py`; see [export semantics and limits](docs/rdfs-export.md).
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.

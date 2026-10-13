@@ -1,0 +1,477 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Annotation a rdfs:Class ;
+    rdfs:label "Annotation" ;
+    rdfs:comment "Metadata attached to code elements. Maps to: Annotations (Java), Decorators (Python), Attributes (C#), Pragmas (C/C++), Compiler directives." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:CodeBlock a rdfs:Class ;
+    rdfs:label "CodeBlock" ;
+    rdfs:comment "A logical grouping of statements within a callable unit." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:ControlFlow a rdfs:Class ;
+    rdfs:label "ControlFlow" ;
+    rdfs:comment "Represents control flow between code elements." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DataFlow a rdfs:Class ;
+    rdfs:label "DataFlow" ;
+    rdfs:comment "Represents data flow between code elements." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DefinitionReference a rdfs:Class ;
+    rdfs:label "DefinitionReference" ;
+    rdfs:comment "A reference from one code container to shared definitions. Maps to: Import (Python/Java), Include (C/C++), COPY (COBOL), Using (C#), Require (Ruby), Use (Rust)." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:ExecutionEnvironmentDirective a rdfs:Class ;
+    rdfs:label "ExecutionEnvironmentDirective" ;
+    rdfs:comment "Platform-specific execution directives. Maps to: JCL (mainframe), Docker Compose, Kubernetes manifests, Shell scripts, Makefiles, build files." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:PlatformExtension .
+
+sao:PlatformExtension a rdfs:Class ;
+    rdfs:label "PlatformExtension" ;
+    rdfs:comment "Base class for platform-specific extensions" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Statement a rdfs:Class ;
+    rdfs:label "Statement" ;
+    rdfs:comment "A single executable instruction or declaration." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:alias a rdf:Property ;
+    rdfs:label "alias" ;
+    rdfs:comment "Import alias.",
+        "[DefinitionReference] Import alias." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:allocates_resources a rdf:Property ;
+    rdfs:label "allocates_resources" ;
+    rdfs:comment "Resources allocated.",
+        "[ExecutionEnvironmentDirective] Resources allocated." ;
+    rdfs:domain sao:ExecutionEnvironmentDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Infrastructure .
+
+sao:annotation_syntax a rdf:Property ;
+    rdfs:label "annotation_syntax" ;
+    rdfs:comment "Syntax form (e.g., `@Override`, `#[derive(Debug)]`).",
+        "[Annotation] Syntax form (e.g., `@Override`, `#[derive(Debug)]`)." ;
+    rdfs:domain sao:Annotation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:block_type a rdf:Property ;
+    rdfs:label "block_type" ;
+    rdfs:comment "Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope).",
+        "[CodeBlock] Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope)." ;
+    rdfs:domain sao:CodeBlock ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeBlockType .
+
+sao:configuration a rdf:Property ;
+    rdfs:label "configuration" ;
+    rdfs:comment "Configuration content.",
+        "[ExecutionEnvironmentDirective] Configuration content." ;
+    rdfs:domain sao:ExecutionEnvironmentDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:contained_in_block a rdf:Property ;
+    rdfs:label "contained_in_block" ;
+    rdfs:comment "Parent block.",
+        "[Statement] Parent block." ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeBlock .
+
+sao:contained_in_callable a rdf:Property ;
+    rdfs:label "contained_in_callable" ;
+    rdfs:comment "Parent callable.",
+        "[CodeBlock] Parent callable." ;
+    rdfs:domain sao:CodeBlock ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:contains_statements a rdf:Property ;
+    rdfs:label "contains_statements" ;
+    rdfs:comment "Statements in this block.",
+        "[CodeBlock] Statements in this block." ;
+    rdfs:domain sao:CodeBlock ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Statement .
+
+sao:defines_execution_order a rdf:Property ;
+    rdfs:label "defines_execution_order" ;
+    rdfs:comment "Execution ordering.",
+        "[ExecutionEnvironmentDirective] Execution ordering." ;
+    rdfs:domain sao:ExecutionEnvironmentDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:flow_type a rdf:Property ;
+    rdfs:label "flow_type" ;
+    schema:domainIncludes sao:ControlFlow,
+        sao:DataFlow ;
+    schema:rangeIncludes sao:ControlFlowType,
+        sao:DataFlowType ;
+    rdfs:comment "Type (call, async_call, branch, jump, return, throw, yield).",
+        "[ControlFlow] Type (call, async_call, branch, jump, return, throw, yield).",
+        "[DataFlow] Type (read, write, modify, define, use)." ;
+    rdfs:isDefinedBy sao: .
+
+sao:has_child_blocks a rdf:Property ;
+    rdfs:label "has_child_blocks" ;
+    rdfs:comment "Child blocks (nesting).",
+        "[CodeBlock] Child blocks (nesting)." ;
+    rdfs:domain sao:CodeBlock ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeBlock .
+
+sao:has_parent_block a rdf:Property ;
+    rdfs:label "has_parent_block" ;
+    rdfs:comment "Parent block (nesting).",
+        "[CodeBlock] Parent block (nesting)." ;
+    rdfs:domain sao:CodeBlock ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeBlock .
+
+sao:has_source_callable a rdf:Property ;
+    rdfs:label "has_source_callable" ;
+    rdfs:comment "Source callable.",
+        "[ControlFlow] Source callable." ;
+    rdfs:domain sao:ControlFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:has_source_element a rdf:Property ;
+    rdfs:label "has_source_element" ;
+    rdfs:comment "Source data element.",
+        "[DataFlow] Source data element." ;
+    rdfs:domain sao:DataFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:has_source_statement a rdf:Property ;
+    rdfs:label "has_source_statement" ;
+    rdfs:comment "Source statement.",
+        "[ControlFlow] Source statement." ;
+    rdfs:domain sao:ControlFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Statement .
+
+sao:has_target_callable a rdf:Property ;
+    rdfs:label "has_target_callable" ;
+    rdfs:comment "Target callable.",
+        "[ControlFlow] Target callable." ;
+    rdfs:domain sao:ControlFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:has_target_element a rdf:Property ;
+    rdfs:label "has_target_element" ;
+    rdfs:comment "Target data element.",
+        "[DataFlow] Target data element." ;
+    rdfs:domain sao:DataFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:has_target_statement a rdf:Property ;
+    rdfs:label "has_target_statement" ;
+    rdfs:comment "Target statement.",
+        "[ControlFlow] Target statement." ;
+    rdfs:domain sao:ControlFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Statement .
+
+sao:has_through_callable a rdf:Property ;
+    rdfs:label "has_through_callable" ;
+    rdfs:comment "Callable where flow occurs.",
+        "[DataFlow] Callable where flow occurs." ;
+    rdfs:domain sao:DataFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:has_through_statement a rdf:Property ;
+    rdfs:label "has_through_statement" ;
+    rdfs:comment "Statement where flow occurs.",
+        "[DataFlow] Statement where flow occurs." ;
+    rdfs:domain sao:DataFlow ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Statement .
+
+sao:invokes_callable a rdf:Property ;
+    rdfs:label "invokes_callable" ;
+    rdfs:comment "Callable invoked.",
+        "[Statement] Callable invoked." ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:is_conditional a rdf:Property ;
+    rdfs:label "is_conditional" ;
+    schema:domainIncludes sao:ControlFlow,
+        sao:Statement ;
+    rdfs:comment "Whether conditional.",
+        "[ControlFlow] Whether flow is conditional.",
+        "[Statement] Whether conditional." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_wildcard a rdf:Property ;
+    rdfs:label "is_wildcard" ;
+    rdfs:comment "Wildcard import (e.g., `import *`).",
+        "[DefinitionReference] Wildcard import (e.g., `import *`)." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:operates_on_elements a rdf:Property ;
+    rdfs:label "operates_on_elements" ;
+    rdfs:comment "Data elements operated on.",
+        "[Statement] Data elements operated on." ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
+
+sao:orchestrates_units a rdf:Property ;
+    rdfs:label "orchestrates_units" ;
+    rdfs:comment "Units orchestrated.",
+        "[ExecutionEnvironmentDirective] Units orchestrated." ;
+    rdfs:domain sao:ExecutionEnvironmentDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:reference_path a rdf:Property ;
+    rdfs:label "reference_path" ;
+    rdfs:comment "Path or module name.",
+        "[DefinitionReference] Path or module name." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:reference_type a rdf:Property ;
+    rdfs:label "reference_type" ;
+    rdfs:comment "[DefinitionReference] `import_module`, `import_symbol`, `include_source`, `inherit`, `implement`.",
+        "`import_module`, `import_symbol`, `include_source`, `inherit`, `implement`." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ReferenceType .
+
+sao:referenced_container a rdf:Property ;
+    rdfs:label "referenced_container" ;
+    rdfs:comment "Target container.",
+        "[DefinitionReference] Target container." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:referencing_container a rdf:Property ;
+    rdfs:label "referencing_container" ;
+    rdfs:comment "Source container.",
+        "[DefinitionReference] Source container." ;
+    rdfs:domain sao:DefinitionReference ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:statement_category a rdf:Property ;
+    rdfs:label "statement_category" ;
+    rdfs:comment "Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling).",
+        "[Statement] Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling)." ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StatementCategory .
+
+sao:text a rdf:Property ;
+    rdfs:label "text" ;
+    rdfs:comment "Source text of statement",
+        "[Statement] Source text of statement" ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:transfers_control_to a rdf:Property ;
+    rdfs:label "transfers_control_to" ;
+    rdfs:comment "Control transfer target.",
+        "[Statement] Control transfer target." ;
+    rdfs:domain sao:Statement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Statement .
+
+sao:CodeBlockType a rdfs:Datatype ;
+    rdfs:label "CodeBlockType" ;
+    rdfs:comment "Types of code blocks" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/conditional>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/critical_section>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/loop>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/scope>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/sequential>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/transaction>,
+        <https://ontologies.corestory.ai/sao/export/values/CodeBlockType/try_catch> .
+
+sao:ControlFlowType a rdfs:Datatype ;
+    rdfs:label "ControlFlowType" ;
+    rdfs:comment "Types of control flow" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/async_call>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/branch>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/call>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/jump>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/return>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/throw>,
+        <https://ontologies.corestory.ai/sao/export/values/ControlFlowType/yield> .
+
+sao:DataFlowType a rdfs:Datatype ;
+    rdfs:label "DataFlowType" ;
+    rdfs:comment "Types of data flow" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataFlowType/define>,
+        <https://ontologies.corestory.ai/sao/export/values/DataFlowType/modify>,
+        <https://ontologies.corestory.ai/sao/export/values/DataFlowType/read>,
+        <https://ontologies.corestory.ai/sao/export/values/DataFlowType/use>,
+        <https://ontologies.corestory.ai/sao/export/values/DataFlowType/write> .
+
+sao:ReferenceType a rdfs:Datatype ;
+    rdfs:label "ReferenceType" ;
+    rdfs:comment "Types of definition references" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ReferenceType/implement>,
+        <https://ontologies.corestory.ai/sao/export/values/ReferenceType/import_module>,
+        <https://ontologies.corestory.ai/sao/export/values/ReferenceType/import_symbol>,
+        <https://ontologies.corestory.ai/sao/export/values/ReferenceType/include_source>,
+        <https://ontologies.corestory.ai/sao/export/values/ReferenceType/inherit> .
+
+sao:StatementCategory a rdfs:Datatype ;
+    rdfs:label "StatementCategory" ;
+    rdfs:comment "Categories of statements" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/StatementCategory/assignment>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/control_transfer>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/data_manipulation>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/declaration>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/exception_handling>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/invocation>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/io_operation>,
+        <https://ontologies.corestory.ai/sao/export/values/StatementCategory/transaction_control> .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/conditional> rdf:value "conditional" ;
+    rdfs:comment "Conditional block (if/else)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/critical_section> rdf:value "critical_section" ;
+    rdfs:comment "Critical section (synchronized/locked block)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/loop> rdf:value "loop" ;
+    rdfs:comment "Loop block (for/while)." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/scope> rdf:value "scope" ;
+    rdfs:comment "Scoping block." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/sequential> rdf:value "sequential" ;
+    rdfs:comment "Sequential block." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/transaction> rdf:value "transaction" ;
+    rdfs:comment "Transaction block." .
+
+<https://ontologies.corestory.ai/sao/export/values/CodeBlockType/try_catch> rdf:value "try_catch" ;
+    rdfs:comment "Exception handling block." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/async_call> rdf:value "async_call" ;
+    rdfs:comment "Asynchronous call." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/branch> rdf:value "branch" ;
+    rdfs:comment "Conditional branch." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/call> rdf:value "call" ;
+    rdfs:comment "Function/method call." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/jump> rdf:value "jump" ;
+    rdfs:comment "Unconditional jump." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/return> rdf:value "return" ;
+    rdfs:comment "Return from callable." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/throw> rdf:value "throw" ;
+    rdfs:comment "Exception throw." .
+
+<https://ontologies.corestory.ai/sao/export/values/ControlFlowType/yield> rdf:value "yield" ;
+    rdfs:comment "Yield control." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataFlowType/define> rdf:value "define" ;
+    rdfs:comment "Define data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataFlowType/modify> rdf:value "modify" ;
+    rdfs:comment "Modify data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataFlowType/read> rdf:value "read" ;
+    rdfs:comment "Read data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataFlowType/use> rdf:value "use" ;
+    rdfs:comment "Use data." .
+
+<https://ontologies.corestory.ai/sao/export/values/DataFlowType/write> rdf:value "write" ;
+    rdfs:comment "Write data." .
+
+<https://ontologies.corestory.ai/sao/export/values/ReferenceType/implement> rdf:value "implement" ;
+    rdfs:comment "Implementation reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/ReferenceType/import_module> rdf:value "import_module" ;
+    rdfs:comment "Import module reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/ReferenceType/import_symbol> rdf:value "import_symbol" ;
+    rdfs:comment "Import symbol reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/ReferenceType/include_source> rdf:value "include_source" ;
+    rdfs:comment "Include source reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/ReferenceType/inherit> rdf:value "inherit" ;
+    rdfs:comment "Inheritance reference." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/assignment> rdf:value "assignment" ;
+    rdfs:comment "Assignment statement." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/control_transfer> rdf:value "control_transfer" ;
+    rdfs:comment "Control transfer statement." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/data_manipulation> rdf:value "data_manipulation" ;
+    rdfs:comment "Data manipulation statement." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/declaration> rdf:value "declaration" ;
+    rdfs:comment "Variable/constant declaration." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/exception_handling> rdf:value "exception_handling" ;
+    rdfs:comment "Exception handling statement." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/invocation> rdf:value "invocation" ;
+    rdfs:comment "Method/function call." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/io_operation> rdf:value "io_operation" ;
+    rdfs:comment "I/O operation statement." .
+
+<https://ontologies.corestory.ai/sao/export/values/StatementCategory/transaction_control> rdf:value "transaction_control" ;
+    rdfs:comment "Transaction control statement." .
+

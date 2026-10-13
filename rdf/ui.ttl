@@ -1,0 +1,325 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Route a rdfs:Class ;
+    rdfs:label "Route" ;
+    rdfs:comment "A navigation route or URL path in a frontend application." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:StateStore a rdfs:Class ;
+    rdfs:label "StateStore" ;
+    rdfs:comment "A frontend state management store or container." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:UIComponent a rdfs:Class ;
+    rdfs:label "UIComponent" ;
+    rdfs:comment "A frontend user interface component that renders visual elements." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:UIProperty a rdfs:Class ;
+    rdfs:label "UIProperty" ;
+    rdfs:comment "A property (prop) passed to a UI component" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:UIComponentType a rdfs:Datatype ;
+    rdfs:label "UIComponentType" ;
+    rdfs:comment "Types of UI components" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/UIComponentType/composite>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/data_display>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/form>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/higher_order>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/layout>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/modal>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/navigation>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/page>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/provider>,
+        <https://ontologies.corestory.ai/sao/export/values/UIComponentType/widget> .
+
+sao:accessibility_role a rdf:Property ;
+    rdfs:label "accessibility_role" ;
+    rdfs:comment "ARIA role.",
+        "[UIComponent] ARIA role." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:actions a rdf:Property ;
+    rdfs:label "actions" ;
+    rdfs:comment "Action names.",
+        "[StateStore] Action names." ;
+    rdfs:domain sao:StateStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:emitted_events a rdf:Property ;
+    rdfs:label "emitted_events" ;
+    rdfs:comment "Events this component emits.",
+        "[UIComponent] Events this component emits." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_child_routes a rdf:Property ;
+    rdfs:label "has_child_routes" ;
+    rdfs:comment "Child routes.",
+        "[Route] Child routes." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Route .
+
+sao:has_child_ui_components a rdf:Property ;
+    rdfs:label "has_child_ui_components" ;
+    rdfs:comment "Children in component tree.",
+        "[UIComponent] Children in component tree." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIComponent .
+
+sao:has_parent_route a rdf:Property ;
+    rdfs:label "has_parent_route" ;
+    rdfs:comment "Parent route.",
+        "[Route] Parent route." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Route .
+
+sao:has_parent_ui_component a rdf:Property ;
+    rdfs:label "has_parent_ui_component" ;
+    rdfs:comment "Parent in component tree.",
+        "[UIComponent] Parent in component tree." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIComponent .
+
+sao:has_props a rdf:Property ;
+    rdfs:label "has_props" ;
+    rdfs:comment "Component properties.",
+        "[UIComponent] Component properties." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIProperty .
+
+sao:has_state_shape a rdf:Property ;
+    rdfs:label "has_state_shape" ;
+    rdfs:comment "Shape of the state tree.",
+        "[StateStore] Shape of the state tree." ;
+    rdfs:domain sao:StateStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:http_methods a rdf:Property ;
+    rdfs:label "http_methods" ;
+    rdfs:comment "Allowed HTTP methods.",
+        "[Route] Allowed HTTP methods." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:is_authenticated a rdf:Property ;
+    rdfs:label "is_authenticated" ;
+    rdfs:comment "Whether authentication is required.",
+        "[Route] Whether authentication is required." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_dynamic a rdf:Property ;
+    rdfs:label "is_dynamic" ;
+    rdfs:comment "Whether the route has dynamic segments.",
+        "[Route] Whether the route has dynamic segments." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_lazy_loaded a rdf:Property ;
+    rdfs:label "is_lazy_loaded" ;
+    rdfs:comment "Whether lazily loaded.",
+        "[UIComponent] Whether lazily loaded." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_reactive a rdf:Property ;
+    rdfs:label "is_reactive" ;
+    rdfs:comment "Whether the prop is reactive.",
+        "[UIProperty] Whether the prop is reactive." ;
+    rdfs:domain sao:UIProperty ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_required a rdf:Property ;
+    rdfs:label "is_required" ;
+    rdfs:comment "Whether the prop is required.",
+        "[UIProperty] Whether the prop is required." ;
+    rdfs:domain sao:UIProperty ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_server_rendered a rdf:Property ;
+    rdfs:label "is_server_rendered" ;
+    rdfs:comment "Whether server-side rendered.",
+        "[UIComponent] Whether server-side rendered." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:managed_by_state a rdf:Property ;
+    rdfs:label "managed_by_state" ;
+    rdfs:comment "State stores managing this component.",
+        "[UIComponent] State stores managing this component." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StateStore .
+
+sao:management_type a rdf:Property ;
+    rdfs:label "management_type" ;
+    rdfs:comment "Kind of state management.",
+        "[StateStore] Kind of state management." ;
+    rdfs:domain sao:StateStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:StateManagementType .
+
+sao:manages_ui_components a rdf:Property ;
+    rdfs:label "manages_ui_components" ;
+    rdfs:comment "UI components managed.",
+        "[StateStore] UI components managed." ;
+    rdfs:domain sao:StateStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIComponent .
+
+sao:path_pattern a rdf:Property ;
+    rdfs:label "path_pattern" ;
+    rdfs:comment "URL path pattern.",
+        "[Route] URL path pattern." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:renders_on_route a rdf:Property ;
+    rdfs:label "renders_on_route" ;
+    rdfs:comment "Routes rendering this component.",
+        "[UIComponent] Routes rendering this component." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Route .
+
+sao:route_guarded_by a rdf:Property ;
+    rdfs:label "route_guarded_by" ;
+    rdfs:comment "Policies guarding this route.",
+        "[Route] Policies guarding this route." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Policy .
+
+sao:route_renders_component a rdf:Property ;
+    rdfs:label "route_renders_component" ;
+    rdfs:comment "UI component rendered.",
+        "[Route] UI component rendered." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:UIComponent .
+
+sao:route_type a rdf:Property ;
+    rdfs:label "route_type" ;
+    rdfs:comment "Kind of route.",
+        "[Route] Kind of route." ;
+    rdfs:domain sao:Route ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:RouteType .
+
+sao:selectors a rdf:Property ;
+    rdfs:label "selectors" ;
+    rdfs:comment "Selector names.",
+        "[StateStore] Selector names." ;
+    rdfs:domain sao:StateStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:ui_implements_encapsulation_unit a rdf:Property ;
+    rdfs:label "ui_implements_encapsulation_unit" ;
+    rdfs:comment "Code implementation.",
+        "[UIComponent] Code implementation." ;
+    rdfs:domain sao:UIComponent ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:RouteType a rdfs:Datatype ;
+    rdfs:label "RouteType" ;
+    rdfs:comment "Types of routes/navigation paths" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/RouteType/api_route>,
+        <https://ontologies.corestory.ai/sao/export/values/RouteType/catch_all>,
+        <https://ontologies.corestory.ai/sao/export/values/RouteType/guarded>,
+        <https://ontologies.corestory.ai/sao/export/values/RouteType/layout_route>,
+        <https://ontologies.corestory.ai/sao/export/values/RouteType/page_route>,
+        <https://ontologies.corestory.ai/sao/export/values/RouteType/redirect> .
+
+sao:StateManagementType a rdfs:Datatype ;
+    rdfs:label "StateManagementType" ;
+    rdfs:comment "Types of frontend state management" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/StateManagementType/context>,
+        <https://ontologies.corestory.ai/sao/export/values/StateManagementType/form_state>,
+        <https://ontologies.corestory.ai/sao/export/values/StateManagementType/global_store>,
+        <https://ontologies.corestory.ai/sao/export/values/StateManagementType/local_state>,
+        <https://ontologies.corestory.ai/sao/export/values/StateManagementType/server_state>,
+        <https://ontologies.corestory.ai/sao/export/values/StateManagementType/url_state> .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/api_route> rdf:value "api_route" .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/catch_all> rdf:value "catch_all" .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/guarded> rdf:value "guarded" .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/layout_route> rdf:value "layout_route" .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/page_route> rdf:value "page_route" .
+
+<https://ontologies.corestory.ai/sao/export/values/RouteType/redirect> rdf:value "redirect" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/context> rdf:value "context" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/form_state> rdf:value "form_state" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/global_store> rdf:value "global_store" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/local_state> rdf:value "local_state" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/server_state> rdf:value "server_state" .
+
+<https://ontologies.corestory.ai/sao/export/values/StateManagementType/url_state> rdf:value "url_state" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/composite> rdf:value "composite" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/data_display> rdf:value "data_display" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/form> rdf:value "form" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/higher_order> rdf:value "higher_order" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/layout> rdf:value "layout" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/modal> rdf:value "modal" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/navigation> rdf:value "navigation" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/page> rdf:value "page" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/provider> rdf:value "provider" .
+
+<https://ontologies.corestory.ai/sao/export/values/UIComponentType/widget> rdf:value "widget" .
+

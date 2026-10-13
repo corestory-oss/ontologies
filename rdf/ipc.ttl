@@ -1,0 +1,139 @@
+# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:IPCConnection a rdfs:Class ;
+    rdfs:label "IPCConnection" ;
+    rdfs:comment "A communication link between two programs/processes" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures how programs communicate at runtime, enabling dependency analysis across process boundaries." .
+
+sao:has_source_program a rdf:Property ;
+    rdfs:label "has_source_program" ;
+    rdfs:comment "Calling program.",
+        "[IPCConnection] Calling program." ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:has_target_program a rdf:Property ;
+    rdfs:label "has_target_program" ;
+    rdfs:comment "Called program.",
+        "[IPCConnection] Called program." ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:ipc_passes_data a rdf:Property ;
+    rdfs:label "ipc_passes_data" ;
+    rdfs:comment "Data structures passed.",
+        "[IPCConnection] Data structures passed." ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:is_synchronous a rdf:Property ;
+    rdfs:label "is_synchronous" ;
+    rdfs:comment "Whether the communication is synchronous.",
+        "[IPCConnection] Whether the communication is synchronous." ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:mechanism a rdf:Property ;
+    rdfs:label "mechanism" ;
+    rdfs:comment "The IPC mechanism used.",
+        "[IPCConnection] The IPC mechanism used." ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IPCMechanism .
+
+sao:transaction_scoped a rdf:Property ;
+    rdfs:label "transaction_scoped" ;
+    rdfs:comment "Whether the IPC participates in a transaction boundary",
+        "[IPCConnection] Whether the IPC participates in a transaction boundary" ;
+    rdfs:domain sao:IPCConnection ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:IPCMechanism a rdfs:Datatype ;
+    rdfs:label "IPCMechanism" ;
+    rdfs:comment "Inter-process communication mechanisms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/cics_link>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/cics_xctl>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/corba>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/database_mediated>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/dcom>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/event_bus>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/grpc_call>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/ims_schedule>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/message_queue>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/named_pipe>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/pipe>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/rest_call>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/rmi>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/semaphore>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/shared_memory>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/signal>,
+        <https://ontologies.corestory.ai/sao/export/values/IPCMechanism/socket> .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/cics_link> rdf:value "cics_link" ;
+    rdfs:comment "CICS LINK to another program" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/cics_xctl> rdf:value "cics_xctl" ;
+    rdfs:comment "CICS XCTL transfer of control" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/corba> rdf:value "corba" ;
+    rdfs:comment "CORBA invocation." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/database_mediated> rdf:value "database_mediated" ;
+    rdfs:comment "Communication via shared database tables" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/dcom> rdf:value "dcom" ;
+    rdfs:comment "Distributed COM." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/event_bus> rdf:value "event_bus" ;
+    rdfs:comment "Event bus communication" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/grpc_call> rdf:value "grpc_call" ;
+    rdfs:comment "gRPC inter-process call" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/ims_schedule> rdf:value "ims_schedule" ;
+    rdfs:comment "IMS message scheduling" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/message_queue> rdf:value "message_queue" ;
+    rdfs:comment "Message queue." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/named_pipe> rdf:value "named_pipe" ;
+    rdfs:comment "Named pipe." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/pipe> rdf:value "pipe" ;
+    rdfs:comment "Pipe." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/rest_call> rdf:value "rest_call" ;
+    rdfs:comment "HTTP-based inter-process call" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/rmi> rdf:value "rmi" ;
+    rdfs:comment "Java Remote Method Invocation" .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/semaphore> rdf:value "semaphore" ;
+    rdfs:comment "Semaphore." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/shared_memory> rdf:value "shared_memory" ;
+    rdfs:comment "Shared memory." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/signal> rdf:value "signal" ;
+    rdfs:comment "Signal." .
+
+<https://ontologies.corestory.ai/sao/export/values/IPCMechanism/socket> rdf:value "socket" ;
+    rdfs:comment "Socket communication." .
+

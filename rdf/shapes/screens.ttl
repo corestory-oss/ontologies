@@ -1,0 +1,215 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ScreenDefinitionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/columns>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/contains_screen_fields>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/external_name>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/program_uses_screens>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/rows>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_defined_in_container>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/tags> ;
+    sh:targetClass sao:ScreenDefinition .
+
+saosh:ScreenFieldShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ScreenField/attribute_byte>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/column>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/field_on_screen>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/initial_value>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/is_input>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/is_protected>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/length>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/maps_to_data_element>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/row>,
+        <https://ontologies.corestory.ai/sao/shapes/ScreenField/tags> ;
+    sh:targetClass sao:ScreenField .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/columns> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Number of screen columns." ;
+    sh:maxCount 1 ;
+    sh:path sao:columns .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/contains_screen_fields> a sh:PropertyShape ;
+    sh:class sao:ScreenField ;
+    sh:description "Fields defined on this screen." ;
+    sh:path sao:contains_screen_fields .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/external_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "External map/display file name" ;
+    sh:maxCount 1 ;
+    sh:path sao:external_name .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/program_uses_screens> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Programs that use this screen." ;
+    sh:path sao:program_uses_screens .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/rows> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Number of screen rows." ;
+    sh:maxCount 1 ;
+    sh:path sao:rows .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_defined_in_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Container where this screen is defined." ;
+    sh:maxCount 1 ;
+    sh:path sao:screen_defined_in_container .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type> a sh:PropertyShape ;
+    sh:description "The type of screen definition." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:screen_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values> rdf:first "bms_map" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/1> rdf:first "rpg_display_file" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/2> rdf:first "character_terminal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/3> rdf:first "tui" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/screen_type/values/cell/4> rdf:first "form_based" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenDefinition/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/attribute_byte> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Display attribute (bright, dark, protected, etc.)" ;
+    sh:maxCount 1 ;
+    sh:path sao:attribute_byte .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/column> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Column position on screen." ;
+    sh:maxCount 1 ;
+    sh:path sao:column .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/field_on_screen> a sh:PropertyShape ;
+    sh:class sao:ScreenDefinition ;
+    sh:description "The screen this field belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:field_on_screen .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/initial_value> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Default display value." ;
+    sh:maxCount 1 ;
+    sh:path sao:initial_value .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/is_input> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the user can type into this field." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_input .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/is_protected> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the field is protected from modification." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_protected .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/length> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Field length in characters." ;
+    sh:maxCount 1 ;
+    sh:path sao:length .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/maps_to_data_element> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Data element mapped to this field." ;
+    sh:maxCount 1 ;
+    sh:path sao:maps_to_data_element .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/row> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Row position on screen." ;
+    sh:maxCount 1 ;
+    sh:path sao:row .
+
+<https://ontologies.corestory.ai/sao/shapes/ScreenField/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+

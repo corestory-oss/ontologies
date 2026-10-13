@@ -1,8 +1,10 @@
 # Contributing to SAO
 
-SAO is a LinkML schema and documentation project. `sao.yml` is the entry point
-for the authoritative schema modules in `schema/`; `CHANGELOG.md` records changes
-and migration guidance.
+SAO is moving to Turtle as its editable source. Edit `rdf/vocabulary/` for RDFS
+vocabulary and `rdf/shapes/` for SHACL constraints. Build complete distributions
+from the manifests with `scripts/build_rdf.py`. `sao.yml` and `schema/` remain a
+legacy comparison baseline, not the generator for the editable Turtle sources.
+`CHANGELOG.md` records changes and migration guidance.
 
 ## Setup and checks
 
@@ -10,6 +12,9 @@ Install uv, then run from the repository root:
 
 ```bash
 uv sync --locked
+uv run python scripts/build_rdf.py --check
+uv run python scripts/validate_rdf.py
+uv run python -m unittest discover -s tests
 uv run linkml-lint --validate-only sao.yml
 uv run python scripts/check_schema.py
 uv run gen-json-schema sao.yml > /tmp/sao.schema.json
@@ -22,7 +27,21 @@ The metamodel check validates schema structure. Instance validation checks the
 selected target class; it does not verify that every referenced ID exists in a
 complete graph or that inverse relationships have been populated.
 
-## Editing schema modules
+## Editing Turtle sources
+
+Edit existing topic files. Class and property IRIs must stay stable unless a
+reviewed migration explicitly changes meaning. Shapes use the distinct
+`https://ontologies.corestory.ai/sao/shapes/` namespace. Add new files to the
+appropriate manifest; do not edit `sao.ttl` or `sao.shacl.ttl` directly. Run
+`uv run python scripts/build_rdf.py` after source edits and commit the resulting
+distributions. Add valid and invalid RDF examples for changed constraints.
+
+Historical migration tools under `scripts/migration/` are not part of the normal
+build. The SHACL bootstrap refuses to overwrite a populated directory. Do not
+regenerate editable sources from the legacy YAML. See [migration status](docs/turtle-migration.md)
+for the remaining gaps before LinkML can be removed.
+
+## Legacy schema modules
 
 Edit the existing definition in its topic file under `schema/`. Shared enums,
 types, base classes, and global slots belong in `schema/common.yaml`. If you add
@@ -52,7 +71,7 @@ Update affected documentation and examples alongside schema changes. Record
 user-visible changes under the Unreleased section of `CHANGELOG.md`.
 
 For ontology names in prose, use **bold** for class names and `monospace` for
-attribute names, enum values, and dotted paths. Use exact names from `sao.yml`.
+attribute names, enum values, and dotted paths. Use exact names from the Turtle vocabulary; legacy documentation may refer to the LinkML baseline.
 
 Do not submit credentials, private customer data, or material you do not have
 permission to contribute. Identify copied or adapted third-party material,

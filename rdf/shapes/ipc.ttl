@@ -1,0 +1,142 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:IPCConnectionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/IPCConnection/description>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/has_source_program>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/has_target_program>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/id>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/ipc_passes_data>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/is_synchronous>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/name>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/IPCConnection/transaction_scoped> ;
+    sh:targetClass sao:IPCConnection .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/has_source_program> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Calling program." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_source_program .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/has_target_program> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Called program." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_target_program .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/ipc_passes_data> a sh:PropertyShape ;
+    sh:class sao:DataStructure ;
+    sh:description "Data structures passed." ;
+    sh:path sao:ipc_passes_data .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/is_synchronous> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the communication is synchronous." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_synchronous .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism> a sh:PropertyShape ;
+    sh:description "The IPC mechanism used." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:mechanism .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values> rdf:first "cics_link" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/1> rdf:first "cics_xctl" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/10> rdf:first "named_pipe" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/11> rdf:first "signal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/12> rdf:first "semaphore" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/13> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/13> rdf:first "dcom" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/14> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/14> rdf:first "rest_call" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/15> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/15> rdf:first "grpc_call" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/16> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/16> rdf:first "event_bus" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/2> rdf:first "ims_schedule" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/3> rdf:first "shared_memory" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/4> rdf:first "pipe" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/5> rdf:first "rmi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/6> rdf:first "corba" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/7> rdf:first "database_mediated" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/8> rdf:first "message_queue" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/9> rdf:first "socket" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IPCConnection/mechanism/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/IPCConnection/transaction_scoped> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the IPC participates in a transaction boundary" ;
+    sh:maxCount 1 ;
+    sh:path sao:transaction_scoped .
+

@@ -1,0 +1,783 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:AnnotationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/annotation_syntax>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/parameters>,
+        <https://ontologies.corestory.ai/sao/shapes/Annotation/tags> ;
+    sh:targetClass sao:Annotation .
+
+saosh:CodeBlockShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/contained_in_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/contains_statements>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/description>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/has_child_blocks>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/has_parent_block>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/id>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/line_end>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/line_start>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/name>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeBlock/tags> ;
+    sh:targetClass sao:CodeBlock .
+
+saosh:ControlFlowShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ControlFlow/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_source_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_source_statement>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_target_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_target_statement>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/is_conditional>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ControlFlow/tags> ;
+    sh:targetClass sao:ControlFlow .
+
+saosh:DataFlowShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DataFlow/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/has_source_element>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/has_target_element>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/has_through_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/has_through_statement>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DataFlow/tags> ;
+    sh:targetClass sao:DataFlow .
+
+saosh:DefinitionReferenceShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/alias>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/is_wildcard>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_path>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/referenced_container>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/referencing_container>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/scope>,
+        <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/tags> ;
+    sh:targetClass sao:DefinitionReference .
+
+saosh:ExecutionEnvironmentDirectiveShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/allocates_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/configuration>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/defines_execution_order>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/directive_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/orchestrates_units>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/platform>,
+        <https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/tags> ;
+    sh:targetClass sao:ExecutionEnvironmentDirective .
+
+saosh:PlatformExtensionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/description>,
+        <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/id>,
+        <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/name>,
+        <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/platform>,
+        <https://ontologies.corestory.ai/sao/shapes/PlatformExtension/tags> ;
+    sh:targetClass sao:PlatformExtension .
+
+saosh:StatementShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Statement/contained_in_block>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/invokes_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/is_conditional>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/line_number>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/operates_on_elements>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/text>,
+        <https://ontologies.corestory.ai/sao/shapes/Statement/transfers_control_to> ;
+    sh:targetClass sao:Statement .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of> a sh:PropertyShape ;
+    sh:description "Code elements whose behavior is altered by this annotation." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternatives> ;
+    sh:path sao:affects_behavior_of .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternative/0> sh:class sao:EncapsulationUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternative/1> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/affects_behavior_of/alternative/1> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element> a sh:PropertyShape ;
+    sh:description "Code elements bearing this annotation." ;
+    sh:maxCount 1 ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives> ;
+    sh:path sao:annotates_element .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/0> sh:class sao:EncapsulationUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/1> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/2> sh:class sao:DataStructure .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/3> sh:class sao:DataElement .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/1> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/2> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/2> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternatives/cell/3> rdf:first <https://ontologies.corestory.ai/sao/shapes/Annotation/annotates_element/alternative/3> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/annotation_syntax> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Syntax form (e.g., `@Override`, `#[derive(Debug)]`)." ;
+    sh:maxCount 1 ;
+    sh:path sao:annotation_syntax .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/parameters> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Annotation parameters." ;
+    sh:path sao:parameters .
+
+<https://ontologies.corestory.ai/sao/shapes/Annotation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type> a sh:PropertyShape ;
+    sh:description "Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:block_type .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values> rdf:first "sequential" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/1> rdf:first "conditional" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/2> rdf:first "loop" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/3> rdf:first "try_catch" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/4> rdf:first "transaction" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/5> rdf:first "critical_section" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/block_type/values/cell/6> rdf:first "scope" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/contained_in_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Parent callable." ;
+    sh:maxCount 1 ;
+    sh:path sao:contained_in_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/contains_statements> a sh:PropertyShape ;
+    sh:class sao:Statement ;
+    sh:description "Statements in this block." ;
+    sh:path sao:contains_statements .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/has_child_blocks> a sh:PropertyShape ;
+    sh:class sao:CodeBlock ;
+    sh:description "Child blocks (nesting)." ;
+    sh:path sao:has_child_blocks .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/has_parent_block> a sh:PropertyShape ;
+    sh:class sao:CodeBlock ;
+    sh:description "Parent block (nesting)." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent_block .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/line_end> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Ending line." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_end .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/line_start> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Starting line." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_start .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeBlock/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Condition expression." ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type> a sh:PropertyShape ;
+    sh:description "Type (call, async_call, branch, jump, return, throw, yield)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:flow_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values> rdf:first "call" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/1> rdf:first "async_call" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/2> rdf:first "branch" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/3> rdf:first "jump" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/4> rdf:first "return" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/5> rdf:first "throw" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/flow_type/values/cell/6> rdf:first "yield" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_source_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Source callable." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_source_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_source_statement> a sh:PropertyShape ;
+    sh:class sao:Statement ;
+    sh:description "Source statement." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_source_statement .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_target_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Target callable." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_target_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/has_target_statement> a sh:PropertyShape ;
+    sh:class sao:Statement ;
+    sh:description "Target statement." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_target_statement .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/is_conditional> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether flow is conditional." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_conditional .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ControlFlow/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type> a sh:PropertyShape ;
+    sh:description "Type (read, write, modify, define, use)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:flow_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values> rdf:first "read" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/1> rdf:first "write" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/2> rdf:first "modify" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/3> rdf:first "define" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/flow_type/values/cell/4> rdf:first "use" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/has_source_element> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Source data element." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_source_element .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/has_target_element> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Target data element." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_target_element .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/has_through_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callable where flow occurs." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_through_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/has_through_statement> a sh:PropertyShape ;
+    sh:class sao:Statement ;
+    sh:description "Statement where flow occurs." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_through_statement .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DataFlow/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/alias> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Import alias." ;
+    sh:maxCount 1 ;
+    sh:path sao:alias .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols> a sh:PropertyShape ;
+    sh:description "Symbols imported by this definition reference." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives> ;
+    sh:path sao:imports_symbols .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/0> sh:class sao:EncapsulationUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/1> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/2> sh:class sao:DataStructure .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/1> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternatives/cell/2> rdf:first <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/imports_symbols/alternative/2> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/is_wildcard> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Wildcard import (e.g., `import *`)." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_wildcard .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_path> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Path or module name." ;
+    sh:maxCount 1 ;
+    sh:path sao:reference_path .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type> a sh:PropertyShape ;
+    sh:description "`import_module`, `import_symbol`, `include_source`, `inherit`, `implement`." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:reference_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values> rdf:first "import_module" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/1> rdf:first "import_symbol" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/2> rdf:first "include_source" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/3> rdf:first "inherit" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/reference_type/values/cell/4> rdf:first "implement" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/referenced_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Target container." ;
+    sh:maxCount 1 ;
+    sh:path sao:referenced_container .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/referencing_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Source container." ;
+    sh:maxCount 1 ;
+    sh:path sao:referencing_container .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/scope> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Import scope." ;
+    sh:maxCount 1 ;
+    sh:path sao:scope .
+
+<https://ontologies.corestory.ai/sao/shapes/DefinitionReference/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/allocates_resources> a sh:PropertyShape ;
+    sh:class sao:Infrastructure ;
+    sh:description "Resources allocated." ;
+    sh:path sao:allocates_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/configuration> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Configuration content." ;
+    sh:maxCount 1 ;
+    sh:path sao:configuration .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/defines_execution_order> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Execution ordering." ;
+    sh:path sao:defines_execution_order .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/directive_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Type of directive." ;
+    sh:maxCount 1 ;
+    sh:path sao:directive_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/orchestrates_units> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Units orchestrated." ;
+    sh:path sao:orchestrates_units .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/platform> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Platform identifier." ;
+    sh:maxCount 1 ;
+    sh:path sao:platform .
+
+<https://ontologies.corestory.ai/sao/shapes/ExecutionEnvironmentDirective/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/platform> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Platform identifier." ;
+    sh:maxCount 1 ;
+    sh:path sao:platform .
+
+<https://ontologies.corestory.ai/sao/shapes/PlatformExtension/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/contained_in_block> a sh:PropertyShape ;
+    sh:class sao:CodeBlock ;
+    sh:description "Parent block." ;
+    sh:maxCount 1 ;
+    sh:path sao:contained_in_block .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/invokes_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callable invoked." ;
+    sh:maxCount 1 ;
+    sh:path sao:invokes_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/is_conditional> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether conditional." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_conditional .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/line_number> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Source line number." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_number .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/operates_on_elements> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Data elements operated on." ;
+    sh:path sao:operates_on_elements .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category> a sh:PropertyShape ;
+    sh:description "Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:statement_category .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values> rdf:first "declaration" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/1> rdf:first "assignment" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/2> rdf:first "invocation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/3> rdf:first "control_transfer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/4> rdf:first "io_operation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/5> rdf:first "data_manipulation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/6> rdf:first "transaction_control" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/statement_category/values/cell/7> rdf:first "exception_handling" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/text> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Source text of statement" ;
+    sh:maxCount 1 ;
+    sh:path sao:text .
+
+<https://ontologies.corestory.ai/sao/shapes/Statement/transfers_control_to> a sh:PropertyShape ;
+    sh:class sao:Statement ;
+    sh:description "Control transfer target." ;
+    sh:maxCount 1 ;
+    sh:path sao:transfers_control_to .
+

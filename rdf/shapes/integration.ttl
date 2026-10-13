@@ -1,0 +1,864 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:AdapterShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Adapter/component_documented_by_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/component_serves_model>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/component_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/component_uses_concurrency_pattern>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/contained_in_module>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/emits_events>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/emits_metric>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/emits_metrics>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/exposes_operations>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/generates_logs>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/has_coverage>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/has_dependencies>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/language>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/source_location>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/tested_by_suites>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/transformation>,
+        <https://ontologies.corestory.ai/sao/shapes/Adapter/used_by_integrations> ;
+    sh:targetClass sao:Adapter .
+
+saosh:CircuitBreakerShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/description>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/failure_threshold>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/half_open_requests>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/id>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/name>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/protects_integrations>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/reset_timeout_seconds>,
+        <https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/tags> ;
+    sh:targetClass sao:CircuitBreaker .
+
+saosh:ContractShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/defines_interfaces>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/definition>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/governs_integrations>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/has_versions>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/implemented_by_units>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/validates_messages>,
+        <https://ontologies.corestory.ai/sao/shapes/Contract/version> ;
+    sh:targetClass sao:Contract .
+
+saosh:ContractVersionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ContractVersion/breaking_changes>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/definition>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version>,
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> ;
+    sh:targetClass sao:ContractVersion .
+
+saosh:ExternalSystemShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/documentation_url>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/integrated_via>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/owner>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/sla>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/tags> ;
+    sh:targetClass sao:ExternalSystem .
+
+saosh:IntegrationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Integration/belongs_to_system>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/has_messages>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/integrates_with_system>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/integration_documented_by_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/integration_governed_by_contract>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/integration_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/protected_by_breaker>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/protocol>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Integration/uses_adapter> ;
+    sh:targetClass sao:Integration .
+
+saosh:MessageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Message/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/message_structured_by_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/message_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Message/validated_by_contract> ;
+    sh:targetClass sao:Message .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/component_documented_by_artifacts> a sh:PropertyShape ;
+    sh:class sao:KnowledgeArtifact ;
+    sh:path sao:component_documented_by_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/component_serves_model> a sh:PropertyShape ;
+    sh:class sao:MLModel ;
+    sh:description "ML models served by this component." ;
+    sh:path sao:component_serves_model .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/component_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Type of component, such as a class, service, or handler." ;
+    sh:maxCount 1 ;
+    sh:path sao:component_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/component_uses_concurrency_pattern> a sh:PropertyShape ;
+    sh:class sao:ConcurrencyPattern ;
+    sh:description "Concurrency patterns used by this component." ;
+    sh:path sao:component_uses_concurrency_pattern .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/contained_in_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "The parent module." ;
+    sh:maxCount 1 ;
+    sh:path sao:contained_in_module .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/emits_events> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "Events produced by this component." ;
+    sh:path sao:emits_events .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/emits_metric> a sh:PropertyShape ;
+    sh:class sao:Metric ;
+    sh:description "Named metric link." ;
+    sh:path sao:emits_metric .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/emits_metrics> a sh:PropertyShape ;
+    sh:class sao:Metric ;
+    sh:description "Metrics emitted by this component." ;
+    sh:path sao:emits_metrics .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/exposes_operations> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "Operations that can be invoked on this component." ;
+    sh:path sao:exposes_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/generates_logs> a sh:PropertyShape ;
+    sh:class sao:Log ;
+    sh:description "Logs generated by this component." ;
+    sh:path sao:generates_logs .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/has_coverage> a sh:PropertyShape ;
+    sh:class sao:TestCoverage ;
+    sh:description "Test coverage for this component." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_coverage .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/has_dependencies> a sh:PropertyShape ;
+    sh:class sao:Dependency ;
+    sh:description "Component-level dependencies." ;
+    sh:path sao:has_dependencies .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code> a sh:PropertyShape ;
+    sh:description "Code implementations of this component." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternatives> ;
+    sh:path sao:implemented_by_code .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternative/0> sh:class sao:CodeContainer .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternative/1> sh:class sao:EncapsulationUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/Adapter/implemented_by_code/alternative/1> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/language> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Implementation language (DEPRECATED -- use written_in_language on CodeContainer)" ;
+    sh:maxCount 1 ;
+    sh:path sao:language .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_location> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Path to the source code." ;
+    sh:maxCount 1 ;
+    sh:path sao:source_location .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol> a sh:PropertyShape ;
+    sh:description "Protocol to translate from." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:source_protocol .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values> rdf:first "http" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/1> rdf:first "https" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/10> rdf:first "corba" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/11> rdf:first "dcom" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/12> rdf:first "rmi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/13> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/13> rdf:first "named_pipe" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/14> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/14> rdf:first "shared_memory" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/2> rdf:first "websocket" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/3> rdf:first "grpc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/4> rdf:first "amqp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/5> rdf:first "mqtt" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/6> rdf:first "kafka" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/7> rdf:first "sftp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/8> rdf:first "tcp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/9> rdf:first "udp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/source_protocol/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol> a sh:PropertyShape ;
+    sh:description "Protocol to translate to." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:target_protocol .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values> rdf:first "http" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/1> rdf:first "https" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/10> rdf:first "corba" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/11> rdf:first "dcom" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/12> rdf:first "rmi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/13> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/13> rdf:first "named_pipe" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/14> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/14> rdf:first "shared_memory" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/2> rdf:first "websocket" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/3> rdf:first "grpc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/4> rdf:first "amqp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/5> rdf:first "mqtt" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/6> rdf:first "kafka" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/7> rdf:first "sftp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/8> rdf:first "tcp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/9> rdf:first "udp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Adapter/target_protocol/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/tested_by_suites> a sh:PropertyShape ;
+    sh:class sao:TestSuite ;
+    sh:description "Test suites that test this component." ;
+    sh:path sao:tested_by_suites .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/transformation> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Data transformation logic." ;
+    sh:maxCount 1 ;
+    sh:path sao:transformation .
+
+<https://ontologies.corestory.ai/sao/shapes/Adapter/used_by_integrations> a sh:PropertyShape ;
+    sh:class sao:Integration ;
+    sh:description "`Integration` entities using this adapter." ;
+    sh:path sao:used_by_integrations .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/failure_threshold> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Number of failures before opening circuit." ;
+    sh:maxCount 1 ;
+    sh:path sao:failure_threshold .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/half_open_requests> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Requests allowed in half-open state." ;
+    sh:maxCount 1 ;
+    sh:path sao:half_open_requests .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/protects_integrations> a sh:PropertyShape ;
+    sh:class sao:Integration ;
+    sh:description "`Integration` entities protected." ;
+    sh:path sao:protects_integrations .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/reset_timeout_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Seconds before attempting half-open." ;
+    sh:maxCount 1 ;
+    sh:path sao:reset_timeout_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/CircuitBreaker/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type> a sh:PropertyShape ;
+    sh:description "Kind of contract." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:contract_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values> rdf:first "openapi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/1> rdf:first "asyncapi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/2> rdf:first "json_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/3> rdf:first "protobuf" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/4> rdf:first "avro" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/5> rdf:first "graphql_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/contract_type/values/cell/6> rdf:first "wsdl" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/defines_interfaces> a sh:PropertyShape ;
+    sh:class sao:Interface ;
+    sh:description "`Interface` entities defined." ;
+    sh:path sao:defines_interfaces .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/definition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Contract definition." ;
+    sh:maxCount 1 ;
+    sh:path sao:definition .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/governs_integrations> a sh:PropertyShape ;
+    sh:class sao:Integration ;
+    sh:description "`Integration` entities governed." ;
+    sh:path sao:governs_integrations .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/has_versions> a sh:PropertyShape ;
+    sh:class sao:ContractVersion ;
+    sh:description "List of contract versions." ;
+    sh:path sao:has_versions .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/implemented_by_units> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "`EncapsulationUnit` entities implementing this contract." ;
+    sh:path sao:implemented_by_units .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/validates_messages> a sh:PropertyShape ;
+    sh:class sao:Message ;
+    sh:description "`Message` entities validated." ;
+    sh:path sao:validates_messages .
+
+<https://ontologies.corestory.ai/sao/shapes/Contract/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/breaking_changes> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "List of breaking changes from previous version." ;
+    sh:path sao:breaking_changes .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/definition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Contract at this version." ;
+    sh:maxCount 1 ;
+    sh:path sao:definition .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version number." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> a sh:PropertyShape ;
+    sh:class sao:Contract ;
+    sh:description "`Contract` that this version belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:version_of_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/documentation_url> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "API documentation URL." ;
+    sh:maxCount 1 ;
+    sh:path sao:documentation_url .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/integrated_via> a sh:PropertyShape ;
+    sh:class sao:Integration ;
+    sh:description "`Integration[]` connecting to this system." ;
+    sh:path sao:integrated_via .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/owner> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "System owner or vendor." ;
+    sh:maxCount 1 ;
+    sh:path sao:owner .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/sla> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Service level agreement." ;
+    sh:maxCount 1 ;
+    sh:path sao:sla .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type> a sh:PropertyShape ;
+    sh:description "Category of external system." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:system_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values> rdf:first "third_party_service" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/1> rdf:first "partner_system" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/2> rdf:first "legacy_system" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/system_type/values/cell/3> rdf:first "saas_application" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ExternalSystem/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/belongs_to_system> a sh:PropertyShape ;
+    sh:class sao:System ;
+    sh:description "Parent `System`." ;
+    sh:maxCount 1 ;
+    sh:path sao:belongs_to_system .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/has_messages> a sh:PropertyShape ;
+    sh:class sao:Message ;
+    sh:description "List of messages exchanged." ;
+    sh:path sao:has_messages .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integrates_with_system> a sh:PropertyShape ;
+    sh:class sao:ExternalSystem ;
+    sh:description "Target `ExternalSystem`." ;
+    sh:maxCount 1 ;
+    sh:path sao:integrates_with_system .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_documented_by_artifacts> a sh:PropertyShape ;
+    sh:class sao:KnowledgeArtifact ;
+    sh:path sao:integration_documented_by_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_governed_by_contract> a sh:PropertyShape ;
+    sh:class sao:Contract ;
+    sh:description "`Contract` defining API." ;
+    sh:maxCount 1 ;
+    sh:path sao:integration_governed_by_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_type> a sh:PropertyShape ;
+    sh:description "`inbound` (receiving data), `outbound` (sending data), `bidirectional`." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:integration_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values> rdf:first "inbound" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values/cell/1> rdf:first "outbound" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/integration_type/values/cell/2> rdf:first "bidirectional" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protected_by_breaker> a sh:PropertyShape ;
+    sh:class sao:CircuitBreaker ;
+    sh:description "`CircuitBreaker` for resilience." ;
+    sh:maxCount 1 ;
+    sh:path sao:protected_by_breaker .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol> a sh:PropertyShape ;
+    sh:description "Communication protocol (HTTP, GRPC, KAFKA, etc.)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:protocol .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values> rdf:first "http" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/1> rdf:first "https" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/10> rdf:first "corba" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/11> rdf:first "dcom" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/12> rdf:first "rmi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/13> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/13> rdf:first "named_pipe" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/14> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/14> rdf:first "shared_memory" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/2> rdf:first "websocket" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/3> rdf:first "grpc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/4> rdf:first "amqp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/5> rdf:first "mqtt" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/6> rdf:first "kafka" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/7> rdf:first "sftp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/8> rdf:first "tcp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/9> rdf:first "udp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Integration/protocol/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Integration/uses_adapter> a sh:PropertyShape ;
+    sh:class sao:Adapter ;
+    sh:description "`Adapter` for protocol translation." ;
+    sh:maxCount 1 ;
+    sh:path sao:uses_adapter .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_structured_by_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` defining message structure." ;
+    sh:maxCount 1 ;
+    sh:path sao:message_structured_by_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type> a sh:PropertyShape ;
+    sh:description "Kind of message." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:message_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values> rdf:first "request" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/1> rdf:first "response" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/2> rdf:first "notification" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/3> rdf:first "command" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/4> rdf:first "event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/message_type/values/cell/5> rdf:first "query" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Message/validated_by_contract> a sh:PropertyShape ;
+    sh:class sao:Contract ;
+    sh:description "`Contract` validating message." ;
+    sh:maxCount 1 ;
+    sh:path sao:validated_by_contract .
+

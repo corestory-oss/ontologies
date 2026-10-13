@@ -1,0 +1,91 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:PreprocessorDirective a rdfs:Class ;
+    rdfs:label "PreprocessorDirective" ;
+    rdfs:comment "A preprocessor directive, macro, or metaprogramming construct" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures conditional compilation, macro expansion, and code generation constructs that affect program behavior and structure." .
+
+sao:MetaprogrammingType a rdfs:Datatype ;
+    rdfs:label "MetaprogrammingType" ;
+    rdfs:comment "Types of preprocessor/metaprogramming mechanisms" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/c_preprocessor>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/cobol_copy_replacing>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/code_generator>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/java_annotation_processor>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/lisp_macro>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/python_metaclass>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/rust_macro_declarative>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/rust_macro_procedural>,
+        <https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/template_metaprogramming> .
+
+sao:directive_affects_callables a rdf:Property ;
+    rdfs:label "directive_affects_callables" ;
+    rdfs:comment "Callables affected by this directive.",
+        "[PreprocessorDirective] Callables affected by this directive." ;
+    rdfs:domain sao:PreprocessorDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CallableUnit .
+
+sao:directive_affects_encapsulation_units a rdf:Property ;
+    rdfs:label "directive_affects_encapsulation_units" ;
+    rdfs:comment "Encapsulation units affected by this directive.",
+        "[PreprocessorDirective] Encapsulation units affected by this directive." ;
+    rdfs:domain sao:PreprocessorDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:directive_defined_in_container a rdf:Property ;
+    rdfs:label "directive_defined_in_container" ;
+    rdfs:comment "Container where this directive is defined.",
+        "[PreprocessorDirective] Container where this directive is defined." ;
+    rdfs:domain sao:PreprocessorDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CodeContainer .
+
+sao:expansion a rdf:Property ;
+    rdfs:label "expansion" ;
+    rdfs:comment "Expanded text or transformation result",
+        "[PreprocessorDirective] Expanded text or transformation result" ;
+    rdfs:domain sao:PreprocessorDirective ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/c_preprocessor> rdf:value "c_preprocessor" ;
+    rdfs:comment "C preprocessor macros." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/cobol_copy_replacing> rdf:value "cobol_copy_replacing" ;
+    rdfs:comment "COBOL COPY ... REPLACING statement" .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/code_generator> rdf:value "code_generator" ;
+    rdfs:comment "Code generator." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/java_annotation_processor> rdf:value "java_annotation_processor" ;
+    rdfs:comment "Java annotation processor." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/lisp_macro> rdf:value "lisp_macro" ;
+    rdfs:comment "Lisp macro." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/python_metaclass> rdf:value "python_metaclass" ;
+    rdfs:comment "Python metaclass." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/rust_macro_declarative> rdf:value "rust_macro_declarative" ;
+    rdfs:comment "Rust declarative macros." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/rust_macro_procedural> rdf:value "rust_macro_procedural" ;
+    rdfs:comment "Rust procedural macros." .
+
+<https://ontologies.corestory.ai/sao/export/values/MetaprogrammingType/template_metaprogramming> rdf:value "template_metaprogramming" ;
+    rdfs:comment "C++ template metaprogramming" .
+

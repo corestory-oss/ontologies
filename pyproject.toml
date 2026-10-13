@@ -9,4 +9,5 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "linkml>=1.9.6",
+    "pyshacl>=0.30,<0.31",
 ]

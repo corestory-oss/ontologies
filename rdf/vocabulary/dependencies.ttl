@@ -1,0 +1,255 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:KnownVulnerability a rdfs:Class ;
+    rdfs:label "KnownVulnerability" ;
+    rdfs:comment "A known security vulnerability in a dependency" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:PackageDependency a rdfs:Class ;
+    rdfs:label "PackageDependency" ;
+    rdfs:comment "A declared dependency on an external package or library" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:PackageManager a rdfs:Class ;
+    rdfs:label "PackageManager" ;
+    rdfs:comment "A package/dependency management tool" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DependencyScope a rdfs:Datatype ;
+    rdfs:label "DependencyScope" ;
+    rdfs:comment "Scope/context of a dependency" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DependencyScope/build>,
+        <https://ontologies.corestory.ai/sao/export/values/DependencyScope/development>,
+        <https://ontologies.corestory.ai/sao/export/values/DependencyScope/optional>,
+        <https://ontologies.corestory.ai/sao/export/values/DependencyScope/production>,
+        <https://ontologies.corestory.ai/sao/export/values/DependencyScope/provided>,
+        <https://ontologies.corestory.ai/sao/export/values/DependencyScope/test> .
+
+sao:VulnerabilitySeverity a rdfs:Datatype ;
+    rdfs:label "VulnerabilitySeverity" ;
+    rdfs:comment "Severity of a known vulnerability" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/critical>,
+        <https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/high>,
+        <https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/low>,
+        <https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/medium>,
+        <https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/none> .
+
+sao:advisory_url a rdf:Property ;
+    rdfs:label "advisory_url" ;
+    rdfs:comment "Security advisory URL.",
+        "[KnownVulnerability] Security advisory URL." ;
+    rdfs:domain sao:KnownVulnerability ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:affected_versions a rdf:Property ;
+    rdfs:label "affected_versions" ;
+    rdfs:comment "Affected version range.",
+        "[KnownVulnerability] Affected version range." ;
+    rdfs:domain sao:KnownVulnerability ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:cve_id a rdf:Property ;
+    rdfs:label "cve_id" ;
+    rdfs:comment "CVE identifier.",
+        "[KnownVulnerability] CVE identifier." ;
+    rdfs:domain sao:KnownVulnerability ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:cvss_score a rdf:Property ;
+    rdfs:label "cvss_score" ;
+    rdfs:comment "CVSS score.",
+        "[KnownVulnerability] CVSS score." ;
+    rdfs:domain sao:KnownVulnerability ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:float .
+
+sao:dependency_of_module a rdf:Property ;
+    rdfs:label "dependency_of_module" ;
+    rdfs:comment "Module declaring this dependency.",
+        "[PackageDependency] Module declaring this dependency." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:fixed_version a rdf:Property ;
+    rdfs:label "fixed_version" ;
+    rdfs:comment "Version with fix.",
+        "[KnownVulnerability] Version with fix." ;
+    rdfs:domain sao:KnownVulnerability ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_known_vulnerabilities a rdf:Property ;
+    rdfs:label "has_known_vulnerabilities" ;
+    rdfs:comment "Known vulnerabilities.",
+        "[PackageDependency] Known vulnerabilities." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:KnownVulnerability .
+
+sao:has_transitive_dependencies a rdf:Property ;
+    rdfs:label "has_transitive_dependencies" ;
+    rdfs:comment "Transitive dependencies.",
+        "[PackageDependency] Transitive dependencies." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PackageDependency .
+
+sao:is_direct a rdf:Property ;
+    rdfs:label "is_direct" ;
+    rdfs:comment "Whether this is a direct dependency.",
+        "[PackageDependency] Whether this is a direct dependency." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:license a rdf:Property ;
+    rdfs:label "license" ;
+    rdfs:comment "Package license.",
+        "[PackageDependency] Package license." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:lock_file a rdf:Property ;
+    rdfs:label "lock_file" ;
+    rdfs:comment "Lock file name.",
+        "[PackageManager] Lock file name." ;
+    rdfs:domain sao:PackageManager ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:manager_type a rdf:Property ;
+    rdfs:label "manager_type" ;
+    rdfs:comment "Kind of package manager.",
+        "[PackageManager] Kind of package manager." ;
+    rdfs:domain sao:PackageManager ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PackageManagerType .
+
+sao:manages_dependencies_for_module a rdf:Property ;
+    rdfs:label "manages_dependencies_for_module" ;
+    rdfs:comment "Modules managed.",
+        "[PackageManager] Modules managed." ;
+    rdfs:domain sao:PackageManager ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Module .
+
+sao:manifest_file a rdf:Property ;
+    rdfs:label "manifest_file" ;
+    rdfs:comment "Manifest file name (package.json, pom.xml, etc.).",
+        "[PackageManager] Manifest file name (package.json, pom.xml, etc.)." ;
+    rdfs:domain sao:PackageManager ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:package_name a rdf:Property ;
+    rdfs:label "package_name" ;
+    rdfs:comment "Package name.",
+        "[PackageDependency] Package name." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:registry_url a rdf:Property ;
+    rdfs:label "registry_url" ;
+    rdfs:comment "Package registry URL.",
+        "[PackageManager] Package registry URL." ;
+    rdfs:domain sao:PackageManager ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:resolved_version a rdf:Property ;
+    rdfs:label "resolved_version" ;
+    rdfs:comment "Resolved version.",
+        "[PackageDependency] Resolved version." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:transitive_dependency_of a rdf:Property ;
+    rdfs:label "transitive_dependency_of" ;
+    rdfs:comment "Packages depending on this transitively.",
+        "[PackageDependency] Packages depending on this transitively." ;
+    rdfs:domain sao:PackageDependency ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PackageDependency .
+
+sao:PackageManagerType a rdfs:Datatype ;
+    rdfs:label "PackageManagerType" ;
+    rdfs:comment "Types of package managers" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/bundler>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/cargo>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/composer>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/conan>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/go_modules>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/gradle>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/maven>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/none>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/npm>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/nuget>,
+        <https://ontologies.corestory.ai/sao/export/values/PackageManagerType/pip> .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/build> rdf:value "build" .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/development> rdf:value "development" .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/optional> rdf:value "optional" .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/production> rdf:value "production" .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/provided> rdf:value "provided" .
+
+<https://ontologies.corestory.ai/sao/export/values/DependencyScope/test> rdf:value "test" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/bundler> rdf:value "bundler" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/cargo> rdf:value "cargo" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/composer> rdf:value "composer" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/conan> rdf:value "conan" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/go_modules> rdf:value "go_modules" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/gradle> rdf:value "gradle" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/maven> rdf:value "maven" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/none> rdf:value "none" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/npm> rdf:value "npm" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/nuget> rdf:value "nuget" .
+
+<https://ontologies.corestory.ai/sao/export/values/PackageManagerType/pip> rdf:value "pip" .
+
+<https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/critical> rdf:value "critical" .
+
+<https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/high> rdf:value "high" .
+
+<https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/low> rdf:value "low" .
+
+<https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/medium> rdf:value "medium" .
+
+<https://ontologies.corestory.ai/sao/export/values/VulnerabilitySeverity/none> rdf:value "none" .
+

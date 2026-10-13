@@ -1,0 +1,286 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:ArtifactRegistry a rdfs:Class ;
+    rdfs:label "ArtifactRegistry" ;
+    rdfs:comment "A registry or repository for storing build artifacts." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:BuildArtifact a rdfs:Class ;
+    rdfs:label "BuildArtifact" ;
+    rdfs:comment "An artifact produced by a build pipeline" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:BuildPipeline a rdfs:Class ;
+    rdfs:label "BuildPipeline" ;
+    rdfs:comment "A CI/CD pipeline that automates build, test, and deployment processes." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:PipelineStage a rdfs:Class ;
+    rdfs:label "PipelineStage" ;
+    rdfs:comment "A discrete stage within a CI/CD pipeline" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:ArtifactType a rdfs:Datatype ;
+    rdfs:label "ArtifactType" ;
+    rdfs:comment "Types of build artifacts" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ArtifactType/archive>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/binary>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/container_image>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/documentation>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/library>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/load_module>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/package>,
+        <https://ontologies.corestory.ai/sao/export/values/ArtifactType/report> .
+
+sao:PipelineType a rdfs:Datatype ;
+    rdfs:label "PipelineType" ;
+    rdfs:comment "Types of CI/CD pipelines" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/PipelineType/build>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/delivery>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/deploy>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/integration>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/release>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/test>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineType/validation> .
+
+sao:artifact_produced_by_pipeline a rdf:Property ;
+    rdfs:label "artifact_produced_by_pipeline" ;
+    rdfs:comment "Pipeline that produced this artifact.",
+        "[BuildArtifact] Pipeline that produced this artifact." ;
+    rdfs:domain sao:BuildArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BuildPipeline .
+
+sao:artifact_stored_in_registry a rdf:Property ;
+    rdfs:label "artifact_stored_in_registry" ;
+    rdfs:comment "Registry storing this artifact.",
+        "[BuildArtifact] Registry storing this artifact." ;
+    rdfs:domain sao:BuildArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ArtifactRegistry .
+
+sao:build_number a rdf:Property ;
+    rdfs:label "build_number" ;
+    rdfs:comment "Build number or identifier.",
+        "[BuildArtifact] Build number or identifier." ;
+    rdfs:domain sao:BuildArtifact ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:depends_on_stages a rdf:Property ;
+    rdfs:label "depends_on_stages" ;
+    rdfs:comment "Stage dependencies (by name).",
+        "[PipelineStage] Stage dependencies (by name)." ;
+    rdfs:domain sao:PipelineStage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:environment_variables a rdf:Property ;
+    rdfs:label "environment_variables" ;
+    rdfs:comment "Environment variables.",
+        "[PipelineStage] Environment variables." ;
+    rdfs:domain sao:PipelineStage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_stages a rdf:Property ;
+    rdfs:label "has_stages" ;
+    rdfs:comment "Pipeline stages.",
+        "[BuildPipeline] Pipeline stages." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PipelineStage .
+
+sao:is_manual a rdf:Property ;
+    rdfs:label "is_manual" ;
+    rdfs:comment "Whether manual approval is required.",
+        "[PipelineStage] Whether manual approval is required." ;
+    rdfs:domain sao:PipelineStage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_parallelizable a rdf:Property ;
+    rdfs:label "is_parallelizable" ;
+    rdfs:comment "Whether stages can run in parallel.",
+        "[BuildPipeline] Whether stages can run in parallel." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_private a rdf:Property ;
+    rdfs:label "is_private" ;
+    rdfs:comment "Whether the registry is private.",
+        "[ArtifactRegistry] Whether the registry is private." ;
+    rdfs:domain sao:ArtifactRegistry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:pipeline_deploys_to_environments a rdf:Property ;
+    rdfs:label "pipeline_deploys_to_environments" ;
+    rdfs:comment "Target environments.",
+        "[BuildPipeline] Target environments." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Environment .
+
+sao:pipeline_produces_artifacts a rdf:Property ;
+    rdfs:label "pipeline_produces_artifacts" ;
+    rdfs:comment "Artifacts produced.",
+        "[BuildPipeline] Artifacts produced." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BuildArtifact .
+
+sao:pipeline_uses_iac a rdf:Property ;
+    rdfs:label "pipeline_uses_iac" ;
+    rdfs:comment "IaC definitions used.",
+        "[BuildPipeline] IaC definitions used." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IaCDefinition .
+
+sao:registry_type a rdf:Property ;
+    rdfs:label "registry_type" ;
+    rdfs:comment "Kind of registry (Docker Hub, Nexus, ECR, etc.).",
+        "[ArtifactRegistry] Kind of registry (Docker Hub, Nexus, ECR, etc.)." ;
+    rdfs:domain sao:ArtifactRegistry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:runner a rdf:Property ;
+    rdfs:label "runner" ;
+    rdfs:comment "Runner/agent label.",
+        "[PipelineStage] Runner/agent label." ;
+    rdfs:domain sao:PipelineStage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:stage_type a rdf:Property ;
+    rdfs:label "stage_type" ;
+    rdfs:comment "Kind of stage.",
+        "[PipelineStage] Kind of stage." ;
+    rdfs:domain sao:PipelineStage ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:PipelineStageType .
+
+sao:stores_artifacts a rdf:Property ;
+    rdfs:label "stores_artifacts" ;
+    rdfs:comment "Artifacts stored.",
+        "[ArtifactRegistry] Artifacts stored." ;
+    rdfs:domain sao:ArtifactRegistry ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BuildArtifact .
+
+sao:timeout_minutes a rdf:Property ;
+    rdfs:label "timeout_minutes" ;
+    schema:domainIncludes sao:BuildPipeline,
+        sao:PipelineStage ;
+    rdfs:comment "Pipeline timeout.",
+        "[BuildPipeline] Pipeline timeout.",
+        "[PipelineStage] Stage timeout." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:trigger a rdf:Property ;
+    rdfs:label "trigger" ;
+    rdfs:comment "Trigger events.",
+        "[BuildPipeline] Trigger events." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:trigger_branches a rdf:Property ;
+    rdfs:label "trigger_branches" ;
+    rdfs:comment "Branches that trigger this pipeline.",
+        "[BuildPipeline] Branches that trigger this pipeline." ;
+    rdfs:domain sao:BuildPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:PipelineStageType a rdfs:Datatype ;
+    rdfs:label "PipelineStageType" ;
+    rdfs:comment "Types of pipeline stages" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/approval>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/build>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/checkout>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/deploy>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/lint>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/notify>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/package>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/publish>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/rollback>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/security_scan>,
+        <https://ontologies.corestory.ai/sao/export/values/PipelineStageType/test> .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/archive> rdf:value "archive" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/binary> rdf:value "binary" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/container_image> rdf:value "container_image" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/documentation> rdf:value "documentation" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/library> rdf:value "library" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/load_module> rdf:value "load_module" ;
+    rdfs:comment "Mainframe load module" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/package> rdf:value "package" .
+
+<https://ontologies.corestory.ai/sao/export/values/ArtifactType/report> rdf:value "report" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/approval> rdf:value "approval" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/build> rdf:value "build" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/checkout> rdf:value "checkout" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/deploy> rdf:value "deploy" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/lint> rdf:value "lint" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/notify> rdf:value "notify" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/package> rdf:value "package" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/publish> rdf:value "publish" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/rollback> rdf:value "rollback" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/security_scan> rdf:value "security_scan" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineStageType/test> rdf:value "test" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/build> rdf:value "build" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/delivery> rdf:value "delivery" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/deploy> rdf:value "deploy" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/integration> rdf:value "integration" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/release> rdf:value "release" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/test> rdf:value "test" .
+
+<https://ontologies.corestory.ai/sao/export/values/PipelineType/validation> rdf:value "validation" .
+

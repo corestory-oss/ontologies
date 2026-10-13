@@ -1,0 +1,480 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ArtifactRegistryShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/base_url>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/is_private>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/registry_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/stores_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/tags> ;
+    sh:targetClass sao:ArtifactRegistry .
+
+saosh:BuildArtifactShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_produced_by_pipeline>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_stored_in_registry>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_uri>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/build_number>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/checksum>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/description>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/id>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/name>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/size_bytes>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/version> ;
+    sh:targetClass sao:BuildArtifact .
+
+saosh:BuildPipelineShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/description>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/has_stages>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/id>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/is_parallelizable>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/name>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_deploys_to_environments>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_produces_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_uses_iac>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/platform>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/source_file>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/timeout_minutes>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/trigger>,
+        <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/trigger_branches> ;
+    sh:targetClass sao:BuildPipeline .
+
+saosh:PipelineStageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/PipelineStage/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/depends_on_stages>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/description>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/environment_variables>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/id>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/is_manual>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/name>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/order>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/runner>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/PipelineStage/timeout_minutes> ;
+    sh:targetClass sao:PipelineStage .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/base_url> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Registry base URL." ;
+    sh:maxCount 1 ;
+    sh:path sao:base_url .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/is_private> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the registry is private." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_private .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/registry_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Kind of registry (Docker Hub, Nexus, ECR, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:registry_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/stores_artifacts> a sh:PropertyShape ;
+    sh:class sao:BuildArtifact ;
+    sh:description "Artifacts stored." ;
+    sh:path sao:stores_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/ArtifactRegistry/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_produced_by_pipeline> a sh:PropertyShape ;
+    sh:class sao:BuildPipeline ;
+    sh:description "Pipeline that produced this artifact." ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_produced_by_pipeline .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_stored_in_registry> a sh:PropertyShape ;
+    sh:class sao:ArtifactRegistry ;
+    sh:description "Registry storing this artifact." ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_stored_in_registry .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type> a sh:PropertyShape ;
+    sh:description "Kind of artifact." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:artifact_type .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values> rdf:first "container_image" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/1> rdf:first "binary" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/2> rdf:first "archive" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/3> rdf:first "package" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/4> rdf:first "library" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/5> rdf:first "documentation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/6> rdf:first "report" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_type/values/cell/7> rdf:first "load_module" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/artifact_uri> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Artifact location." ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_uri .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/build_number> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Build number or identifier." ;
+    sh:maxCount 1 ;
+    sh:path sao:build_number .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/checksum> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Integrity checksum." ;
+    sh:maxCount 1 ;
+    sh:path sao:checksum .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/size_bytes> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Size in bytes." ;
+    sh:maxCount 1 ;
+    sh:path sao:size_bytes .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildArtifact/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/has_stages> a sh:PropertyShape ;
+    sh:class sao:PipelineStage ;
+    sh:description "Pipeline stages." ;
+    sh:path sao:has_stages .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/is_parallelizable> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether stages can run in parallel." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_parallelizable .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_deploys_to_environments> a sh:PropertyShape ;
+    sh:class sao:Environment ;
+    sh:description "Target environments." ;
+    sh:path sao:pipeline_deploys_to_environments .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_produces_artifacts> a sh:PropertyShape ;
+    sh:class sao:BuildArtifact ;
+    sh:description "Artifacts produced." ;
+    sh:path sao:pipeline_produces_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type> a sh:PropertyShape ;
+    sh:description "Kind of pipeline." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:pipeline_type .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values> rdf:first "build" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/1> rdf:first "test" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/2> rdf:first "deploy" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/3> rdf:first "release" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/4> rdf:first "integration" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/5> rdf:first "delivery" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_type/values/cell/6> rdf:first "validation" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/pipeline_uses_iac> a sh:PropertyShape ;
+    sh:class sao:IaCDefinition ;
+    sh:description "IaC definitions used." ;
+    sh:path sao:pipeline_uses_iac .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/platform> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "CI/CD platform (GitHub Actions, Jenkins, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:platform .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/source_file> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Pipeline definition file path." ;
+    sh:maxCount 1 ;
+    sh:path sao:source_file .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/timeout_minutes> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Pipeline timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_minutes .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/trigger> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Trigger events." ;
+    sh:path sao:trigger .
+
+<https://ontologies.corestory.ai/sao/shapes/BuildPipeline/trigger_branches> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Branches that trigger this pipeline." ;
+    sh:path sao:trigger_branches .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Execution condition." ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/depends_on_stages> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Stage dependencies (by name)." ;
+    sh:path sao:depends_on_stages .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/environment_variables> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Environment variables." ;
+    sh:path sao:environment_variables .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/is_manual> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether manual approval is required." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_manual .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/order> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Execution order." ;
+    sh:maxCount 1 ;
+    sh:path sao:order .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/runner> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Runner/agent label." ;
+    sh:maxCount 1 ;
+    sh:path sao:runner .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type> a sh:PropertyShape ;
+    sh:description "Kind of stage." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:stage_type .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values> rdf:first "checkout" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/1> rdf:first "build" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/10> rdf:first "notify" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/2> rdf:first "test" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/3> rdf:first "lint" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/4> rdf:first "security_scan" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/5> rdf:first "package" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/6> rdf:first "publish" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/7> rdf:first "deploy" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/8> rdf:first "approval" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/9> rdf:first "rollback" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PipelineStage/stage_type/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/PipelineStage/timeout_minutes> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Stage timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_minutes .
+

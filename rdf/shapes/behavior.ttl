@@ -1,0 +1,1281 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ActionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Action/allowed_by_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/allowed_in_states>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/emits_events_from_action>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/executed_by_operation>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/executed_during_transition>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/executed_in_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/executes_in_transaction>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/performed_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/recorded_in_audit>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/targets_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/Action/validated_by_action_rules> ;
+    sh:targetClass sao:Action .
+
+saosh:CommandShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Command/allowed_by_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/allowed_in_states>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/command_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/emits_events_from_action>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/executed_by_operation>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/executed_during_transition>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/executed_in_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/executes_in_transaction>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/idempotency_key>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/performed_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/recorded_in_audit>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/targets_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/Command/validated_by_action_rules> ;
+    sh:targetClass sao:Command .
+
+saosh:DomainEventShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DomainEvent/category>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/correlation_id>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/emitted_by_action>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/emitted_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/event_structured_by_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/produced_by_aggregate>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/subscribed_by_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/triggers_transitions>,
+        <https://ontologies.corestory.ai/sao/shapes/DomainEvent/triggers_workflows> ;
+    sh:targetClass sao:DomainEvent .
+
+saosh:EventShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Event/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/correlation_id>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/emitted_by_action>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/emitted_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/event_structured_by_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/subscribed_by_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/triggers_transitions>,
+        <https://ontologies.corestory.ai/sao/shapes/Event/triggers_workflows> ;
+    sh:targetClass sao:Event .
+
+saosh:IntegrationEventShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/correlation_id>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/description>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/emitted_by_action>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/emitted_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/event_structured_by_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/id>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/name>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/subscribed_by_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/targeted_at_services>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/triggers_transitions>,
+        <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/triggers_workflows> ;
+    sh:targetClass sao:IntegrationEvent .
+
+saosh:OperationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Operation/accepts_input_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/errors>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/executes_operation_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/exposed_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/implemented_by_callables>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/offered_on_screens>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/operation_tested_by_cases>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/produces_output_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Operation/tags> ;
+    sh:targetClass sao:Operation .
+
+saosh:QueryShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Query/allowed_by_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/allowed_in_states>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/emits_events_from_action>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/executed_by_operation>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/executed_during_transition>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/executed_in_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/executes_in_transaction>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/filters>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/performed_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/projections>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/recorded_in_audit>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/targets_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/Query/validated_by_action_rules> ;
+    sh:targetClass sao:Query .
+
+saosh:RuleShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Rule/action>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/enforces_aggregate_invariants>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/governs_domain_entities>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/guards_transitions>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/is_active>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/priority>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/validates_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/Rule/validates_attributes> ;
+    sh:targetClass sao:Rule .
+
+saosh:StepShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Step/compensated_by_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/compensates_for_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/executes_actions_in_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/followed_by_steps>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/follows_step>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/order>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Step/timeout_seconds> ;
+    sh:targetClass sao:Step .
+
+saosh:SubscriptionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Subscription/delivery_mode>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/filter>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/subscribed_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/subscribes_to_event_types>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/subscribes_to_interface>,
+        <https://ontologies.corestory.ai/sao/shapes/Subscription/tags> ;
+    sh:targetClass sao:Subscription .
+
+saosh:TransactionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Transaction/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/executes_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/isolation_level>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/timeout_seconds>,
+        <https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type> ;
+    sh:targetClass sao:Transaction .
+
+saosh:WorkflowShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Workflow/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/has_steps>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/triggered_by_workflow_events>,
+        <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type> ;
+    sh:targetClass sao:Workflow .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/allowed_by_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities required." ;
+    sh:path sao:allowed_by_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/allowed_in_states> a sh:PropertyShape ;
+    sh:class sao:State ;
+    sh:description "Back-reference to `State` entities that allow this action." ;
+    sh:path sao:allowed_in_states .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/category> a sh:PropertyShape ;
+    sh:description "`query` (read-only), `command` (state-changing), `mutation` (data modification)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Action/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/category/values> rdf:first "query" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Action/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/category/values/cell/1> rdf:first "command" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Action/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/category/values/cell/2> rdf:first "mutation" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/emits_events_from_action> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` entities emitted." ;
+    sh:path sao:emits_events_from_action .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/executed_by_operation> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "Back-reference to `Operation` entities that execute this action." ;
+    sh:path sao:executed_by_operation .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/executed_during_transition> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities that execute this action." ;
+    sh:path sao:executed_during_transition .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/executed_in_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Back-reference to `Step` entities that execute this action." ;
+    sh:path sao:executed_in_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/executes_in_transaction> a sh:PropertyShape ;
+    sh:class sao:Transaction ;
+    sh:description "`Transaction` context." ;
+    sh:maxCount 1 ;
+    sh:path sao:executes_in_transaction .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/performed_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` performing the action." ;
+    sh:maxCount 1 ;
+    sh:path sao:performed_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/recorded_in_audit> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "Back-reference to `AuditEntry` entities that record this action." ;
+    sh:path sao:recorded_in_audit .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/targets_resources> a sh:PropertyShape ;
+    sh:class sao:Resource ;
+    sh:description "`Resource` entities affected." ;
+    sh:path sao:targets_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/Action/validated_by_action_rules> a sh:PropertyShape ;
+    sh:class sao:Rule ;
+    sh:description "`Rule` entities that validate." ;
+    sh:path sao:validated_by_action_rules .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/allowed_by_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities required." ;
+    sh:path sao:allowed_by_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/allowed_in_states> a sh:PropertyShape ;
+    sh:class sao:State ;
+    sh:description "Back-reference to `State` entities that allow this action." ;
+    sh:path sao:allowed_in_states .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/category> a sh:PropertyShape ;
+    sh:description "`query` (read-only), `command` (state-changing), `mutation` (data modification)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Command/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/category/values> rdf:first "query" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/category/values/cell/1> rdf:first "command" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/category/values/cell/2> rdf:first "mutation" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type> a sh:PropertyShape ;
+    sh:description "Kind of command." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:command_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values> rdf:first "create" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/1> rdf:first "update" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/2> rdf:first "delete" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/3> rdf:first "execute" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/4> rdf:first "archive" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/command_type/values/cell/5> rdf:first "restore" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/emits_events_from_action> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` entities emitted." ;
+    sh:path sao:emits_events_from_action .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/executed_by_operation> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "Back-reference to `Operation` entities that execute this action." ;
+    sh:path sao:executed_by_operation .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/executed_during_transition> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities that execute this action." ;
+    sh:path sao:executed_during_transition .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/executed_in_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Back-reference to `Step` entities that execute this action." ;
+    sh:path sao:executed_in_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/executes_in_transaction> a sh:PropertyShape ;
+    sh:class sao:Transaction ;
+    sh:description "`Transaction` context." ;
+    sh:maxCount 1 ;
+    sh:path sao:executes_in_transaction .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/idempotency_key> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "For idempotent execution." ;
+    sh:maxCount 1 ;
+    sh:path sao:idempotency_key .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/performed_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` performing the action." ;
+    sh:maxCount 1 ;
+    sh:path sao:performed_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/recorded_in_audit> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "Back-reference to `AuditEntry` entities that record this action." ;
+    sh:path sao:recorded_in_audit .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/targets_resources> a sh:PropertyShape ;
+    sh:class sao:Resource ;
+    sh:description "`Resource` entities affected." ;
+    sh:path sao:targets_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/Command/validated_by_action_rules> a sh:PropertyShape ;
+    sh:class sao:Rule ;
+    sh:description "`Rule` entities that validate." ;
+    sh:path sao:validated_by_action_rules .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/category> a sh:PropertyShape ;
+    sh:description "Kind of event." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values> rdf:first "domain_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/1> rdf:first "integration_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/2> rdf:first "system_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/category/values/cell/3> rdf:first "audit_event" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/correlation_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "For tracing related events." ;
+    sh:maxCount 1 ;
+    sh:path sao:correlation_id .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/emitted_by_action> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "Back-reference to `Action` entities that emit this event." ;
+    sh:path sao:emitted_by_action .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/emitted_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "`Component` that produced the event." ;
+    sh:maxCount 1 ;
+    sh:path sao:emitted_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/event_structured_by_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` defining event payload." ;
+    sh:maxCount 1 ;
+    sh:path sao:event_structured_by_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/produced_by_aggregate> a sh:PropertyShape ;
+    sh:class sao:Aggregate ;
+    sh:description "Source `Aggregate`." ;
+    sh:maxCount 1 ;
+    sh:path sao:produced_by_aggregate .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/subscribed_by_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "Back-reference to `Subscription` entities that subscribe to this event." ;
+    sh:path sao:subscribed_by_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/triggers_transitions> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities triggered by this event." ;
+    sh:path sao:triggers_transitions .
+
+<https://ontologies.corestory.ai/sao/shapes/DomainEvent/triggers_workflows> a sh:PropertyShape ;
+    sh:class sao:Workflow ;
+    sh:description "Back-reference to `Workflow` entities triggered by this event." ;
+    sh:path sao:triggers_workflows .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/category> a sh:PropertyShape ;
+    sh:description "Kind of event." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Event/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/category/values> rdf:first "domain_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/1> rdf:first "integration_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/2> rdf:first "system_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/category/values/cell/3> rdf:first "audit_event" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/correlation_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "For tracing related events." ;
+    sh:maxCount 1 ;
+    sh:path sao:correlation_id .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/emitted_by_action> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "Back-reference to `Action` entities that emit this event." ;
+    sh:path sao:emitted_by_action .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/emitted_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "`Component` that produced the event." ;
+    sh:maxCount 1 ;
+    sh:path sao:emitted_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/event_structured_by_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` defining event payload." ;
+    sh:maxCount 1 ;
+    sh:path sao:event_structured_by_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/subscribed_by_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "Back-reference to `Subscription` entities that subscribe to this event." ;
+    sh:path sao:subscribed_by_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/triggers_transitions> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities triggered by this event." ;
+    sh:path sao:triggers_transitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Event/triggers_workflows> a sh:PropertyShape ;
+    sh:class sao:Workflow ;
+    sh:description "Back-reference to `Workflow` entities triggered by this event." ;
+    sh:path sao:triggers_workflows .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category> a sh:PropertyShape ;
+    sh:description "Kind of event." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values> rdf:first "domain_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/1> rdf:first "integration_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/2> rdf:first "system_event" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/category/values/cell/3> rdf:first "audit_event" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/correlation_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "For tracing related events." ;
+    sh:maxCount 1 ;
+    sh:path sao:correlation_id .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/emitted_by_action> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "Back-reference to `Action` entities that emit this event." ;
+    sh:path sao:emitted_by_action .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/emitted_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "`Component` that produced the event." ;
+    sh:maxCount 1 ;
+    sh:path sao:emitted_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/event_structured_by_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` defining event payload." ;
+    sh:maxCount 1 ;
+    sh:path sao:event_structured_by_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/subscribed_by_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "Back-reference to `Subscription` entities that subscribe to this event." ;
+    sh:path sao:subscribed_by_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/targeted_at_services> a sh:PropertyShape ;
+    sh:class sao:Service ;
+    sh:description "Target `Service` entities." ;
+    sh:path sao:targeted_at_services .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/triggers_transitions> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities triggered by this event." ;
+    sh:path sao:triggers_transitions .
+
+<https://ontologies.corestory.ai/sao/shapes/IntegrationEvent/triggers_workflows> a sh:PropertyShape ;
+    sh:class sao:Workflow ;
+    sh:description "Back-reference to `Workflow` entities triggered by this event." ;
+    sh:path sao:triggers_workflows .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/accepts_input_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` for input." ;
+    sh:maxCount 1 ;
+    sh:path sao:accepts_input_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/errors> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Possible error responses." ;
+    sh:path sao:errors .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/executes_operation_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities performed." ;
+    sh:path sao:executes_operation_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/exposed_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "`Component` providing this operation." ;
+    sh:maxCount 1 ;
+    sh:path sao:exposed_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/implemented_by_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "`CallableUnit` entities that implement this operation." ;
+    sh:path sao:implemented_by_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/offered_on_screens> a sh:PropertyShape ;
+    sh:class sao:Screen ;
+    sh:description "`Screen` entities offering this operation." ;
+    sh:path sao:offered_on_screens .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/operation_tested_by_cases> a sh:PropertyShape ;
+    sh:class sao:TestCase ;
+    sh:description "`TestCase` entities that test this operation." ;
+    sh:path sao:operation_tested_by_cases .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/produces_output_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` for output." ;
+    sh:maxCount 1 ;
+    sh:path sao:produces_output_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Operation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/allowed_by_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities required." ;
+    sh:path sao:allowed_by_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/allowed_in_states> a sh:PropertyShape ;
+    sh:class sao:State ;
+    sh:description "Back-reference to `State` entities that allow this action." ;
+    sh:path sao:allowed_in_states .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/category> a sh:PropertyShape ;
+    sh:description "`query` (read-only), `command` (state-changing), `mutation` (data modification)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Query/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/category/values> rdf:first "query" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Query/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/category/values/cell/1> rdf:first "command" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Query/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/category/values/cell/2> rdf:first "mutation" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/emits_events_from_action> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` entities emitted." ;
+    sh:path sao:emits_events_from_action .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/executed_by_operation> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "Back-reference to `Operation` entities that execute this action." ;
+    sh:path sao:executed_by_operation .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/executed_during_transition> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities that execute this action." ;
+    sh:path sao:executed_during_transition .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/executed_in_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Back-reference to `Step` entities that execute this action." ;
+    sh:path sao:executed_in_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/executes_in_transaction> a sh:PropertyShape ;
+    sh:class sao:Transaction ;
+    sh:description "`Transaction` context." ;
+    sh:maxCount 1 ;
+    sh:path sao:executes_in_transaction .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/filters> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Query filters." ;
+    sh:path sao:filters .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/performed_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` performing the action." ;
+    sh:maxCount 1 ;
+    sh:path sao:performed_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/projections> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Fields to return." ;
+    sh:path sao:projections .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/recorded_in_audit> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "Back-reference to `AuditEntry` entities that record this action." ;
+    sh:path sao:recorded_in_audit .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/targets_resources> a sh:PropertyShape ;
+    sh:class sao:Resource ;
+    sh:description "`Resource` entities affected." ;
+    sh:path sao:targets_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/Query/validated_by_action_rules> a sh:PropertyShape ;
+    sh:class sao:Rule ;
+    sh:description "`Rule` entities that validate." ;
+    sh:path sao:validated_by_action_rules .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/action> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Action when rule fires." ;
+    sh:maxCount 1 ;
+    sh:path sao:action .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category> a sh:PropertyShape ;
+    sh:description "Kind of rule." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Rule/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category/values> rdf:first "validation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/1> rdf:first "business" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/2> rdf:first "derivation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/3> rdf:first "constraint" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/category/values/cell/4> rdf:first "trigger" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Rule condition expression." ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/enforces_aggregate_invariants> a sh:PropertyShape ;
+    sh:class sao:Aggregate ;
+    sh:description "Back-reference to `Aggregate` entities whose invariants this rule enforces." ;
+    sh:path sao:enforces_aggregate_invariants .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/governs_domain_entities> a sh:PropertyShape ;
+    sh:class sao:DomainEntity ;
+    sh:description "Back-reference to `DomainEntity` entities governed by this rule." ;
+    sh:path sao:governs_domain_entities .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/guards_transitions> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities guarded by this rule." ;
+    sh:path sao:guards_transitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/is_active> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether rule is currently active." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_active .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/priority> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Evaluation priority." ;
+    sh:maxCount 1 ;
+    sh:path sao:priority .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/validates_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "Back-reference to `Action` entities validated by this rule." ;
+    sh:path sao:validates_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/Rule/validates_attributes> a sh:PropertyShape ;
+    sh:class sao:Attribute ;
+    sh:description "Back-reference to `Attribute` entities validated by this rule." ;
+    sh:path sao:validates_attributes .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/compensated_by_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Compensating step for rollback." ;
+    sh:maxCount 1 ;
+    sh:path sao:compensated_by_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/compensates_for_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Step this compensates for." ;
+    sh:maxCount 1 ;
+    sh:path sao:compensates_for_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Condition for execution." ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/executes_actions_in_step> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities executed." ;
+    sh:path sao:executes_actions_in_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/followed_by_steps> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Next steps in sequence." ;
+    sh:path sao:followed_by_steps .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/follows_step> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Previous steps." ;
+    sh:path sao:follows_step .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/order> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Execution order." ;
+    sh:maxCount 1 ;
+    sh:path sao:order .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Step/timeout_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Step timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/delivery_mode> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Push or pull delivery." ;
+    sh:maxCount 1 ;
+    sh:path sao:delivery_mode .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/filter> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Filter expression for event selection." ;
+    sh:maxCount 1 ;
+    sh:path sao:filter .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/subscribed_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` subscribing." ;
+    sh:maxCount 1 ;
+    sh:path sao:subscribed_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/subscribes_to_event_types> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` types subscribed to." ;
+    sh:path sao:subscribes_to_event_types .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/subscribes_to_interface> a sh:PropertyShape ;
+    sh:class sao:EventInterface ;
+    sh:description "`EventInterface` for delivery." ;
+    sh:maxCount 1 ;
+    sh:path sao:subscribes_to_interface .
+
+<https://ontologies.corestory.ai/sao/shapes/Subscription/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/executes_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities in this transaction." ;
+    sh:path sao:executes_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/isolation_level> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Transaction isolation level." ;
+    sh:maxCount 1 ;
+    sh:path sao:isolation_level .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/timeout_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Transaction timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type> a sh:PropertyShape ;
+    sh:description "Kind of transaction." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:transaction_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values> rdf:first "local" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/1> rdf:first "distributed" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/2> rdf:first "saga" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Transaction/transaction_type/values/cell/3> rdf:first "two_phase_commit" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/has_steps> a sh:PropertyShape ;
+    sh:class sao:Step ;
+    sh:description "Ordered list of `Step` entities." ;
+    sh:path sao:has_steps .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/triggered_by_workflow_events> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` entities that start the workflow." ;
+    sh:path sao:triggered_by_workflow_events .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type> a sh:PropertyShape ;
+    sh:description "Coordination pattern." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:workflow_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values> rdf:first "synchronous" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/1> rdf:first "asynchronous" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/2> rdf:first "saga" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/3> rdf:first "choreography" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Workflow/workflow_type/values/cell/4> rdf:first "orchestration" ;
+    rdf:rest () .
+

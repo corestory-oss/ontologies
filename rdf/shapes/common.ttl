@@ -1,0 +1,120 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:AuditableShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Auditable/audit_log> ;
+    sh:targetClass sao:Auditable .
+
+saosh:MetadataShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Metadata/created_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Metadata/created_by>,
+        <https://ontologies.corestory.ai/sao/shapes/Metadata/updated_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Metadata/version> ;
+    sh:targetClass sao:Metadata .
+
+saosh:NamedEntityShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/NamedEntity/description>,
+        <https://ontologies.corestory.ai/sao/shapes/NamedEntity/id>,
+        <https://ontologies.corestory.ai/sao/shapes/NamedEntity/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/NamedEntity/name>,
+        <https://ontologies.corestory.ai/sao/shapes/NamedEntity/tags> ;
+    sh:targetClass sao:NamedEntity .
+
+saosh:VersionableShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Versionable/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/Versionable/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/Versionable/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/Versionable/version> ;
+    sh:targetClass sao:Versionable .
+
+<https://ontologies.corestory.ai/sao/shapes/Auditable/audit_log> a sh:PropertyShape ;
+    sh:class sao:AuditLog ;
+    sh:maxCount 1 ;
+    sh:path sao:audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Metadata/created_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:path sao:created_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Metadata/created_by> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path sao:created_by .
+
+<https://ontologies.corestory.ai/sao/shapes/Metadata/updated_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:path sao:updated_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Metadata/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/NamedEntity/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/NamedEntity/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/NamedEntity/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/NamedEntity/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/NamedEntity/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Versionable/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/Versionable/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/Versionable/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/Versionable/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+

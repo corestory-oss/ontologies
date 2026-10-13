@@ -1,0 +1,911 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:AuditEntryShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/AuditEntry/affects_resource>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/audit_performed_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/description>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/details>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/id>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/name>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/outcome>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/records_action>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/timestamp> ;
+    sh:targetClass sao:AuditEntry .
+
+saosh:AuditLogShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/AuditLog/auditlog_governed_by_retention>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/contains_entries>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/description>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/id>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/name>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditLog/tags> ;
+    sh:targetClass sao:AuditLog .
+
+saosh:CollectionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Collection/collection_structured_by_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/governed_by_retention_policy>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/has_constraints>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/has_indexes>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/indexes>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/persists_structures>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/stores_records>,
+        <https://ontologies.corestory.ai/sao/shapes/Collection/tags> ;
+    sh:targetClass sao:Collection .
+
+saosh:DataClassificationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/encryption_required>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/handling_requirements>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DataClassification/tags> ;
+    sh:targetClass sao:DataClassification .
+
+saosh:DataLineageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DataLineage/derived_from_records>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/source>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/tracks_record>,
+        <https://ontologies.corestory.ai/sao/shapes/DataLineage/transformations> ;
+    sh:targetClass sao:DataLineage .
+
+saosh:DataStoreShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DataStore/connection_string>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/has_collections>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/hosted_on_infrastructure>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/persists_aggregates>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/store_file_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/store_read_by_pipelines>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/store_written_by_pipelines>,
+        <https://ontologies.corestory.ai/sao/shapes/DataStore/tags> ;
+    sh:targetClass sao:DataStore .
+
+saosh:RecordShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Record/classifications>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/conforms_to_schema>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/has_lineage>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/source_of_lineage>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/stored_in_collection>,
+        <https://ontologies.corestory.ai/sao/shapes/Record/tags> ;
+    sh:targetClass sao:Record .
+
+saosh:RetentionPolicyShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/archive_after_days>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/deletion_strategy>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/description>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_audit_logs>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_collections>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_logs>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/id>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/name>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/retention_days>,
+        <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/tags> ;
+    sh:targetClass sao:RetentionPolicy .
+
+saosh:SchemaShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Schema/defines_operation_input>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/defines_operation_output>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/definition>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/has_versions>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/structures_collections>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/structures_events>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/structures_messages>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/structures_resource_types>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/validates_records>,
+        <https://ontologies.corestory.ai/sao/shapes/Schema/version> ;
+    sh:targetClass sao:Schema .
+
+saosh:SchemaVersionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/definition>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/description>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/id>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/is_backward_compatible>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/migration_script>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/name>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version>,
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> ;
+    sh:targetClass sao:SchemaVersion .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/affects_resource> a sh:PropertyShape ;
+    sh:class sao:Resource ;
+    sh:description "`Resource` affected." ;
+    sh:maxCount 1 ;
+    sh:path sao:affects_resource .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/audit_performed_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` who performed action." ;
+    sh:maxCount 1 ;
+    sh:path sao:audit_performed_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/details> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Additional context." ;
+    sh:maxCount 1 ;
+    sh:path sao:details .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log> a sh:PropertyShape ;
+    sh:class sao:AuditLog ;
+    sh:description "`AuditLog` that this entry belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:entry_in_audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/outcome> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Result of the action (success, failure, error)." ;
+    sh:maxCount 1 ;
+    sh:path sao:outcome .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/records_action> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` that was performed." ;
+    sh:maxCount 1 ;
+    sh:path sao:records_action .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/timestamp> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When the event occurred (required)." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:timestamp .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/auditlog_governed_by_retention> a sh:PropertyShape ;
+    sh:class sao:RetentionPolicy ;
+    sh:description "`RetentionPolicy` for log retention." ;
+    sh:maxCount 1 ;
+    sh:path sao:auditlog_governed_by_retention .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/contains_entries> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "`AuditEntry[]` (v2.0 back-reference from `AuditEntry.entry_in_audit_log`)." ;
+    sh:path sao:contains_entries .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/AuditLog/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/collection_structured_by_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` defining structure." ;
+    sh:maxCount 1 ;
+    sh:path sao:collection_structured_by_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/governed_by_retention_policy> a sh:PropertyShape ;
+    sh:class sao:RetentionPolicy ;
+    sh:description "`RetentionPolicy` for data lifecycle." ;
+    sh:maxCount 1 ;
+    sh:path sao:governed_by_retention_policy .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/has_constraints> a sh:PropertyShape ;
+    sh:class sao:DatabaseConstraint ;
+    sh:description "`DatabaseConstraint[]` (inlined) -- constraint definitions for this collection (see Section 27)." ;
+    sh:path sao:has_constraints .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/has_indexes> a sh:PropertyShape ;
+    sh:class sao:DatabaseIndex ;
+    sh:description "`DatabaseIndex[]` (inlined) -- index definitions for this collection (see Section 27)." ;
+    sh:path sao:has_indexes .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/indexes> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Index definitions as strings (DEPRECATED -- use has_indexes)" ;
+    sh:path sao:indexes .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/persists_structures> a sh:PropertyShape ;
+    sh:class sao:DataStructure ;
+    sh:description "Code-level data structures persisted." ;
+    sh:path sao:persists_structures .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/stores_records> a sh:PropertyShape ;
+    sh:class sao:Record ;
+    sh:description "`Record` instances." ;
+    sh:path sao:stores_records .
+
+<https://ontologies.corestory.ai/sao/shapes/Collection/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type> a sh:PropertyShape ;
+    sh:description "Classification level." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:classification_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values> rdf:first "public" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/1> rdf:first "internal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/2> rdf:first "confidential" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/3> rdf:first "restricted" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/4> rdf:first "pii" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/5> rdf:first "phi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/classification_type/values/cell/6> rdf:first "pci" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/encryption_required> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Encryption flag." ;
+    sh:maxCount 1 ;
+    sh:path sao:encryption_required .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/handling_requirements> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Required procedures." ;
+    sh:path sao:handling_requirements .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DataClassification/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/derived_from_records> a sh:PropertyShape ;
+    sh:class sao:Record ;
+    sh:description "Source `Record` entities." ;
+    sh:path sao:derived_from_records .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/source> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Original data source." ;
+    sh:maxCount 1 ;
+    sh:path sao:source .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/tracks_record> a sh:PropertyShape ;
+    sh:class sao:Record ;
+    sh:description "Target `Record` being tracked." ;
+    sh:maxCount 1 ;
+    sh:path sao:tracks_record .
+
+<https://ontologies.corestory.ai/sao/shapes/DataLineage/transformations> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "List of transformations applied." ;
+    sh:path sao:transformations .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/connection_string> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Connection configuration." ;
+    sh:maxCount 1 ;
+    sh:path sao:connection_string .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/has_collections> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "List of collections/tables." ;
+    sh:path sao:has_collections .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/hosted_on_infrastructure> a sh:PropertyShape ;
+    sh:class sao:Infrastructure ;
+    sh:description "`Infrastructure` hosting the data store." ;
+    sh:maxCount 1 ;
+    sh:path sao:hosted_on_infrastructure .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/persists_aggregates> a sh:PropertyShape ;
+    sh:class sao:Aggregate ;
+    sh:description "`Aggregate` entities stored." ;
+    sh:path sao:persists_aggregates .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_file_definitions> a sh:PropertyShape ;
+    sh:class sao:FileDefinition ;
+    sh:description "`FileDefinition` entities associated with this store." ;
+    sh:path sao:store_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_read_by_pipelines> a sh:PropertyShape ;
+    sh:class sao:DataPipeline ;
+    sh:description "`DataPipeline` entities that read from this store." ;
+    sh:path sao:store_read_by_pipelines .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type> a sh:PropertyShape ;
+    sh:description "Kind of data store." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:store_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values> rdf:first "relational_db" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/1> rdf:first "document_db" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/10> rdf:first "vsam" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/11> rdf:first "flat_file" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/12> rdf:first "isam" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/13> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/13> rdf:first "dead_letter_queue" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/2> rdf:first "key_value_store" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/3> rdf:first "graph_db" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/4> rdf:first "time_series_db" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/5> rdf:first "object_storage" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/6> rdf:first "search_index" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/7> rdf:first "cache" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/8> rdf:first "message_broker" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/9> rdf:first "data_lake" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DataStore/store_type/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/store_written_by_pipelines> a sh:PropertyShape ;
+    sh:class sao:DataPipeline ;
+    sh:description "`DataPipeline` entities that write to this store." ;
+    sh:path sao:store_written_by_pipelines .
+
+<https://ontologies.corestory.ai/sao/shapes/DataStore/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications> a sh:PropertyShape ;
+    sh:description "Data sensitivity classifications." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values> ;
+    sh:path sao:classifications .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values> rdf:first "public" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/1> rdf:first "internal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/2> rdf:first "confidential" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/3> rdf:first "restricted" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/4> rdf:first "pii" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/5> rdf:first "phi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/classifications/values/cell/6> rdf:first "pci" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/conforms_to_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` for validation." ;
+    sh:maxCount 1 ;
+    sh:path sao:conforms_to_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/has_lineage> a sh:PropertyShape ;
+    sh:class sao:DataLineage ;
+    sh:description "`DataLineage` tracking origin and transformations." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_lineage .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/source_of_lineage> a sh:PropertyShape ;
+    sh:class sao:DataLineage ;
+    sh:description "Lineage entries where this record is a source." ;
+    sh:path sao:source_of_lineage .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/stored_in_collection> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "Parent `Collection`." ;
+    sh:maxCount 1 ;
+    sh:path sao:stored_in_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/Record/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/archive_after_days> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Days before archiving." ;
+    sh:maxCount 1 ;
+    sh:path sao:archive_after_days .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/deletion_strategy> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "How data is deleted (soft delete, hard delete, anonymize)." ;
+    sh:maxCount 1 ;
+    sh:path sao:deletion_strategy .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_audit_logs> a sh:PropertyShape ;
+    sh:class sao:AuditLog ;
+    sh:description "`AuditLog` entities governed by this policy." ;
+    sh:path sao:governs_audit_logs .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_collections> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "`Collection` entities governed by this policy." ;
+    sh:path sao:governs_collections .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/governs_logs> a sh:PropertyShape ;
+    sh:class sao:Log ;
+    sh:description "`Log` entities governed by this policy." ;
+    sh:path sao:governs_logs .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/retention_days> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Days to retain data." ;
+    sh:maxCount 1 ;
+    sh:path sao:retention_days .
+
+<https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/defines_operation_input> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "`Operation` entities using this schema as input." ;
+    sh:path sao:defines_operation_input .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/defines_operation_output> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "`Operation` entities using this schema as output." ;
+    sh:path sao:defines_operation_output .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/definition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Schema definition (JSON Schema, DDL, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:definition .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/has_versions> a sh:PropertyShape ;
+    sh:class sao:SchemaVersion ;
+    sh:description "List of `SchemaVersion` entities." ;
+    sh:path sao:has_versions .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type> a sh:PropertyShape ;
+    sh:description "Kind of schema." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:schema_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values> rdf:first "table_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/1> rdf:first "document_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/2> rdf:first "event_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/3> rdf:first "api_schema" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/schema_type/values/cell/4> rdf:first "message_schema" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/structures_collections> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "`Collection` entities structured by this schema." ;
+    sh:path sao:structures_collections .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/structures_events> a sh:PropertyShape ;
+    sh:class sao:Event ;
+    sh:description "`Event` entities structured by this schema." ;
+    sh:path sao:structures_events .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/structures_messages> a sh:PropertyShape ;
+    sh:class sao:Message ;
+    sh:description "`Message` entities structured by this schema." ;
+    sh:path sao:structures_messages .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/structures_resource_types> a sh:PropertyShape ;
+    sh:class sao:ResourceType ;
+    sh:description "`ResourceType` entities structured by this schema." ;
+    sh:path sao:structures_resource_types .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/validates_records> a sh:PropertyShape ;
+    sh:class sao:Record ;
+    sh:description "`Record` entities validated by this schema." ;
+    sh:path sao:validates_records .
+
+<https://ontologies.corestory.ai/sao/shapes/Schema/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/definition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Schema at this version." ;
+    sh:maxCount 1 ;
+    sh:path sao:definition .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/is_backward_compatible> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Compatibility flag." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_backward_compatible .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/migration_script> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Migration from previous version." ;
+    sh:maxCount 1 ;
+    sh:path sao:migration_script .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version number." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> a sh:PropertyShape ;
+    sh:class sao:Schema ;
+    sh:description "`Schema` that this version belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:version_of_schema .
+

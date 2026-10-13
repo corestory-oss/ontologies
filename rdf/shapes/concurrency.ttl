@@ -1,0 +1,218 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ConcurrencyPatternShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/framework>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/max_concurrency>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_used_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/shared_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/tags> ;
+    sh:targetClass sao:ConcurrencyPattern .
+
+saosh:ConcurrencyPrimitiveShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/is_reentrant>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/line_number>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/protects_data_elements>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/timeout_ms>,
+        <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/used_by_callables> ;
+    sh:targetClass sao:ConcurrencyPrimitive .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/framework> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Framework or library." ;
+    sh:maxCount 1 ;
+    sh:path sao:framework .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/max_concurrency> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Maximum concurrency level." ;
+    sh:maxCount 1 ;
+    sh:path sao:max_concurrency .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type> a sh:PropertyShape ;
+    sh:description "Kind of pattern." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:pattern_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values> rdf:first "thread_pool" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/1> rdf:first "actor" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/2> rdf:first "channel" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/3> rdf:first "future_promise" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/4> rdf:first "async_await" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/5> rdf:first "fork_join" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/6> rdf:first "producer_consumer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/7> rdf:first "reactor" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/8> rdf:first "proactor" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_type/values/cell/9> rdf:first "csp" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/pattern_used_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "Components using this pattern." ;
+    sh:path sao:pattern_used_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/shared_resources> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Shared resources." ;
+    sh:path sao:shared_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPattern/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/is_reentrant> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether reentrant." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_reentrant .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/line_number> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Source line." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_number .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type> a sh:PropertyShape ;
+    sh:description "Kind of primitive." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:primitive_type .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values> rdf:first "mutex" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/1> rdf:first "semaphore" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/2> rdf:first "read_write_lock" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/3> rdf:first "spin_lock" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/4> rdf:first "condition_variable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/5> rdf:first "barrier" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/6> rdf:first "latch" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/primitive_type/values/cell/7> rdf:first "atomic" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/protects_data_elements> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Data elements guarded." ;
+    sh:path sao:protects_data_elements .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/timeout_ms> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Lock timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_ms .
+
+<https://ontologies.corestory.ai/sao/shapes/ConcurrencyPrimitive/used_by_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables using this." ;
+    sh:path sao:used_by_callables .
+

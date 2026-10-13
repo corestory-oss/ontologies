@@ -1,0 +1,117 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:PreprocessorDirectiveShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/description>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_affects_callables>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_affects_encapsulation_units>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_defined_in_container>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/expansion>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/id>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/name>,
+        <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/tags> ;
+    sh:targetClass sao:PreprocessorDirective .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Conditional compilation expression" ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_affects_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables affected by this directive." ;
+    sh:path sao:directive_affects_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_affects_encapsulation_units> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Encapsulation units affected by this directive." ;
+    sh:path sao:directive_affects_encapsulation_units .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_defined_in_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Container where this directive is defined." ;
+    sh:maxCount 1 ;
+    sh:path sao:directive_defined_in_container .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type> a sh:PropertyShape ;
+    sh:description "The type of metaprogramming construct." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:directive_type .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values> rdf:first "c_preprocessor" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/1> rdf:first "rust_macro_declarative" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/2> rdf:first "rust_macro_procedural" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/3> rdf:first "cobol_copy_replacing" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/4> rdf:first "template_metaprogramming" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/5> rdf:first "python_metaclass" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/6> rdf:first "lisp_macro" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/7> rdf:first "java_annotation_processor" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/directive_type/values/cell/8> rdf:first "code_generator" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/expansion> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Expanded text or transformation result" ;
+    sh:maxCount 1 ;
+    sh:path sao:expansion .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/PreprocessorDirective/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+

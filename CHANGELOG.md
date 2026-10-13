@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the Software Application Ontology (SAO) are documented here.
+All notable changes to the Systems Abstraction Ontology (SAO) are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,13 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Rename SAO to Systems Abstraction Ontology to make its scope explicit across
+  libraries, services, batch programs, and applications. Update the LinkML schema
+  name and project metadata to `systems-abstraction-ontology`; the SAO acronym,
+  term namespace, and model definitions are unchanged.
 - Split the LinkML schema into topic modules under `schema/`, preserving `sao.yml`
   as the entry point and keeping definitions, constraints, and term IRIs unchanged.
   Module schema IDs now identify definition provenance.
 - Enrich LinkML attribute, shared-slot, and enum value descriptions from the
   existing documentation, and add class-purpose comments without changing the model.
-- Replace the placeholder schema ID and term prefix with `https://sao.corestory.ai/`.
-  Consumers using the old namespace must update schema references and term IRIs.
+- Replace the placeholder schema ID and term prefix with
+  `https://ontologies.corestory.ai/sao/`, using the shared CoreStory ontology host.
+  Update all module schema IDs to the same URI space. Consumers using
+  `ontology.example.org` or `https://sao.corestory.ai/` must update schema references
+  and term IRIs.
 - Prepare the repository for Apache License 2.0 distribution: replace the
   proprietary license, add attribution, and align project metadata.
 - Refresh the README for schema version 2.1.0 and add validated instance examples.

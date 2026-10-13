@@ -1,7 +1,7 @@
 [project]
-name = "software-application-ontology"
+name = "systems-abstraction-ontology"
 version = "2.1.0"
-description = "A language-agnostic LinkML ontology for modeling software applications"
+description = "A language-agnostic LinkML ontology for modeling software systems"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "CoreStory, Inc." }]

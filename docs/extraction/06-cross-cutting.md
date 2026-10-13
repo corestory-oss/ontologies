@@ -7,7 +7,7 @@
 
 ## 1. Overview
 
-Cross-cutting concerns span every layer of a software application. Security, identity, testing, deployment, observability, compliance, UI structure, CI/CD, concurrency, and knowledge artifacts are not confined to a single architectural tier -- they attach everywhere.
+Cross-cutting concerns span every layer of a software system. Security, identity, testing, deployment, observability, compliance, UI structure, CI/CD, concurrency, and knowledge artifacts are not confined to a single architectural tier -- they attach everywhere.
 
 This phase can start as soon as Phase 2 completes and MAY run in parallel with Phases 3-5. It is organized into two independent groups:
 

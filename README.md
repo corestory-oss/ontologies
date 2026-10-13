@@ -1,6 +1,9 @@
-# Software Application Ontology (SAO)
+# Systems Abstraction Ontology (SAO)
 
-A comprehensive, language-agnostic ontology for modeling software applications — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
+A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
+
+SAO describes software systems—their structure, behavior, domain concepts, and
+operating context—including libraries, services, batch programs, and applications.
 
 * **Version**: 2.1.0
 * **Author**: Charath Ranganathan
@@ -11,7 +14,7 @@ A comprehensive, language-agnostic ontology for modeling software applications �
 
 ## Key Features
 
-- **Comprehensive Coverage**: Models all aspects of modern software applications
+- **Comprehensive Coverage**: Models all aspects of software systems
 - **DDD-Aligned**: Built on Domain-Driven Design principles (Aggregates, Bounded Contexts, Ubiquitous Language)
 - **Cloud-Native**: Supports microservices, containers, serverless, and cloud deployment
 - **Compliance-Ready**: Includes models for GDPR, HIPAA, SOC2, PCI-DSS, ISO 27001, and more
@@ -88,8 +91,8 @@ that topic; shared enums, types, base classes, and global slots live in
 through the entry point, so the topic files are not standalone schemas.
 
 The split preserves the public `sao` term namespace. Each module has its own
-schema ID under `https://sao.corestory.ai/schema/`, used by LinkML for definition
-provenance; these IDs do not change class or property IRIs.
+schema ID under `https://ontologies.corestory.ai/sao/schema/`, used by LinkML
+for definition provenance; these IDs do not change class or property IRIs.
 
 Generate the full Markdown reference, including imported definitions, with:
 
@@ -153,11 +156,12 @@ integration_governed_by_contract: stripe-api-contract
 
 ### Schema namespace
 
-The schema ID and `sao` term prefix are both `https://sao.corestory.ai/`.
-For example, the **System** class IRI is `https://sao.corestory.ai/System`.
-Applications using the earlier `ontology.example.org` namespace should migrate
-their schema references and term IRIs. The documentation site will be rendered
-to the `site` branch and published through CoreStory's CDN.
+The schema ID and `sao` term prefix are both `https://ontologies.corestory.ai/sao/`.
+For example, the **System** class IRI is `https://ontologies.corestory.ai/sao/System`.
+Applications using the earlier `ontology.example.org` or `https://sao.corestory.ai/`
+namespaces should migrate their schema references and term IRIs. The
+documentation site will be rendered to the `site` branch and published through
+CoreStory's CDN.
 
 ## Technical Details
 
@@ -210,7 +214,7 @@ Third-party tools and dependencies retain their respective licenses.
 ## Citation
 
 ```
-Software Application Ontology (SAO)
+Systems Abstraction Ontology (SAO)
 Version 2.1.0
 Copyright (c) 2025 CoreStory, Inc.
 Licensed under the Apache License, Version 2.0.

@@ -1,4 +1,4 @@
-# Project: Software Application Ontology (SAO)
+# Project: Systems Abstraction Ontology (SAO)
 
 ## Style conventions for guide.md
 

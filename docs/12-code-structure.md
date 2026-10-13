@@ -1,6 +1,6 @@
 # Code Structure
 
-The Code Structure layer provides a paradigm-agnostic framework for modeling software applications at the implementation level. This layer bridges the gap between architectural concepts (Components, Operations) and the actual source code that implements them, supporting both modern and legacy systems.
+The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between architectural concepts (Components, Operations) and the actual source code that implements them, supporting both modern and legacy systems.
 
 > **v2.0 Note:** In SAO v2.0, all single-use relationship slots have been inlined as class attributes on their owning classes. Only approximately 20 multi-domain slots remain as global relationships: `defined_in_container`, `contained_in_unit`, `contains_data_elements`, `implements_component`, `implemented_by_code`, `annotates_element`, `annotated_by`, `affects_behavior_of`, `imports_symbols`, and `imported_via`.
 

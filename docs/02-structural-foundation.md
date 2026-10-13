@@ -1,6 +1,6 @@
 # Section 1: Structural Foundation
 
-This section defines the core structural elements of a software application, providing the hierarchical organization from system down to individual components.
+This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components.
 
 > **v2.0 Note**: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Classes no longer reference global `slots:` for single-domain relationships. Back-reference attributes are now defined directly on the relevant classes.
 
@@ -14,7 +14,7 @@ The Structural Foundation provides a comprehensive framework for modeling softwa
 
 **Definition**: Top-level container representing a software product, platform, or application.
 
-**Purpose**: The System is the root entity that encapsulates all aspects of a software application, including its bounded contexts, integrations, policies, and compliance requirements.
+**Purpose**: The System is the root entity that encapsulates all aspects of a software system, including its bounded contexts, integrations, policies, and compliance requirements.
 
 **Key Attributes**:
 - Inherits from `NamedEntity`

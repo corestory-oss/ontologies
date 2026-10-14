@@ -35,7 +35,7 @@ def same_graph(left, right):
 
 
 def build(check=False):
-    products = {"vocabulary": ROOT / "sao.ttl", "shapes": ROOT / "sao.shacl.ttl"}
+    products = {"vocabulary": ROOT / "sao.ttl", "shapes": ROOT / "sao.shacl.ttl", "axioms": ROOT / "sao.owl.ttl"}
     for name, output in products.items():
         manifest = ROOT / "rdf/manifests" / (name + ".json")
         listed = set(json.loads(manifest.read_text())["files"])

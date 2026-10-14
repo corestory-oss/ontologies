@@ -1,0 +1,4 @@
+{
+  "format": "turtle",
+  "files": ["axioms/relationships.ttl"]
+}

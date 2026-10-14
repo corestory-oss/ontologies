@@ -1174,12 +1174,14 @@ version = "2.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "linkml" },
+    { name = "owlrl" },
     { name = "pyshacl" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "linkml", specifier = ">=1.9.6" },
+    { name = "owlrl", specifier = ">=7.1,<8" },
     { name = "pyshacl", specifier = ">=0.30,<0.31" },
 ]
 

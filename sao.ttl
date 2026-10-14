@@ -1,4 +1,4 @@
-# Generated from sao.yml and its imports; edit LinkML, then regenerate.
+# Generated distribution; edit rdf/ source files, then run scripts/build_rdf.py.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix dcterms: <http://purl.org/dc/terms/> .
@@ -7,7 +7,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sao: <https://ontologies.corestory.ai/sao/> .
-@prefix schema: <http://schema.org/> .
+@prefix schema1: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -1103,9 +1103,9 @@ sao:actions a rdf:Property ;
 
 sao:actor_type a rdf:Property ;
     rdfs:label "actor_type" ;
-    schema:domainIncludes sao:HumanActor,
+    schema1:domainIncludes sao:HumanActor,
         sao:SystemActor ;
-    schema:rangeIncludes sao:HumanActorType,
+    schema1:rangeIncludes sao:HumanActorType,
         sao:SystemActorType ;
     rdfs:comment "Type of human actor.",
         "[HumanActor] Type of human actor.",
@@ -1272,7 +1272,7 @@ sao:allows_actions_in_state a rdf:Property ;
 
 sao:annotated_by a rdf:Property ;
     rdfs:label "annotated_by" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataElement,
         sao:DataStructure,
         sao:EncapsulationUnit ;
@@ -1334,7 +1334,7 @@ sao:applies_to_systems a rdf:Property ;
 
 sao:architectural_patterns a rdf:Property ;
     rdfs:label "architectural_patterns" ;
-    schema:domainIncludes sao:BoundedContext,
+    schema1:domainIncludes sao:BoundedContext,
         sao:Module ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:ArchitecturalPatternType .
@@ -1365,9 +1365,9 @@ sao:artifact_stored_in_registry a rdf:Property ;
 
 sao:artifact_type a rdf:Property ;
     rdfs:label "artifact_type" ;
-    schema:domainIncludes sao:BuildArtifact,
+    schema1:domainIncludes sao:BuildArtifact,
         sao:KnowledgeArtifact ;
-    schema:rangeIncludes sao:ArtifactType,
+    schema1:rangeIncludes sao:ArtifactType,
         sao:KnowledgeArtifactType ;
     rdfs:comment "Kind of artifact.",
         "[BuildArtifact] Kind of artifact." ;
@@ -1375,7 +1375,7 @@ sao:artifact_type a rdf:Property ;
 
 sao:artifact_uri a rdf:Property ;
     rdfs:label "artifact_uri" ;
-    schema:domainIncludes sao:BuildArtifact,
+    schema1:domainIncludes sao:BuildArtifact,
         sao:DeploymentUnit,
         sao:Evidence ;
     rdfs:comment "Location of the deployment artifact.",
@@ -1435,9 +1435,9 @@ sao:attribute_byte a rdf:Property ;
 
 sao:attributes a rdf:Property ;
     rdfs:label "attributes" ;
-    schema:domainIncludes sao:DomainEntity,
+    schema1:domainIncludes sao:DomainEntity,
         sao:Span ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:Attribute ;
     rdfs:comment "List of `Attribute` entities.",
         "[DomainEntity] List of `Attribute` entities.",
@@ -1504,7 +1504,7 @@ sao:base_type a rdf:Property ;
 
 sao:base_url a rdf:Property ;
     rdfs:label "base_url" ;
-    schema:domainIncludes sao:ArtifactRegistry,
+    schema1:domainIncludes sao:ArtifactRegistry,
         sao:ProgrammaticInterface ;
     rdfs:comment "Base URL for the API.",
         "[ArtifactRegistry] Registry base URL.",
@@ -1648,14 +1648,14 @@ sao:cardinality a rdf:Property ;
 
 sao:category a rdf:Property ;
     rdfs:label "category" ;
-    schema:domainIncludes sao:Action,
+    schema1:domainIncludes sao:Action,
         sao:Actor,
         sao:Attribute,
         sao:Event,
         sao:Feature,
         sao:Interface,
         sao:Rule ;
-    schema:rangeIncludes sao:ActionCategory,
+    schema1:rangeIncludes sao:ActionCategory,
         sao:ActorCategory,
         sao:AttributeCategory,
         sao:EventCategory,
@@ -1698,7 +1698,7 @@ sao:checkedness a rdf:Property ;
 
 sao:checksum a rdf:Property ;
     rdfs:label "checksum" ;
-    schema:domainIncludes sao:BuildArtifact,
+    schema1:domainIncludes sao:BuildArtifact,
         sao:CodeContainer,
         sao:DeploymentUnit ;
     rdfs:comment "Content hash for version tracking.",
@@ -1718,7 +1718,7 @@ sao:child_of_span a rdf:Property ;
 
 sao:classification a rdf:Property ;
     rdfs:label "classification" ;
-    schema:domainIncludes sao:Attribute,
+    schema1:domainIncludes sao:Attribute,
         sao:DataElement,
         sao:Dataset ;
     rdfs:comment "Data sensitivity (PII, PHI, PCI, etc.).",
@@ -1738,7 +1738,7 @@ sao:classification_type a rdf:Property ;
 
 sao:classifications a rdf:Property ;
     rdfs:label "classifications" ;
-    schema:domainIncludes sao:DomainEntity,
+    schema1:domainIncludes sao:DomainEntity,
         sao:Record ;
     rdfs:comment "Data classification types applied.",
         "[DomainEntity] Data classification types applied.",
@@ -1788,10 +1788,10 @@ sao:column a rdf:Property ;
 
 sao:columns a rdf:Property ;
     rdfs:label "columns" ;
-    schema:domainIncludes sao:DatabaseConstraint,
+    schema1:domainIncludes sao:DatabaseConstraint,
         sao:DatabaseIndex,
         sao:ScreenDefinition ;
-    schema:rangeIncludes xsd:integer,
+    schema1:rangeIncludes xsd:integer,
         xsd:string ;
     rdfs:comment "Number of screen columns.",
         "[DatabaseConstraint] Columns involved in the constraint.",
@@ -1847,9 +1847,9 @@ sao:component_serves_model a rdf:Property ;
 
 sao:component_type a rdf:Property ;
     rdfs:label "component_type" ;
-    schema:domainIncludes sao:Component,
+    schema1:domainIncludes sao:Component,
         sao:UIComponent ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:UIComponentType ;
     rdfs:comment "Type of component, such as a class, service, or handler.",
         "[Component] Type of component, such as a class, service, or handler.",
@@ -1866,7 +1866,7 @@ sao:component_uses_concurrency_pattern a rdf:Property ;
 
 sao:condition a rdf:Property ;
     rdfs:label "condition" ;
-    schema:domainIncludes sao:AlertRule,
+    schema1:domainIncludes sao:AlertRule,
         sao:ControlFlow,
         sao:PipelineStage,
         sao:PreprocessorDirective,
@@ -1956,9 +1956,9 @@ sao:constraint_on_collection a rdf:Property ;
 
 sao:constraint_type a rdf:Property ;
     rdfs:label "constraint_type" ;
-    schema:domainIncludes sao:Constraint,
+    schema1:domainIncludes sao:Constraint,
         sao:DatabaseConstraint ;
-    schema:rangeIncludes sao:ConstraintType,
+    schema1:rangeIncludes sao:ConstraintType,
         sao:DatabaseConstraintType ;
     rdfs:comment "Type of constraint.",
         "[Constraint] Type of constraint.",
@@ -2031,7 +2031,7 @@ sao:contained_in_system a rdf:Property ;
 
 sao:contained_in_unit a rdf:Property ;
     rdfs:label "contained_in_unit" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataElement,
         sao:DataStructure ;
     rdfs:comment "The parent encapsulation unit.",
@@ -2115,7 +2115,7 @@ sao:contains_containers a rdf:Property ;
 
 sao:contains_data_elements a rdf:Property ;
     rdfs:label "contains_data_elements" ;
-    schema:domainIncludes sao:DataStructure,
+    schema1:domainIncludes sao:DataStructure,
         sao:EncapsulationUnit ;
     rdfs:comment "Fields or variables contained in this unit or structure.",
         "[DataStructure] Fields or variables contained in this unit or structure.",
@@ -2141,9 +2141,9 @@ sao:contains_encapsulation_units a rdf:Property ;
 
 sao:contains_entries a rdf:Property ;
     rdfs:label "contains_entries" ;
-    schema:domainIncludes sao:AuditLog,
+    schema1:domainIncludes sao:AuditLog,
         sao:Log ;
-    schema:rangeIncludes sao:AuditEntry,
+    schema1:rangeIncludes sao:AuditEntry,
         sao:LogEntry ;
     rdfs:comment "[AuditLog] `AuditEntry[]` (v2.0 back-reference from `AuditEntry.entry_in_audit_log`).",
         "[Log] List of `LogEntry` records (inverse: `entry_in_log`).",
@@ -2372,7 +2372,7 @@ sao:cvss_score a rdf:Property ;
 
 sao:data_type a rdf:Property ;
     rdfs:label "data_type" ;
-    schema:domainIncludes sao:Attribute,
+    schema1:domainIncludes sao:Attribute,
         sao:DataElement,
         sao:UIProperty ;
     rdfs:comment "Data type (DEPRECATED for typed analysis -- use declared_type)",
@@ -2424,7 +2424,7 @@ sao:declared_type a rdf:Property ;
 
 sao:default_value a rdf:Property ;
     rdfs:label "default_value" ;
-    schema:domainIncludes sao:Attribute,
+    schema1:domainIncludes sao:Attribute,
         sao:DataElement,
         sao:UIProperty ;
     rdfs:comment "Default value.",
@@ -2444,7 +2444,7 @@ sao:defined_by_contract a rdf:Property ;
 
 sao:defined_in_container a rdf:Property ;
     rdfs:label "defined_in_container" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataStructure,
         sao:EncapsulationUnit ;
     rdfs:comment "Code container where this element is defined",
@@ -2488,7 +2488,7 @@ sao:defines_operation_output a rdf:Property ;
 
 sao:definition a rdf:Property ;
     rdfs:label "definition" ;
-    schema:domainIncludes sao:Contract,
+    schema1:domainIncludes sao:Contract,
         sao:ContractVersion,
         sao:Schema,
         sao:SchemaVersion ;
@@ -2733,9 +2733,9 @@ sao:directive_defined_in_container a rdf:Property ;
 
 sao:directive_type a rdf:Property ;
     rdfs:label "directive_type" ;
-    schema:domainIncludes sao:ExecutionEnvironmentDirective,
+    schema1:domainIncludes sao:ExecutionEnvironmentDirective,
         sao:PreprocessorDirective ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:MetaprogrammingType ;
     rdfs:comment "Type of directive.",
         "[ExecutionEnvironmentDirective] Type of directive.",
@@ -2896,7 +2896,7 @@ sao:emits_metric a rdf:Property ;
 
 sao:emits_metrics a rdf:Property ;
     rdfs:label "emits_metrics" ;
-    schema:domainIncludes sao:Component,
+    schema1:domainIncludes sao:Component,
         sao:Service ;
     rdfs:comment "Metrics emitted by this component.",
         "[Component] Metrics emitted by this component.",
@@ -3324,7 +3324,7 @@ sao:exposes_operations a rdf:Property ;
 
 sao:expression a rdf:Property ;
     rdfs:label "expression" ;
-    schema:domainIncludes sao:Constraint,
+    schema1:domainIncludes sao:Constraint,
         sao:DatabaseConstraint ;
     rdfs:comment "Constraint expression (e.g., \"hour >= 9 AND hour <= 17\").",
         "[Constraint] Constraint expression (e.g., \"hour >= 9 AND hour <= 17\").",
@@ -3350,7 +3350,7 @@ sao:extends_units a rdf:Property ;
 
 sao:external_name a rdf:Property ;
     rdfs:label "external_name" ;
-    schema:domainIncludes sao:FileDefinition,
+    schema1:domainIncludes sao:FileDefinition,
         sao:ScreenDefinition ;
     rdfs:comment "External/physical file name (DD name, path)",
         "[FileDefinition] External/physical file name (DD name, path)",
@@ -3368,7 +3368,7 @@ sao:failing_cases a rdf:Property ;
 
 sao:failure_threshold a rdf:Property ;
     rdfs:label "failure_threshold" ;
-    schema:domainIncludes sao:CircuitBreaker,
+    schema1:domainIncludes sao:CircuitBreaker,
         sao:HealthCheck ;
     rdfs:comment "Number of failures before opening circuit.",
         "[CircuitBreaker] Number of failures before opening circuit.",
@@ -3442,9 +3442,9 @@ sao:fixed_version a rdf:Property ;
 
 sao:flow_type a rdf:Property ;
     rdfs:label "flow_type" ;
-    schema:domainIncludes sao:ControlFlow,
+    schema1:domainIncludes sao:ControlFlow,
         sao:DataFlow ;
-    schema:rangeIncludes sao:ControlFlowType,
+    schema1:rangeIncludes sao:ControlFlowType,
         sao:DataFlowType ;
     rdfs:comment "Type (call, async_call, branch, jump, return, throw, yield).",
         "[ControlFlow] Type (call, async_call, branch, jump, return, throw, yield).",
@@ -3477,7 +3477,7 @@ sao:foreign_key_field a rdf:Property ;
 
 sao:format a rdf:Property ;
     rdfs:label "format" ;
-    schema:domainIncludes sao:CodeContainer,
+    schema1:domainIncludes sao:CodeContainer,
         sao:Dataset ;
     rdfs:comment "Format or language (DEPRECATED -- use written_in_language relationship)",
         "[CodeContainer] Format or language (DEPRECATED -- use written_in_language relationship)",
@@ -3487,13 +3487,13 @@ sao:format a rdf:Property ;
 
 sao:framework a rdf:Property ;
     rdfs:label "framework" ;
-    schema:domainIncludes sao:ComplianceRequirement,
+    schema1:domainIncludes sao:ComplianceRequirement,
         sao:ConcurrencyPattern,
         sao:MLModel,
         sao:StateStore,
         sao:TestSuite,
         sao:UIComponent ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:ComplianceFramework ;
     rdfs:comment "Compliance framework this requirement belongs to.",
         "[ComplianceRequirement] Compliance framework this requirement belongs to.",
@@ -3792,9 +3792,9 @@ sao:has_collections a rdf:Property ;
 
 sao:has_constraints a rdf:Property ;
     rdfs:label "has_constraints" ;
-    schema:domainIncludes sao:Collection,
+    schema1:domainIncludes sao:Collection,
         sao:Permission ;
-    schema:rangeIncludes sao:Constraint,
+    schema1:rangeIncludes sao:Constraint,
         sao:DatabaseConstraint ;
     rdfs:comment "List of conditions that must be satisfied.",
         "[Collection] `DatabaseConstraint[]` (inlined) -- constraint definitions for this collection (see Section 27).",
@@ -3843,7 +3843,7 @@ sao:has_default_memory_model a rdf:Property ;
 
 sao:has_dependencies a rdf:Property ;
     rdfs:label "has_dependencies" ;
-    schema:domainIncludes sao:Component,
+    schema1:domainIncludes sao:Component,
         sao:Module ;
     rdfs:comment "List of module dependencies with types (runtime, build, optional, dev).",
         "[Component] Component-level dependencies.",
@@ -3877,7 +3877,7 @@ sao:has_file_definitions a rdf:Property ;
 
 sao:has_file_operations a rdf:Property ;
     rdfs:label "has_file_operations" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:FileDefinition ;
     rdfs:comment "FileOperation[] performed by this callable.",
         "[CallableUnit] FileOperation[] performed by this callable.",
@@ -4271,9 +4271,9 @@ sao:has_states a rdf:Property ;
 
 sao:has_steps a rdf:Property ;
     rdfs:label "has_steps" ;
-    schema:domainIncludes sao:DataPipeline,
+    schema1:domainIncludes sao:DataPipeline,
         sao:Workflow ;
-    schema:rangeIncludes sao:DataPipelineStep,
+    schema1:rangeIncludes sao:DataPipelineStep,
         sao:Step ;
     rdfs:comment "Ordered list of `Step` entities.",
         "[DataPipeline] Pipeline steps.",
@@ -4282,7 +4282,7 @@ sao:has_steps a rdf:Property ;
 
 sao:has_subscriptions a rdf:Property ;
     rdfs:label "has_subscriptions" ;
-    schema:domainIncludes sao:Actor,
+    schema1:domainIncludes sao:Actor,
         sao:EventInterface ;
     rdfs:comment "Subscriptions to this event interface.",
         "[Actor] `Subscription` entities owned by this actor.",
@@ -4396,9 +4396,9 @@ sao:has_value_objects a rdf:Property ;
 
 sao:has_versions a rdf:Property ;
     rdfs:label "has_versions" ;
-    schema:domainIncludes sao:Contract,
+    schema1:domainIncludes sao:Contract,
         sao:Schema ;
-    schema:rangeIncludes sao:ContractVersion,
+    schema1:rangeIncludes sao:ContractVersion,
         sao:SchemaVersion ;
     rdfs:comment "List of `SchemaVersion` entities.",
         "[Contract] List of contract versions.",
@@ -4510,7 +4510,7 @@ sao:implemented_by_units a rdf:Property ;
 
 sao:implements_component a rdf:Property ;
     rdfs:label "implements_component" ;
-    schema:domainIncludes sao:CodeContainer,
+    schema1:domainIncludes sao:CodeContainer,
         sao:EncapsulationUnit ;
     rdfs:comment "Architectural component implemented by this code.",
         "[CodeContainer] Architectural component implemented by this code.",
@@ -4536,7 +4536,7 @@ sao:implements_operation a rdf:Property ;
 
 sao:imported_via a rdf:Property ;
     rdfs:label "imported_via" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataStructure,
         sao:EncapsulationUnit ;
     rdfs:comment "Definition references importing this code element.",
@@ -4754,7 +4754,7 @@ sao:is_abstract a rdf:Property ;
 
 sao:is_active a rdf:Property ;
     rdfs:label "is_active" ;
-    schema:domainIncludes sao:Credential,
+    schema1:domainIncludes sao:Credential,
         sao:Rule ;
     rdfs:comment "[Credential] Whether the credential is currently active.",
         "[Rule] Whether rule is currently active." ;
@@ -4819,7 +4819,7 @@ sao:is_composition a rdf:Property ;
 
 sao:is_conditional a rdf:Property ;
     rdfs:label "is_conditional" ;
-    schema:domainIncludes sao:ControlFlow,
+    schema1:domainIncludes sao:ControlFlow,
         sao:Statement ;
     rdfs:comment "Whether conditional.",
         "[ControlFlow] Whether flow is conditional.",
@@ -4955,7 +4955,7 @@ sao:is_nested a rdf:Property ;
 
 sao:is_nullable a rdf:Property ;
     rdfs:label "is_nullable" ;
-    schema:domainIncludes sao:DataElement,
+    schema1:domainIncludes sao:DataElement,
         sao:TypeExpression ;
     rdfs:comment "Whether this can be null.",
         "[DataElement] Whether this can be null.",
@@ -4965,7 +4965,7 @@ sao:is_nullable a rdf:Property ;
 
 sao:is_optional a rdf:Property ;
     rdfs:label "is_optional" ;
-    schema:domainIncludes sao:Dependency,
+    schema1:domainIncludes sao:Dependency,
         sao:Module ;
     rdfs:comment "[Dependency] Whether the dependency is optional.",
         "[Module] Whether the module is optional." ;
@@ -5286,7 +5286,7 @@ sao:line_coverage_percent a rdf:Property ;
 
 sao:line_end a rdf:Property ;
     rdfs:label "line_end" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:CodeBlock,
         sao:DataStructure,
         sao:EncapsulationUnit,
@@ -5302,7 +5302,7 @@ sao:line_end a rdf:Property ;
 
 sao:line_number a rdf:Property ;
     rdfs:label "line_number" ;
-    schema:domainIncludes sao:ConcurrencyPrimitive,
+    schema1:domainIncludes sao:ConcurrencyPrimitive,
         sao:DataElement,
         sao:Statement,
         sao:TestAssertion ;
@@ -5316,7 +5316,7 @@ sao:line_number a rdf:Property ;
 
 sao:line_start a rdf:Property ;
     rdfs:label "line_start" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:CodeBlock,
         sao:DataStructure,
         sao:EncapsulationUnit,
@@ -5879,7 +5879,7 @@ sao:orchestrator a rdf:Property ;
 
 sao:order a rdf:Property ;
     rdfs:label "order" ;
-    schema:domainIncludes sao:DataPipelineStep,
+    schema1:domainIncludes sao:DataPipelineStep,
         sao:PipelineStage,
         sao:Step ;
     rdfs:comment "Execution order.",
@@ -6001,7 +6001,7 @@ sao:parameter_of a rdf:Property ;
 
 sao:parameters a rdf:Property ;
     rdfs:label "parameters" ;
-    schema:domainIncludes sao:Annotation,
+    schema1:domainIncludes sao:Annotation,
         sao:Constraint ;
     rdfs:comment "Annotation parameters.",
         "[Annotation] Annotation parameters.",
@@ -6185,9 +6185,9 @@ sao:pipeline_trains_model a rdf:Property ;
 
 sao:pipeline_type a rdf:Property ;
     rdfs:label "pipeline_type" ;
-    schema:domainIncludes sao:BuildPipeline,
+    schema1:domainIncludes sao:BuildPipeline,
         sao:DataPipeline ;
-    schema:rangeIncludes sao:DataPipelineType,
+    schema1:rangeIncludes sao:DataPipelineType,
         sao:PipelineType ;
     rdfs:comment "Kind of pipeline.",
         "[BuildPipeline] Kind of pipeline.",
@@ -6220,7 +6220,7 @@ sao:pipeline_writes_to_stores a rdf:Property ;
 
 sao:platform a rdf:Property ;
     rdfs:label "platform" ;
-    schema:domainIncludes sao:BuildPipeline,
+    schema1:domainIncludes sao:BuildPipeline,
         sao:FeatureStore,
         sao:PlatformExtension ;
     rdfs:comment "Platform identifier.",
@@ -6288,11 +6288,11 @@ sao:primitive_type a rdf:Property ;
 
 sao:priority a rdf:Property ;
     rdfs:label "priority" ;
-    schema:domainIncludes sao:JobDefinition,
+    schema1:domainIncludes sao:JobDefinition,
         sao:Policy,
         sao:Rule,
         sao:TestCase ;
-    schema:rangeIncludes xsd:integer,
+    schema1:rangeIncludes xsd:integer,
         xsd:string ;
     rdfs:comment "Evaluation priority (higher priority policies evaluated first).",
         "[JobDefinition] Execution priority.",
@@ -6391,7 +6391,7 @@ sao:protects_integrations a rdf:Property ;
 
 sao:protocol a rdf:Property ;
     rdfs:label "protocol" ;
-    schema:domainIncludes sao:Endpoint,
+    schema1:domainIncludes sao:Endpoint,
         sao:Integration ;
     rdfs:comment "Communication protocol.",
         "[Endpoint] Communication protocol.",
@@ -6409,7 +6409,7 @@ sao:provided_by_modules a rdf:Property ;
 
 sao:provider a rdf:Property ;
     rdfs:label "provider" ;
-    schema:domainIncludes sao:IaCDefinition,
+    schema1:domainIncludes sao:IaCDefinition,
         sao:Infrastructure ;
     rdfs:comment "Cloud or infrastructure provider (AWS, Azure, GCP, on-premise).",
         "[IaCDefinition] Cloud provider.",
@@ -6443,7 +6443,7 @@ sao:provides_features_to_models a rdf:Property ;
 
 sao:qualified_name a rdf:Property ;
     rdfs:label "qualified_name" ;
-    schema:domainIncludes sao:EncapsulationUnit,
+    schema1:domainIncludes sao:EncapsulationUnit,
         sao:ExceptionType ;
     rdfs:comment "Fully qualified name (e.g., com.example.UserService).",
         "[EncapsulationUnit] Fully qualified name (e.g., com.example.UserService).",
@@ -6509,7 +6509,7 @@ sao:receives_integration_events a rdf:Property ;
 
 sao:record_format a rdf:Property ;
     rdfs:label "record_format" ;
-    schema:domainIncludes sao:DatasetAllocation,
+    schema1:domainIncludes sao:DatasetAllocation,
         sao:FileDefinition ;
     rdfs:comment "Record format.",
         "[DatasetAllocation] Record format (shared enum with Section 20).",
@@ -6719,7 +6719,7 @@ sao:residual_risk a rdf:Property ;
 
 sao:resolved_at a rdf:Property ;
     rdfs:label "resolved_at" ;
-    schema:domainIncludes sao:Alert,
+    schema1:domainIncludes sao:Alert,
         sao:Incident ;
     rdfs:comment "When issue was resolved.",
         "[Alert] When issue was resolved.",
@@ -6913,9 +6913,9 @@ sao:schema_type a rdf:Property ;
 
 sao:scope a rdf:Property ;
     rdfs:label "scope" ;
-    schema:domainIncludes sao:DefinitionReference,
+    schema1:domainIncludes sao:DefinitionReference,
         sao:PackageDependency ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:DependencyScope ;
     rdfs:comment "Import scope.",
         "[DefinitionReference] Import scope.",
@@ -7000,10 +7000,10 @@ sao:setup_fixture a rdf:Property ;
 
 sao:severity a rdf:Property ;
     rdfs:label "severity" ;
-    schema:domainIncludes sao:Alert,
+    schema1:domainIncludes sao:Alert,
         sao:Incident,
         sao:KnownVulnerability ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:VulnerabilitySeverity ;
     rdfs:comment "Alert severity (critical, warning, info).",
         "[Alert] Alert severity (critical, warning, info).",
@@ -7021,7 +7021,7 @@ sao:shared_resources a rdf:Property ;
 
 sao:size_bytes a rdf:Property ;
     rdfs:label "size_bytes" ;
-    schema:domainIncludes sao:BuildArtifact,
+    schema1:domainIncludes sao:BuildArtifact,
         sao:CodeContainer,
         sao:DataStructure ;
     rdfs:comment "Size in bytes.",
@@ -7057,7 +7057,7 @@ sao:sla a rdf:Property ;
 
 sao:source a rdf:Property ;
     rdfs:label "source" ;
-    schema:domainIncludes sao:Configuration,
+    schema1:domainIncludes sao:Configuration,
         sao:DataLineage,
         sao:IaCModule ;
     rdfs:comment "Original data source.",
@@ -7069,7 +7069,7 @@ sao:source a rdf:Property ;
 
 sao:source_file a rdf:Property ;
     rdfs:label "source_file" ;
-    schema:domainIncludes sao:BuildPipeline,
+    schema1:domainIncludes sao:BuildPipeline,
         sao:DataPipeline,
         sao:IaCDefinition ;
     rdfs:comment "Pipeline definition file path.",
@@ -7081,7 +7081,7 @@ sao:source_file a rdf:Property ;
 
 sao:source_location a rdf:Property ;
     rdfs:label "source_location" ;
-    schema:domainIncludes sao:Component,
+    schema1:domainIncludes sao:Component,
         sao:TestSuite,
         sao:UIComponent ;
     rdfs:comment "Path to the source code.",
@@ -7205,11 +7205,11 @@ sao:statement_coverage_percent a rdf:Property ;
 
 sao:status a rdf:Property ;
     rdfs:label "status" ;
-    schema:domainIncludes sao:Incident,
+    schema1:domainIncludes sao:Incident,
         sao:KnowledgeArtifact,
         sao:Span,
         sao:TestCase ;
-    schema:rangeIncludes xsd:string,
+    schema1:rangeIncludes xsd:string,
         sao:KnowledgeArtifactStatus,
         sao:TestCaseStatus ;
     rdfs:comment "Span status.",
@@ -7236,9 +7236,9 @@ sao:step_in_job a rdf:Property ;
 
 sao:step_type a rdf:Property ;
     rdfs:label "step_type" ;
-    schema:domainIncludes sao:DataPipelineStep,
+    schema1:domainIncludes sao:DataPipelineStep,
         sao:JobStep ;
-    schema:rangeIncludes sao:DataPipelineStepType,
+    schema1:rangeIncludes sao:DataPipelineStepType,
         sao:JobStepType ;
     rdfs:comment "Kind of step.",
         "[DataPipelineStep] Kind of step.",
@@ -7622,7 +7622,7 @@ sao:threshold a rdf:Property ;
 
 sao:timeout_minutes a rdf:Property ;
     rdfs:label "timeout_minutes" ;
-    schema:domainIncludes sao:BuildPipeline,
+    schema1:domainIncludes sao:BuildPipeline,
         sao:PipelineStage ;
     rdfs:comment "Pipeline timeout.",
         "[BuildPipeline] Pipeline timeout.",
@@ -7640,7 +7640,7 @@ sao:timeout_ms a rdf:Property ;
 
 sao:timeout_seconds a rdf:Property ;
     rdfs:label "timeout_seconds" ;
-    schema:domainIncludes sao:HealthCheck,
+    schema1:domainIncludes sao:HealthCheck,
         sao:Step,
         sao:Transaction ;
     rdfs:comment "Step timeout.",
@@ -7652,7 +7652,7 @@ sao:timeout_seconds a rdf:Property ;
 
 sao:timestamp a rdf:Property ;
     rdfs:label "timestamp" ;
-    schema:domainIncludes sao:AuditEntry,
+    schema1:domainIncludes sao:AuditEntry,
         sao:LogEntry ;
     rdfs:comment "When the event occurred (required).",
         "[AuditEntry] When the event occurred (required).",
@@ -7954,7 +7954,7 @@ sao:uri a rdf:Property ;
 
 sao:used_by_callables a rdf:Property ;
     rdfs:label "used_by_callables" ;
-    schema:domainIncludes sao:ConcurrencyPrimitive,
+    schema1:domainIncludes sao:ConcurrencyPrimitive,
         sao:FileDefinition ;
     rdfs:comment "Callables using this.",
         "[ConcurrencyPrimitive] Callables using this.",
@@ -8076,9 +8076,9 @@ sao:validates_records a rdf:Property ;
 
 sao:value a rdf:Property ;
     rdfs:label "value" ;
-    schema:domainIncludes sao:Configuration,
+    schema1:domainIncludes sao:Configuration,
         sao:MLModelMetric ;
-    schema:rangeIncludes xsd:float,
+    schema1:rangeIncludes xsd:float,
         xsd:string ;
     rdfs:comment "Configuration value.",
         "[Configuration] Configuration value.",
@@ -8103,7 +8103,7 @@ sao:verifies_evidence a rdf:Property ;
 
 sao:version a rdf:Property ;
     rdfs:label "version" ;
-    schema:domainIncludes sao:ContractVersion,
+    schema1:domainIncludes sao:ContractVersion,
         sao:Metadata,
         sao:Release,
         sao:SchemaVersion,
@@ -8117,7 +8117,7 @@ sao:version a rdf:Property ;
 
 sao:version_constraint a rdf:Property ;
     rdfs:label "version_constraint" ;
-    schema:domainIncludes sao:Dependency,
+    schema1:domainIncludes sao:Dependency,
         sao:PackageDependency ;
     rdfs:comment "Version constraint expression.",
         "[Dependency] Version constraint expression.",
@@ -8143,7 +8143,7 @@ sao:version_of_schema a rdf:Property ;
 
 sao:visibility a rdf:Property ;
     rdfs:label "visibility" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataElement,
         sao:DataStructure,
         sao:EncapsulationUnit ;
@@ -11813,7 +11813,7 @@ xsd:boolean a rdfs:Datatype .
 
 xsd:string a rdfs:Datatype .
 
-sao: a schema:DefinedTermSet ;
+sao: a schema1:DefinedTermSet ;
     dcterms:description "A comprehensive ontology for modeling software systems, including structural components, domain modeling (DDD), security, data management, integration, deployment, and observability concerns." ;
     dcterms:hasVersion "2.1.0" ;
     dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;

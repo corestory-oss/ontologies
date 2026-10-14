@@ -1,0 +1,463 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:TestAssertionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/description>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/expected_value>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/id>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/line_number>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/name>,
+        <https://ontologies.corestory.ai/sao/shapes/TestAssertion/tags> ;
+    sh:targetClass sao:TestAssertion .
+
+saosh:TestCaseShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/TestCase/belongs_to_suite>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/description>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/has_assertions>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/id>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/is_automated>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/line_end>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/line_start>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/name>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/priority>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/setup_fixture>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/status>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/teardown_fixture>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/tests_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCase/tests_operation> ;
+    sh:targetClass sao:TestCase .
+
+saosh:TestCoverageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/TestCoverage/branch_coverage_percent>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_for_component>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_for_module>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_tool>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/description>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/function_coverage_percent>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/id>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/line_coverage_percent>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/name>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/statement_coverage_percent>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/TestCoverage/uncovered_lines> ;
+    sh:targetClass sao:TestCoverage .
+
+saosh:TestSuiteShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/TestSuite/contains_test_cases>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/description>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/execution_time_ms>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/failing_cases>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/framework>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/id>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/name>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/passing_cases>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/skipped_cases>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/source_location>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/tests_component>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/tests_module>,
+        <https://ontologies.corestory.ai/sao/shapes/TestSuite/total_cases> ;
+    sh:targetClass sao:TestSuite .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type> a sh:PropertyShape ;
+    sh:description "Kind of assertion." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:assertion_type .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values> rdf:first "equality" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/1> rdf:first "truthiness" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/2> rdf:first "exception" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/3> rdf:first "type_check" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/4> rdf:first "containment" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/5> rdf:first "mock_verification" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/6> rdf:first "snapshot" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/assertion_type/values/cell/7> rdf:first "custom" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/expected_value> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Expected value." ;
+    sh:maxCount 1 ;
+    sh:path sao:expected_value .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/line_number> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Source line number." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_number .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/TestAssertion/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/belongs_to_suite> a sh:PropertyShape ;
+    sh:class sao:TestSuite ;
+    sh:description "Parent suite." ;
+    sh:maxCount 1 ;
+    sh:path sao:belongs_to_suite .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/has_assertions> a sh:PropertyShape ;
+    sh:class sao:TestAssertion ;
+    sh:description "Assertions." ;
+    sh:path sao:has_assertions .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/is_automated> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether automated." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_automated .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/line_end> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Ending line in source." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_end .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/line_start> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Starting line in source." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_start .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/priority> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Priority level." ;
+    sh:maxCount 1 ;
+    sh:path sao:priority .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/setup_fixture> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Setup fixture name." ;
+    sh:maxCount 1 ;
+    sh:path sao:setup_fixture .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status> a sh:PropertyShape ;
+    sh:description "Test status." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/TestCase/status/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:status .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status/values> rdf:first "passing" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/1> rdf:first "failing" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/2> rdf:first "skipped" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/3> rdf:first "flaky" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/status/values/cell/4> rdf:first "pending" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/teardown_fixture> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Teardown fixture name." ;
+    sh:maxCount 1 ;
+    sh:path sao:teardown_fixture .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/tests_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callable tested." ;
+    sh:maxCount 1 ;
+    sh:path sao:tests_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCase/tests_operation> a sh:PropertyShape ;
+    sh:class sao:Operation ;
+    sh:description "Operation tested." ;
+    sh:maxCount 1 ;
+    sh:path sao:tests_operation .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/branch_coverage_percent> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "Branch coverage percentage." ;
+    sh:maxCount 1 ;
+    sh:path sao:branch_coverage_percent .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_for_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "Component measured." ;
+    sh:maxCount 1 ;
+    sh:path sao:coverage_for_component .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_for_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "Module measured." ;
+    sh:maxCount 1 ;
+    sh:path sao:coverage_for_module .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/coverage_tool> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Coverage tool (Istanbul, JaCoCo, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:coverage_tool .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/function_coverage_percent> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "Function coverage percentage." ;
+    sh:maxCount 1 ;
+    sh:path sao:function_coverage_percent .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/line_coverage_percent> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "Line coverage percentage." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_coverage_percent .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/statement_coverage_percent> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "Statement coverage percentage." ;
+    sh:maxCount 1 ;
+    sh:path sao:statement_coverage_percent .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/TestCoverage/uncovered_lines> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Uncovered line numbers." ;
+    sh:path sao:uncovered_lines .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/contains_test_cases> a sh:PropertyShape ;
+    sh:class sao:TestCase ;
+    sh:description "Test cases in this suite." ;
+    sh:path sao:contains_test_cases .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/execution_time_ms> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Total execution time in milliseconds." ;
+    sh:maxCount 1 ;
+    sh:path sao:execution_time_ms .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/failing_cases> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Failing test cases." ;
+    sh:maxCount 1 ;
+    sh:path sao:failing_cases .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/framework> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Testing framework." ;
+    sh:maxCount 1 ;
+    sh:path sao:framework .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/passing_cases> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Passing test cases." ;
+    sh:maxCount 1 ;
+    sh:path sao:passing_cases .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/skipped_cases> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Skipped test cases." ;
+    sh:maxCount 1 ;
+    sh:path sao:skipped_cases .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/source_location> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Source file path." ;
+    sh:maxCount 1 ;
+    sh:path sao:source_location .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type> a sh:PropertyShape ;
+    sh:description "Kind of test suite." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:suite_type .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values> rdf:first "unit" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/1> rdf:first "integration" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/2> rdf:first "functional" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/3> rdf:first "end_to_end" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/4> rdf:first "performance" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/5> rdf:first "security" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/6> rdf:first "regression" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/7> rdf:first "smoke" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/suite_type/values/cell/8> rdf:first "contract" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/tests_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "Component tested." ;
+    sh:maxCount 1 ;
+    sh:path sao:tests_component .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/tests_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "Module tested." ;
+    sh:maxCount 1 ;
+    sh:path sao:tests_module .
+
+<https://ontologies.corestory.ai/sao/shapes/TestSuite/total_cases> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Total test cases." ;
+    sh:maxCount 1 ;
+    sh:path sao:total_cases .

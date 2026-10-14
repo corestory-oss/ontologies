@@ -1,0 +1,333 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:DatasetAllocationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/allocated_in_step>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/dataset_name>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/dd_name>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/maps_to_file_definition>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/space_primary>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/space_secondary>,
+        <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/tags> ;
+    sh:targetClass sao:DatasetAllocation .
+
+saosh:JobDefinitionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/JobDefinition/contains_job_steps>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/depended_on_by_jobs>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/depends_on_jobs>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/description>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/id>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/job_class>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/priority>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/restart_point>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/scheduling_info>,
+        <https://ontologies.corestory.ai/sao/shapes/JobDefinition/tags> ;
+    sh:targetClass sao:JobDefinition .
+
+saosh:JobStepShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/JobStep/allocates_datasets>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/condition_code>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/description>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/id>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/name>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/program_name>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/region_size>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/step_executes_program>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/step_in_job>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type>,
+        <https://ontologies.corestory.ai/sao/shapes/JobStep/tags> ;
+    sh:targetClass sao:JobStep .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/allocated_in_step> a sh:PropertyShape ;
+    sh:class sao:JobStep ;
+    sh:description "The step where this allocation occurs." ;
+    sh:maxCount 1 ;
+    sh:path sao:allocated_in_step .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/dataset_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Physical dataset name (DSN)" ;
+    sh:maxCount 1 ;
+    sh:path sao:dataset_name .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/dd_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "DD name (logical file reference)" ;
+    sh:maxCount 1 ;
+    sh:path sao:dd_name .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition> a sh:PropertyShape ;
+    sh:description "Dataset disposition." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:disposition .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values> rdf:first "new_dataset" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/1> rdf:first "old_dataset" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/2> rdf:first "shared" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/3> rdf:first "modify" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/4> rdf:first "catalog" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/5> rdf:first "delete_disp" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/disposition/values/cell/6> rdf:first "pass" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/maps_to_file_definition> a sh:PropertyShape ;
+    sh:class sao:FileDefinition ;
+    sh:description "The file definition this allocation maps to." ;
+    sh:maxCount 1 ;
+    sh:path sao:maps_to_file_definition .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format> a sh:PropertyShape ;
+    sh:description "Record format (shared enum with Section 20)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:record_format .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values> rdf:first "fixed" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/1> rdf:first "variable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/2> rdf:first "undefined" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/3> rdf:first "spanned" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/record_format/values/cell/4> rdf:first "stream" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/space_primary> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Primary space allocation." ;
+    sh:maxCount 1 ;
+    sh:path sao:space_primary .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/space_secondary> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Secondary space allocation." ;
+    sh:maxCount 1 ;
+    sh:path sao:space_secondary .
+
+<https://ontologies.corestory.ai/sao/shapes/DatasetAllocation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/contains_job_steps> a sh:PropertyShape ;
+    sh:class sao:JobStep ;
+    sh:description "Steps within this job." ;
+    sh:path sao:contains_job_steps .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/depended_on_by_jobs> a sh:PropertyShape ;
+    sh:class sao:JobDefinition ;
+    sh:description "Jobs that depend on this one." ;
+    sh:path sao:depended_on_by_jobs .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/depends_on_jobs> a sh:PropertyShape ;
+    sh:class sao:JobDefinition ;
+    sh:description "Jobs that must complete before this one." ;
+    sh:path sao:depends_on_jobs .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/job_class> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Job class or queue assignment." ;
+    sh:maxCount 1 ;
+    sh:path sao:job_class .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/priority> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Execution priority." ;
+    sh:maxCount 1 ;
+    sh:path sao:priority .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/restart_point> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Step or checkpoint for restart" ;
+    sh:maxCount 1 ;
+    sh:path sao:restart_point .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/scheduling_info> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Schedule or trigger criteria" ;
+    sh:maxCount 1 ;
+    sh:path sao:scheduling_info .
+
+<https://ontologies.corestory.ai/sao/shapes/JobDefinition/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/allocates_datasets> a sh:PropertyShape ;
+    sh:class sao:DatasetAllocation ;
+    sh:description "Datasets allocated for this step." ;
+    sh:path sao:allocates_datasets .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/condition_code> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Condition code checks (e.g., COND=(4,LT))" ;
+    sh:maxCount 1 ;
+    sh:path sao:condition_code .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/program_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Name of the program to execute" ;
+    sh:maxCount 1 ;
+    sh:path sao:program_name .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/region_size> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Memory region allocation" ;
+    sh:maxCount 1 ;
+    sh:path sao:region_size .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_executes_program> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "The program executed by this step." ;
+    sh:maxCount 1 ;
+    sh:path sao:step_executes_program .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_in_job> a sh:PropertyShape ;
+    sh:class sao:JobDefinition ;
+    sh:description "The job containing this step." ;
+    sh:maxCount 1 ;
+    sh:path sao:step_in_job .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type> a sh:PropertyShape ;
+    sh:description "The type of step." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:step_type .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values> rdf:first "exec_program" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/1> rdf:first "exec_proc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/2> rdf:first "utility" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/3> rdf:first "sort" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/4> rdf:first "file_transfer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/step_type/values/cell/5> rdf:first "conditional" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/JobStep/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

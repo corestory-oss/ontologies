@@ -5,7 +5,7 @@ import tempfile
 from pathlib import Path
 import unittest
 from rdflib import Graph, Namespace, RDF, RDFS
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts/migration"))
 from export_rdfs import build_graph, validate_projection, partition_graph, write_or_check, load_manifest, SCHEMA
 
 FIXTURE = """

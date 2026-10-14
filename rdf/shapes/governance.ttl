@@ -1,0 +1,331 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ComplianceRequirementShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/applies_to_systems>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/effective_date>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/has_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/tags> ;
+    sh:targetClass sao:ComplianceRequirement .
+
+saosh:ControlShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Control/control_id>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/frequency>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/has_evidence>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/implementation>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/mitigates_risks>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/owned_by_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Control/tags> ;
+    sh:targetClass sao:Control .
+
+saosh:EvidenceShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Evidence/artifact_uri>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/collected_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/evidence_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Evidence/verified_by_actor> ;
+    sh:targetClass sao:Evidence .
+
+saosh:RiskAssessmentShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assessed_at>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assesses_system>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/description>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/id>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/mitigated_by_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/name>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/residual_risk>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/risk_level>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/threats>,
+        <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/vulnerabilities> ;
+    sh:targetClass sao:RiskAssessment .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/applies_to_systems> a sh:PropertyShape ;
+    sh:class sao:System ;
+    sh:description "`System` entities that must comply." ;
+    sh:path sao:applies_to_systems .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/effective_date> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When requirement became effective." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_date .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework> a sh:PropertyShape ;
+    sh:description "Compliance framework this requirement belongs to." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:framework .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values> rdf:first "gdpr" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/1> rdf:first "hipaa" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/2> rdf:first "soc2" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/3> rdf:first "pci_dss" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/4> rdf:first "iso27001" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/5> rdf:first "sox" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/6> rdf:first "ccpa" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/framework/values/cell/7> rdf:first "fedramp" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/has_controls> a sh:PropertyShape ;
+    sh:class sao:Control ;
+    sh:description "List of `Control` entities implementing this requirement." ;
+    sh:path sao:has_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ComplianceRequirement/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/control_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Identifier (e.g., SOC2-CC6.1, ISO27001-A.9.2.1)." ;
+    sh:maxCount 1 ;
+    sh:path sao:control_id .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/frequency> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path sao:frequency .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/has_evidence> a sh:PropertyShape ;
+    sh:class sao:Evidence ;
+    sh:description "List of `Evidence` entities demonstrating effectiveness." ;
+    sh:path sao:has_evidence .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/implementation> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "How control is implemented." ;
+    sh:maxCount 1 ;
+    sh:path sao:implementation .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/mitigates_risks> a sh:PropertyShape ;
+    sh:class sao:RiskAssessment ;
+    sh:description "`RiskAssessment` entities mitigated." ;
+    sh:path sao:mitigates_risks .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/owned_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` responsible for this control." ;
+    sh:maxCount 1 ;
+    sh:path sao:owned_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Control/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/artifact_uri> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Location of evidence artifact." ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_uri .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/collected_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Collection timestamp." ;
+    sh:maxCount 1 ;
+    sh:path sao:collected_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/evidence_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Type of evidence (screenshot, log export, test result, policy document)." ;
+    sh:maxCount 1 ;
+    sh:path sao:evidence_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Evidence/verified_by_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "`Actor` who verified the evidence." ;
+    sh:maxCount 1 ;
+    sh:path sao:verified_by_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assessed_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Assessment date." ;
+    sh:maxCount 1 ;
+    sh:path sao:assessed_at .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assesses_system> a sh:PropertyShape ;
+    sh:class sao:System ;
+    sh:description "`System` being assessed." ;
+    sh:maxCount 1 ;
+    sh:path sao:assesses_system .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/mitigated_by_controls> a sh:PropertyShape ;
+    sh:class sao:Control ;
+    sh:description "`Control` entities mitigating risks." ;
+    sh:path sao:mitigated_by_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/residual_risk> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Remaining risk after mitigations." ;
+    sh:maxCount 1 ;
+    sh:path sao:residual_risk .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/risk_level> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Overall risk level (e.g., \"low\", \"medium\", \"high\", \"critical\")." ;
+    sh:maxCount 1 ;
+    sh:path sao:risk_level .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/threats> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "List of identified threats." ;
+    sh:path sao:threats .
+
+<https://ontologies.corestory.ai/sao/shapes/RiskAssessment/vulnerabilities> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "List of identified vulnerabilities." ;
+    sh:path sao:vulnerabilities .

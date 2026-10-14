@@ -1,0 +1,371 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:DataPipeline a rdfs:Class ;
+    rdfs:label "DataPipeline" ;
+    rdfs:comment "A data processing pipeline for ETL, feature engineering, or model training." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DataPipelineStep a rdfs:Class ;
+    rdfs:label "DataPipelineStep" ;
+    rdfs:comment "A discrete step within a data pipeline" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Dataset a rdfs:Class ;
+    rdfs:label "Dataset" ;
+    rdfs:comment "A dataset used for training, evaluation, or inference" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:FeatureStore a rdfs:Class ;
+    rdfs:label "FeatureStore" ;
+    rdfs:comment "A centralized store for computed ML features." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:MLModel a rdfs:Class ;
+    rdfs:label "MLModel" ;
+    rdfs:comment "A machine learning model defined, trained, or served by the system" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:MLModelMetric a rdfs:Class ;
+    rdfs:label "MLModelMetric" ;
+    rdfs:comment "A performance metric for an ML model" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:DataPipelineStepType a rdfs:Datatype ;
+    rdfs:label "DataPipelineStepType" ;
+    rdfs:comment "Types of data pipeline steps" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/aggregate>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/deduplicate>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/deploy_model>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/enrich>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/evaluate>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/extract>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/load>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/partition>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/train>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/transform>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/validate> .
+
+sao:DataPipelineType a rdfs:Datatype ;
+    rdfs:label "DataPipelineType" ;
+    rdfs:comment "Types of data pipelines" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/data_quality>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/elt>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/etl>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/feature_engineering>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/inference>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/streaming>,
+        <https://ontologies.corestory.ai/sao/export/values/DataPipelineType/training> .
+
+sao:dataset a rdf:Property ;
+    rdfs:label "dataset" ;
+    rdfs:comment "Evaluation dataset name.",
+        "[MLModelMetric] Evaluation dataset name." ;
+    rdfs:domain sao:MLModelMetric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:dataset_used_by_pipeline a rdf:Property ;
+    rdfs:label "dataset_used_by_pipeline" ;
+    rdfs:comment "Pipelines using this dataset.",
+        "[Dataset] Pipelines using this dataset." ;
+    rdfs:domain sao:Dataset ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataPipeline .
+
+sao:depends_on_steps a rdf:Property ;
+    rdfs:label "depends_on_steps" ;
+    rdfs:comment "Step dependencies (by name).",
+        "[DataPipelineStep] Step dependencies (by name)." ;
+    rdfs:domain sao:DataPipelineStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:feature_count a rdf:Property ;
+    rdfs:label "feature_count" ;
+    rdfs:comment "Number of features.",
+        "[FeatureStore] Number of features." ;
+    rdfs:domain sao:FeatureStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:has_input_schema a rdf:Property ;
+    rdfs:label "has_input_schema" ;
+    rdfs:comment "Input data structure.",
+        "[MLModel] Input data structure." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:has_metrics a rdf:Property ;
+    rdfs:label "has_metrics" ;
+    rdfs:comment "Performance metrics.",
+        "[MLModel] Performance metrics." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MLModelMetric .
+
+sao:has_output_schema a rdf:Property ;
+    rdfs:label "has_output_schema" ;
+    rdfs:comment "Output data structure.",
+        "[MLModel] Output data structure." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStructure .
+
+sao:has_schema a rdf:Property ;
+    rdfs:label "has_schema" ;
+    rdfs:comment "Dataset schema.",
+        "[Dataset] Dataset schema." ;
+    rdfs:domain sao:Dataset ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Schema .
+
+sao:input_schema a rdf:Property ;
+    rdfs:label "input_schema" ;
+    rdfs:comment "Input schema.",
+        "[DataPipelineStep] Input schema." ;
+    rdfs:domain sao:DataPipelineStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:metric_name a rdf:Property ;
+    rdfs:label "metric_name" ;
+    rdfs:comment "Metric name (accuracy, F1, RMSE, etc.).",
+        "[MLModelMetric] Metric name (accuracy, F1, RMSE, etc.)." ;
+    rdfs:domain sao:MLModelMetric ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:model_format a rdf:Property ;
+    rdfs:label "model_format" ;
+    rdfs:comment "Serialization format (ONNX, SavedModel, etc.).",
+        "[MLModel] Serialization format (ONNX, SavedModel, etc.)." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:model_served_by_component a rdf:Property ;
+    rdfs:label "model_served_by_component" ;
+    rdfs:comment "Serving component.",
+        "[MLModel] Serving component." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Component .
+
+sao:model_trained_by_pipeline a rdf:Property ;
+    rdfs:label "model_trained_by_pipeline" ;
+    rdfs:comment "Training pipeline.",
+        "[MLModel] Training pipeline." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataPipeline .
+
+sao:model_type a rdf:Property ;
+    rdfs:label "model_type" ;
+    rdfs:comment "Kind of ML model.",
+        "[MLModel] Kind of ML model." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MLModelType .
+
+sao:model_uri a rdf:Property ;
+    rdfs:label "model_uri" ;
+    rdfs:comment "Model artifact location.",
+        "[MLModel] Model artifact location." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:model_uses_feature_store a rdf:Property ;
+    rdfs:label "model_uses_feature_store" ;
+    rdfs:comment "Feature stores used.",
+        "[MLModel] Feature stores used." ;
+    rdfs:domain sao:MLModel ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FeatureStore .
+
+sao:orchestrator a rdf:Property ;
+    rdfs:label "orchestrator" ;
+    rdfs:comment "Orchestrator (Airflow, Dagster, etc.).",
+        "[DataPipeline] Orchestrator (Airflow, Dagster, etc.)." ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:output_schema a rdf:Property ;
+    rdfs:label "output_schema" ;
+    rdfs:comment "Output schema.",
+        "[DataPipelineStep] Output schema." ;
+    rdfs:domain sao:DataPipelineStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:pipeline_reads_from_stores a rdf:Property ;
+    rdfs:label "pipeline_reads_from_stores" ;
+    rdfs:comment "Data stores read from.",
+        "[DataPipeline] Data stores read from." ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStore .
+
+sao:pipeline_trains_model a rdf:Property ;
+    rdfs:label "pipeline_trains_model" ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MLModel .
+
+sao:pipeline_uses_dataset a rdf:Property ;
+    rdfs:label "pipeline_uses_dataset" ;
+    rdfs:comment "Datasets used.",
+        "[DataPipeline] Datasets used." ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Dataset .
+
+sao:pipeline_writes_to_stores a rdf:Property ;
+    rdfs:label "pipeline_writes_to_stores" ;
+    rdfs:comment "Data stores written to.",
+        "[DataPipeline] Data stores written to." ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataStore .
+
+sao:provides_features_to_models a rdf:Property ;
+    rdfs:label "provides_features_to_models" ;
+    rdfs:comment "Models using this feature store.",
+        "[FeatureStore] Models using this feature store." ;
+    rdfs:domain sao:FeatureStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MLModel .
+
+sao:row_count a rdf:Property ;
+    rdfs:label "row_count" ;
+    rdfs:comment "Number of rows/records.",
+        "[Dataset] Number of rows/records." ;
+    rdfs:domain sao:Dataset ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:schedule a rdf:Property ;
+    rdfs:label "schedule" ;
+    rdfs:comment "Cron expression or schedule.",
+        "[DataPipeline] Cron expression or schedule." ;
+    rdfs:domain sao:DataPipeline ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:storage_backend a rdf:Property ;
+    rdfs:label "storage_backend" ;
+    rdfs:comment "Storage backend.",
+        "[FeatureStore] Storage backend." ;
+    rdfs:domain sao:FeatureStore ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:storage_uri a rdf:Property ;
+    rdfs:label "storage_uri" ;
+    rdfs:comment "Storage location.",
+        "[Dataset] Storage location." ;
+    rdfs:domain sao:Dataset ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:transformation_logic a rdf:Property ;
+    rdfs:label "transformation_logic" ;
+    rdfs:comment "Transformation description.",
+        "[DataPipelineStep] Transformation description." ;
+    rdfs:domain sao:DataPipelineStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:MLModelType a rdfs:Datatype ;
+    rdfs:label "MLModelType" ;
+    rdfs:comment "Types of machine learning models" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/MLModelType/anomaly_detection>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/classification>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/clustering>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/computer_vision>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/generative>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/nlp>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/recommendation>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/regression>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/reinforcement_learning>,
+        <https://ontologies.corestory.ai/sao/export/values/MLModelType/time_series> .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/aggregate> rdf:value "aggregate" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/deduplicate> rdf:value "deduplicate" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/deploy_model> rdf:value "deploy_model" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/enrich> rdf:value "enrich" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/evaluate> rdf:value "evaluate" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/extract> rdf:value "extract" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/load> rdf:value "load" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/partition> rdf:value "partition" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/train> rdf:value "train" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/transform> rdf:value "transform" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineStepType/validate> rdf:value "validate" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/data_quality> rdf:value "data_quality" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/elt> rdf:value "elt" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/etl> rdf:value "etl" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/feature_engineering> rdf:value "feature_engineering" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/inference> rdf:value "inference" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/streaming> rdf:value "streaming" .
+
+<https://ontologies.corestory.ai/sao/export/values/DataPipelineType/training> rdf:value "training" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/anomaly_detection> rdf:value "anomaly_detection" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/classification> rdf:value "classification" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/clustering> rdf:value "clustering" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/computer_vision> rdf:value "computer_vision" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/generative> rdf:value "generative" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/nlp> rdf:value "nlp" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/recommendation> rdf:value "recommendation" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/regression> rdf:value "regression" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/reinforcement_learning> rdf:value "reinforcement_learning" .
+
+<https://ontologies.corestory.ai/sao/export/values/MLModelType/time_series> rdf:value "time_series" .
+

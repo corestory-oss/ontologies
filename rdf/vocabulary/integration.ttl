@@ -1,0 +1,394 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Adapter a rdfs:Class ;
+    rdfs:label "Adapter" ;
+    rdfs:comment "A component that translates between system and external protocols" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:Component .
+
+sao:CircuitBreaker a rdfs:Class ;
+    rdfs:label "CircuitBreaker" ;
+    rdfs:comment "A resilience pattern preventing cascade failures" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Contract a rdfs:Class ;
+    rdfs:label "Contract" ;
+    rdfs:comment "A formal specification of integration behavior" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity,
+        sao:Versionable .
+
+sao:ContractVersion a rdfs:Class ;
+    rdfs:label "ContractVersion" ;
+    rdfs:comment "A specific iteration of a contract" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:ExternalSystem a rdfs:Class ;
+    rdfs:label "ExternalSystem" ;
+    rdfs:comment "A system outside this system's boundary" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Integration a rdfs:Class ;
+    rdfs:label "Integration" ;
+    rdfs:comment "A configured connection to an external system" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:Message a rdfs:Class ;
+    rdfs:label "Message" ;
+    rdfs:comment "A unit of data exchanged in integration" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:belongs_to_system a rdf:Property ;
+    rdfs:label "belongs_to_system" ;
+    rdfs:comment "Parent `System`.",
+        "[Integration] Parent `System`." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:System .
+
+sao:breaking_changes a rdf:Property ;
+    rdfs:label "breaking_changes" ;
+    rdfs:comment "List of breaking changes from previous version.",
+        "[ContractVersion] List of breaking changes from previous version." ;
+    rdfs:domain sao:ContractVersion ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:contract_type a rdf:Property ;
+    rdfs:label "contract_type" ;
+    rdfs:comment "Kind of contract.",
+        "[Contract] Kind of contract." ;
+    rdfs:domain sao:Contract ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ContractType .
+
+sao:defines_interfaces a rdf:Property ;
+    rdfs:label "defines_interfaces" ;
+    rdfs:comment "[Contract] `Interface` entities defined.",
+        "`Interface` entities defined." ;
+    rdfs:domain sao:Contract ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Interface .
+
+sao:documentation_url a rdf:Property ;
+    rdfs:label "documentation_url" ;
+    rdfs:comment "API documentation URL.",
+        "[ExternalSystem] API documentation URL." ;
+    rdfs:domain sao:ExternalSystem ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:URI .
+
+sao:governs_integrations a rdf:Property ;
+    rdfs:label "governs_integrations" ;
+    rdfs:comment "[Contract] `Integration` entities governed.",
+        "`Integration` entities governed." ;
+    rdfs:domain sao:Contract ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Integration .
+
+sao:half_open_requests a rdf:Property ;
+    rdfs:label "half_open_requests" ;
+    rdfs:comment "Requests allowed in half-open state.",
+        "[CircuitBreaker] Requests allowed in half-open state." ;
+    rdfs:domain sao:CircuitBreaker ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:has_messages a rdf:Property ;
+    rdfs:label "has_messages" ;
+    rdfs:comment "List of messages exchanged.",
+        "[Integration] List of messages exchanged." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Message .
+
+sao:implemented_by_units a rdf:Property ;
+    rdfs:label "implemented_by_units" ;
+    rdfs:comment "[Contract] `EncapsulationUnit` entities implementing this contract.",
+        "`EncapsulationUnit` entities implementing this contract." ;
+    rdfs:domain sao:Contract ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:integrated_via a rdf:Property ;
+    rdfs:label "integrated_via" ;
+    rdfs:comment "[ExternalSystem] `Integration[]` connecting to this system.",
+        "`Integration[]` connecting to this system." ;
+    rdfs:domain sao:ExternalSystem ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Integration .
+
+sao:integrates_with_system a rdf:Property ;
+    rdfs:label "integrates_with_system" ;
+    rdfs:comment "Target `ExternalSystem`.",
+        "[Integration] Target `ExternalSystem`." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExternalSystem .
+
+sao:integration_documented_by_artifacts a rdf:Property ;
+    rdfs:label "integration_documented_by_artifacts" ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:KnowledgeArtifact .
+
+sao:integration_governed_by_contract a rdf:Property ;
+    rdfs:label "integration_governed_by_contract" ;
+    rdfs:comment "[Integration] `Contract` defining API.",
+        "`Contract` defining API." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Contract .
+
+sao:integration_type a rdf:Property ;
+    rdfs:label "integration_type" ;
+    rdfs:comment "[Integration] `inbound` (receiving data), `outbound` (sending data), `bidirectional`.",
+        "`inbound` (receiving data), `outbound` (sending data), `bidirectional`." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IntegrationType .
+
+sao:message_structured_by_schema a rdf:Property ;
+    rdfs:label "message_structured_by_schema" ;
+    rdfs:comment "[Message] `Schema` defining message structure.",
+        "`Schema` defining message structure." ;
+    rdfs:domain sao:Message ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Schema .
+
+sao:message_type a rdf:Property ;
+    rdfs:label "message_type" ;
+    rdfs:comment "Kind of message.",
+        "[Message] Kind of message." ;
+    rdfs:domain sao:Message ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:MessageType .
+
+sao:owner a rdf:Property ;
+    rdfs:label "owner" ;
+    rdfs:comment "System owner or vendor.",
+        "[ExternalSystem] System owner or vendor." ;
+    rdfs:domain sao:ExternalSystem ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:protected_by_breaker a rdf:Property ;
+    rdfs:label "protected_by_breaker" ;
+    rdfs:comment "[Integration] `CircuitBreaker` for resilience.",
+        "`CircuitBreaker` for resilience." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:CircuitBreaker .
+
+sao:protects_integrations a rdf:Property ;
+    rdfs:label "protects_integrations" ;
+    rdfs:comment "[CircuitBreaker] `Integration` entities protected.",
+        "`Integration` entities protected." ;
+    rdfs:domain sao:CircuitBreaker ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Integration .
+
+sao:reset_timeout_seconds a rdf:Property ;
+    rdfs:label "reset_timeout_seconds" ;
+    rdfs:comment "Seconds before attempting half-open.",
+        "[CircuitBreaker] Seconds before attempting half-open." ;
+    rdfs:domain sao:CircuitBreaker ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:integer .
+
+sao:sla a rdf:Property ;
+    rdfs:label "sla" ;
+    rdfs:comment "Service level agreement.",
+        "[ExternalSystem] Service level agreement." ;
+    rdfs:domain sao:ExternalSystem ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:source_protocol a rdf:Property ;
+    rdfs:label "source_protocol" ;
+    rdfs:comment "Protocol to translate from.",
+        "[Adapter] Protocol to translate from." ;
+    rdfs:domain sao:Adapter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ProtocolType .
+
+sao:system_type a rdf:Property ;
+    rdfs:label "system_type" ;
+    rdfs:comment "Category of external system.",
+        "[ExternalSystem] Category of external system." ;
+    rdfs:domain sao:ExternalSystem ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ExternalSystemType .
+
+sao:target_protocol a rdf:Property ;
+    rdfs:label "target_protocol" ;
+    rdfs:comment "Protocol to translate to.",
+        "[Adapter] Protocol to translate to." ;
+    rdfs:domain sao:Adapter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:ProtocolType .
+
+sao:transformation a rdf:Property ;
+    rdfs:label "transformation" ;
+    rdfs:comment "Data transformation logic.",
+        "[Adapter] Data transformation logic." ;
+    rdfs:domain sao:Adapter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:used_by_integrations a rdf:Property ;
+    rdfs:label "used_by_integrations" ;
+    rdfs:comment "[Adapter] `Integration` entities using this adapter.",
+        "`Integration` entities using this adapter." ;
+    rdfs:domain sao:Adapter ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Integration .
+
+sao:uses_adapter a rdf:Property ;
+    rdfs:label "uses_adapter" ;
+    rdfs:comment "[Integration] `Adapter` for protocol translation.",
+        "`Adapter` for protocol translation." ;
+    rdfs:domain sao:Integration ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Adapter .
+
+sao:validated_by_contract a rdf:Property ;
+    rdfs:label "validated_by_contract" ;
+    rdfs:comment "[Message] `Contract` validating message.",
+        "`Contract` validating message." ;
+    rdfs:domain sao:Message ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Contract .
+
+sao:validates_messages a rdf:Property ;
+    rdfs:label "validates_messages" ;
+    rdfs:comment "[Contract] `Message` entities validated.",
+        "`Message` entities validated." ;
+    rdfs:domain sao:Contract ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Message .
+
+sao:version_of_contract a rdf:Property ;
+    rdfs:label "version_of_contract" ;
+    rdfs:comment "[ContractVersion] `Contract` that this version belongs to.",
+        "`Contract` that this version belongs to." ;
+    rdfs:domain sao:ContractVersion ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Contract .
+
+sao:ContractType a rdfs:Datatype ;
+    rdfs:label "ContractType" ;
+    rdfs:comment "Types of API contracts" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ContractType/asyncapi>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/avro>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/graphql_schema>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/json_schema>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/openapi>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/protobuf>,
+        <https://ontologies.corestory.ai/sao/export/values/ContractType/wsdl> .
+
+sao:ExternalSystemType a rdfs:Datatype ;
+    rdfs:label "ExternalSystemType" ;
+    rdfs:comment "Types of external systems" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/legacy_system>,
+        <https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/partner_system>,
+        <https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/saas_application>,
+        <https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/third_party_service> .
+
+sao:IntegrationType a rdfs:Datatype ;
+    rdfs:label "IntegrationType" ;
+    rdfs:comment "Types of integrations" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/IntegrationType/bidirectional>,
+        <https://ontologies.corestory.ai/sao/export/values/IntegrationType/inbound>,
+        <https://ontologies.corestory.ai/sao/export/values/IntegrationType/outbound> .
+
+sao:MessageType a rdfs:Datatype ;
+    rdfs:label "MessageType" ;
+    rdfs:comment "Types of messages" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/MessageType/command>,
+        <https://ontologies.corestory.ai/sao/export/values/MessageType/event>,
+        <https://ontologies.corestory.ai/sao/export/values/MessageType/notification>,
+        <https://ontologies.corestory.ai/sao/export/values/MessageType/query>,
+        <https://ontologies.corestory.ai/sao/export/values/MessageType/request>,
+        <https://ontologies.corestory.ai/sao/export/values/MessageType/response> .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/asyncapi> rdf:value "asyncapi" ;
+    rdfs:comment "AsyncAPI specification for async APIs." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/avro> rdf:value "avro" ;
+    rdfs:comment "Apache Avro schema." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/graphql_schema> rdf:value "graphql_schema" ;
+    rdfs:comment "GraphQL schema definition." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/json_schema> rdf:value "json_schema" ;
+    rdfs:comment "JSON Schema specification." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/openapi> rdf:value "openapi" ;
+    rdfs:comment "OpenAPI (Swagger) specification." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/protobuf> rdf:value "protobuf" ;
+    rdfs:comment "Protocol Buffers schema." .
+
+<https://ontologies.corestory.ai/sao/export/values/ContractType/wsdl> rdf:value "wsdl" ;
+    rdfs:comment "Web Services Description Language." .
+
+<https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/legacy_system> rdf:value "legacy_system" ;
+    rdfs:comment "Legacy system being integrated." .
+
+<https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/partner_system> rdf:value "partner_system" ;
+    rdfs:comment "Partner or vendor system." .
+
+<https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/saas_application> rdf:value "saas_application" ;
+    rdfs:comment "Software-as-a-Service application." .
+
+<https://ontologies.corestory.ai/sao/export/values/ExternalSystemType/third_party_service> rdf:value "third_party_service" ;
+    rdfs:comment "Third-party external service." .
+
+<https://ontologies.corestory.ai/sao/export/values/IntegrationType/bidirectional> rdf:value "bidirectional" ;
+    rdfs:comment "Bidirectional two-way integration." .
+
+<https://ontologies.corestory.ai/sao/export/values/IntegrationType/inbound> rdf:value "inbound" ;
+    rdfs:comment "Inbound integration receiving data." .
+
+<https://ontologies.corestory.ai/sao/export/values/IntegrationType/outbound> rdf:value "outbound" ;
+    rdfs:comment "Outbound integration sending data." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/command> rdf:value "command" ;
+    rdfs:comment "Command message for action execution." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/event> rdf:value "event" ;
+    rdfs:comment "Event notification message." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/notification> rdf:value "notification" ;
+    rdfs:comment "One-way notification message." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/query> rdf:value "query" ;
+    rdfs:comment "Query message for data retrieval." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/request> rdf:value "request" ;
+    rdfs:comment "Request message expecting a response." .
+
+<https://ontologies.corestory.ai/sao/export/values/MessageType/response> rdf:value "response" ;
+    rdfs:comment "Response message to a request." .
+

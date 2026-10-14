@@ -1,0 +1,235 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:KnowledgeArtifactShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/authored_at>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/authored_by>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/content>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/description>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_aggregate>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_bounded_context>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_component>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_domain_entity>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_integration>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_module>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_service>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_system>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/id>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/name>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/stored_in_container>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/superseded_by>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/supersedes>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/uri>,
+        <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/version> ;
+    sh:targetClass sao:KnowledgeArtifact .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type> a sh:PropertyShape ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_type .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values> rdf:first "adr" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/1> rdf:first "readme" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/10> rdf:first "diagram" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/11> rdf:first "rfc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/12> rdf:first "sop" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/2> rdf:first "design_doc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/3> rdf:first "runbook" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/4> rdf:first "wiki_page" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/5> rdf:first "api_doc" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/6> rdf:first "onboarding_guide" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/7> rdf:first "postmortem" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/8> rdf:first "changelog" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/9> rdf:first "comment" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/artifact_type/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/authored_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:path sao:authored_at .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/authored_by> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:path sao:authored_by .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/content> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:path sao:content .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_aggregate> a sh:PropertyShape ;
+    sh:class sao:Aggregate ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_aggregate .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_bounded_context> a sh:PropertyShape ;
+    sh:class sao:BoundedContext ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_bounded_context .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_component .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_domain_entity> a sh:PropertyShape ;
+    sh:class sao:DomainEntity ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_domain_entity .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_integration> a sh:PropertyShape ;
+    sh:class sao:Integration ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_integration .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_module .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_service> a sh:PropertyShape ;
+    sh:class sao:Service ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_service .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/documents_system> a sh:PropertyShape ;
+    sh:class sao:System ;
+    sh:maxCount 1 ;
+    sh:path sao:documents_system .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status> a sh:PropertyShape ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:status .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values> rdf:first "draft" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/1> rdf:first "published" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/2> rdf:first "accepted" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/3> rdf:first "superseded" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/4> rdf:first "deprecated" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/status/values/cell/5> rdf:first "archived" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/stored_in_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:maxCount 1 ;
+    sh:path sao:stored_in_container .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/superseded_by> a sh:PropertyShape ;
+    sh:class sao:KnowledgeArtifact ;
+    sh:maxCount 1 ;
+    sh:path sao:superseded_by .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/supersedes> a sh:PropertyShape ;
+    sh:class sao:KnowledgeArtifact ;
+    sh:maxCount 1 ;
+    sh:path sao:supersedes .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/uri> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:path sao:uri .
+
+<https://ontologies.corestory.ai/sao/shapes/KnowledgeArtifact/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .

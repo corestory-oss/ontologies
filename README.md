@@ -8,7 +8,9 @@ operating context—including libraries, services, batch programs, and applicati
 * **Version**: 2.1.0
 * **Author**: Charath Ranganathan
 * **License**: [Apache License 2.0](LICENSE)
-* **Schema**: LinkML (YAML), with a generated [RDFS Turtle vocabulary](sao.ttl)
+* **Editable sources**: [RDFS vocabulary](rdf/vocabulary/) and [SHACL shapes](rdf/shapes/) in Turtle
+* **Distributions**: [sao.ttl](sao.ttl) and [sao.shacl.ttl](sao.shacl.ttl)
+* **Legacy baseline**: LinkML 2.1.0 retained during migration
 
 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships
 
@@ -57,7 +59,25 @@ operating context—including libraries, services, batch programs, and applicati
 4. Map domain **Aggregates** and **Entities**
 5. Document **Integrations**, **Authorization**, and **Compliance** metadata
 
-### Local setup and validation
+### Turtle source workflow
+
+Edit topic files in `rdf/vocabulary/` and class-specific shapes in `rdf/shapes/`.
+The manifests under `rdf/manifests/` define the distributions. The normal build
+reads Turtle directly and does not invoke LinkML:
+
+```bash
+uv sync --locked
+uv run python scripts/build_rdf.py
+uv run python scripts/build_rdf.py --check
+uv run python scripts/validate_rdf.py
+uv run python -m unittest discover -s tests
+```
+
+The RDF example is synthetic. To validate another Turtle data graph, pass its
+path to `scripts/validate_rdf.py`. The initial shapes are open and do not yet
+provide full equivalence with the legacy schema. See [the migration status](docs/turtle-migration.md).
+
+### Legacy baseline validation
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
 these commands from the repository root. `uv sync` installs Python 3.13 if needed
@@ -79,17 +99,17 @@ describes how to populate the ontology. Multi-class snippets in the guides are
 conceptual illustrations; validate an individual instance with an explicit
 `-C` target class as shown above.
 
-For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the topic files listed in
-[`rdf/manifest.json`](rdf/manifest.json) into one graph. Regenerate both forms with
-`uv run python scripts/export_rdfs.py`; see [export semantics and limits](docs/rdfs-export.md).
+For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the vocabulary files listed in
+[`rdf/manifests/vocabulary.json`](rdf/manifests/vocabulary.json) into one graph.
+Use [`sao.shacl.ttl`](sao.shacl.ttl) for the initial validation profile.
+See [semantics and limits](docs/rdfs-export.md).
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
 
-## Schema layout
+## Legacy LinkML layout
 
-`sao.yml` is the entry point for the complete ontology. It imports the topic
-modules in [schema/](schema/); continue passing `sao.yml` to validators and
-generators. Each definition has one home. Enums used in one topic live with
+`sao.yml` is the entry point for the retained LinkML baseline. It imports the topic
+modules in [schema/](schema/); pass it to legacy LinkML validators and generators. Each definition has one home. Enums used in one topic live with
 that topic; shared enums, types, base classes, and global slots live in
 [schema/common.yaml](schema/common.yaml). Cross-topic references are resolved
 through the entry point, so the topic files are not standalone schemas.
@@ -109,8 +129,8 @@ the documentation generator omits definitions in the topic modules.
 
 ## Examples
 
-The files under [examples/](examples/) are standalone instances checked against
-the schema. Reference relationships use entity IDs; relationships declared with
+The YAML files under [examples/](examples/) are legacy instances checked against
+the LinkML baseline; [the RDF example](examples/rdf/system.ttl) is checked against the initial SHACL profile. Reference relationships use entity IDs; relationships declared with
 `inlined_as_list: true` embed objects. See the examples for both representations.
 
 ### Simple E-Commerce System

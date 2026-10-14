@@ -1,0 +1,226 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:ComplianceRequirement a rdfs:Class ;
+    rdfs:label "ComplianceRequirement" ;
+    rdfs:comment "A regulatory or policy obligation" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Documents requirements from compliance frameworks that the system must satisfy." .
+
+sao:Control a rdfs:Class ;
+    rdfs:label "Control" ;
+    rdfs:comment "A measure implementing a compliance requirement" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Specific security or compliance controls implemented to satisfy requirements." .
+
+sao:Evidence a rdfs:Class ;
+    rdfs:label "Evidence" ;
+    rdfs:comment "Proof that a control is operating effectively" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Demonstrates to auditors that controls are implemented and effective." .
+
+sao:RiskAssessment a rdfs:Class ;
+    rdfs:label "RiskAssessment" ;
+    rdfs:comment "An evaluation of threats and vulnerabilities" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Identify, analyze, and prioritize risks to the system." .
+
+sao:ComplianceFramework a rdfs:Datatype ;
+    rdfs:label "ComplianceFramework" ;
+    rdfs:comment "Compliance frameworks" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/ccpa>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/fedramp>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/gdpr>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/hipaa>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/iso27001>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/pci_dss>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/soc2>,
+        <https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/sox> .
+
+sao:applies_to_systems a rdf:Property ;
+    rdfs:label "applies_to_systems" ;
+    rdfs:comment "[ComplianceRequirement] `System` entities that must comply.",
+        "`System` entities that must comply." ;
+    rdfs:domain sao:ComplianceRequirement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:System .
+
+sao:assessed_at a rdf:Property ;
+    rdfs:label "assessed_at" ;
+    rdfs:comment "Assessment date.",
+        "[RiskAssessment] Assessment date." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:assesses_system a rdf:Property ;
+    rdfs:label "assesses_system" ;
+    rdfs:comment "[RiskAssessment] `System` being assessed.",
+        "`System` being assessed." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:System .
+
+sao:collected_at a rdf:Property ;
+    rdfs:label "collected_at" ;
+    rdfs:comment "Collection timestamp.",
+        "[Evidence] Collection timestamp." ;
+    rdfs:domain sao:Evidence ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:control_id a rdf:Property ;
+    rdfs:label "control_id" ;
+    rdfs:comment "Identifier (e.g., SOC2-CC6.1, ISO27001-A.9.2.1).",
+        "[Control] Identifier (e.g., SOC2-CC6.1, ISO27001-A.9.2.1)." ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:effective_date a rdf:Property ;
+    rdfs:label "effective_date" ;
+    rdfs:comment "When requirement became effective.",
+        "[ComplianceRequirement] When requirement became effective." ;
+    rdfs:domain sao:ComplianceRequirement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Timestamp .
+
+sao:evidence_type a rdf:Property ;
+    rdfs:label "evidence_type" ;
+    rdfs:comment "Type of evidence (screenshot, log export, test result, policy document).",
+        "[Evidence] Type of evidence (screenshot, log export, test result, policy document)." ;
+    rdfs:domain sao:Evidence ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:frequency a rdf:Property ;
+    rdfs:label "frequency" ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:has_controls a rdf:Property ;
+    rdfs:label "has_controls" ;
+    rdfs:comment "List of `Control` entities implementing this requirement.",
+        "[ComplianceRequirement] List of `Control` entities implementing this requirement." ;
+    rdfs:domain sao:ComplianceRequirement ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Control .
+
+sao:has_evidence a rdf:Property ;
+    rdfs:label "has_evidence" ;
+    rdfs:comment "List of `Evidence` entities demonstrating effectiveness.",
+        "[Control] List of `Evidence` entities demonstrating effectiveness." ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Evidence .
+
+sao:implementation a rdf:Property ;
+    rdfs:label "implementation" ;
+    rdfs:comment "How control is implemented.",
+        "[Control] How control is implemented." ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:mitigated_by_controls a rdf:Property ;
+    rdfs:label "mitigated_by_controls" ;
+    rdfs:comment "[RiskAssessment] `Control` entities mitigating risks.",
+        "`Control` entities mitigating risks." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Control .
+
+sao:mitigates_risks a rdf:Property ;
+    rdfs:label "mitigates_risks" ;
+    rdfs:comment "[Control] `RiskAssessment` entities mitigated.",
+        "`RiskAssessment` entities mitigated." ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:RiskAssessment .
+
+sao:owned_by_actor a rdf:Property ;
+    rdfs:label "owned_by_actor" ;
+    rdfs:comment "[Control] `Actor` responsible for this control.",
+        "`Actor` responsible for this control." ;
+    rdfs:domain sao:Control ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Actor .
+
+sao:residual_risk a rdf:Property ;
+    rdfs:label "residual_risk" ;
+    rdfs:comment "Remaining risk after mitigations.",
+        "[RiskAssessment] Remaining risk after mitigations." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:risk_level a rdf:Property ;
+    rdfs:label "risk_level" ;
+    rdfs:comment "Overall risk level (e.g., \"low\", \"medium\", \"high\", \"critical\").",
+        "[RiskAssessment] Overall risk level (e.g., \"low\", \"medium\", \"high\", \"critical\")." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:threats a rdf:Property ;
+    rdfs:label "threats" ;
+    rdfs:comment "List of identified threats.",
+        "[RiskAssessment] List of identified threats." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:verified_by_actor a rdf:Property ;
+    rdfs:label "verified_by_actor" ;
+    rdfs:comment "[Evidence] `Actor` who verified the evidence.",
+        "`Actor` who verified the evidence." ;
+    rdfs:domain sao:Evidence ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Actor .
+
+sao:vulnerabilities a rdf:Property ;
+    rdfs:label "vulnerabilities" ;
+    rdfs:comment "List of identified vulnerabilities.",
+        "[RiskAssessment] List of identified vulnerabilities." ;
+    rdfs:domain sao:RiskAssessment ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/ccpa> rdf:value "ccpa" ;
+    rdfs:comment "California Consumer Privacy Act." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/fedramp> rdf:value "fedramp" ;
+    rdfs:comment "Federal Risk and Authorization Management Program." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/gdpr> rdf:value "gdpr" ;
+    rdfs:comment "General Data Protection Regulation (EU)." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/hipaa> rdf:value "hipaa" ;
+    rdfs:comment "Health Insurance Portability and Accountability Act." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/iso27001> rdf:value "iso27001" ;
+    rdfs:comment "ISO 27001 Information Security Management." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/pci_dss> rdf:value "pci_dss" ;
+    rdfs:comment "Payment Card Industry Data Security Standard." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/soc2> rdf:value "soc2" ;
+    rdfs:comment "Service Organization Control 2." .
+
+<https://ontologies.corestory.ai/sao/export/values/ComplianceFramework/sox> rdf:value "sox" ;
+    rdfs:comment "Sarbanes-Oxley Act." .
+

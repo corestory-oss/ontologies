@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Promote Turtle vocabulary and initial SHACL shapes to editable source, with Turtle-only assembly and validation. Retain the legacy LinkML baseline.
+
 All notable changes to the Systems Abstraction Ontology (SAO) are documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),

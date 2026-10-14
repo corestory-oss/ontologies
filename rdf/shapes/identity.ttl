@@ -1,0 +1,623 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ActorShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Actor/audit_actions_performed>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/category>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/has_identities>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/verifies_evidence> ;
+    sh:targetClass sao:Actor .
+
+saosh:CredentialShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Credential/credential_for_identity>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/expires_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/is_active>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Credential/tags> ;
+    sh:targetClass sao:Credential .
+
+saosh:HumanActorShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/audit_actions_performed>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/category>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/description>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/email>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_identities>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/id>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/name>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/verifies_evidence> ;
+    sh:targetClass sao:HumanActor .
+
+saosh:IdentityShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Identity/belongs_to_tenant>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/has_credentials>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/has_roles>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/identity_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/member_of_organizations>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/represents_actor>,
+        <https://ontologies.corestory.ai/sao/shapes/Identity/tags> ;
+    sh:targetClass sao:Identity .
+
+saosh:OrganizationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Organization/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/has_children>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/has_identity_members>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/has_parent>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/organization_in_tenant>,
+        <https://ontologies.corestory.ai/sao/shapes/Organization/tags> ;
+    sh:targetClass sao:Organization .
+
+saosh:SystemActorShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/audit_actions_performed>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/category>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/description>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_identities>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/id>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/name>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/service_account>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/verifies_evidence> ;
+    sh:targetClass sao:SystemActor .
+
+saosh:TenantShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Tenant/contains_identities>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/has_organizations>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/has_settings>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Tenant/tags> ;
+    sh:targetClass sao:Tenant .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/audit_actions_performed> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "`AuditEntry` entities recording actions by this actor." ;
+    sh:path sao:audit_actions_performed .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/category> a sh:PropertyShape ;
+    sh:description "Actor category (`human`, `system`)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Actor/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/category/values> rdf:first "human" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Actor/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/category/values/cell/1> rdf:first "system" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/has_identities> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "One or more `Identity` entities associated with this actor." ;
+    sh:path sao:has_identities .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/owns_controls> a sh:PropertyShape ;
+    sh:class sao:Control ;
+    sh:description "`Control` entities owned by this actor." ;
+    sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities performed by this actor." ;
+    sh:path sao:performs_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/verifies_evidence> a sh:PropertyShape ;
+    sh:class sao:Evidence ;
+    sh:description "`Evidence` entities verified by this actor." ;
+    sh:path sao:verifies_evidence .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_for_identity> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:maxCount 1 ;
+    sh:path sao:credential_for_identity .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type> a sh:PropertyShape ;
+    sh:description "Type of credential." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:credential_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values> rdf:first "password" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/1> rdf:first "token" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/2> rdf:first "certificate" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/3> rdf:first "api_key" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/4> rdf:first "biometric" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/5> rdf:first "mfa" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/credential_type/values/cell/6> rdf:first "oauth" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/expires_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Expiration timestamp." ;
+    sh:maxCount 1 ;
+    sh:path sao:expires_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/is_active> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the credential is currently active." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_active .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Credential/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type> a sh:PropertyShape ;
+    sh:description "Type of human actor." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:actor_type .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values> rdf:first "end_user" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/1> rdf:first "administrator" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/2> rdf:first "operator" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/3> rdf:first "developer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/actor_type/values/cell/4> rdf:first "auditor" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/audit_actions_performed> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "`AuditEntry` entities recording actions by this actor." ;
+    sh:path sao:audit_actions_performed .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/category> a sh:PropertyShape ;
+    sh:description "Actor category (`human`, `system`)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/HumanActor/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/category/values> rdf:first "human" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HumanActor/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/category/values/cell/1> rdf:first "system" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/email> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Contact email address." ;
+    sh:maxCount 1 ;
+    sh:path sao:email .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/has_identities> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "One or more `Identity` entities associated with this actor." ;
+    sh:path sao:has_identities .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_controls> a sh:PropertyShape ;
+    sh:class sao:Control ;
+    sh:description "`Control` entities owned by this actor." ;
+    sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities performed by this actor." ;
+    sh:path sao:performs_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/verifies_evidence> a sh:PropertyShape ;
+    sh:class sao:Evidence ;
+    sh:description "`Evidence` entities verified by this actor." ;
+    sh:path sao:verifies_evidence .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/belongs_to_tenant> a sh:PropertyShape ;
+    sh:class sao:Tenant ;
+    sh:description "The `Tenant` this identity belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:belongs_to_tenant .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/has_credentials> a sh:PropertyShape ;
+    sh:class sao:Credential ;
+    sh:description "List of associated credentials." ;
+    sh:path sao:has_credentials .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/has_roles> a sh:PropertyShape ;
+    sh:class sao:Role ;
+    sh:description "`Role` entities assigned to this identity." ;
+    sh:path sao:has_roles .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/identity_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Type of identity (user, service, device)." ;
+    sh:maxCount 1 ;
+    sh:path sao:identity_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/member_of_organizations> a sh:PropertyShape ;
+    sh:class sao:Organization ;
+    sh:description "`Organization` entities this identity is a member of." ;
+    sh:path sao:member_of_organizations .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/represents_actor> a sh:PropertyShape ;
+    sh:class sao:Actor ;
+    sh:description "The `Actor` this identity represents." ;
+    sh:maxCount 1 ;
+    sh:path sao:represents_actor .
+
+<https://ontologies.corestory.ai/sao/shapes/Identity/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/has_children> a sh:PropertyShape ;
+    sh:class sao:Organization ;
+    sh:description "Child organizations." ;
+    sh:path sao:has_children .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/has_identity_members> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "`Identity` entities that are members of this organization." ;
+    sh:path sao:has_identity_members .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/has_parent> a sh:PropertyShape ;
+    sh:class sao:Organization ;
+    sh:description "Parent organization for hierarchical structures." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/organization_in_tenant> a sh:PropertyShape ;
+    sh:class sao:Tenant ;
+    sh:maxCount 1 ;
+    sh:path sao:organization_in_tenant .
+
+<https://ontologies.corestory.ai/sao/shapes/Organization/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type> a sh:PropertyShape ;
+    sh:description "Type of system actor." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:actor_type .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values> rdf:first "internal_service" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/1> rdf:first "external_system" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/2> rdf:first "scheduled_process" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/3> rdf:first "ai_agent" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/actor_type/values/cell/4> rdf:first "message_trigger" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/audit_actions_performed> a sh:PropertyShape ;
+    sh:class sao:AuditEntry ;
+    sh:description "`AuditEntry` entities recording actions by this actor." ;
+    sh:path sao:audit_actions_performed .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/category> a sh:PropertyShape ;
+    sh:description "Actor category (`human`, `system`)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/SystemActor/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/category/values> rdf:first "human" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/SystemActor/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/category/values/cell/1> rdf:first "system" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/has_identities> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "One or more `Identity` entities associated with this actor." ;
+    sh:path sao:has_identities .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_controls> a sh:PropertyShape ;
+    sh:class sao:Control ;
+    sh:description "`Control` entities owned by this actor." ;
+    sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities performed by this actor." ;
+    sh:path sao:performs_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/service_account> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Service account identifier." ;
+    sh:maxCount 1 ;
+    sh:path sao:service_account .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/verifies_evidence> a sh:PropertyShape ;
+    sh:class sao:Evidence ;
+    sh:description "`Evidence` entities verified by this actor." ;
+    sh:path sao:verifies_evidence .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/contains_identities> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "`Identity` entities within this tenant." ;
+    sh:path sao:contains_identities .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/has_organizations> a sh:PropertyShape ;
+    sh:class sao:Organization ;
+    sh:description "List of organizations within this tenant." ;
+    sh:path sao:has_organizations .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/has_settings> a sh:PropertyShape ;
+    sh:class sao:Configuration ;
+    sh:description "Tenant-specific configuration." ;
+    sh:path sao:has_settings .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Tenant/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

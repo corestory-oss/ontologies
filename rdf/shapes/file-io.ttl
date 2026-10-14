@@ -1,0 +1,285 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:FileDefinitionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/block_size>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/description>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/external_name>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_defined_in_container>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_status_field>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/id>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/key_fields>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/mapped_from_dataset_allocations>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/persisted_in_store>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_length>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/used_by_callables> ;
+    sh:targetClass sao:FileDefinition .
+
+saosh:FileOperationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/FileOperation/condition_handling>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/operates_on_file>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/performed_in_callable>,
+        <https://ontologies.corestory.ai/sao/shapes/FileOperation/tags> ;
+    sh:targetClass sao:FileOperation .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode> a sh:PropertyShape ;
+    sh:description "How the file is accessed." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:access_mode .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values> rdf:first "sequential_access" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values/cell/1> rdf:first "random_access" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/access_mode/values/cell/2> rdf:first "dynamic_access" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/block_size> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Block size in bytes." ;
+    sh:maxCount 1 ;
+    sh:path sao:block_size .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/external_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "External/physical file name (DD name, path)" ;
+    sh:maxCount 1 ;
+    sh:path sao:external_name .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_defined_in_container> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Container where this file is defined." ;
+    sh:maxCount 1 ;
+    sh:path sao:file_defined_in_container .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_status_field> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Variable receiving I/O status codes" ;
+    sh:maxCount 1 ;
+    sh:path sao:file_status_field .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations> a sh:PropertyShape ;
+    sh:class sao:FileOperation ;
+    sh:description "Operations performed on this file." ;
+    sh:path sao:has_file_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/key_fields> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Key field names for indexed files" ;
+    sh:path sao:key_fields .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/mapped_from_dataset_allocations> a sh:PropertyShape ;
+    sh:class sao:DatasetAllocation ;
+    sh:description "JCL dataset allocations that map to this file." ;
+    sh:path sao:mapped_from_dataset_allocations .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization> a sh:PropertyShape ;
+    sh:description "Physical organization of the file." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:organization .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values> rdf:first "sequential" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/1> rdf:first "indexed" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/2> rdf:first "relative" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/3> rdf:first "vsam_ksds" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/4> rdf:first "vsam_esds" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/5> rdf:first "vsam_rrds" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/6> rdf:first "partitioned_dataset" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/7> rdf:first "generation_data_group" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/8> rdf:first "line_sequential" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization/values/cell/9> rdf:first "heap" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/persisted_in_store> a sh:PropertyShape ;
+    sh:class sao:DataStore ;
+    sh:description "Data store backing this file." ;
+    sh:maxCount 1 ;
+    sh:path sao:persisted_in_store .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format> a sh:PropertyShape ;
+    sh:description "Record format." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:record_format .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values> rdf:first "fixed" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/1> rdf:first "variable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/2> rdf:first "undefined" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/3> rdf:first "spanned" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format/values/cell/4> rdf:first "stream" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_length> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Record length in bytes." ;
+    sh:maxCount 1 ;
+    sh:path sao:record_length .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/used_by_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables that perform I/O on this file." ;
+    sh:path sao:used_by_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/condition_handling> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "How I/O status conditions are handled" ;
+    sh:maxCount 1 ;
+    sh:path sao:condition_handling .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operates_on_file> a sh:PropertyShape ;
+    sh:class sao:FileDefinition ;
+    sh:description "The file being operated on." ;
+    sh:maxCount 1 ;
+    sh:path sao:operates_on_file .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type> a sh:PropertyShape ;
+    sh:description "The type of I/O operation." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:operation_type .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values> rdf:first "read" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/1> rdf:first "write" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/2> rdf:first "rewrite" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/3> rdf:first "delete" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/4> rdf:first "start" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/5> rdf:first "open" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/6> rdf:first "close" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/7> rdf:first "sort" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/operation_type/values/cell/8> rdf:first "merge" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/performed_in_callable> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "The callable performing the operation." ;
+    sh:maxCount 1 ;
+    sh:path sao:performed_in_callable .
+
+<https://ontologies.corestory.ai/sao/shapes/FileOperation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

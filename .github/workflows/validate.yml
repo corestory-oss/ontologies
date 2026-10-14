@@ -18,7 +18,8 @@ jobs:
       - run: uv sync --locked
       - run: uv run linkml-lint --validate-only sao.yml
       - run: uv run python scripts/check_schema.py
-      - run: uv run python scripts/export_rdfs.py --check
+      - run: uv run python scripts/build_rdf.py --check
+      - run: uv run python scripts/validate_rdf.py
       - run: uv run python -m unittest discover -s tests
       - name: Validate schema modules
         run: |

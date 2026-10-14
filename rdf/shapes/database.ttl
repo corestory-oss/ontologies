@@ -1,0 +1,198 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:DatabaseConstraintShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/columns>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/expression>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/reference_columns>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/reference_table>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/tags> ;
+    sh:targetClass sao:DatabaseConstraint .
+
+saosh:DatabaseIndexShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/columns>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/filter_expression>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_on_collection>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/is_partial>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/is_unique>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/tags> ;
+    sh:targetClass sao:DatabaseIndex .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/columns> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Columns involved in the constraint." ;
+    sh:path sao:columns .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "The collection this constraint belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:constraint_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type> a sh:PropertyShape ;
+    sh:description "The type of constraint." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:constraint_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values> rdf:first "primary_key" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/1> rdf:first "foreign_key" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/2> rdf:first "unique" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/3> rdf:first "check" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type/values/cell/4> rdf:first "not_null" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/expression> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Expression for CHECK constraints" ;
+    sh:maxCount 1 ;
+    sh:path sao:expression .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/reference_columns> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Referenced columns for foreign keys" ;
+    sh:path sao:reference_columns .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/reference_table> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Referenced table for foreign keys" ;
+    sh:maxCount 1 ;
+    sh:path sao:reference_table .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/columns> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Columns included in the index." ;
+    sh:path sao:columns .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/filter_expression> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Filter for partial indexes" ;
+    sh:maxCount 1 ;
+    sh:path sao:filter_expression .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_on_collection> a sh:PropertyShape ;
+    sh:class sao:Collection ;
+    sh:description "The collection this index belongs to." ;
+    sh:maxCount 1 ;
+    sh:path sao:index_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type> a sh:PropertyShape ;
+    sh:description "The type of index." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:index_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values> rdf:first "btree" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/1> rdf:first "hash" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/2> rdf:first "gin" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/index_type/values/cell/3> rdf:first "fulltext" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/is_partial> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the index is partial/filtered." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_partial .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/is_unique> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the index enforces uniqueness." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_unique .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DatabaseIndex/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

@@ -1,0 +1,835 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:AlertRuleShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/AlertRule/action>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/category>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/condition>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/description>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/duration_seconds>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/enforces_aggregate_invariants>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/governs_domain_entities>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/guards_transitions>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/id>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/is_active>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/monitors_metrics>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/name>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/notification_channels>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/priority>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/threshold>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/triggers_alerts>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/validates_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/AlertRule/validates_attributes> ;
+    sh:targetClass sao:AlertRule .
+
+saosh:AlertShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Alert/acknowledged_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/escalates_to_incident>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/resolved_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/severity>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/triggered_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Alert/triggered_by_rule> ;
+    sh:targetClass sao:Alert .
+
+saosh:HealthCheckShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/description>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/endpoint>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/failure_threshold>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/id>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/interval_seconds>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/name>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/success_threshold>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/HealthCheck/timeout_seconds> ;
+    sh:targetClass sao:HealthCheck .
+
+saosh:IncidentShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Incident/affects_services>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/escalated_from_alerts>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/postmortem_url>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/resolved_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/root_cause>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/severity>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/started_at>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/status>,
+        <https://ontologies.corestory.ai/sao/shapes/Incident/tags> ;
+    sh:targetClass sao:Incident .
+
+saosh:LogEntryShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/LogEntry/context>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/description>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/id>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/level>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/message>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/name>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/timestamp> ;
+    sh:targetClass sao:LogEntry .
+
+saosh:LogShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Log/contains_entries>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/log_governed_by_retention>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/log_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Log/tags> ;
+    sh:targetClass sao:Log .
+
+saosh:MetricShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Metric/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/labels>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/metric_emitted_by_component>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/metric_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/monitored_by_alert_rules>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Metric/unit> ;
+    sh:targetClass sao:Metric .
+
+saosh:SpanShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Span/attributes>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/belongs_to_trace>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/child_of_span>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/end_time>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/operation_name>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/parent_of_spans>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/root_of_trace>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/span_id>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/start_time>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/status>,
+        <https://ontologies.corestory.ai/sao/shapes/Span/tags> ;
+    sh:targetClass sao:Span .
+
+saosh:TraceShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Trace/contains_spans>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/starts_with_span>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Trace/trace_id> ;
+    sh:targetClass sao:Trace .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/acknowledged_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When alert was acknowledged." ;
+    sh:maxCount 1 ;
+    sh:path sao:acknowledged_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/escalates_to_incident> a sh:PropertyShape ;
+    sh:class sao:Incident ;
+    sh:description "`Incident` if escalated." ;
+    sh:path sao:escalates_to_incident .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/resolved_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When issue was resolved." ;
+    sh:maxCount 1 ;
+    sh:path sao:resolved_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/severity> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Alert severity (critical, warning, info)." ;
+    sh:maxCount 1 ;
+    sh:path sao:severity .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/triggered_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When alert was triggered." ;
+    sh:maxCount 1 ;
+    sh:path sao:triggered_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Alert/triggered_by_rule> a sh:PropertyShape ;
+    sh:class sao:AlertRule ;
+    sh:description "`AlertRule` that triggered this alert." ;
+    sh:maxCount 1 ;
+    sh:path sao:triggered_by_rule .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/action> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Action when rule fires." ;
+    sh:maxCount 1 ;
+    sh:path sao:action .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category> a sh:PropertyShape ;
+    sh:description "Kind of rule." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:category .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values> rdf:first "validation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/1> rdf:first "business" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/2> rdf:first "derivation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/3> rdf:first "constraint" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/category/values/cell/4> rdf:first "trigger" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/condition> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Alert condition expression (e.g., \"error_rate > 5%\")." ;
+    sh:maxCount 1 ;
+    sh:path sao:condition .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/duration_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Duration before alerting (avoid flapping)." ;
+    sh:maxCount 1 ;
+    sh:path sao:duration_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/enforces_aggregate_invariants> a sh:PropertyShape ;
+    sh:class sao:Aggregate ;
+    sh:description "Back-reference to `Aggregate` entities whose invariants this rule enforces." ;
+    sh:path sao:enforces_aggregate_invariants .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/governs_domain_entities> a sh:PropertyShape ;
+    sh:class sao:DomainEntity ;
+    sh:description "Back-reference to `DomainEntity` entities governed by this rule." ;
+    sh:path sao:governs_domain_entities .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/guards_transitions> a sh:PropertyShape ;
+    sh:class sao:Transition ;
+    sh:description "Back-reference to `Transition` entities guarded by this rule." ;
+    sh:path sao:guards_transitions .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/is_active> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether rule is currently active." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_active .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/monitors_metrics> a sh:PropertyShape ;
+    sh:class sao:Metric ;
+    sh:description "`Metric` entities being monitored." ;
+    sh:path sao:monitors_metrics .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/notification_channels> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Where to send alerts (email, Slack, PagerDuty)." ;
+    sh:path sao:notification_channels .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/priority> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Evaluation priority." ;
+    sh:maxCount 1 ;
+    sh:path sao:priority .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/threshold> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "Threshold value." ;
+    sh:maxCount 1 ;
+    sh:path sao:threshold .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/triggers_alerts> a sh:PropertyShape ;
+    sh:class sao:Alert ;
+    sh:description "`Alert` entities triggered." ;
+    sh:path sao:triggers_alerts .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/validates_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "Back-reference to `Action` entities validated by this rule." ;
+    sh:path sao:validates_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/AlertRule/validates_attributes> a sh:PropertyShape ;
+    sh:class sao:Attribute ;
+    sh:description "Back-reference to `Attribute` entities validated by this rule." ;
+    sh:path sao:validates_attributes .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type> a sh:PropertyShape ;
+    sh:description "Kind of health check." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:check_type .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values> rdf:first "liveness" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/1> rdf:first "readiness" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/2> rdf:first "dependency" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/check_type/values/cell/3> rdf:first "startup" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/endpoint> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Health check endpoint URL." ;
+    sh:maxCount 1 ;
+    sh:path sao:endpoint .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/failure_threshold> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Failures before marking unhealthy." ;
+    sh:maxCount 1 ;
+    sh:path sao:failure_threshold .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/interval_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Check frequency." ;
+    sh:maxCount 1 ;
+    sh:path sao:interval_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/success_threshold> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Successes before marking healthy." ;
+    sh:maxCount 1 ;
+    sh:path sao:success_threshold .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/HealthCheck/timeout_seconds> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Check timeout." ;
+    sh:maxCount 1 ;
+    sh:path sao:timeout_seconds .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/affects_services> a sh:PropertyShape ;
+    sh:class sao:Service ;
+    sh:description "`Service` entities impacted." ;
+    sh:path sao:affects_services .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/escalated_from_alerts> a sh:PropertyShape ;
+    sh:class sao:Alert ;
+    sh:description "`Alert` entities that led to incident." ;
+    sh:path sao:escalated_from_alerts .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/postmortem_url> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Link to incident postmortem." ;
+    sh:maxCount 1 ;
+    sh:path sao:postmortem_url .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/resolved_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Resolution time." ;
+    sh:maxCount 1 ;
+    sh:path sao:resolved_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/root_cause> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Root cause analysis." ;
+    sh:maxCount 1 ;
+    sh:path sao:root_cause .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/severity> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Incident severity (P1-P5 or SEV1-SEV5)." ;
+    sh:maxCount 1 ;
+    sh:path sao:severity .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/started_at> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Incident start time." ;
+    sh:maxCount 1 ;
+    sh:path sao:started_at .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/status> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Current status (investigating, identified, monitoring, resolved)." ;
+    sh:maxCount 1 ;
+    sh:path sao:status .
+
+<https://ontologies.corestory.ai/sao/shapes/Incident/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/contains_entries> a sh:PropertyShape ;
+    sh:class sao:LogEntry ;
+    sh:description "List of `LogEntry` records (inverse: `entry_in_log`)." ;
+    sh:path sao:contains_entries .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_governed_by_retention> a sh:PropertyShape ;
+    sh:class sao:RetentionPolicy ;
+    sh:description "`RetentionPolicy` for log retention." ;
+    sh:maxCount 1 ;
+    sh:path sao:log_governed_by_retention .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type> a sh:PropertyShape ;
+    sh:description "Kind of log." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:log_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values> rdf:first "application" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/1> rdf:first "access" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/2> rdf:first "error" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/3> rdf:first "security" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/4> rdf:first "audit" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/log_type/values/cell/5> rdf:first "debug" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Log/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/context> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Additional context (trace ID, user ID, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:context .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log> a sh:PropertyShape ;
+    sh:class sao:Log ;
+    sh:description "Parent log." ;
+    sh:maxCount 1 ;
+    sh:path sao:entry_in_log .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/level> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Log level (DEBUG, INFO, WARN, ERROR)." ;
+    sh:maxCount 1 ;
+    sh:path sao:level .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/message> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Log message." ;
+    sh:maxCount 1 ;
+    sh:path sao:message .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/timestamp> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "When the event occurred." ;
+    sh:maxCount 1 ;
+    sh:path sao:timestamp .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/labels> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Metric labels for dimensionality." ;
+    sh:path sao:labels .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_emitted_by_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "`Component` emitting this metric." ;
+    sh:maxCount 1 ;
+    sh:path sao:metric_emitted_by_component .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_type> a sh:PropertyShape ;
+    sh:description "Kind of metric." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:metric_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values> rdf:first "counter" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/1> rdf:first "gauge" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/2> rdf:first "histogram" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/metric_type/values/cell/3> rdf:first "summary" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/monitored_by_alert_rules> a sh:PropertyShape ;
+    sh:class sao:AlertRule ;
+    sh:description "`AlertRule` entities monitoring this metric." ;
+    sh:path sao:monitored_by_alert_rules .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Metric/unit> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unit of measurement (seconds, bytes, requests, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:unit .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/attributes> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Key-value pairs with additional context." ;
+    sh:path sao:attributes .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/belongs_to_trace> a sh:PropertyShape ;
+    sh:class sao:Trace ;
+    sh:description "Parent trace." ;
+    sh:maxCount 1 ;
+    sh:path sao:belongs_to_trace .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/child_of_span> a sh:PropertyShape ;
+    sh:class sao:Span ;
+    sh:description "Parent span (for nested operations)." ;
+    sh:maxCount 1 ;
+    sh:path sao:child_of_span .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/end_time> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Operation end timestamp." ;
+    sh:maxCount 1 ;
+    sh:path sao:end_time .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/operation_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Name of the operation." ;
+    sh:maxCount 1 ;
+    sh:path sao:operation_name .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/parent_of_spans> a sh:PropertyShape ;
+    sh:class sao:Span ;
+    sh:description "Child spans." ;
+    sh:path sao:parent_of_spans .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/root_of_trace> a sh:PropertyShape ;
+    sh:class sao:Trace ;
+    sh:description "Trace this is the root span of." ;
+    sh:maxCount 1 ;
+    sh:path sao:root_of_trace .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/span_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier for this span." ;
+    sh:maxCount 1 ;
+    sh:path sao:span_id .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/start_time> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Operation start timestamp." ;
+    sh:maxCount 1 ;
+    sh:path sao:start_time .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/status> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Span status." ;
+    sh:maxCount 1 ;
+    sh:path sao:status .
+
+<https://ontologies.corestory.ai/sao/shapes/Span/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/contains_spans> a sh:PropertyShape ;
+    sh:class sao:Span ;
+    sh:description "List of `Span` entities representing operations (inverse: `belongs_to_trace`)." ;
+    sh:path sao:contains_spans .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/starts_with_span> a sh:PropertyShape ;
+    sh:class sao:Span ;
+    sh:description "Root `Span` of the trace." ;
+    sh:maxCount 1 ;
+    sh:path sao:starts_with_span .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Trace/trace_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier for the entire trace." ;
+    sh:maxCount 1 ;
+    sh:path sao:trace_id .

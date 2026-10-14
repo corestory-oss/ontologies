@@ -11818,4 +11818,3 @@ sao: a schema1:DefinedTermSet ;
     dcterms:hasVersion "2.1.0" ;
     dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
     dcterms:title "Systems Abstraction Ontology" .
-

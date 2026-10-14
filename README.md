@@ -9,7 +9,7 @@ operating context—including libraries, services, batch programs, and applicati
 * **Author**: Charath Ranganathan
 * **License**: [Apache License 2.0](LICENSE)
 * **Editable sources**: [RDFS vocabulary](rdf/vocabulary/) and [SHACL shapes](rdf/shapes/) in Turtle
-* **Distributions**: [sao.ttl](sao.ttl) and [sao.shacl.ttl](sao.shacl.ttl)
+* **Distributions**: [sao.ttl](sao.ttl), [sao.shacl.ttl](sao.shacl.ttl), and optional [sao.owl.ttl](sao.owl.ttl) inverse axioms
 * **Legacy baseline**: LinkML 2.1.0 retained during migration
 
 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships
@@ -70,6 +70,7 @@ uv sync --locked
 uv run python scripts/build_rdf.py
 uv run python scripts/build_rdf.py --check
 uv run python scripts/validate_rdf.py
+uv run python scripts/validate_axioms.py
 uv run python -m unittest discover -s tests
 ```
 
@@ -102,6 +103,8 @@ conceptual illustrations; validate an individual instance with an explicit
 For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the vocabulary files listed in
 [`rdf/manifests/vocabulary.json`](rdf/manifests/vocabulary.json) into one graph.
 Use [`sao.shacl.ttl`](sao.shacl.ttl) for the initial validation profile.
+For optional inverse reasoning, load the vocabulary plus [`sao.owl.ttl`](sao.owl.ttl);
+see [the inverse audit and seven unresolved groups](docs/inverse-relationships.md).
 See [semantics and limits](docs/rdfs-export.md).
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.

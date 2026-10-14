@@ -14,6 +14,7 @@ Install uv, then run from the repository root:
 uv sync --locked
 uv run python scripts/build_rdf.py --check
 uv run python scripts/validate_rdf.py
+uv run python scripts/validate_axioms.py
 uv run python -m unittest discover -s tests
 uv run linkml-lint --validate-only sao.yml
 uv run python scripts/check_schema.py
@@ -28,6 +29,10 @@ selected target class; it does not verify that every referenced ID exists in a
 complete graph or that inverse relationships have been populated.
 
 ## Editing Turtle sources
+
+Edit inverse axioms under `rdf/axioms/` only after reviewing their global meaning;
+class-local inverse declarations can conflict when properties share an IRI.
+The [inverse audit](docs/inverse-relationships.md) documents withheld relationships.
 
 Edit existing topic files. Class and property IRIs must stay stable unless a
 reviewed migration explicitly changes meaning. Shapes use the distinct

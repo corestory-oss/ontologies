@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add an optional editable OWL supplement for 208 inverse pairs and document seven unresolved inverse groups without changing their vocabulary definitions.
+
 - Promote Turtle vocabulary and initial SHACL shapes to editable source, with Turtle-only assembly and validation. Retain the legacy LinkML baseline.
 
 All notable changes to the Systems Abstraction Ontology (SAO) are documented here.

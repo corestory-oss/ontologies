@@ -1,0 +1,1051 @@
+# Editable OWL supplement; audit decisions are documented in docs/inverse-relationships.md.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+
+sao:accepts_input_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:defines_operation_input .
+
+sao:accessible_by_roles a owl:ObjectProperty ;
+    owl:inverseOf sao:can_access_features .
+
+sao:affected_by_directives a owl:ObjectProperty ;
+    owl:inverseOf sao:directive_affects_encapsulation_units .
+
+sao:affected_by_incidents a owl:ObjectProperty ;
+    owl:inverseOf sao:affects_services .
+
+sao:affected_in_audit a owl:ObjectProperty ;
+    owl:inverseOf sao:affects_resource .
+
+sao:aggregate_documented_by_artifacts a owl:ObjectProperty ;
+    owl:inverseOf sao:documents_aggregate .
+
+sao:aggregated_by a owl:ObjectProperty ;
+    owl:inverseOf sao:aggregates_entities .
+
+sao:allocated_in_step a owl:ObjectProperty ;
+    owl:inverseOf sao:allocates_datasets .
+
+sao:allowed_by_permissions a owl:ObjectProperty ;
+    owl:inverseOf sao:allows_actions .
+
+sao:allowed_in_states a owl:ObjectProperty ;
+    owl:inverseOf sao:allows_actions_in_state .
+
+sao:annotated_by a owl:ObjectProperty ;
+    owl:inverseOf sao:annotates_element .
+
+sao:annotates_data_element a owl:ObjectProperty ;
+    owl:inverseOf sao:has_ownership_annotations .
+
+sao:applies_to_resource_types a owl:ObjectProperty ;
+    owl:inverseOf sao:governed_by_permissions .
+
+sao:applies_to_systems a owl:ObjectProperty ;
+    owl:inverseOf sao:must_comply_with .
+
+sao:artifact_produced_by_pipeline a owl:ObjectProperty ;
+    owl:inverseOf sao:pipeline_produces_artifacts .
+
+sao:artifact_stored_in_registry a owl:ObjectProperty ;
+    owl:inverseOf sao:stores_artifacts .
+
+sao:assessed_by a owl:ObjectProperty ;
+    owl:inverseOf sao:assesses_system .
+
+sao:assigned_to_identities a owl:ObjectProperty ;
+    owl:inverseOf sao:has_roles .
+
+sao:audit_actions_performed a owl:ObjectProperty ;
+    owl:inverseOf sao:audit_performed_by_actor .
+
+sao:auditlog_governed_by_retention a owl:ObjectProperty ;
+    owl:inverseOf sao:governs_audit_logs .
+
+<https://ontologies.corestory.ai/sao/axioms/> a owl:Ontology ;
+    dcterms:title "SAO inverse relationship supplement" ;
+    rdfs:seeAlso sao: .
+
+sao:belongs_to_aggregate a owl:ObjectProperty ;
+    owl:inverseOf sao:has_value_objects .
+
+sao:belongs_to_interface a owl:ObjectProperty ;
+    owl:inverseOf sao:has_endpoints .
+
+sao:belongs_to_suite a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_test_cases .
+
+sao:belongs_to_system a owl:ObjectProperty ;
+    owl:inverseOf sao:has_integrations .
+
+sao:belongs_to_tenant a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_identities .
+
+sao:belongs_to_trace a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_spans .
+
+sao:callable_affected_by_directives a owl:ObjectProperty ;
+    owl:inverseOf sao:directive_affects_callables .
+
+sao:child_of_span a owl:ObjectProperty ;
+    owl:inverseOf sao:parent_of_spans .
+
+sao:classified_as_type a owl:ObjectProperty ;
+    owl:inverseOf sao:classifies_resources .
+
+sao:collection_structured_by_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:structures_collections .
+
+sao:compensated_by_step a owl:ObjectProperty ;
+    owl:inverseOf sao:compensates_for_step .
+
+sao:component_documented_by_artifacts a owl:ObjectProperty ;
+    owl:inverseOf sao:documents_component .
+
+sao:component_serves_model a owl:ObjectProperty ;
+    owl:inverseOf sao:model_served_by_component .
+
+sao:component_uses_concurrency_pattern a owl:ObjectProperty ;
+    owl:inverseOf sao:pattern_used_by_component .
+
+sao:configures_deployments a owl:ObjectProperty ;
+    owl:inverseOf sao:deployment_configured_by .
+
+sao:configures_environments a owl:ObjectProperty ;
+    owl:inverseOf sao:env_configured_by .
+
+sao:conforms_to_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:validates_records .
+
+sao:contained_in_block a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_statements .
+
+sao:contained_in_bounded_context a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_aggregates .
+
+sao:contained_in_callable a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_blocks .
+
+sao:contained_in_context a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_modules .
+
+sao:contained_in_module a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_components .
+
+sao:contained_in_storage_location a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_containers .
+
+sao:contained_in_structure a owl:ObjectProperty ;
+    owl:inverseOf sao:structure_contains_elements .
+
+sao:contained_in_system a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_bounded_contexts .
+
+sao:contains_code_elements a owl:ObjectProperty ;
+    owl:inverseOf sao:defined_in_container .
+
+sao:contains_job_steps a owl:ObjectProperty ;
+    owl:inverseOf sao:step_in_job .
+
+sao:contains_knowledge_artifacts a owl:ObjectProperty ;
+    owl:inverseOf sao:stored_in_container .
+
+sao:contains_locations a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_location .
+
+sao:contains_screen_fields a owl:ObjectProperty ;
+    owl:inverseOf sao:field_on_screen .
+
+sao:contains_screens a owl:ObjectProperty ;
+    owl:inverseOf sao:part_of_ui .
+
+sao:context_documented_by_artifacts a owl:ObjectProperty ;
+    owl:inverseOf sao:documents_bounded_context .
+
+sao:controlled_by_configs a owl:ObjectProperty ;
+    owl:inverseOf sao:controls_features .
+
+sao:coverage_for_component a owl:ObjectProperty ;
+    owl:inverseOf sao:has_coverage .
+
+sao:coverage_for_module a owl:ObjectProperty ;
+    owl:inverseOf sao:module_has_coverage .
+
+sao:credential_for_identity a owl:ObjectProperty ;
+    owl:inverseOf sao:has_credentials .
+
+sao:current_for_entities a owl:ObjectProperty ;
+    owl:inverseOf sao:in_state .
+
+sao:dataset_used_by_pipeline a owl:ObjectProperty ;
+    owl:inverseOf sao:pipeline_uses_dataset .
+
+sao:declared_type a owl:ObjectProperty ;
+    owl:inverseOf sao:type_of_data_elements .
+
+sao:defined_by_contract a owl:ObjectProperty ;
+    owl:inverseOf sao:defines_interfaces .
+
+sao:defines_operation_output a owl:ObjectProperty ;
+    owl:inverseOf sao:produces_output_schema .
+
+sao:depended_on_by_jobs a owl:ObjectProperty ;
+    owl:inverseOf sao:depends_on_jobs .
+
+sao:depended_on_by_module a owl:ObjectProperty ;
+    owl:inverseOf sao:depends_on_module .
+
+sao:depended_on_by_service a owl:ObjectProperty ;
+    owl:inverseOf sao:depends_on_service .
+
+sao:dependency_of_module a owl:ObjectProperty ;
+    owl:inverseOf sao:module_has_dependencies .
+
+sao:deployed_as a owl:ObjectProperty ;
+    owl:inverseOf sao:deploys_service .
+
+sao:deployed_by_pipelines a owl:ObjectProperty ;
+    owl:inverseOf sao:pipeline_deploys_to_environments .
+
+sao:deployed_in_deployments a owl:ObjectProperty ;
+    owl:inverseOf sao:deploys_unit .
+
+sao:deployed_in_deployments_as_release a owl:ObjectProperty ;
+    owl:inverseOf sao:deploys_release .
+
+sao:deployed_in_environment a owl:ObjectProperty ;
+    owl:inverseOf sao:hosts_deployments .
+
+sao:derived_from_records a owl:ObjectProperty ;
+    owl:inverseOf sao:source_of_lineage .
+
+sao:directive_defined_in_container a owl:ObjectProperty ;
+    owl:inverseOf sao:has_preprocessor_directives .
+
+sao:documents_domain_entity a owl:ObjectProperty ;
+    owl:inverseOf sao:entity_documented_by_artifacts .
+
+sao:documents_integration a owl:ObjectProperty ;
+    owl:inverseOf sao:integration_documented_by_artifacts .
+
+sao:documents_module a owl:ObjectProperty ;
+    owl:inverseOf sao:module_documented_by_artifacts .
+
+sao:documents_service a owl:ObjectProperty ;
+    owl:inverseOf sao:service_documented_by_artifacts .
+
+sao:documents_system a owl:ObjectProperty ;
+    owl:inverseOf sao:system_documented_by_artifacts .
+
+sao:downstream_from a owl:ObjectProperty ;
+    owl:inverseOf sao:upstream_from .
+
+sao:emits_events a owl:ObjectProperty ;
+    owl:inverseOf sao:emitted_by_component .
+
+sao:emits_events_from_action a owl:ObjectProperty ;
+    owl:inverseOf sao:emitted_by_action .
+
+sao:emits_metric a owl:ObjectProperty ;
+    owl:inverseOf sao:metric_emitted_by_component .
+
+sao:enabled_by_capabilities a owl:ObjectProperty ;
+    owl:inverseOf sao:enables_features .
+
+sao:encapsulation_unit_renders_ui a owl:ObjectProperty ;
+    owl:inverseOf sao:ui_implements_encapsulation_unit .
+
+sao:enforced_by_invariant_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:enforces_aggregate_invariants .
+
+sao:enforced_by_system a owl:ObjectProperty ;
+    owl:inverseOf sao:enforces_policies .
+
+sao:error_model_for_languages a owl:ObjectProperty ;
+    owl:inverseOf sao:has_default_error_model .
+
+sao:error_model_for_module a owl:ObjectProperty ;
+    owl:inverseOf sao:modules_using_error_model .
+
+sao:escalated_from_alerts a owl:ObjectProperty ;
+    owl:inverseOf sao:escalates_to_incident .
+
+sao:evaluated_by_policies a owl:ObjectProperty ;
+    owl:inverseOf sao:evaluates_permissions .
+
+sao:event_structured_by_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:structures_events .
+
+sao:executed_by_job_steps a owl:ObjectProperty ;
+    owl:inverseOf sao:step_executes_program .
+
+sao:executed_by_operation a owl:ObjectProperty ;
+    owl:inverseOf sao:executes_operation_actions .
+
+sao:executed_during_transition a owl:ObjectProperty ;
+    owl:inverseOf sao:executes_actions_on_transition .
+
+sao:executed_in_step a owl:ObjectProperty ;
+    owl:inverseOf sao:executes_actions_in_step .
+
+sao:executes_actions a owl:ObjectProperty ;
+    owl:inverseOf sao:executes_in_transaction .
+
+sao:exposed_by_component a owl:ObjectProperty ;
+    owl:inverseOf sao:exposes_operations .
+
+sao:exposed_by_service a owl:ObjectProperty ;
+    owl:inverseOf sao:exposes_endpoints .
+
+sao:exposed_by_system a owl:ObjectProperty ;
+    owl:inverseOf sao:exposes_interfaces .
+
+sao:exposes_as_resource a owl:ObjectProperty ;
+    owl:inverseOf sao:represents_entity .
+
+sao:extended_by_units a owl:ObjectProperty ;
+    owl:inverseOf sao:extends_units .
+
+sao:file_defined_in_container a owl:ObjectProperty ;
+    owl:inverseOf sao:has_file_definitions .
+
+sao:followed_by_steps a owl:ObjectProperty ;
+    owl:inverseOf sao:follows_step .
+
+sao:governed_by_lifecycle a owl:ObjectProperty ;
+    owl:inverseOf sao:governs_entities .
+
+sao:governed_by_retention_policy a owl:ObjectProperty ;
+    owl:inverseOf sao:governs_collections .
+
+sao:governed_by_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:governs_domain_entities .
+
+sao:governs_integrations a owl:ObjectProperty ;
+    owl:inverseOf sao:integration_governed_by_contract .
+
+sao:governs_logs a owl:ObjectProperty ;
+    owl:inverseOf sao:log_governed_by_retention .
+
+sao:granted_by_roles a owl:ObjectProperty ;
+    owl:inverseOf sao:grants_permissions .
+
+sao:guarded_by_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:guards_transitions .
+
+sao:guards_routes a owl:ObjectProperty ;
+    owl:inverseOf sao:route_guarded_by .
+
+sao:handled_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:handles_exception_types .
+
+sao:has_child_blocks a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_block .
+
+sao:has_child_elements a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_element .
+
+sao:has_child_exceptions a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_exception .
+
+sao:has_child_routes a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_route .
+
+sao:has_child_structures a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_structure .
+
+sao:has_child_ui_components a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent_ui_component .
+
+sao:has_children a owl:ObjectProperty ;
+    owl:inverseOf sao:has_parent .
+
+sao:has_default_memory_model a owl:ObjectProperty ;
+    owl:inverseOf sao:memory_model_for_languages .
+
+sao:has_identities a owl:ObjectProperty ;
+    owl:inverseOf sao:represents_actor .
+
+sao:has_identity_members a owl:ObjectProperty ;
+    owl:inverseOf sao:member_of_organizations .
+
+sao:has_incoming_ipc_connections a owl:ObjectProperty ;
+    owl:inverseOf sao:has_target_program .
+
+sao:has_incoming_relationships a owl:ObjectProperty ;
+    owl:inverseOf sao:has_target_entity .
+
+sao:has_indexes a owl:ObjectProperty ;
+    owl:inverseOf sao:index_on_collection .
+
+sao:has_lineage a owl:ObjectProperty ;
+    owl:inverseOf sao:tracks_record .
+
+sao:has_organizations a owl:ObjectProperty ;
+    owl:inverseOf sao:organization_in_tenant .
+
+sao:has_outgoing_ipc_connections a owl:ObjectProperty ;
+    owl:inverseOf sao:has_source_program .
+
+sao:has_outgoing_relationships a owl:ObjectProperty ;
+    owl:inverseOf sao:has_source_entity .
+
+sao:has_parameters a owl:ObjectProperty ;
+    owl:inverseOf sao:parameter_of .
+
+sao:has_references a owl:ObjectProperty ;
+    owl:inverseOf sao:referencing_container .
+
+sao:has_return_type a owl:ObjectProperty ;
+    owl:inverseOf sao:return_type_of_callables .
+
+sao:has_root_entity a owl:ObjectProperty ;
+    owl:inverseOf sao:is_root_of_aggregate .
+
+sao:has_screen_definitions a owl:ObjectProperty ;
+    owl:inverseOf sao:screen_defined_in_container .
+
+sao:has_settings a owl:ObjectProperty ;
+    owl:inverseOf sao:setting_for_tenant .
+
+sao:has_transitive_dependencies a owl:ObjectProperty ;
+    owl:inverseOf sao:transitive_dependency_of .
+
+sao:has_type a owl:ObjectProperty ;
+    owl:inverseOf sao:type_of_parameters .
+
+sao:hosted_on_infrastructure a owl:ObjectProperty ;
+    owl:inverseOf sao:hosts_datastores .
+
+sao:iac_provisions_infrastructure a owl:ObjectProperty ;
+    owl:inverseOf sao:infrastructure_provisioned_by_iac .
+
+sao:iac_used_by_pipeline a owl:ObjectProperty ;
+    owl:inverseOf sao:pipeline_uses_iac .
+
+sao:implemented_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:implements_operation .
+
+sao:implemented_by_code a owl:ObjectProperty ;
+    owl:inverseOf sao:implements_component .
+
+sao:implemented_by_units a owl:ObjectProperty ;
+    owl:inverseOf sao:implements_contracts .
+
+sao:imported_via a owl:ObjectProperty ;
+    owl:inverseOf sao:imports_symbols .
+
+sao:included_in_containers a owl:ObjectProperty ;
+    owl:inverseOf sao:includes_definitions .
+
+sao:inherited_by_roles a owl:ObjectProperty ;
+    owl:inverseOf sao:inherits_from_role .
+
+sao:initial_for_lifecycle a owl:ObjectProperty ;
+    owl:inverseOf sao:starts_with_state .
+
+sao:integrated_via a owl:ObjectProperty ;
+    owl:inverseOf sao:integrates_with_system .
+
+sao:invoked_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:invokes_callables .
+
+sao:ipc_passes_data a owl:ObjectProperty ;
+    owl:inverseOf sao:passed_via_ipc .
+
+sao:language_used_by_containers a owl:ObjectProperty ;
+    owl:inverseOf sao:written_in_language .
+
+sao:limited_by_scope a owl:ObjectProperty ;
+    owl:inverseOf sao:limits_permissions .
+
+sao:managed_by_state a owl:ObjectProperty ;
+    owl:inverseOf sao:manages_ui_components .
+
+sao:manages_dependencies_for_module a owl:ObjectProperty ;
+    owl:inverseOf sao:module_managed_by_package_manager .
+
+sao:mapped_from_dataset_allocations a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_file_definition .
+
+sao:mapped_from_directory a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_module .
+
+sao:mapped_from_element a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_attribute .
+
+sao:mapped_from_screen_fields a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_data_element .
+
+sao:mapped_from_structure a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_domain_entity .
+
+sao:mapped_from_structure_vo a owl:ObjectProperty ;
+    owl:inverseOf sao:maps_to_value_object .
+
+sao:memory_model_for_module a owl:ObjectProperty ;
+    owl:inverseOf sao:modules_using_memory_model .
+
+sao:message_structured_by_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:structures_messages .
+
+sao:mitigated_by_controls a owl:ObjectProperty ;
+    owl:inverseOf sao:mitigates_risks .
+
+sao:model_trained_by_pipeline a owl:ObjectProperty ;
+    owl:inverseOf sao:pipeline_trains_model .
+
+sao:model_uses_feature_store a owl:ObjectProperty ;
+    owl:inverseOf sao:provides_features_to_models .
+
+sao:module_tested_by_suites a owl:ObjectProperty ;
+    owl:inverseOf sao:tests_module .
+
+sao:monitored_by_alert_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:monitors_metrics .
+
+sao:offered_on_screens a owl:ObjectProperty ;
+    owl:inverseOf sao:offers_operations .
+
+sao:operation_tested_by_cases a owl:ObjectProperty ;
+    owl:inverseOf sao:tests_operation .
+
+sao:overridden_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:overrides_callable .
+
+sao:owned_by_actor a owl:ObjectProperty ;
+    owl:inverseOf sao:owns_controls .
+
+sao:performed_by_actor a owl:ObjectProperty ;
+    owl:inverseOf sao:performs_actions .
+
+sao:persisted_in_collection a owl:ObjectProperty ;
+    owl:inverseOf sao:persists_structures .
+
+sao:persisted_in_store a owl:ObjectProperty ;
+    owl:inverseOf sao:store_file_definitions .
+
+sao:persisted_in_stores a owl:ObjectProperty ;
+    owl:inverseOf sao:persists_aggregates .
+
+sao:pipeline_reads_from_stores a owl:ObjectProperty ;
+    owl:inverseOf sao:store_read_by_pipelines .
+
+sao:pipeline_writes_to_stores a owl:ObjectProperty ;
+    owl:inverseOf sao:store_written_by_pipelines .
+
+sao:produced_by_aggregate a owl:ObjectProperty ;
+    owl:inverseOf sao:produces_domain_events .
+
+sao:program_uses_screens a owl:ObjectProperty ;
+    owl:inverseOf sao:screen_used_by_programs .
+
+sao:protected_by_breaker a owl:ObjectProperty ;
+    owl:inverseOf sao:protects_integrations .
+
+sao:protected_by_primitive a owl:ObjectProperty ;
+    owl:inverseOf sao:protects_data_elements .
+
+sao:provided_by_modules a owl:ObjectProperty ;
+    owl:inverseOf sao:provides_capabilities .
+
+sao:raised_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:raises_exception_types .
+
+sao:realized_by_capabilities a owl:ObjectProperty ;
+    owl:inverseOf sao:realizes_features .
+
+sao:receives_integration_events a owl:ObjectProperty ;
+    owl:inverseOf sao:targeted_at_services .
+
+sao:recorded_in_audit a owl:ObjectProperty ;
+    owl:inverseOf sao:records_action .
+
+sao:referenced_by_containers a owl:ObjectProperty ;
+    owl:inverseOf sao:references_containers .
+
+sao:referenced_container a owl:ObjectProperty ;
+    owl:inverseOf sao:referenced_via .
+
+sao:renders_on_route a owl:ObjectProperty ;
+    owl:inverseOf sao:route_renders_component .
+
+sao:required_by_capabilities a owl:ObjectProperty ;
+    owl:inverseOf sao:requires_permissions .
+
+sao:root_of_trace a owl:ObjectProperty ;
+    owl:inverseOf sao:starts_with_span .
+
+sao:runs_as_services a owl:ObjectProperty ;
+    owl:inverseOf sao:runs_module .
+
+sao:source_of_transitions a owl:ObjectProperty ;
+    owl:inverseOf sao:transitions_from_state .
+
+sao:stored_in_collection a owl:ObjectProperty ;
+    owl:inverseOf sao:stores_records .
+
+sao:structured_by_schema a owl:ObjectProperty ;
+    owl:inverseOf sao:structures_resource_types .
+
+sao:subscribed_by_subscriptions a owl:ObjectProperty ;
+    owl:inverseOf sao:subscribes_to_event_types .
+
+sao:target_of_transitions a owl:ObjectProperty ;
+    owl:inverseOf sao:transitions_to_state .
+
+sao:targeted_by_actions a owl:ObjectProperty ;
+    owl:inverseOf sao:targets_resources .
+
+sao:tested_by_cases a owl:ObjectProperty ;
+    owl:inverseOf sao:tests_callable .
+
+sao:tested_by_suites a owl:ObjectProperty ;
+    owl:inverseOf sao:tests_component .
+
+sao:triggered_by_events a owl:ObjectProperty ;
+    owl:inverseOf sao:triggers_transitions .
+
+sao:triggered_by_rule a owl:ObjectProperty ;
+    owl:inverseOf sao:triggers_alerts .
+
+sao:triggered_by_workflow_events a owl:ObjectProperty ;
+    owl:inverseOf sao:triggers_workflows .
+
+sao:used_by_environments a owl:ObjectProperty ;
+    owl:inverseOf sao:uses_infrastructure .
+
+sao:used_by_integrations a owl:ObjectProperty ;
+    owl:inverseOf sao:uses_adapter .
+
+sao:validated_by_action_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:validates_actions .
+
+sao:validated_by_contract a owl:ObjectProperty ;
+    owl:inverseOf sao:validates_messages .
+
+sao:validated_by_rules a owl:ObjectProperty ;
+    owl:inverseOf sao:validates_attributes .
+
+sao:verified_by_actor a owl:ObjectProperty ;
+    owl:inverseOf sao:verifies_evidence .
+
+sao:affects_resource a owl:ObjectProperty .
+
+sao:affects_services a owl:ObjectProperty .
+
+sao:aggregates_entities a owl:ObjectProperty .
+
+sao:allocates_datasets a owl:ObjectProperty .
+
+sao:allows_actions a owl:ObjectProperty .
+
+sao:allows_actions_in_state a owl:ObjectProperty .
+
+sao:annotates_element a owl:ObjectProperty .
+
+sao:assesses_system a owl:ObjectProperty .
+
+sao:audit_performed_by_actor a owl:ObjectProperty .
+
+sao:can_access_features a owl:ObjectProperty .
+
+sao:classifies_resources a owl:ObjectProperty .
+
+sao:compensates_for_step a owl:ObjectProperty .
+
+sao:contains_aggregates a owl:ObjectProperty .
+
+sao:contains_blocks a owl:ObjectProperty .
+
+sao:contains_bounded_contexts a owl:ObjectProperty .
+
+sao:contains_components a owl:ObjectProperty .
+
+sao:contains_containers a owl:ObjectProperty .
+
+sao:contains_identities a owl:ObjectProperty .
+
+sao:contains_modules a owl:ObjectProperty .
+
+sao:contains_spans a owl:ObjectProperty .
+
+sao:contains_statements a owl:ObjectProperty .
+
+sao:contains_test_cases a owl:ObjectProperty .
+
+sao:controls_features a owl:ObjectProperty .
+
+sao:defined_in_container a owl:ObjectProperty .
+
+sao:defines_interfaces a owl:ObjectProperty .
+
+sao:defines_operation_input a owl:ObjectProperty .
+
+sao:depends_on_jobs a owl:ObjectProperty .
+
+sao:depends_on_module a owl:ObjectProperty .
+
+sao:depends_on_service a owl:ObjectProperty .
+
+sao:deployment_configured_by a owl:ObjectProperty .
+
+sao:deploys_release a owl:ObjectProperty .
+
+sao:deploys_service a owl:ObjectProperty .
+
+sao:deploys_unit a owl:ObjectProperty .
+
+sao:directive_affects_callables a owl:ObjectProperty .
+
+sao:directive_affects_encapsulation_units a owl:ObjectProperty .
+
+sao:documents_aggregate a owl:ObjectProperty .
+
+sao:documents_bounded_context a owl:ObjectProperty .
+
+sao:documents_component a owl:ObjectProperty .
+
+sao:emitted_by_action a owl:ObjectProperty .
+
+sao:emitted_by_component a owl:ObjectProperty .
+
+sao:enables_features a owl:ObjectProperty .
+
+sao:enforces_aggregate_invariants a owl:ObjectProperty .
+
+sao:enforces_policies a owl:ObjectProperty .
+
+sao:entity_documented_by_artifacts a owl:ObjectProperty .
+
+sao:env_configured_by a owl:ObjectProperty .
+
+sao:escalates_to_incident a owl:ObjectProperty .
+
+sao:evaluates_permissions a owl:ObjectProperty .
+
+sao:executes_actions_in_step a owl:ObjectProperty .
+
+sao:executes_actions_on_transition a owl:ObjectProperty .
+
+sao:executes_in_transaction a owl:ObjectProperty .
+
+sao:executes_operation_actions a owl:ObjectProperty .
+
+sao:exposes_endpoints a owl:ObjectProperty .
+
+sao:exposes_interfaces a owl:ObjectProperty .
+
+sao:exposes_operations a owl:ObjectProperty .
+
+sao:extends_units a owl:ObjectProperty .
+
+sao:field_on_screen a owl:ObjectProperty .
+
+sao:follows_step a owl:ObjectProperty .
+
+sao:governed_by_permissions a owl:ObjectProperty .
+
+sao:governs_audit_logs a owl:ObjectProperty .
+
+sao:governs_collections a owl:ObjectProperty .
+
+sao:governs_domain_entities a owl:ObjectProperty .
+
+sao:governs_entities a owl:ObjectProperty .
+
+sao:grants_permissions a owl:ObjectProperty .
+
+sao:guards_transitions a owl:ObjectProperty .
+
+sao:handles_exception_types a owl:ObjectProperty .
+
+sao:has_coverage a owl:ObjectProperty .
+
+sao:has_credentials a owl:ObjectProperty .
+
+sao:has_default_error_model a owl:ObjectProperty .
+
+sao:has_endpoints a owl:ObjectProperty .
+
+sao:has_file_definitions a owl:ObjectProperty .
+
+sao:has_integrations a owl:ObjectProperty .
+
+sao:has_ownership_annotations a owl:ObjectProperty .
+
+sao:has_parent a owl:ObjectProperty .
+
+sao:has_parent_block a owl:ObjectProperty .
+
+sao:has_parent_element a owl:ObjectProperty .
+
+sao:has_parent_exception a owl:ObjectProperty .
+
+sao:has_parent_location a owl:ObjectProperty .
+
+sao:has_parent_route a owl:ObjectProperty .
+
+sao:has_parent_structure a owl:ObjectProperty .
+
+sao:has_parent_ui_component a owl:ObjectProperty .
+
+sao:has_preprocessor_directives a owl:ObjectProperty .
+
+sao:has_roles a owl:ObjectProperty .
+
+sao:has_source_entity a owl:ObjectProperty .
+
+sao:has_source_program a owl:ObjectProperty .
+
+sao:has_target_entity a owl:ObjectProperty .
+
+sao:has_target_program a owl:ObjectProperty .
+
+sao:has_value_objects a owl:ObjectProperty .
+
+sao:hosts_datastores a owl:ObjectProperty .
+
+sao:hosts_deployments a owl:ObjectProperty .
+
+sao:implements_component a owl:ObjectProperty .
+
+sao:implements_contracts a owl:ObjectProperty .
+
+sao:implements_operation a owl:ObjectProperty .
+
+sao:imports_symbols a owl:ObjectProperty .
+
+sao:in_state a owl:ObjectProperty .
+
+sao:includes_definitions a owl:ObjectProperty .
+
+sao:index_on_collection a owl:ObjectProperty .
+
+sao:infrastructure_provisioned_by_iac a owl:ObjectProperty .
+
+sao:inherits_from_role a owl:ObjectProperty .
+
+sao:integrates_with_system a owl:ObjectProperty .
+
+sao:integration_documented_by_artifacts a owl:ObjectProperty .
+
+sao:integration_governed_by_contract a owl:ObjectProperty .
+
+sao:invokes_callables a owl:ObjectProperty .
+
+sao:is_root_of_aggregate a owl:ObjectProperty .
+
+sao:limits_permissions a owl:ObjectProperty .
+
+sao:log_governed_by_retention a owl:ObjectProperty .
+
+sao:manages_ui_components a owl:ObjectProperty .
+
+sao:maps_to_attribute a owl:ObjectProperty .
+
+sao:maps_to_data_element a owl:ObjectProperty .
+
+sao:maps_to_domain_entity a owl:ObjectProperty .
+
+sao:maps_to_file_definition a owl:ObjectProperty .
+
+sao:maps_to_module a owl:ObjectProperty .
+
+sao:maps_to_value_object a owl:ObjectProperty .
+
+sao:member_of_organizations a owl:ObjectProperty .
+
+sao:memory_model_for_languages a owl:ObjectProperty .
+
+sao:metric_emitted_by_component a owl:ObjectProperty .
+
+sao:mitigates_risks a owl:ObjectProperty .
+
+sao:model_served_by_component a owl:ObjectProperty .
+
+sao:module_documented_by_artifacts a owl:ObjectProperty .
+
+sao:module_has_coverage a owl:ObjectProperty .
+
+sao:module_has_dependencies a owl:ObjectProperty .
+
+sao:module_managed_by_package_manager a owl:ObjectProperty .
+
+sao:modules_using_error_model a owl:ObjectProperty .
+
+sao:modules_using_memory_model a owl:ObjectProperty .
+
+sao:monitors_metrics a owl:ObjectProperty .
+
+sao:must_comply_with a owl:ObjectProperty .
+
+sao:offers_operations a owl:ObjectProperty .
+
+sao:organization_in_tenant a owl:ObjectProperty .
+
+sao:overrides_callable a owl:ObjectProperty .
+
+sao:owns_controls a owl:ObjectProperty .
+
+sao:parameter_of a owl:ObjectProperty .
+
+sao:parent_of_spans a owl:ObjectProperty .
+
+sao:part_of_ui a owl:ObjectProperty .
+
+sao:passed_via_ipc a owl:ObjectProperty .
+
+sao:pattern_used_by_component a owl:ObjectProperty .
+
+sao:performs_actions a owl:ObjectProperty .
+
+sao:persists_aggregates a owl:ObjectProperty .
+
+sao:persists_structures a owl:ObjectProperty .
+
+sao:pipeline_deploys_to_environments a owl:ObjectProperty .
+
+sao:pipeline_produces_artifacts a owl:ObjectProperty .
+
+sao:pipeline_trains_model a owl:ObjectProperty .
+
+sao:pipeline_uses_dataset a owl:ObjectProperty .
+
+sao:pipeline_uses_iac a owl:ObjectProperty .
+
+sao:produces_domain_events a owl:ObjectProperty .
+
+sao:produces_output_schema a owl:ObjectProperty .
+
+sao:protects_data_elements a owl:ObjectProperty .
+
+sao:protects_integrations a owl:ObjectProperty .
+
+sao:provides_capabilities a owl:ObjectProperty .
+
+sao:provides_features_to_models a owl:ObjectProperty .
+
+sao:raises_exception_types a owl:ObjectProperty .
+
+sao:realizes_features a owl:ObjectProperty .
+
+sao:records_action a owl:ObjectProperty .
+
+sao:referenced_via a owl:ObjectProperty .
+
+sao:references_containers a owl:ObjectProperty .
+
+sao:referencing_container a owl:ObjectProperty .
+
+sao:represents_actor a owl:ObjectProperty .
+
+sao:represents_entity a owl:ObjectProperty .
+
+sao:requires_permissions a owl:ObjectProperty .
+
+sao:return_type_of_callables a owl:ObjectProperty .
+
+sao:route_guarded_by a owl:ObjectProperty .
+
+sao:route_renders_component a owl:ObjectProperty .
+
+sao:runs_module a owl:ObjectProperty .
+
+sao:screen_defined_in_container a owl:ObjectProperty .
+
+sao:screen_used_by_programs a owl:ObjectProperty .
+
+sao:service_documented_by_artifacts a owl:ObjectProperty .
+
+sao:setting_for_tenant a owl:ObjectProperty .
+
+sao:source_of_lineage a owl:ObjectProperty .
+
+sao:starts_with_span a owl:ObjectProperty .
+
+sao:starts_with_state a owl:ObjectProperty .
+
+sao:step_executes_program a owl:ObjectProperty .
+
+sao:step_in_job a owl:ObjectProperty .
+
+sao:store_file_definitions a owl:ObjectProperty .
+
+sao:store_read_by_pipelines a owl:ObjectProperty .
+
+sao:store_written_by_pipelines a owl:ObjectProperty .
+
+sao:stored_in_container a owl:ObjectProperty .
+
+sao:stores_artifacts a owl:ObjectProperty .
+
+sao:stores_records a owl:ObjectProperty .
+
+sao:structure_contains_elements a owl:ObjectProperty .
+
+sao:structures_collections a owl:ObjectProperty .
+
+sao:structures_events a owl:ObjectProperty .
+
+sao:structures_messages a owl:ObjectProperty .
+
+sao:structures_resource_types a owl:ObjectProperty .
+
+sao:subscribes_to_event_types a owl:ObjectProperty .
+
+sao:system_documented_by_artifacts a owl:ObjectProperty .
+
+sao:targeted_at_services a owl:ObjectProperty .
+
+sao:targets_resources a owl:ObjectProperty .
+
+sao:tests_callable a owl:ObjectProperty .
+
+sao:tests_component a owl:ObjectProperty .
+
+sao:tests_module a owl:ObjectProperty .
+
+sao:tests_operation a owl:ObjectProperty .
+
+sao:tracks_record a owl:ObjectProperty .
+
+sao:transitions_from_state a owl:ObjectProperty .
+
+sao:transitions_to_state a owl:ObjectProperty .
+
+sao:transitive_dependency_of a owl:ObjectProperty .
+
+sao:triggers_alerts a owl:ObjectProperty .
+
+sao:triggers_transitions a owl:ObjectProperty .
+
+sao:triggers_workflows a owl:ObjectProperty .
+
+sao:type_of_data_elements a owl:ObjectProperty .
+
+sao:type_of_parameters a owl:ObjectProperty .
+
+sao:ui_implements_encapsulation_unit a owl:ObjectProperty .
+
+sao:upstream_from a owl:ObjectProperty .
+
+sao:uses_adapter a owl:ObjectProperty .
+
+sao:uses_infrastructure a owl:ObjectProperty .
+
+sao:validates_actions a owl:ObjectProperty .
+
+sao:validates_attributes a owl:ObjectProperty .
+
+sao:validates_messages a owl:ObjectProperty .
+
+sao:validates_records a owl:ObjectProperty .
+
+sao:verifies_evidence a owl:ObjectProperty .
+
+sao:written_in_language a owl:ObjectProperty .

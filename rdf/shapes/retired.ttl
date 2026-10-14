@@ -1,0 +1,87 @@
+# Editable SHACL source; SAO 3.0.0 relationship profile.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection/property> ;
+    sh:targetSubjectsOf sao:constraint_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log/property> ;
+    sh:targetSubjectsOf sao:entry_in_audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log/property> ;
+    sh:targetSubjectsOf sao:entry_in_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations/property> ;
+    sh:targetSubjectsOf sao:has_file_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions/property> ;
+    sh:targetSubjectsOf sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives/property> ;
+    sh:targetSubjectsOf sao:uses_concurrency_primitives .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions/property> ;
+    sh:targetSubjectsOf sao:uses_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract/property> ;
+    sh:targetSubjectsOf sao:version_of_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema/property> ;
+    sh:targetSubjectsOf sao:version_of_schema .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: constraint_on_collection; see docs/migration-3.0.md." ;
+    sh:path sao:constraint_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: entry_in_audit_log; see docs/migration-3.0.md." ;
+    sh:path sao:entry_in_audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: entry_in_log; see docs/migration-3.0.md." ;
+    sh:path sao:entry_in_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: has_file_operations; see docs/migration-3.0.md." ;
+    sh:path sao:has_file_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: has_subscriptions; see docs/migration-3.0.md." ;
+    sh:path sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: uses_concurrency_primitives; see docs/migration-3.0.md." ;
+    sh:path sao:uses_concurrency_primitives .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: uses_file_definitions; see docs/migration-3.0.md." ;
+    sh:path sao:uses_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: version_of_contract; see docs/migration-3.0.md." ;
+    sh:path sao:version_of_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: version_of_schema; see docs/migration-3.0.md." ;
+    sh:path sao:version_of_schema .

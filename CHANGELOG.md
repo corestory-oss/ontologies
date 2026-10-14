@@ -1,6 +1,16 @@
 # Changelog
 
-## Unreleased
+## [3.0.0] - Unreleased candidate
+
+### Breaking relationship changes
+
+- Introduce generic `version_of`, `entry_in`, `uses`, `constrains`, and `contains_unit_members` relationships with class-specific SHACL pairings.
+- Separate subscriber/interface and file/callable participant roles using explicit predicates.
+- Retire nine replaced predicates with explicit SHACL rejection; add no compatibility aliases.
+- Add typed unit-data membership and subproperty entailments without treating data structures as encapsulation units.
+- Tentatively bump RDF/project metadata to 3.0.0 while retaining the unchanged LinkML 2.1.0 baseline. See [migration guidance](docs/migration-3.0.md).
+
+### Earlier migration milestones
 
 - Add an optional editable OWL supplement for 208 inverse pairs and document seven unresolved inverse groups without changing their vocabulary definitions.
 
@@ -11,9 +21,7 @@ All notable changes to the Systems Abstraction Ontology (SAO) are documented her
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Changed
+### Earlier release preparation
 
 - Rename SAO to Systems Abstraction Ontology to make its scope explicit across
   libraries, services, batch programs, and applications. Update the LinkML schema

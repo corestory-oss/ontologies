@@ -34,9 +34,9 @@ class InverseAxiomTests(unittest.TestCase):
         for triple in expected:
             self.assertIn(triple,graph)
 
-    def test_ambiguous_groups_have_no_inverse_axioms(self):
-        report=json.loads((ROOT / "docs/inverse-audit.json").read_text())
-        excluded={URIRef(p) for g in report["unresolved_groups"] for p in g["properties"]}
+    def test_retired_predicates_have_no_inverse_axioms(self):
+        from rdflib import Literal
+        excluded=set(self.vocabulary.subjects(OWL.deprecated,Literal(True)))
         endpoints={p for a,b in self.axioms.subject_objects(OWL.inverseOf) for p in (a,b)}
         self.assertTrue(excluded)
         self.assertFalse(excluded & endpoints)
@@ -57,9 +57,9 @@ class InverseAxiomTests(unittest.TestCase):
     def test_unrelated_properties_do_not_get_reverse_edges(self):
         graph=Graph();graph+=self.axioms
         source,target=URIRef("urn:test:source"),URIRef("urn:test:target")
-        graph.add((source,URIRef("https://ontologies.corestory.ai/sao/has_versions"),target))
+        graph.add((source,URIRef("https://ontologies.corestory.ai/sao/has_file_operations"),target))
         DeductiveClosure(OWLRL_Semantics).expand(graph)
-        for name in ("version_of_contract","version_of_schema"):
+        for name in ("operates_on_file","performed_in_callable"):
             self.assertNotIn((target,URIRef("https://ontologies.corestory.ai/sao/"+name),source),graph)
 
 

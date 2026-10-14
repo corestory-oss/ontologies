@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -24,7 +24,6 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/entry_point_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/handles_exception_types>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/handles_exceptions>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_file_operations>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_parameters>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_return_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/id>,
@@ -44,6 +43,7 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/modifies_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/name>,
+        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/operations_in_callable>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overridden_by_callables>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overrides_callable>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/raises_exception_types>,
@@ -51,8 +51,7 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/return_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/tags>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/tested_by_cases>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_concurrency_primitives>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_file_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/visibility> ;
     sh:targetClass sao:CallableUnit .
 
@@ -126,6 +125,7 @@ saosh:EncapsulationUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_callable_units>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_data_structures>,
+        <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/defined_in_container>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/description>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/encapsulation_type>,
@@ -152,6 +152,7 @@ saosh:EncapsulationUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/screen_used_by_programs>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/stereotype>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/unit_contains_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/uses_definitions>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/visibility> ;
     sh:targetClass sao:EncapsulationUnit .
@@ -458,11 +459,6 @@ saosh:ParameterShape a sh:NodeShape ;
     sh:description "Exception names handled (DEPRECATED -- use handles_exception_types)" ;
     sh:path sao:handles_exceptions .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_file_operations> a sh:PropertyShape ;
-    sh:class sao:FileOperation ;
-    sh:description "FileOperation[] performed by this callable." ;
-    sh:path sao:has_file_operations .
-
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_parameters> a sh:PropertyShape ;
     sh:class sao:Parameter ;
     sh:description "Parameters of this callable." ;
@@ -574,6 +570,11 @@ saosh:ParameterShape a sh:NodeShape ;
     sh:minCount 1 ;
     sh:path sao:name .
 
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/operations_in_callable> a sh:PropertyShape ;
+    sh:class sao:FileOperation ;
+    sh:description "FileOperation[] performed by this callable." ;
+    sh:path sao:operations_in_callable .
+
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overridden_by_callables> a sh:PropertyShape ;
     sh:class sao:CallableUnit ;
     sh:description "Overriding children." ;
@@ -611,15 +612,20 @@ saosh:ParameterShape a sh:NodeShape ;
     sh:description "Test cases." ;
     sh:path sao:tested_by_cases .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_concurrency_primitives> a sh:PropertyShape ;
-    sh:class sao:ConcurrencyPrimitive ;
-    sh:description "Locks, semaphores, etc." ;
-    sh:path sao:uses_concurrency_primitives .
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses> a sh:PropertyShape ;
+    sh:description "Resources used by this callable." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives> ;
+    sh:path sao:uses .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_file_definitions> a sh:PropertyShape ;
-    sh:class sao:FileDefinition ;
-    sh:description "FileDefinition[] used by this callable." ;
-    sh:path sao:uses_file_definitions .
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/0> sh:class sao:FileDefinition .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/1> sh:class sao:ConcurrencyPrimitive .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/1> ;
+    rdf:rest () .
 
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/visibility> a sh:PropertyShape ;
     sh:description "Visibility level." ;
@@ -1287,6 +1293,26 @@ saosh:ParameterShape a sh:NodeShape ;
     sh:description "Data structures in this unit." ;
     sh:path sao:contains_data_structures .
 
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members> a sh:PropertyShape ;
+    sh:description "Direct members of this encapsulation unit." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives> ;
+    sh:path sao:contains_unit_members .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/0> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/1> sh:class sao:DataStructure .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/2> sh:class sao:DataElement .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/1> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/2> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/2> ;
+    rdf:rest () .
+
 <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/defined_in_container> a sh:PropertyShape ;
     sh:class sao:CodeContainer ;
     sh:description "Code container where this element is defined" ;
@@ -1534,6 +1560,11 @@ saosh:ParameterShape a sh:NodeShape ;
     sh:datatype xsd:string ;
     sh:description "Freeform tags." ;
     sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/unit_contains_data_elements> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "The unit-specific data-element membership relation; entails generic data-element containment and unit membership." ;
+    sh:path sao:unit_contains_data_elements .
 
 <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/uses_definitions> a sh:PropertyShape ;
     sh:class sao:DefinitionReference ;

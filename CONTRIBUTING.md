@@ -32,7 +32,8 @@ complete graph or that inverse relationships have been populated.
 
 Edit inverse axioms under `rdf/axioms/` only after reviewing their global meaning;
 class-local inverse declarations can conflict when properties share an IRI.
-The [inverse audit](docs/inverse-relationships.md) documents withheld relationships.
+The [inverse audit](docs/inverse-relationships.md) records the original conflicts;
+[the 3.0.0 migration](docs/migration-3.0.md) describes their candidate resolutions.
 
 Edit existing topic files. Class and property IRIs must stay stable unless a
 reviewed migration explicitly changes meaning. Shapes use the distinct

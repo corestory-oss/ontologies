@@ -4,7 +4,7 @@
 
 `rdf/vocabulary/*.ttl` are the editable RDFS vocabulary sources. They are no longer regenerated from LinkML. `rdf/shapes/*.ttl` are the editable initial validation profile. `scripts/build_rdf.py` reads their manifests, assembles `sao.ttl`, `sao.shacl.ttl`, and the optional `sao.owl.ttl` supplement, and checks freshness. It imports RDFLib, not LinkML. RDF validation uses pySHACL and these Turtle sources.
 
-The RDFS graph is unchanged from the last merged export: 147 classes, 871 properties, and 9,867 triples. The move changes source ownership, not that vocabulary's meaning. Editing Turtle now changes the next distribution without editing YAML.
+The first Turtle-authority step preserved the 2.1.0 vocabulary graph. The [3.0.0 candidate](migration-3.0.md) now deliberately changes relationship predicates and their validation. Class IRIs and the ontology namespace remain stable. Editing Turtle changes the next distribution without editing YAML.
 
 ## Initial SHACL coverage
 
@@ -18,7 +18,7 @@ Required LinkML `id` fields remain literal properties alongside RDF subjects. Th
 
 ## What is still pending
 
-- Resolve the seven inverse groups withheld by [the inverse audit](inverse-relationships.md). The optional OWL supplement now carries 208 checked pairs; SHACL validation still does not materialize OWL inferences.
+- Complete internal producer/query/data migration to the proposed 3.0.0 relationship contract. The seven audited groups have candidate resolutions and the supplement now carries 217 inverse pairs; SHACL validation still does not materialize OWL inferences.
 - Decide the closed-world validation policy and treatment of abstract classes.
 - Define how identifier fields map to RDF subjects and how JSON/YAML inlining and mixin conventions are preserved, retired, or represented in a serialization profile.
 - Establish validation coverage with richer positive and negative graphs, including relationship references, enum lists, alternative ranges, and subclass overrides.

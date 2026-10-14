@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -10,7 +10,7 @@
 saosh:DatabaseConstraintShape a sh:NodeShape ;
     sh:closed false ;
     sh:property <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/columns>,
-        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constrains>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/description>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/expression>,
@@ -42,11 +42,11 @@ saosh:DatabaseIndexShape a sh:NodeShape ;
     sh:description "Columns involved in the constraint." ;
     sh:path sao:columns .
 
-<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constrains> a sh:PropertyShape ;
     sh:class sao:Collection ;
     sh:description "The collection this constraint belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:constraint_on_collection .
+    sh:path sao:constrains .
 
 <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type> a sh:PropertyShape ;
     sh:description "The type of constraint." ;

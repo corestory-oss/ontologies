@@ -13,7 +13,7 @@ A property gets `rdfs:domain` or `rdfs:range` when its declarations agree on a s
 
 This is intentionally an RDFS projection, not a lossless conversion. RDFS alone cannot enforce required fields, cardinality, identifiers, inverses, inlining, abstractness, closed enums, or value constraints. The initial SHACL layer now covers some of these; LinkML is retained as a baseline for the remaining migration. Mixins become class membership via subclass edges; their LinkML implementation details are not represented. RDFS domain/range are inference statements, not validation rules. An initial SHACL profile is now available as `sao.shacl.ttl`; its coverage and limitations are documented in [migration status](turtle-migration.md). Legacy LinkML validation remains available for its JSON/YAML baseline.
 
-The export uses RDF, RDFS, SKOS, Dublin Core and Schema.org vocabulary, plus one documented export annotation. It emits no OWL axioms or restrictions. CI checks that the complete export and every topic file match regeneration, and that assembling the files in the manifest yields exactly the complete graph.
+The export uses RDF, RDFS, SKOS, Dublin Core and Schema.org vocabulary, plus one documented export annotation. Logical OWL axioms remain in the optional supplement. The vocabulary uses `owl:deprecated` annotations to identify predicates rejected by the 3.0.0 profile; those annotations provide no compatibility inference. CI checks that the complete export and every topic file match regeneration, and that assembling the files in the manifest yields exactly the complete graph.
 
 References: [RDFS 1.1](https://www.w3.org/TR/rdf-schema/), [Schema.org domainIncludes](https://schema.org/domainIncludes), [Schema.org rangeIncludes](https://schema.org/rangeIncludes).
 

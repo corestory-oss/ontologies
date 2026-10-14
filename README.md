@@ -5,14 +5,16 @@ A comprehensive, language-agnostic ontology for modeling software systems — fr
 SAO describes software systems—their structure, behavior, domain concepts, and
 operating context—including libraries, services, batch programs, and applications.
 
-* **Version**: 2.1.0
+* **Version**: 3.0.0 candidate (unreleased)
 * **Author**: Charath Ranganathan
 * **License**: [Apache License 2.0](LICENSE)
 * **Editable sources**: [RDFS vocabulary](rdf/vocabulary/) and [SHACL shapes](rdf/shapes/) in Turtle
 * **Distributions**: [sao.ttl](sao.ttl), [sao.shacl.ttl](sao.shacl.ttl), and optional [sao.owl.ttl](sao.owl.ttl) inverse axioms
 * **Legacy baseline**: LinkML 2.1.0 retained during migration
 
-147 classes · 102 enums · 970 attributes · 214 bidirectional relationships
+147 classes · 102 enums · 217 inverse pairs in the 3.0.0 candidate
+
+See [the 3.0.0 relationship migration](docs/migration-3.0.md) for breaking predicate changes.
 
 ## Key Features
 
@@ -25,6 +27,8 @@ operating context—including libraries, services, batch programs, and applicati
 - **Extensible**: Designed for subclassing, mixins, custom enumerations, and additional relationships
 
 ## Documentation
+
+The guide reflects the retained LinkML baseline; use the migration notes for current relationship names.
 
 **Start here:** [The SAO Guide](docs/guide.md) — a layered walkthrough of all 147 classes organized by abstraction level, from code structure to business intent.
 
@@ -104,7 +108,7 @@ For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the vocabulary files liste
 [`rdf/manifests/vocabulary.json`](rdf/manifests/vocabulary.json) into one graph.
 Use [`sao.shacl.ttl`](sao.shacl.ttl) for the initial validation profile.
 For optional inverse reasoning, load the vocabulary plus [`sao.owl.ttl`](sao.owl.ttl);
-see [the inverse audit and seven unresolved groups](docs/inverse-relationships.md).
+see [the inverse audit](docs/inverse-relationships.md) and [the proposed redesign](docs/migration-3.0.md).
 See [semantics and limits](docs/rdfs-export.md).
 
 Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
@@ -199,7 +203,12 @@ CoreStory's CDN.
 
 ## Version History
 
-### Version 2.1.0 (Current)
+### Version 3.0.0 (Candidate, unreleased)
+- Generic inverse relationships with class-specific SHACL pairing
+- Role-specific subscription and file-operation predicates
+- Replaced predicates rejected by validation; see [migration guidance](docs/migration-3.0.md)
+
+### Version 2.1.0 (Legacy baseline)
 - Relationship attributes standardized to verb-prefixed names
 - Duplicate relationship attributes removed and ML training inverse corrected
 - See [CHANGELOG.md](CHANGELOG.md) for the complete migration guide
@@ -242,12 +251,12 @@ Third-party tools and dependencies retain their respective licenses.
 
 ```
 Systems Abstraction Ontology (SAO)
-Version 2.1.0
+Version 3.0.0 candidate (unreleased)
 Copyright (c) 2025 CoreStory, Inc.
 Licensed under the Apache License, Version 2.0.
 ```
 
 ---
 
-**Last Updated**: 2026-10-02
-**Schema Version**: 2.1.0
+**Last Updated**: 2026-10-14
+**Ontology Version**: 3.0.0 candidate

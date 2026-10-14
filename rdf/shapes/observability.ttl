@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -82,7 +82,7 @@ saosh:LogEntryShape a sh:NodeShape ;
     sh:closed false ;
     sh:property <https://ontologies.corestory.ai/sao/shapes/LogEntry/context>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/description>,
-        <https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/id>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/level>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/message>,
@@ -577,11 +577,11 @@ saosh:TraceShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:description .
 
-<https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in> a sh:PropertyShape ;
     sh:class sao:Log ;
     sh:description "Parent log." ;
     sh:maxCount 1 ;
-    sh:path sao:entry_in_log .
+    sh:path sao:entry_in .
 
 <https://ontologies.corestory.ai/sao/shapes/LogEntry/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;

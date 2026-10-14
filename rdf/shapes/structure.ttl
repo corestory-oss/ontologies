@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -100,11 +100,11 @@ saosh:EventInterfaceShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/description>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/event_type>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/exposed_by_system>,
-        <https://ontologies.corestory.ai/sao/shapes/EventInterface/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/id>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/name>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/rate_limit>,
+        <https://ontologies.corestory.ai/sao/shapes/EventInterface/subscriptions_to_interface>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/tags>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/topics> ;
     sh:targetClass sao:EventInterface .
@@ -804,11 +804,6 @@ saosh:UserInterfaceShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:exposed_by_system .
 
-<https://ontologies.corestory.ai/sao/shapes/EventInterface/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "Subscriptions to this event interface." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/EventInterface/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -834,6 +829,11 @@ saosh:UserInterfaceShape a sh:NodeShape ;
     sh:description "Requests per minute limit." ;
     sh:maxCount 1 ;
     sh:path sao:rate_limit .
+
+<https://ontologies.corestory.ai/sao/shapes/EventInterface/subscriptions_to_interface> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "Subscriptions to this event interface." ;
+    sh:path sao:subscriptions_to_interface .
 
 <https://ontologies.corestory.ai/sao/shapes/EventInterface/tags> a sh:PropertyShape ;
     sh:datatype xsd:string ;

@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -13,7 +13,7 @@ saosh:AuditEntryShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/audit_performed_by_actor>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/description>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/details>,
-        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/id>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/name>,
@@ -155,7 +155,7 @@ saosh:SchemaVersionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/name>,
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/tags>,
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version>,
-        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> ;
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of> ;
     sh:targetClass sao:SchemaVersion .
 
 <https://ontologies.corestory.ai/sao/shapes/AuditEntry/affects_resource> a sh:PropertyShape ;
@@ -182,11 +182,11 @@ saosh:SchemaVersionShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:details .
 
-<https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in> a sh:PropertyShape ;
     sh:class sao:AuditLog ;
     sh:description "`AuditLog` that this entry belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:entry_in_audit_log .
+    sh:path sao:entry_in .
 
 <https://ontologies.corestory.ai/sao/shapes/AuditEntry/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -903,8 +903,8 @@ saosh:SchemaVersionShape a sh:NodeShape ;
     sh:path sao:version ;
     sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
 
-<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of> a sh:PropertyShape ;
     sh:class sao:Schema ;
     sh:description "`Schema` that this version belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:version_of_schema .
+    sh:path sao:version_of .

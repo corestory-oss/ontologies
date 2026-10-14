@@ -180,14 +180,6 @@ sao:encryption_required a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range xsd:boolean .
 
-sao:entry_in_audit_log a rdf:Property ;
-    rdfs:label "entry_in_audit_log" ;
-    rdfs:comment "[AuditEntry] `AuditLog` that this entry belongs to.",
-        "`AuditLog` that this entry belongs to." ;
-    rdfs:domain sao:AuditEntry ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:AuditLog .
-
 sao:governed_by_retention_policy a rdf:Property ;
     rdfs:label "governed_by_retention_policy" ;
     rdfs:comment "[Collection] `RetentionPolicy` for data lifecycle.",
@@ -444,14 +436,6 @@ sao:validates_records a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:Record .
 
-sao:version_of_schema a rdf:Property ;
-    rdfs:label "version_of_schema" ;
-    rdfs:comment "[SchemaVersion] `Schema` that this version belongs to.",
-        "`Schema` that this version belongs to." ;
-    rdfs:domain sao:SchemaVersion ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Schema .
-
 sao:DataStoreType a rdfs:Datatype ;
     rdfs:label "DataStoreType" ;
     rdfs:comment "Types of data stores" ;
@@ -539,4 +523,3 @@ sao:SchemaType a rdfs:Datatype ;
 
 <https://ontologies.corestory.ai/sao/export/values/SchemaType/table_schema> rdf:value "table_schema" ;
     rdfs:comment "Relational database table schema." .
-

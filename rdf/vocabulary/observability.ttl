@@ -5,7 +5,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sao: <https://ontologies.corestory.ai/sao/> .
-@prefix schema: <http://schema.org/> .
+@prefix schema1: <http://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -144,14 +144,6 @@ sao:endpoint a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range xsd:string .
 
-sao:entry_in_log a rdf:Property ;
-    rdfs:label "entry_in_log" ;
-    rdfs:comment "Parent log.",
-        "[LogEntry] Parent log." ;
-    rdfs:domain sao:LogEntry ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Log .
-
 sao:escalated_from_alerts a rdf:Property ;
     rdfs:label "escalated_from_alerts" ;
     rdfs:comment "[Incident] `Alert` entities that led to incident.",
@@ -282,7 +274,7 @@ sao:postmortem_url a rdf:Property ;
 
 sao:resolved_at a rdf:Property ;
     rdfs:label "resolved_at" ;
-    schema:domainIncludes sao:Alert,
+    schema1:domainIncludes sao:Alert,
         sao:Incident ;
     rdfs:comment "When issue was resolved.",
         "[Alert] When issue was resolved.",
@@ -467,4 +459,3 @@ sao:MetricType a rdfs:Datatype ;
 
 <https://ontologies.corestory.ai/sao/export/values/MetricType/summary> rdf:value "summary" ;
     rdfs:comment "Summary statistics (quantiles, etc.)." .
-

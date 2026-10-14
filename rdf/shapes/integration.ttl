@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -79,7 +79,7 @@ saosh:ContractVersionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/name>,
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/tags>,
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version>,
-        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> ;
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of> ;
     sh:targetClass sao:ContractVersion .
 
 saosh:ExternalSystemShape a sh:NodeShape ;
@@ -581,11 +581,11 @@ saosh:MessageShape a sh:NodeShape ;
     sh:path sao:version ;
     sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
 
-<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of> a sh:PropertyShape ;
     sh:class sao:Contract ;
     sh:description "`Contract` that this version belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:version_of_contract .
+    sh:path sao:version_of .
 
 <https://ontologies.corestory.ai/sao/shapes/ExternalSystem/description> a sh:PropertyShape ;
     sh:datatype xsd:string ;

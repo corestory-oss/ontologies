@@ -33,14 +33,6 @@ sao:DatabaseConstraintType a rdfs:Datatype ;
         <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/primary_key>,
         <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/unique> .
 
-sao:constraint_on_collection a rdf:Property ;
-    rdfs:label "constraint_on_collection" ;
-    rdfs:comment "The collection this constraint belongs to.",
-        "[DatabaseConstraint] The collection this constraint belongs to." ;
-    rdfs:domain sao:DatabaseConstraint ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Collection .
-
 sao:filter_expression a rdf:Property ;
     rdfs:label "filter_expression" ;
     rdfs:comment "Filter for partial indexes",
@@ -133,4 +125,3 @@ sao:IndexType a rdfs:Datatype ;
 
 <https://ontologies.corestory.ai/sao/export/values/IndexType/hash> rdf:value "hash" ;
     rdfs:comment "Hash index." .
-

@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -9,7 +9,8 @@
 
 saosh:ConstraintShape a sh:NodeShape ;
     sh:closed false ;
-    sh:property <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type>,
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Constraint/constrains>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/description>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/expression>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/id>,
@@ -76,6 +77,11 @@ saosh:ScopeShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type>,
         <https://ontologies.corestory.ai/sao/shapes/Scope/tags> ;
     sh:targetClass sao:Scope .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constrains> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "Permissions restricted by this authorization constraint; sharing across permissions is allowed." ;
+    sh:path sao:constrains .
 
 <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type> a sh:PropertyShape ;
     sh:description "Type of constraint." ;

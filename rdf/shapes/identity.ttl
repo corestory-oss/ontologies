@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -13,11 +13,11 @@ saosh:ActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/Actor/category>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/description>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/id>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/name>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/tags>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/verifies_evidence> ;
@@ -44,11 +44,11 @@ saosh:HumanActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/description>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/email>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/id>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/name>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/tags>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/verifies_evidence> ;
@@ -89,11 +89,11 @@ saosh:SystemActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/category>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/description>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/id>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/name>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/service_account>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/tags>,
@@ -140,11 +140,6 @@ saosh:TenantShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/Actor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -169,6 +164,11 @@ saosh:TenantShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;
@@ -315,11 +315,6 @@ saosh:TenantShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/HumanActor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -344,6 +339,11 @@ saosh:TenantShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;
@@ -525,11 +525,6 @@ saosh:TenantShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/SystemActor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -554,6 +549,11 @@ saosh:TenantShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;

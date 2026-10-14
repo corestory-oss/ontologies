@@ -67,6 +67,7 @@ sao:auditlog_governed_by_retention a owl:ObjectProperty ;
     owl:inverseOf sao:governs_audit_logs .
 
 <https://ontologies.corestory.ai/sao/axioms/> a owl:Ontology ;
+    dcterms:hasVersion "3.0.0" ;
     dcterms:title "SAO inverse relationship supplement" ;
     rdfs:seeAlso sao: .
 
@@ -145,8 +146,14 @@ sao:contained_in_structure a owl:ObjectProperty ;
 sao:contained_in_system a owl:ObjectProperty ;
     owl:inverseOf sao:contains_bounded_contexts .
 
+sao:contained_in_unit a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_unit_members .
+
 sao:contains_code_elements a owl:ObjectProperty ;
     owl:inverseOf sao:defined_in_container .
+
+sao:contains_entries a owl:ObjectProperty ;
+    owl:inverseOf sao:entry_in .
 
 sao:contains_job_steps a owl:ObjectProperty ;
     owl:inverseOf sao:step_in_job .
@@ -364,6 +371,9 @@ sao:has_child_ui_components a owl:ObjectProperty ;
 sao:has_children a owl:ObjectProperty ;
     owl:inverseOf sao:has_parent .
 
+sao:has_constraints a owl:ObjectProperty ;
+    owl:inverseOf sao:constrains .
+
 sao:has_default_memory_model a owl:ObjectProperty ;
     owl:inverseOf sao:memory_model_for_languages .
 
@@ -417,6 +427,9 @@ sao:has_transitive_dependencies a owl:ObjectProperty ;
 
 sao:has_type a owl:ObjectProperty ;
     owl:inverseOf sao:type_of_parameters .
+
+sao:has_versions a owl:ObjectProperty ;
+    owl:inverseOf sao:version_of .
 
 sao:hosted_on_infrastructure a owl:ObjectProperty ;
     owl:inverseOf sao:hosts_datastores .
@@ -514,11 +527,20 @@ sao:offered_on_screens a owl:ObjectProperty ;
 sao:operation_tested_by_cases a owl:ObjectProperty ;
     owl:inverseOf sao:tests_operation .
 
+sao:operations_in_callable a owl:ObjectProperty ;
+    owl:inverseOf sao:performed_in_callable .
+
+sao:operations_on_file a owl:ObjectProperty ;
+    owl:inverseOf sao:operates_on_file .
+
 sao:overridden_by_callables a owl:ObjectProperty ;
     owl:inverseOf sao:overrides_callable .
 
 sao:owned_by_actor a owl:ObjectProperty ;
     owl:inverseOf sao:owns_controls .
+
+sao:owns_subscriptions a owl:ObjectProperty ;
+    owl:inverseOf sao:subscribed_by_actor .
 
 sao:performed_by_actor a owl:ObjectProperty ;
     owl:inverseOf sao:performs_actions .
@@ -595,6 +617,9 @@ sao:structured_by_schema a owl:ObjectProperty ;
 sao:subscribed_by_subscriptions a owl:ObjectProperty ;
     owl:inverseOf sao:subscribes_to_event_types .
 
+sao:subscriptions_to_interface a owl:ObjectProperty ;
+    owl:inverseOf sao:subscribes_to_interface .
+
 sao:target_of_transitions a owl:ObjectProperty ;
     owl:inverseOf sao:transitions_to_state .
 
@@ -615,6 +640,9 @@ sao:triggered_by_rule a owl:ObjectProperty ;
 
 sao:triggered_by_workflow_events a owl:ObjectProperty ;
     owl:inverseOf sao:triggers_workflows .
+
+sao:used_by_callables a owl:ObjectProperty ;
+    owl:inverseOf sao:uses .
 
 sao:used_by_environments a owl:ObjectProperty ;
     owl:inverseOf sao:uses_infrastructure .
@@ -658,6 +686,8 @@ sao:classifies_resources a owl:ObjectProperty .
 
 sao:compensates_for_step a owl:ObjectProperty .
 
+sao:constrains a owl:ObjectProperty .
+
 sao:contains_aggregates a owl:ObjectProperty .
 
 sao:contains_blocks a owl:ObjectProperty .
@@ -677,6 +707,8 @@ sao:contains_spans a owl:ObjectProperty .
 sao:contains_statements a owl:ObjectProperty .
 
 sao:contains_test_cases a owl:ObjectProperty .
+
+sao:contains_unit_members a owl:ObjectProperty .
 
 sao:controls_features a owl:ObjectProperty .
 
@@ -721,6 +753,8 @@ sao:enforces_aggregate_invariants a owl:ObjectProperty .
 sao:enforces_policies a owl:ObjectProperty .
 
 sao:entity_documented_by_artifacts a owl:ObjectProperty .
+
+sao:entry_in a owl:ObjectProperty .
 
 sao:env_configured_by a owl:ObjectProperty .
 
@@ -886,6 +920,8 @@ sao:must_comply_with a owl:ObjectProperty .
 
 sao:offers_operations a owl:ObjectProperty .
 
+sao:operates_on_file a owl:ObjectProperty .
+
 sao:organization_in_tenant a owl:ObjectProperty .
 
 sao:overrides_callable a owl:ObjectProperty .
@@ -901,6 +937,8 @@ sao:part_of_ui a owl:ObjectProperty .
 sao:passed_via_ipc a owl:ObjectProperty .
 
 sao:pattern_used_by_component a owl:ObjectProperty .
+
+sao:performed_in_callable a owl:ObjectProperty .
 
 sao:performs_actions a owl:ObjectProperty .
 
@@ -996,7 +1034,11 @@ sao:structures_messages a owl:ObjectProperty .
 
 sao:structures_resource_types a owl:ObjectProperty .
 
+sao:subscribed_by_actor a owl:ObjectProperty .
+
 sao:subscribes_to_event_types a owl:ObjectProperty .
+
+sao:subscribes_to_interface a owl:ObjectProperty .
 
 sao:system_documented_by_artifacts a owl:ObjectProperty .
 
@@ -1034,6 +1076,8 @@ sao:ui_implements_encapsulation_unit a owl:ObjectProperty .
 
 sao:upstream_from a owl:ObjectProperty .
 
+sao:uses a owl:ObjectProperty .
+
 sao:uses_adapter a owl:ObjectProperty .
 
 sao:uses_infrastructure a owl:ObjectProperty .
@@ -1047,5 +1091,7 @@ sao:validates_messages a owl:ObjectProperty .
 sao:validates_records a owl:ObjectProperty .
 
 sao:verifies_evidence a owl:ObjectProperty .
+
+sao:version_of a owl:ObjectProperty .
 
 sao:written_in_language a owl:ObjectProperty .

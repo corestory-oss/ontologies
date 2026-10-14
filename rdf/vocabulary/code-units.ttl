@@ -5,7 +5,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sao: <https://ontologies.corestory.ai/sao/> .
-@prefix schema: <http://schema.org/> .
+@prefix schema1: <http://schema.org/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 sao:CallableUnit a rdfs:Class ;
@@ -684,14 +684,6 @@ sao:tested_by_cases a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:TestCase .
 
-sao:uses_concurrency_primitives a rdf:Property ;
-    rdfs:label "uses_concurrency_primitives" ;
-    rdfs:comment "Locks, semaphores, etc.",
-        "[CallableUnit] Locks, semaphores, etc." ;
-    rdfs:domain sao:CallableUnit ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:ConcurrencyPrimitive .
-
 sao:uses_definitions a rdf:Property ;
     rdfs:label "uses_definitions" ;
     rdfs:comment "Definition references (imports, includes) used.",
@@ -700,17 +692,9 @@ sao:uses_definitions a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:DefinitionReference .
 
-sao:uses_file_definitions a rdf:Property ;
-    rdfs:label "uses_file_definitions" ;
-    rdfs:comment "FileDefinition[] used by this callable.",
-        "[CallableUnit] FileDefinition[] used by this callable." ;
-    rdfs:domain sao:CallableUnit ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:FileDefinition .
-
 sao:visibility a rdf:Property ;
     rdfs:label "visibility" ;
-    schema:domainIncludes sao:CallableUnit,
+    schema1:domainIncludes sao:CallableUnit,
         sao:DataElement,
         sao:DataStructure,
         sao:EncapsulationUnit ;
@@ -1549,4 +1533,3 @@ sao:VisibilityType a rdfs:Datatype ;
 
 <https://ontologies.corestory.ai/sao/export/values/VisibilityType/public> rdf:value "public" ;
     rdfs:comment "Publicly accessible." .
-

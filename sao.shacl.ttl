@@ -34,11 +34,11 @@ saosh:ActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/Actor/category>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/description>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/id>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/name>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/Actor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/tags>,
         <https://ontologies.corestory.ai/sao/shapes/Actor/verifies_evidence> ;
@@ -178,7 +178,7 @@ saosh:AuditEntryShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/audit_performed_by_actor>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/description>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/details>,
-        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log>,
+        <https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/id>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/AuditEntry/name>,
@@ -279,7 +279,6 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/entry_point_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/handles_exception_types>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/handles_exceptions>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_file_operations>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_parameters>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_return_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/id>,
@@ -299,6 +298,7 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/modifies_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/name>,
+        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/operations_in_callable>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overridden_by_callables>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overrides_callable>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/raises_exception_types>,
@@ -306,8 +306,7 @@ saosh:CallableUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/return_type>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/tags>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/tested_by_cases>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_concurrency_primitives>,
-        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_file_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses>,
         <https://ontologies.corestory.ai/sao/shapes/CallableUnit/visibility> ;
     sh:targetClass sao:CallableUnit .
 
@@ -513,7 +512,8 @@ saosh:ConfigurationShape a sh:NodeShape ;
 
 saosh:ConstraintShape a sh:NodeShape ;
     sh:closed false ;
-    sh:property <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type>,
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Constraint/constrains>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/description>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/expression>,
         <https://ontologies.corestory.ai/sao/shapes/Constraint/id>,
@@ -553,7 +553,7 @@ saosh:ContractVersionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/name>,
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/tags>,
         <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version>,
-        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> ;
+        <https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of> ;
     sh:targetClass sao:ContractVersion .
 
 saosh:ControlFlowShape a sh:NodeShape ;
@@ -755,7 +755,7 @@ saosh:DataStructureShape a sh:NodeShape ;
 saosh:DatabaseConstraintShape a sh:NodeShape ;
     sh:closed false ;
     sh:property <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/columns>,
-        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection>,
+        <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constrains>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/description>,
         <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/expression>,
@@ -940,6 +940,7 @@ saosh:EncapsulationUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_callable_units>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_data_structures>,
+        <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/defined_in_container>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/description>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/encapsulation_type>,
@@ -966,6 +967,7 @@ saosh:EncapsulationUnitShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/screen_used_by_programs>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/stereotype>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/unit_contains_data_elements>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/uses_definitions>,
         <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/visibility> ;
     sh:targetClass sao:EncapsulationUnit .
@@ -1021,11 +1023,11 @@ saosh:EventInterfaceShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/description>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/event_type>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/exposed_by_system>,
-        <https://ontologies.corestory.ai/sao/shapes/EventInterface/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/id>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/name>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/rate_limit>,
+        <https://ontologies.corestory.ai/sao/shapes/EventInterface/subscriptions_to_interface>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/tags>,
         <https://ontologies.corestory.ai/sao/shapes/EventInterface/topics> ;
     sh:targetClass sao:EventInterface .
@@ -1139,12 +1141,12 @@ saosh:FileDefinitionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/external_name>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_defined_in_container>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_status_field>,
-        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/id>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/key_fields>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/mapped_from_dataset_allocations>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/operations_on_file>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/persisted_in_store>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format>,
@@ -1189,11 +1191,11 @@ saosh:HumanActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/description>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/email>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/id>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/name>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/tags>,
         <https://ontologies.corestory.ai/sao/shapes/HumanActor/verifies_evidence> ;
@@ -1452,7 +1454,7 @@ saosh:LogEntryShape a sh:NodeShape ;
     sh:closed false ;
     sh:property <https://ontologies.corestory.ai/sao/shapes/LogEntry/context>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/description>,
-        <https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log>,
+        <https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/id>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/level>,
         <https://ontologies.corestory.ai/sao/shapes/LogEntry/message>,
@@ -1905,6 +1907,42 @@ saosh:RetentionPolicyShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/RetentionPolicy/tags> ;
     sh:targetClass sao:RetentionPolicy .
 
+<https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection/property> ;
+    sh:targetSubjectsOf sao:constraint_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log/property> ;
+    sh:targetSubjectsOf sao:entry_in_audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log/property> ;
+    sh:targetSubjectsOf sao:entry_in_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations/property> ;
+    sh:targetSubjectsOf sao:has_file_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions/property> ;
+    sh:targetSubjectsOf sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives/property> ;
+    sh:targetSubjectsOf sao:uses_concurrency_primitives .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions/property> ;
+    sh:targetSubjectsOf sao:uses_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract/property> ;
+    sh:targetSubjectsOf sao:version_of_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema> a sh:NodeShape ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema/property> ;
+    sh:targetSubjectsOf sao:version_of_schema .
+
 saosh:RiskAssessmentShape a sh:NodeShape ;
     sh:closed false ;
     sh:property <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assessed_at>,
@@ -2007,7 +2045,7 @@ saosh:SchemaVersionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/name>,
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/tags>,
         <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version>,
-        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> ;
+        <https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of> ;
     sh:targetClass sao:SchemaVersion .
 
 saosh:ScopeShape a sh:NodeShape ;
@@ -2208,11 +2246,11 @@ saosh:SystemActorShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/category>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/description>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_identities>,
-        <https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/id>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/name>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_controls>,
+        <https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_subscriptions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/service_account>,
         <https://ontologies.corestory.ai/sao/shapes/SystemActor/tags>,
@@ -2592,11 +2630,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/Actor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/Actor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -2621,6 +2654,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/Actor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/Actor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;
@@ -3417,11 +3455,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:details .
 
-<https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in_audit_log> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/AuditEntry/entry_in> a sh:PropertyShape ;
     sh:class sao:AuditLog ;
     sh:description "`AuditLog` that this entry belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:entry_in_audit_log .
+    sh:path sao:entry_in .
 
 <https://ontologies.corestory.ai/sao/shapes/AuditEntry/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -4154,11 +4192,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Exception names handled (DEPRECATED -- use handles_exception_types)" ;
     sh:path sao:handles_exceptions .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_file_operations> a sh:PropertyShape ;
-    sh:class sao:FileOperation ;
-    sh:description "FileOperation[] performed by this callable." ;
-    sh:path sao:has_file_operations .
-
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/has_parameters> a sh:PropertyShape ;
     sh:class sao:Parameter ;
     sh:description "Parameters of this callable." ;
@@ -4270,6 +4303,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:minCount 1 ;
     sh:path sao:name .
 
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/operations_in_callable> a sh:PropertyShape ;
+    sh:class sao:FileOperation ;
+    sh:description "FileOperation[] performed by this callable." ;
+    sh:path sao:operations_in_callable .
+
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/overridden_by_callables> a sh:PropertyShape ;
     sh:class sao:CallableUnit ;
     sh:description "Overriding children." ;
@@ -4307,15 +4345,20 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Test cases." ;
     sh:path sao:tested_by_cases .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_concurrency_primitives> a sh:PropertyShape ;
-    sh:class sao:ConcurrencyPrimitive ;
-    sh:description "Locks, semaphores, etc." ;
-    sh:path sao:uses_concurrency_primitives .
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses> a sh:PropertyShape ;
+    sh:description "Resources used by this callable." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives> ;
+    sh:path sao:uses .
 
-<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses_file_definitions> a sh:PropertyShape ;
-    sh:class sao:FileDefinition ;
-    sh:description "FileDefinition[] used by this callable." ;
-    sh:path sao:uses_file_definitions .
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/0> sh:class sao:FileDefinition .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/1> sh:class sao:ConcurrencyPrimitive .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/CallableUnit/uses/alternative/1> ;
+    rdf:rest () .
 
 <https://ontologies.corestory.ai/sao/shapes/CallableUnit/visibility> a sh:PropertyShape ;
     sh:description "Visibility level." ;
@@ -5438,6 +5481,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:value .
 
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constrains> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "Permissions restricted by this authorization constraint; sharing across permissions is allowed." ;
+    sh:path sao:constrains .
+
 <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type> a sh:PropertyShape ;
     sh:description "Type of constraint." ;
     sh:in <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values> ;
@@ -5664,11 +5712,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:path sao:version ;
     sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
 
-<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of_contract> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/ContractVersion/version_of> a sh:PropertyShape ;
     sh:class sao:Contract ;
     sh:description "`Contract` that this version belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:version_of_contract .
+    sh:path sao:version_of .
 
 <https://ontologies.corestory.ai/sao/shapes/Control/control_id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -7043,11 +7091,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Columns involved in the constraint." ;
     sh:path sao:columns .
 
-<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_on_collection> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constrains> a sh:PropertyShape ;
     sh:class sao:Collection ;
     sh:description "The collection this constraint belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:constraint_on_collection .
+    sh:path sao:constrains .
 
 <https://ontologies.corestory.ai/sao/shapes/DatabaseConstraint/constraint_type> a sh:PropertyShape ;
     sh:description "The type of constraint." ;
@@ -8065,6 +8113,26 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Data structures in this unit." ;
     sh:path sao:contains_data_structures .
 
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members> a sh:PropertyShape ;
+    sh:description "Direct members of this encapsulation unit." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives> ;
+    sh:path sao:contains_unit_members .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/0> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/1> sh:class sao:DataStructure .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/2> sh:class sao:DataElement .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/1> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternatives/cell/2> rdf:first <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/contains_unit_members/alternative/2> ;
+    rdf:rest () .
+
 <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/defined_in_container> a sh:PropertyShape ;
     sh:class sao:CodeContainer ;
     sh:description "Code container where this element is defined" ;
@@ -8312,6 +8380,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:datatype xsd:string ;
     sh:description "Freeform tags." ;
     sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/unit_contains_data_elements> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "The unit-specific data-element membership relation; entails generic data-element containment and unit membership." ;
+    sh:path sao:unit_contains_data_elements .
 
 <https://ontologies.corestory.ai/sao/shapes/EncapsulationUnit/uses_definitions> a sh:PropertyShape ;
     sh:class sao:DefinitionReference ;
@@ -8753,11 +8826,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:exposed_by_system .
 
-<https://ontologies.corestory.ai/sao/shapes/EventInterface/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "Subscriptions to this event interface." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/EventInterface/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -8783,6 +8851,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Requests per minute limit." ;
     sh:maxCount 1 ;
     sh:path sao:rate_limit .
+
+<https://ontologies.corestory.ai/sao/shapes/EventInterface/subscriptions_to_interface> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "Subscriptions to this event interface." ;
+    sh:path sao:subscriptions_to_interface .
 
 <https://ontologies.corestory.ai/sao/shapes/EventInterface/tags> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -9217,11 +9290,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:file_status_field .
 
-<https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations> a sh:PropertyShape ;
-    sh:class sao:FileOperation ;
-    sh:description "Operations performed on this file." ;
-    sh:path sao:has_file_operations .
-
 <https://ontologies.corestory.ai/sao/shapes/FileDefinition/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -9251,6 +9319,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/operations_on_file> a sh:PropertyShape ;
+    sh:class sao:FileOperation ;
+    sh:description "Operations performed on this file." ;
+    sh:path sao:operations_on_file .
 
 <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization> a sh:PropertyShape ;
     sh:description "Physical organization of the file." ;
@@ -9548,11 +9621,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/HumanActor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/HumanActor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -9577,6 +9645,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/HumanActor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/HumanActor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;
@@ -11083,11 +11156,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:description .
 
-<https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in_log> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/LogEntry/entry_in> a sh:PropertyShape ;
     sh:class sao:Log ;
     sh:description "Parent log." ;
     sh:maxCount 1 ;
-    sh:path sao:entry_in_log .
+    sh:path sao:entry_in .
 
 <https://ontologies.corestory.ai/sao/shapes/LogEntry/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -13519,6 +13592,51 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "Freeform tags." ;
     sh:path sao:tags .
 
+<https://ontologies.corestory.ai/sao/shapes/Retired/constraint_on_collection/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: constraint_on_collection; see docs/migration-3.0.md." ;
+    sh:path sao:constraint_on_collection .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_audit_log/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: entry_in_audit_log; see docs/migration-3.0.md." ;
+    sh:path sao:entry_in_audit_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/entry_in_log/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: entry_in_log; see docs/migration-3.0.md." ;
+    sh:path sao:entry_in_log .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_file_operations/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: has_file_operations; see docs/migration-3.0.md." ;
+    sh:path sao:has_file_operations .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/has_subscriptions/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: has_subscriptions; see docs/migration-3.0.md." ;
+    sh:path sao:has_subscriptions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_concurrency_primitives/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: uses_concurrency_primitives; see docs/migration-3.0.md." ;
+    sh:path sao:uses_concurrency_primitives .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/uses_file_definitions/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: uses_file_definitions; see docs/migration-3.0.md." ;
+    sh:path sao:uses_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_contract/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: version_of_contract; see docs/migration-3.0.md." ;
+    sh:path sao:version_of_contract .
+
+<https://ontologies.corestory.ai/sao/shapes/Retired/version_of_schema/property> a sh:PropertyShape ;
+    sh:maxCount 0 ;
+    sh:message "Predicate retired in SAO 3.0.0: version_of_schema; see docs/migration-3.0.md." ;
+    sh:path sao:version_of_schema .
+
 <https://ontologies.corestory.ai/sao/shapes/RiskAssessment/assessed_at> a sh:PropertyShape ;
     sh:datatype xsd:dateTime ;
     sh:description "Assessment date." ;
@@ -14033,11 +14151,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:path sao:version ;
     sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
 
-<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of_schema> a sh:PropertyShape ;
+<https://ontologies.corestory.ai/sao/shapes/SchemaVersion/version_of> a sh:PropertyShape ;
     sh:class sao:Schema ;
     sh:description "`Schema` that this version belongs to." ;
     sh:maxCount 1 ;
-    sh:path sao:version_of_schema .
+    sh:path sao:version_of .
 
 <https://ontologies.corestory.ai/sao/shapes/Scope/description> a sh:PropertyShape ;
     sh:datatype xsd:string ;
@@ -15135,11 +15253,6 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:description "One or more `Identity` entities associated with this actor." ;
     sh:path sao:has_identities .
 
-<https://ontologies.corestory.ai/sao/shapes/SystemActor/has_subscriptions> a sh:PropertyShape ;
-    sh:class sao:Subscription ;
-    sh:description "`Subscription` entities owned by this actor." ;
-    sh:path sao:has_subscriptions .
-
 <https://ontologies.corestory.ai/sao/shapes/SystemActor/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -15164,6 +15277,11 @@ saosh:WorkflowShape a sh:NodeShape ;
     sh:class sao:Control ;
     sh:description "`Control` entities owned by this actor." ;
     sh:path sao:owns_controls .
+
+<https://ontologies.corestory.ai/sao/shapes/SystemActor/owns_subscriptions> a sh:PropertyShape ;
+    sh:class sao:Subscription ;
+    sh:description "`Subscription` entities owned by this actor." ;
+    sh:path sao:owns_subscriptions .
 
 <https://ontologies.corestory.ai/sao/shapes/SystemActor/performs_actions> a sh:PropertyShape ;
     sh:class sao:Action ;

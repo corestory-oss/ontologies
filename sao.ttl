@@ -4,6 +4,7 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix export: <https://ontologies.corestory.ai/sao/export/> .
 @prefix linkml: <https://w3id.org/linkml/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sao: <https://ontologies.corestory.ai/sao/> .
@@ -1946,13 +1947,19 @@ sao:connection_string a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range xsd:string .
 
+sao:constrains a rdf:Property ;
+    rdfs:label "constrains" ;
+    schema1:domainIncludes sao:Constraint,
+        sao:DatabaseConstraint ;
+    schema1:rangeIncludes sao:Collection,
+        sao:Permission ;
+    rdfs:comment "The entity whose allowed state or behavior is restricted by this constraint." ;
+    rdfs:isDefinedBy sao: .
+
 sao:constraint_on_collection a rdf:Property ;
     rdfs:label "constraint_on_collection" ;
-    rdfs:comment "The collection this constraint belongs to.",
-        "[DatabaseConstraint] The collection this constraint belongs to." ;
-    rdfs:domain sao:DatabaseConstraint ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Collection .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:constraint_type a rdf:Property ;
     rdfs:label "constraint_type" ;
@@ -2087,7 +2094,8 @@ sao:contains_callable_units a rdf:Property ;
         "[EncapsulationUnit] Callable units (methods, functions, etc.) in this unit." ;
     rdfs:domain sao:EncapsulationUnit ;
     rdfs:isDefinedBy sao: ;
-    rdfs:range sao:CallableUnit .
+    rdfs:range sao:CallableUnit ;
+    rdfs:subPropertyOf sao:contains_unit_members .
 
 sao:contains_code_elements a rdf:Property ;
     rdfs:label "contains_code_elements" ;
@@ -2113,23 +2121,14 @@ sao:contains_containers a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:CodeContainer .
 
-sao:contains_data_elements a rdf:Property ;
-    rdfs:label "contains_data_elements" ;
-    schema1:domainIncludes sao:DataStructure,
-        sao:EncapsulationUnit ;
-    rdfs:comment "Fields or variables contained in this unit or structure.",
-        "[DataStructure] Fields or variables contained in this unit or structure.",
-        "[EncapsulationUnit] Fields or variables contained in this unit or structure." ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:DataElement .
-
 sao:contains_data_structures a rdf:Property ;
     rdfs:label "contains_data_structures" ;
     rdfs:comment "Data structures in this unit.",
         "[EncapsulationUnit] Data structures in this unit." ;
     rdfs:domain sao:EncapsulationUnit ;
     rdfs:isDefinedBy sao: ;
-    rdfs:range sao:DataStructure .
+    rdfs:range sao:DataStructure ;
+    rdfs:subPropertyOf sao:contains_unit_members .
 
 sao:contains_encapsulation_units a rdf:Property ;
     rdfs:label "contains_encapsulation_units" ;
@@ -3030,21 +3029,24 @@ sao:entity_documented_by_artifacts a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:KnowledgeArtifact .
 
+sao:entry_in a rdf:Property ;
+    rdfs:label "entry_in" ;
+    schema1:domainIncludes sao:AuditEntry,
+        sao:LogEntry ;
+    schema1:rangeIncludes sao:AuditLog,
+        sao:Log ;
+    rdfs:comment "The log containing this entry; class-specific shapes distinguish audit and operational logs." ;
+    rdfs:isDefinedBy sao: .
+
 sao:entry_in_audit_log a rdf:Property ;
     rdfs:label "entry_in_audit_log" ;
-    rdfs:comment "[AuditEntry] `AuditLog` that this entry belongs to.",
-        "`AuditLog` that this entry belongs to." ;
-    rdfs:domain sao:AuditEntry ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:AuditLog .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:entry_in_log a rdf:Property ;
     rdfs:label "entry_in_log" ;
-    rdfs:comment "Parent log.",
-        "[LogEntry] Parent log." ;
-    rdfs:domain sao:LogEntry ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Log .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:entry_point_type a rdf:Property ;
     rdfs:label "entry_point_type" ;
@@ -3877,13 +3879,8 @@ sao:has_file_definitions a rdf:Property ;
 
 sao:has_file_operations a rdf:Property ;
     rdfs:label "has_file_operations" ;
-    schema1:domainIncludes sao:CallableUnit,
-        sao:FileDefinition ;
-    rdfs:comment "FileOperation[] performed by this callable.",
-        "[CallableUnit] FileOperation[] performed by this callable.",
-        "[FileDefinition] Operations performed on this file." ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:FileOperation .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:has_gc a rdf:Property ;
     rdfs:label "has_gc" ;
@@ -4282,13 +4279,8 @@ sao:has_steps a rdf:Property ;
 
 sao:has_subscriptions a rdf:Property ;
     rdfs:label "has_subscriptions" ;
-    schema1:domainIncludes sao:Actor,
-        sao:EventInterface ;
-    rdfs:comment "Subscriptions to this event interface.",
-        "[Actor] `Subscription` entities owned by this actor.",
-        "[EventInterface] Subscriptions to this event interface." ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Subscription .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:has_target a rdf:Property ;
     rdfs:label "has_target" ;
@@ -5861,6 +5853,20 @@ sao:operation_type a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:FileOperationType .
 
+sao:operations_in_callable a rdf:Property ;
+    rdfs:label "operations_in_callable" ;
+    rdfs:comment "File operations performed in this callable." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileOperation .
+
+sao:operations_on_file a rdf:Property ;
+    rdfs:label "operations_on_file" ;
+    rdfs:comment "File operations acting on this file definition." ;
+    rdfs:domain sao:FileDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileOperation .
+
 sao:orchestrates_units a rdf:Property ;
     rdfs:label "orchestrates_units" ;
     rdfs:comment "Units orchestrated.",
@@ -5974,6 +5980,13 @@ sao:owns_controls a rdf:Property ;
     rdfs:domain sao:Actor ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:Control .
+
+sao:owns_subscriptions a rdf:Property ;
+    rdfs:label "owns_subscriptions" ;
+    rdfs:comment "Subscriptions owned by the subscribing actor." ;
+    rdfs:domain sao:Actor ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Subscription .
 
 sao:package_name a rdf:Property ;
     rdfs:label "package_name" ;
@@ -7443,6 +7456,13 @@ sao:subscribes_to_interface a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:EventInterface .
 
+sao:subscriptions_to_interface a rdf:Property ;
+    rdfs:label "subscriptions_to_interface" ;
+    rdfs:comment "Subscriptions registered to this event interface." ;
+    rdfs:domain sao:EventInterface ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Subscription .
+
 sao:success_threshold a rdf:Property ;
     rdfs:label "success_threshold" ;
     rdfs:comment "Successes before marking healthy.",
@@ -7924,6 +7944,15 @@ sao:unit a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range xsd:string .
 
+sao:unit_contains_data_elements a rdf:Property ;
+    rdfs:label "unit_contains_data_elements" ;
+    rdfs:comment "Data elements directly contained in this encapsulation unit; a specialized unit-membership relation." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement ;
+    rdfs:subPropertyOf sao:contains_data_elements,
+        sao:contains_unit_members .
+
 sao:unit_type a rdf:Property ;
     rdfs:label "unit_type" ;
     rdfs:comment "Kind of deployment unit.",
@@ -7978,6 +8007,14 @@ sao:used_by_integrations a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:Integration .
 
+sao:uses a rdf:Property ;
+    rdfs:label "uses" ;
+    schema1:rangeIncludes sao:ConcurrencyPrimitive,
+        sao:FileDefinition ;
+    rdfs:comment "A resource used by this callable, including file definitions and concurrency primitives." ;
+    rdfs:domain sao:CallableUnit ;
+    rdfs:isDefinedBy sao: .
+
 sao:uses_adapter a rdf:Property ;
     rdfs:label "uses_adapter" ;
     rdfs:comment "[Integration] `Adapter` for protocol translation.",
@@ -7988,11 +8025,8 @@ sao:uses_adapter a rdf:Property ;
 
 sao:uses_concurrency_primitives a rdf:Property ;
     rdfs:label "uses_concurrency_primitives" ;
-    rdfs:comment "Locks, semaphores, etc.",
-        "[CallableUnit] Locks, semaphores, etc." ;
-    rdfs:domain sao:CallableUnit ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:ConcurrencyPrimitive .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:uses_definitions a rdf:Property ;
     rdfs:label "uses_definitions" ;
@@ -8004,11 +8038,8 @@ sao:uses_definitions a rdf:Property ;
 
 sao:uses_file_definitions a rdf:Property ;
     rdfs:label "uses_file_definitions" ;
-    rdfs:comment "FileDefinition[] used by this callable.",
-        "[CallableUnit] FileDefinition[] used by this callable." ;
-    rdfs:domain sao:CallableUnit ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:FileDefinition .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:uses_infrastructure a rdf:Property ;
     rdfs:label "uses_infrastructure" ;
@@ -8125,21 +8156,24 @@ sao:version_constraint a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range xsd:string .
 
+sao:version_of a rdf:Property ;
+    rdfs:label "version_of" ;
+    schema1:domainIncludes sao:ContractVersion,
+        sao:SchemaVersion ;
+    schema1:rangeIncludes sao:Contract,
+        sao:Schema ;
+    rdfs:comment "The entity of which this is a version. Class-specific shapes pair ContractVersion with Contract and SchemaVersion with Schema." ;
+    rdfs:isDefinedBy sao: .
+
 sao:version_of_contract a rdf:Property ;
     rdfs:label "version_of_contract" ;
-    rdfs:comment "[ContractVersion] `Contract` that this version belongs to.",
-        "`Contract` that this version belongs to." ;
-    rdfs:domain sao:ContractVersion ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Contract .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:version_of_schema a rdf:Property ;
     rdfs:label "version_of_schema" ;
-    rdfs:comment "[SchemaVersion] `Schema` that this version belongs to.",
-        "`Schema` that this version belongs to." ;
-    rdfs:domain sao:SchemaVersion ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Schema .
+    rdfs:comment "Retired in SAO 3.0.0; migrate to the relationships documented in docs/migration-3.0.md. No compatibility entailments are provided." ;
+    owl:deprecated true .
 
 sao:visibility a rdf:Property ;
     rdfs:label "visibility" ;
@@ -9495,6 +9529,16 @@ sao:WorkflowType a rdfs:Datatype ;
         <https://ontologies.corestory.ai/sao/export/values/WorkflowType/orchestration>,
         <https://ontologies.corestory.ai/sao/export/values/WorkflowType/saga>,
         <https://ontologies.corestory.ai/sao/export/values/WorkflowType/synchronous> .
+
+sao:contains_data_elements a rdf:Property ;
+    rdfs:label "contains_data_elements" ;
+    schema1:domainIncludes sao:DataStructure,
+        sao:EncapsulationUnit ;
+    rdfs:comment "Fields or variables contained in this unit or structure.",
+        "[DataStructure] Fields or variables contained in this unit or structure.",
+        "[EncapsulationUnit] Fields or variables contained in this unit or structure." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DataElement .
 
 <https://ontologies.corestory.ai/sao/export/values/APIType/graphql_api> rdf:value "graphql_api" ;
     rdfs:comment "GraphQL query language API." .
@@ -11793,6 +11837,15 @@ sao:ProtocolType a rdfs:Datatype ;
         <https://ontologies.corestory.ai/sao/export/values/ProtocolType/udp>,
         <https://ontologies.corestory.ai/sao/export/values/ProtocolType/websocket> .
 
+sao:contains_unit_members a rdf:Property ;
+    rdfs:label "contains_unit_members" ;
+    schema1:rangeIncludes sao:CallableUnit,
+        sao:DataElement,
+        sao:DataStructure ;
+    rdfs:comment "Members of an encapsulation unit: callable units, data structures, or data elements." ;
+    rdfs:domain sao:EncapsulationUnit ;
+    rdfs:isDefinedBy sao: .
+
 xsd:float a rdfs:Datatype .
 
 sao:URI a rdfs:Datatype ;
@@ -11815,6 +11868,6 @@ xsd:string a rdfs:Datatype .
 
 sao: a schema1:DefinedTermSet ;
     dcterms:description "A comprehensive ontology for modeling software systems, including structural components, domain modeling (DDD), security, data management, integration, deployment, and observability concerns." ;
-    dcterms:hasVersion "2.1.0" ;
+    dcterms:hasVersion "3.0.0" ;
     dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
     dcterms:title "Systems Abstraction Ontology" .

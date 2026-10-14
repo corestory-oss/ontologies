@@ -280,14 +280,6 @@ sao:validates_messages a rdf:Property ;
     rdfs:isDefinedBy sao: ;
     rdfs:range sao:Message .
 
-sao:version_of_contract a rdf:Property ;
-    rdfs:label "version_of_contract" ;
-    rdfs:comment "[ContractVersion] `Contract` that this version belongs to.",
-        "`Contract` that this version belongs to." ;
-    rdfs:domain sao:ContractVersion ;
-    rdfs:isDefinedBy sao: ;
-    rdfs:range sao:Contract .
-
 sao:ContractType a rdfs:Datatype ;
     rdfs:label "ContractType" ;
     rdfs:comment "Types of API contracts" ;
@@ -391,4 +383,3 @@ sao:MessageType a rdfs:Datatype ;
 
 <https://ontologies.corestory.ai/sao/export/values/MessageType/response> rdf:value "response" ;
     rdfs:comment "Response message to a request." .
-

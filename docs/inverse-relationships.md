@@ -10,7 +10,7 @@ The retained SAO 2.1.0 baseline contains 536 contextual inverse declarations acr
 
 No declared inverse name was missing when resolved against the complete property vocabulary. The earlier standard SHACL generator error involved a class-local property that its lookup did not resolve, rather than a missing RDF property.
 
-## Seven unresolved groups
+## Seven historical groups (resolved in the 3.0.0 candidate)
 
 | Shared property | Competing or incompatible inverse declarations | Decision needed |
 |---|---|---|
@@ -22,7 +22,7 @@ No declared inverse name was missing when resolved against the complete property
 | `has_constraints` | `constraint_on_collection` | Collection uses refer to DatabaseConstraint, while Permission uses the same property for authorization Constraint without declaring an inverse. A global axiom would incorrectly apply to both. |
 | `contained_in_unit` | `contains_callable_units` | The forward slot is also used by DataStructure and DataElement (inherited by Parameter), but the reverse slot accepts CallableUnit. Decide the intended containment relations. |
 
-All 19 properties participating in these groups are withheld from the inverse supplement; their original vocabulary and shapes are unchanged. Adding several global inverse axioms for one shared property would entail equivalence between the competing inverse properties. Class-local intended meanings cannot be recovered merely by applying global `owl:inverseOf` axioms.
+The initial audit withheld all 19 properties participating in these groups. The 3.0.0 candidate now resolves the groups using five generic inverse relationships and two role-specific splits; see [migration-3.0.md](migration-3.0.md). The table above records the original decision points. Adding several global inverse axioms for one shared property would entail equivalence between the competing inverse properties. Class-local intended meanings cannot be recovered merely by applying global `owl:inverseOf` axioms.
 
 The detailed declarations, class contexts, and reasons are in [inverse-audit.json](inverse-audit.json). This report is a historical migration snapshot. Normal builds do not regenerate the editable OWL source from LinkML.
 
@@ -34,8 +34,8 @@ uv run python scripts/validate_axioms.py
 uv run python -m unittest discover -s tests
 ```
 
-The check reads the current Turtle shapes to ensure all class-local ranges can participate in the inverse, checks that inverse endpoints exist, the supplement retains uniquely paired partners, and the reasoning manifest assembles precisely the vocabulary plus axioms. Regression tests use an actual OWL-RL reasoner to infer the reverse edge for every accepted pair in both directions. They also test that withheld properties do not acquire those inverse entailments.
+The check reads the current Turtle shapes to ensure all class-local ranges can participate in the inverse, checks that inverse endpoints exist, the supplement retains uniquely paired partners, and the reasoning manifest assembles precisely the vocabulary plus axioms. Regression tests use an actual OWL-RL reasoner to infer the reverse edge for every accepted pair in both directions. They also test that retired predicates have no inverse entailments and that role-specific edges do not cross.
 
 The SHACL validator continues to run without OWL materialization. Enabling inference before validation can change conformance results, particularly where required reverse relationships become inferred instead of explicitly supplied. Loading `sao.owl.ttl` alone does not execute reasoning; a consumer must invoke a suitable reasoner.
 
-See the [OWL 2 property axiom specification](https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties) for inverse semantics. The remaining modeling decisions above are deliberately not resolved by this mechanical migration.
+See the [OWL 2 property axiom specification](https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties) for inverse semantics. The historical declaration audit remains unchanged as provenance. The current authored supplement contains 217 inverse pairs; its redesign is an explicit modeling change rather than a new automatic export from the baseline.

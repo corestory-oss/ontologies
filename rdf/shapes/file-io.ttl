@@ -1,4 +1,4 @@
-# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Editable SHACL source; SAO 3.0.0 relationship profile.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -15,12 +15,12 @@ saosh:FileDefinitionShape a sh:NodeShape ;
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/external_name>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_defined_in_container>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/file_status_field>,
-        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/id>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/key_fields>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/mapped_from_dataset_allocations>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/metadata>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/FileDefinition/operations_on_file>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/persisted_in_store>,
         <https://ontologies.corestory.ai/sao/shapes/FileDefinition/record_format>,
@@ -87,11 +87,6 @@ saosh:FileOperationShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:path sao:file_status_field .
 
-<https://ontologies.corestory.ai/sao/shapes/FileDefinition/has_file_operations> a sh:PropertyShape ;
-    sh:class sao:FileOperation ;
-    sh:description "Operations performed on this file." ;
-    sh:path sao:has_file_operations .
-
 <https://ontologies.corestory.ai/sao/shapes/FileDefinition/id> a sh:PropertyShape ;
     sh:datatype xsd:string ;
     sh:description "Unique identifier." ;
@@ -121,6 +116,11 @@ saosh:FileOperationShape a sh:NodeShape ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
     sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/FileDefinition/operations_on_file> a sh:PropertyShape ;
+    sh:class sao:FileOperation ;
+    sh:description "Operations performed on this file." ;
+    sh:path sao:operations_on_file .
 
 <https://ontologies.corestory.ai/sao/shapes/FileDefinition/organization> a sh:PropertyShape ;
     sh:description "Physical organization of the file." ;

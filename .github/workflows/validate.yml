@@ -2,7 +2,9 @@ name: Validate ontologies
 
 on:
   push:
+    branches-ignore: [site]
   pull_request:
+    branches-ignore: [site]
 
 permissions:
   contents: read

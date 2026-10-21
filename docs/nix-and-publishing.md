@@ -9,10 +9,9 @@ nix build                     # Build static documentation; result/ points to it
 nix run .#preview             # Build and serve it locally; Ctrl-C stops it
 nix flake check               # Run RDF, composition, projection and site checks
 nix build .#ontologies        # Build just the Turtle distributions
-nix run .#deploy              # Build and publish the production documentation site
 ```
 
-`nix build` puts the completed artifact in the Nix store and creates a `result` symlink in your checkout. `result/` contains an HTML shell, JavaScript, CSS, fonts, ontology JSON, HTML guides, source downloads and Turtle distributions. It is a directory of static files, not a running service.
+`nix build` puts the completed artifact in the Nix store and creates a `result` symlink in your checkout. `result/` contains the prose homepage, the Garden browser in `reference/`, JavaScript, CSS, fonts, ontology JSON, HTML guides, source downloads and Turtle distributions. It is a directory of static files, not a running service.
 
 `nix run .#preview` is a convenience application supplied by this repository. The `preview` name is our choice; `nix run` is the standard Nix mechanism for running such a named application. It starts an ordinary foreground HTTP server bound to `127.0.0.1:4173`. That server exists only for local preview and stays up until Ctrl-C or the terminal closes. The preview disables HTTP caching, including timestamp-based 304 responses: Nix normalizes file timestamps, which would otherwise let browsers reuse an older dataset. It does not watch files or rebuild automatically; restart the command after editing. To use another port, run `nix run .#preview -- 8080`.
 
@@ -50,21 +49,28 @@ Garden renders term-reference pages in the visitor's browser using the bundled d
 
 The dataset is plain JSON. Its URL includes a SHA-256 content hash so changed ontology data cannot reuse an older browser cache entry. Normal CDN gzip/Brotli transport compression is handled by the browser; the application does not rely on special `.gz` response headers or server decompression behavior. `_headers` supplies a small set of static Cloudflare Pages headers.
 
-### Deploy from your workstation
+### Main and site branches
 
-```sh
-nix run .#deploy -- --login     # One-time Cloudflare browser authorization
-nix run .#deploy -- --dry-run   # Build and show the artifact and target, without uploading
-nix run .#deploy               # Build, check and upload to production
+`main` is the source branch: authored RDF, Markdown, website templates, styles, selected brand assets and build definitions. Website copy lives in `web/pages/`, separate from the ontology guides in `docs/`. Templates in `web/templates/` and styles in `web/styles/` control the prose pages. `web/assets/` holds the official CoreStory logo variants, locally served fonts, their licenses and provenance hashes. Builds never need access to Notion.
+
+`site` is the publication branch. Its repository root is exactly the contents of the completed static build:
+
+```text
+index.html              # CoreStory Ontologies introduction
+reference/              # Combined Garden browser and its dataset
+guides/                 # Rendered Markdown guides and examples
+dist/                   # Turtle distributions
+assets/                 # Brand assets, fonts, CSS and pinned Garden runtime
+source/                 # Files linked as downloads from the guides
+snapshot.json           # Ontology versions and input hashes
+_headers                # Static hosting headers
 ```
 
-Nix supplies a pinned Wrangler CLI and its runtime; no separate npm installation is needed. `deploy` is another repository-defined Nix application, like `preview`. It references the site derivation directly, so it builds the site even if `result` currently points at a Turtle-only build. A failing site build or its checks prevents upload. A successful upload replaces the production deployment, including when invoked from a local feature branch or dirty checkout: the Cloudflare target branch is explicitly `main`, independent of your Git branch.
+The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain `/sao/` and `/specspec/`; moving the browser to `/reference/` does not rename terms. Existing root-fragment Garden bookmarks redirect to the new browser location.
 
-The command fixes the account to CoreStory Corporate Account and the project to `corestory-ontologies`, serving `https://ontologies.corestory.ai`. It runs Wrangler from a temporary directory to avoid inheriting local Wrangler configuration, dotenv files or Git branch inference. It uploads only the static Nix output. It does not change DNS, Access policies, other projects or the production branch setting.
+The publication process is local: start from committed `main`, run `nix flake check` and `nix build`, populate a separate `site` checkout with the complete output (removing files left over from earlier builds), record the source commit, then commit and push `site` with ordinary fast-forward history. Never merge `site` into `main` or hand-edit generated HTML. Publication automation is a subsequent step; these commands currently build and preview only.
 
-Wrangler stores browser-login credentials in its user configuration outside the checkout and Nix store. An existing `CLOUDFLARE_API_TOKEN` can be supplied through your environment instead (use Account / Cloudflare Pages / Edit permission for the CoreStory account); never put tokens in Nix files or commit them. Cloudflare API token permissions are account-scoped for Pages, so the wrapper fixes the project but a token is not inherently restricted to this one project. Deployment is a network action performed by the running app, after the reproducible build completes. `--dry-run` only builds and prints the destination; it does not invoke Wrangler or validate credentials.
-
-CI still produces an artifact without deploying. No automatic writes to a `site` branch are configured.
+A Git-connected static host can watch `site` and serve its root without installing Nix or rebuilding the ontologies. No Cloudflare API credentials or GitHub Actions publishing job are needed for that arrangement. Existing Cloudflare project migration and domain configuration are outside this repository layout change.
 
 ## Reproducibility and scope
 

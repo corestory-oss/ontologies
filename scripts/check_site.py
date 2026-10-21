@@ -7,6 +7,7 @@ import hashlib
 from html.parser import HTMLParser
 import json
 from pathlib import Path
+import re
 import sys
 from urllib.parse import unquote
 
@@ -38,11 +39,22 @@ def check(directory):
                 continue
             filename = unquote(url.split("#")[0].split("?")[0])
             target = directory / filename.lstrip("/") if url.startswith("/") else path.parent / filename
+            if target.is_dir():
+                target /= "index.html"
             if filename and not target.exists():
                 failures.append(f"{path.relative_to(directory)} → {url}")
-    dataset = directory / "ecosystem.json"
+    for css in directory.glob("assets/styles/*.css"):
+        for url in re.findall(r"url\(['\"]?([^)'\"]+)", css.read_text()):
+            if not (css.parent / url).is_file():
+                failures.append(f"{css.relative_to(directory)} → {url}")
+    homepage = (directory / "index.html").read_text()
+    if "{{sao_version}}" in homepage or "{{specspec_version}}" in homepage:
+        failures.append("Homepage contains unresolved ontology versions")
+    if not (directory / "assets/legacy-reference.js").is_file():
+        failures.append("Missing compatibility redirect for old Garden bookmarks")
+    dataset = directory / "reference/ecosystem.json"
     digest = hashlib.sha256(dataset.read_bytes()).hexdigest()
-    if "./ecosystem.json?sha256=" + digest not in (directory / "index.html").read_text():
+    if "./ecosystem.json?sha256=" + digest not in (directory / "reference/index.html").read_text():
         failures.append("Dataset URL is missing its current content hash")
     payload = json.loads(dataset.read_text())
     terms = {kind: {item["id"] for item in payload[index]["concepts"]}
@@ -60,7 +72,7 @@ def check(directory):
             for node in graph.subjects(RDF.type, RDF.Property):
                 if not covered(node, "property"):
                     failures.append(f"Missing property: {node}")
-    bootstrap = (directory / "vendor/v2/explorer.js").read_text()
+    bootstrap = (directory / "assets/vendor/v2/explorer.js").read_text()
     if 'DecompressionStream("gzip")' in bootstrap:
         failures.append("Bootstrap still expects compressed data instead of CDN-friendly JSON")
     if failures:

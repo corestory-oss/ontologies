@@ -36,7 +36,7 @@ examples/ecosystem/        # One graph validated against both ontologies
 tests/                     # RDF and composition regression tests
 scripts/                   # Shared tooling, static docs builder and ontology checks
 nix/                       # Reproducible builds, checks, preview and dev shell
-web/                       # Pinned Garden asset manifest
+web/                       # Website prose, templates, styles, brand assets and Garden pins
 legacy/sao/                # Historical LinkML baseline and its separate tests
 ```
 
@@ -48,13 +48,14 @@ The normal workflow uses Nix, following Plot's flake/direnv pattern:
 nix build                     # Static HTML docs → result/
 nix run .#preview             # Local preview at http://127.0.0.1:4173/; Ctrl-C stops it
 nix flake check               # RDF, composition, docs and link checks
-nix run .#deploy              # Build and publish to the ontology Pages project
 nix build .#ontologies        # Turtle distributions → result/
 ```
 
 If your existing direnv setup is active, run `direnv allow` once to load the pinned development tools automatically when entering this checkout. Otherwise use `nix develop`. Neither command starts a server or rebuilds the docs automatically.
 
-The static docs include a combined RDF Garden reference, pre-rendered HTML guides and downloadable Turtle. Deploy the contents of the site build's `result/` directory to Cloudflare Pages or another static host. No application server or runtime Nix/Python installation is required. CI builds and attaches the static site as an artifact. `nix run .#deploy` builds and publishes that site to the existing `corestory-ontologies` Cloudflare Pages project. On first use, sign in with `nix run .#deploy -- --login`; credentials stay outside the repository.
+The static site has a branded prose homepage, a combined RDF Garden browser under `reference/`, HTML guides under `guides/` and downloadable Turtle under `dist/`. Edit website prose in `web/pages/`; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.
+
+`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. Branch population and hosting integration are separate from this layout change.
 
 See [Nix and publishing explained](docs/nix-and-publishing.md) for the command meanings, lockfile, direnv, local preview and CDN details.
 
@@ -82,7 +83,7 @@ The ecosystem profile applies SAO, SpecSpec and the current bridge shapes togeth
 
 [dist/](dist/) contains separate vocabulary, SHACL and OWL files for each ontology: `sao.ttl`, `sao.shacl.ttl`, `sao.owl.ttl`, and the corresponding `specspec.*ttl` files. The `specspec-sao.*ttl` files contain only the current bridge layer. Consumers can load the layers they need; there are no automatic network imports.
 
-The source reorganization does not change public namespace or term IRIs. Moving local build outputs into `dist/` changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a `site` branch, served through CoreStory's CDN. Static builds, local preview and manual Cloudflare Pages deployment are available. Deployment uses the checked Nix artifact directly; automatic publication and writes to a `site` branch are not configured.
+The source reorganization does not change public namespace or term IRIs. Moving local build outputs into `dist/` changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a `site` branch, served through CoreStory's CDN. Static builds and local preview are available. Publication is designed around a generated `site` branch; this checkout does not configure automatic branch updates or hosting.
 
 ## Legacy baseline
 

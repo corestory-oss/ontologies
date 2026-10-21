@@ -1,0 +1,153 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:AcceptanceCriterionShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:applies_to_snapshots_516e80d2,
+        specsh:authored_by_7ded2f76,
+        specsh:confidence_basis_66ee8b65,
+        specsh:confidence_e3e719db,
+        specsh:counterevidence_anchors_02f5fcd4,
+        specsh:created_at_d87477cd,
+        specsh:derived_from_claims_118df4f4,
+        specsh:description_af58a6e1,
+        specsh:generated_by_d7917e83,
+        specsh:id_8a63fba6,
+        specsh:origin_636ccf1f,
+        specsh:review_status_25c1175f,
+        specsh:reviewed_at_39bdebe5,
+        specsh:reviewed_by_1021670c,
+        specsh:statement_9467be65,
+        specsh:statement_mode_145d7dae,
+        specsh:supersedes_9d6dbe3f,
+        specsh:supporting_anchors_d1c953c4,
+        specsh:title_25c7106d,
+        specsh:verification_method_9fa0dcf9 ;
+    sh:targetClass spec:AcceptanceCriterion .
+
+specsh:ClaimShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:applies_to_snapshots_516e80d2,
+        specsh:authored_by_7ded2f76,
+        specsh:confidence_basis_66ee8b65,
+        specsh:confidence_e3e719db,
+        specsh:counterevidence_anchors_02f5fcd4,
+        specsh:created_at_d87477cd,
+        specsh:derived_from_claims_118df4f4,
+        specsh:description_af58a6e1,
+        specsh:generated_by_d7917e83,
+        specsh:id_8a63fba6,
+        specsh:origin_636ccf1f,
+        specsh:review_status_25c1175f,
+        specsh:reviewed_at_39bdebe5,
+        specsh:reviewed_by_1021670c,
+        specsh:statement_9467be65,
+        specsh:statement_mode_e80bf9f1,
+        specsh:supersedes_9d6dbe3f,
+        specsh:supporting_anchors_d1c953c4,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:Claim .
+
+specsh:RequirementShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:acceptance_criteria_89c935ed,
+        specsh:applies_to_snapshots_516e80d2,
+        specsh:authored_by_7ded2f76,
+        specsh:confidence_basis_66ee8b65,
+        specsh:confidence_e3e719db,
+        specsh:counterevidence_anchors_02f5fcd4,
+        specsh:created_at_d87477cd,
+        specsh:derived_from_claims_118df4f4,
+        specsh:description_af58a6e1,
+        specsh:generated_by_d7917e83,
+        specsh:id_8a63fba6,
+        specsh:origin_636ccf1f,
+        specsh:priority_10be7147,
+        specsh:refines_requirements_e89016d4,
+        specsh:requirement_kind_9d74dcf9,
+        specsh:review_status_25c1175f,
+        specsh:reviewed_at_39bdebe5,
+        specsh:reviewed_by_1021670c,
+        specsh:statement_9467be65,
+        specsh:statement_mode_145d7dae,
+        specsh:supersedes_9d6dbe3f,
+        specsh:supporting_anchors_d1c953c4,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:Requirement .
+
+specsh:ScenarioShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:illustrates_requirements_92ad8f3f,
+        specsh:outcomes_f34c3a38,
+        specsh:preconditions_5fd847b7,
+        specsh:steps_3f650b57,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:Scenario .
+
+specsh:ScenarioStepShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:action_abf9acba,
+        specsh:authored_by_7ded2f76,
+        specsh:claims_79a510a1,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:participant_a619e6ba,
+        specsh:position_ad9e11de,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:ScenarioStep .
+
+specsh:SpecificationShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:artifacts_49a1b471,
+        specsh:authored_by_7ded2f76,
+        specsh:claims_79a510a1,
+        specsh:created_at_d87477cd,
+        specsh:decisions_c9076bfa,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:requirements_6fec8ffc,
+        specsh:status_045056e5,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d,
+        specsh:use_cases_7fd18544,
+        specsh:version_af6daf14 ;
+    sh:targetClass spec:Specification .
+
+specsh:UseCaseShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:goal_2edb0b8e,
+        specsh:id_8a63fba6,
+        specsh:participants_4febcc3e,
+        specsh:requirements_6fec8ffc,
+        specsh:scenarios_8d1e0dd8,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:UseCase .

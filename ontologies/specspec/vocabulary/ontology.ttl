@@ -1,0 +1,12 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+
+spec: a schema:DefinedTermSet ;
+    dcterms:description "A graph vocabulary for specifications, intent, decisions, claims, and evidence grounded in versioned sources. Document formats are representations of this model, not a mandated specification syntax." ;
+    dcterms:hasVersion "0.1.0" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    dcterms:title "SpecSpec — Specification & Evidence Ontology" .

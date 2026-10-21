@@ -1,0 +1,210 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+
+spec:acceptance_criteria a owl:ObjectProperty .
+
+spec:action a owl:DatatypeProperty .
+
+spec:activities a owl:ObjectProperty .
+
+spec:activity a owl:ObjectProperty .
+
+spec:activity_kind a owl:DatatypeProperty .
+
+spec:addresses_requirements a owl:ObjectProperty .
+
+spec:adds_requirements a owl:ObjectProperty .
+
+spec:agent_kind a owl:DatatypeProperty .
+
+spec:agents a owl:ObjectProperty .
+
+spec:anchors a owl:ObjectProperty .
+
+spec:applies_to_snapshots a owl:ObjectProperty .
+
+spec:artifact a owl:ObjectProperty .
+
+spec:artifacts a owl:ObjectProperty .
+
+spec:assessment_claims a owl:ObjectProperty .
+
+spec:authored_by a owl:ObjectProperty .
+
+<https://ontologies.corestory.ai/specspec/axioms/> a owl:Ontology ;
+    dcterms:hasVersion "0.1.0" ;
+    dcterms:title "SpecSpec property typing supplement" .
+
+spec:baseline a owl:ObjectProperty .
+
+spec:captured_at a owl:DatatypeProperty .
+
+spec:change_proposals a owl:ObjectProperty .
+
+spec:checked_snapshot a owl:ObjectProperty .
+
+spec:checks_claim a owl:ObjectProperty .
+
+spec:chosen_option a owl:ObjectProperty .
+
+spec:claims a owl:ObjectProperty .
+
+spec:confidence a owl:DatatypeProperty .
+
+spec:confidence_basis a owl:DatatypeProperty .
+
+spec:consequence_claims a owl:ObjectProperty .
+
+spec:context a owl:DatatypeProperty .
+
+spec:counterevidence_anchors a owl:ObjectProperty .
+
+spec:created_at a owl:DatatypeProperty .
+
+spec:decided_by a owl:ObjectProperty .
+
+spec:decision_options a owl:ObjectProperty .
+
+spec:decisions a owl:ObjectProperty .
+
+spec:derived_from_claims a owl:ObjectProperty .
+
+spec:description a owl:DatatypeProperty .
+
+spec:ended_at a owl:DatatypeProperty .
+
+spec:excerpt a owl:DatatypeProperty .
+
+spec:fragments a owl:ObjectProperty .
+
+spec:generated_by a owl:ObjectProperty .
+
+spec:goal a owl:DatatypeProperty .
+
+spec:id a owl:DatatypeProperty .
+
+spec:illustrates_requirements a owl:ObjectProperty .
+
+spec:input_elements a owl:ObjectProperty .
+
+spec:input_snapshots a owl:ObjectProperty .
+
+spec:justification_claims a owl:ObjectProperty .
+
+spec:line_end a owl:DatatypeProperty .
+
+spec:line_start a owl:DatatypeProperty .
+
+spec:media_type a owl:DatatypeProperty .
+
+spec:model_identifier a owl:DatatypeProperty .
+
+spec:options a owl:ObjectProperty .
+
+spec:origin a owl:DatatypeProperty .
+
+spec:outcome a owl:DatatypeProperty .
+
+spec:outcomes a owl:ObjectProperty .
+
+spec:parameters a owl:DatatypeProperty .
+
+spec:participant a owl:DatatypeProperty .
+
+spec:participants a owl:DatatypeProperty .
+
+spec:path a owl:DatatypeProperty .
+
+spec:performed_by a owl:ObjectProperty .
+
+spec:position a owl:DatatypeProperty .
+
+spec:preconditions a owl:ObjectProperty .
+
+spec:previous_requirement a owl:ObjectProperty .
+
+spec:priority a owl:DatatypeProperty .
+
+spec:profile a owl:ObjectProperty .
+
+spec:profile_uri a owl:DatatypeProperty .
+
+spec:profile_version a owl:DatatypeProperty .
+
+spec:profiles a owl:ObjectProperty .
+
+spec:proposal a owl:DatatypeProperty .
+
+spec:rationale_claims a owl:ObjectProperty .
+
+spec:refines_requirements a owl:ObjectProperty .
+
+spec:removes_requirements a owl:ObjectProperty .
+
+spec:replacement_requirement a owl:ObjectProperty .
+
+spec:replacements a owl:ObjectProperty .
+
+spec:represents a owl:ObjectProperty .
+
+spec:requirement_kind a owl:DatatypeProperty .
+
+spec:requirement_replacements a owl:ObjectProperty .
+
+spec:requirements a owl:ObjectProperty .
+
+spec:result_anchors a owl:ObjectProperty .
+
+spec:review_status a owl:DatatypeProperty .
+
+spec:reviewed_at a owl:DatatypeProperty .
+
+spec:reviewed_by a owl:ObjectProperty .
+
+spec:revision a owl:DatatypeProperty .
+
+spec:scenario_steps a owl:ObjectProperty .
+
+spec:scenarios a owl:ObjectProperty .
+
+spec:selector a owl:DatatypeProperty .
+
+spec:snapshot a owl:ObjectProperty .
+
+spec:snapshots a owl:ObjectProperty .
+
+spec:source_uri a owl:DatatypeProperty .
+
+spec:specifications a owl:ObjectProperty .
+
+spec:started_at a owl:DatatypeProperty .
+
+spec:statement a owl:DatatypeProperty .
+
+spec:statement_mode a owl:DatatypeProperty .
+
+spec:status a owl:DatatypeProperty .
+
+spec:steps a owl:ObjectProperty .
+
+spec:supersedes a owl:ObjectProperty .
+
+spec:supporting_anchors a owl:ObjectProperty .
+
+spec:title a owl:DatatypeProperty .
+
+spec:tool_version a owl:DatatypeProperty .
+
+spec:uri a owl:DatatypeProperty .
+
+spec:use_cases a owl:ObjectProperty .
+
+spec:verification_method a owl:DatatypeProperty .
+
+spec:verification_results a owl:ObjectProperty .
+
+spec:version a owl:DatatypeProperty .

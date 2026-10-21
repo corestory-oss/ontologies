@@ -1,0 +1,13 @@
+# Synthetic RDF example; not a production extraction or executed modernization.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+
+sao:CallableUnit a rdfs:Class ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:NamedEntity a rdfs:Class .
+
+sao:TestCase a rdfs:Class ;
+    rdfs:subClassOf sao:NamedEntity .

@@ -1,35 +1,20 @@
-name: Validate ontology
+name: Validate ontologies
 
 on:
   push:
+    branches-ignore: [site]
   pull_request:
+    branches-ignore: [site]
 
 permissions:
   contents: read
 
 jobs:
-  validate:
+  rdf:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
+      - uses: DeterminateSystems/nix-installer-action@main
         with:
-          version: "0.11.2"
-      - run: uv sync --locked
-      - run: uv run linkml-lint --validate-only sao.yml
-      - run: uv run python scripts/check_schema.py
-      - run: uv run python scripts/build_rdf.py --check
-      - run: uv run python scripts/validate_rdf.py
-      - run: uv run python scripts/validate_rdf.py examples/rdf/relationships-3.ttl
-      - run: uv run python scripts/validate_axioms.py
-      - run: uv run python -m unittest discover -s tests
-      - name: Validate schema modules
-        run: |
-          for module in schema/*.yaml; do
-            uv run linkml-lint --validate-only "$module"
-          done
-      - run: uv run gen-json-schema sao.yml > /tmp/sao.schema.json
-      - run: uv run gen-doc --render-imports --directory /tmp/sao-reference sao.yml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration examples/integration.yaml
+          determinate: false
+      - run: nix flake check --print-build-logs

@@ -1,0 +1,76 @@
+{
+  "scope": "Mechanical repository layout; no ontology graph changes",
+  "graph_checks": [
+    {
+      "ontology": "sao",
+      "manifest": "vocabulary",
+      "triples": 9909,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "sao",
+      "manifest": "axioms",
+      "triples": 655,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "sao",
+      "manifest": "reasoning",
+      "triples": 10564,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "sao",
+      "manifest": "shapes",
+      "triples": 13414,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "vocabulary",
+      "triples": 1165,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "axioms",
+      "triples": 103,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "sao-shapes",
+      "triples": 82,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "shapes",
+      "triples": 1012,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "sao-vocabulary",
+      "triples": 47,
+      "graph_equivalent": true
+    },
+    {
+      "ontology": "specspec",
+      "manifest": "sao-axioms",
+      "triples": 8,
+      "graph_equivalent": true
+    }
+  ],
+  "unchanged_turtle_source_files": 85,
+  "unchanged_legacy_schema_files": 33,
+  "versions": {
+    "sao": "3.0.0 candidate",
+    "specspec": "0.1.0 draft"
+  },
+  "notes": [
+    "Compared assembled RDF graphs with snapshots captured immediately before the reorganization.",
+    "All source Turtle files and legacy schema files are byte-identical to their prior locations.",
+    "Namespace IRIs and modeled semantics were not changed."
+  ]
+}

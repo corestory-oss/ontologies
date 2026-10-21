@@ -1,0 +1,2 @@
+Synthetic example: behavioral comparison has not been executed.
+Negative amounts, precision, I/O, and transaction semantics still need assessment.

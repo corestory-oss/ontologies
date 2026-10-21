@@ -1,0 +1,267 @@
+# Synthetic RDF example; not a production extraction or executed modernization.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:specspec:demo:graph> a spec:SpecificationGraph ;
+    spec:acceptance_criteria <urn:specspec:demo:overdraft-criterion> ;
+    spec:activities <urn:specspec:demo:check>,
+        <urn:specspec:demo:extract> ;
+    spec:agents <urn:specspec:demo:analyst>,
+        <urn:specspec:demo:extractor> ;
+    spec:anchors <urn:specspec:demo:legacy-guard>,
+        <urn:specspec:demo:modern-guard>,
+        <urn:specspec:demo:report-anchor> ;
+    spec:artifacts <urn:specspec:demo:spec-document> ;
+    spec:change_proposals <urn:specspec:demo:change> ;
+    spec:claims <urn:specspec:demo:legacy-behavior>,
+        <urn:specspec:demo:modern-behavior>,
+        <urn:specspec:demo:rationale>,
+        <urn:specspec:demo:scope-gap> ;
+    spec:decision_options <urn:specspec:demo:java-option>,
+        <urn:specspec:demo:unchanged-option> ;
+    spec:decisions <urn:specspec:demo:modernization-decision> ;
+    spec:fragments <urn:specspec:demo:requirement-fragment> ;
+    spec:profiles <urn:specspec:demo:openspec-profile> ;
+    spec:requirements <urn:specspec:demo:no-overdraft> ;
+    spec:scenario_steps <urn:specspec:demo:request-step> ;
+    spec:scenarios <urn:specspec:demo:excessive-withdrawal> ;
+    spec:snapshots <urn:specspec:demo:legacy-snapshot>,
+        <urn:specspec:demo:modern-snapshot>,
+        <urn:specspec:demo:report-snapshot> ;
+    spec:specifications <urn:specspec:demo:baseline>,
+        <urn:specspec:demo:target> ;
+    spec:use_cases <urn:specspec:demo:withdraw-use-case> ;
+    spec:verification_results <urn:specspec:demo:comparison-result> .
+
+<urn:specspec:demo:change> a spec:ChangeProposal ;
+    spec:adds_requirements <urn:specspec:demo:no-overdraft> ;
+    spec:baseline <urn:specspec:demo:baseline> ;
+    spec:decisions <urn:specspec:demo:modernization-decision> ;
+    spec:id "urn:specspec:demo:change"^^xsd:anyURI ;
+    spec:status "proposed" ;
+    spec:title "Preserve the guard in the replacement"^^xsd:string .
+
+<urn:specspec:demo:comparison-result> a spec:VerificationResult ;
+    spec:activity <urn:specspec:demo:check> ;
+    spec:checked_snapshot <urn:specspec:demo:modern-snapshot> ;
+    spec:checks_claim <urn:specspec:demo:no-overdraft> ;
+    spec:id "urn:specspec:demo:comparison-result"^^xsd:anyURI ;
+    spec:outcome "not_run" ;
+    spec:result_anchors <urn:specspec:demo:report-anchor> ;
+    spec:title "Behavioral comparison pending"^^xsd:string .
+
+<urn:specspec:demo:requirement-fragment> a spec:ArtifactFragment ;
+    spec:artifact <urn:specspec:demo:spec-document> ;
+    spec:id "urn:specspec:demo:requirement-fragment"^^xsd:anyURI ;
+    spec:represents <urn:specspec:demo:excessive-withdrawal>,
+        <urn:specspec:demo:no-overdraft> ;
+    spec:selector "#requirement-reject-excessive-withdrawal"^^xsd:string ;
+    spec:title "Overdraft requirement section"^^xsd:string .
+
+<urn:specspec:demo:baseline> a spec:Specification ;
+    spec:claims <urn:specspec:demo:legacy-behavior> ;
+    spec:id "urn:specspec:demo:baseline"^^xsd:anyURI ;
+    spec:status "draft" ;
+    spec:title "Legacy behavior baseline"^^xsd:string ;
+    spec:version "0.1"^^xsd:string .
+
+<urn:specspec:demo:check> a spec:SpecActivity ;
+    spec:activity_kind "verification" ;
+    spec:id "urn:specspec:demo:check"^^xsd:anyURI ;
+    spec:input_snapshots <urn:specspec:demo:legacy-snapshot>,
+        <urn:specspec:demo:modern-snapshot> ;
+    spec:performed_by <urn:specspec:demo:analyst> ;
+    spec:title "Planned behavioral comparison"^^xsd:string .
+
+<urn:specspec:demo:extractor> a spec:SpecAgent ;
+    spec:agent_kind "tool" ;
+    spec:id "urn:specspec:demo:extractor"^^xsd:anyURI ;
+    spec:title "Example extractor"^^xsd:string .
+
+<urn:specspec:demo:legacy-guard> a spec:EvidenceAnchor ;
+    spec:id "urn:specspec:demo:legacy-guard"^^xsd:anyURI ;
+    spec:line_end 12 ;
+    spec:line_start 8 ;
+    spec:path "withdraw.cbl"^^xsd:string ;
+    spec:snapshot <urn:specspec:demo:legacy-snapshot> ;
+    spec:title "Legacy amount guard"^^xsd:string .
+
+<urn:specspec:demo:modern-guard> a spec:EvidenceAnchor ;
+    spec:id "urn:specspec:demo:modern-guard"^^xsd:anyURI ;
+    spec:line_end 8 ;
+    spec:line_start 5 ;
+    spec:path "Account.java"^^xsd:string ;
+    spec:snapshot <urn:specspec:demo:modern-snapshot> ;
+    spec:title "Java amount guard"^^xsd:string .
+
+<urn:specspec:demo:openspec-profile> a spec:RepresentationProfile ;
+    spec:id "urn:specspec:demo:openspec-profile"^^xsd:anyURI ;
+    spec:profile_uri "https://github.com/Fission-AI/OpenSpec/blob/main/docs/overview.md"^^xsd:anyURI ;
+    spec:title "OpenSpec document convention"^^xsd:string .
+
+<urn:specspec:demo:rationale> a spec:Claim ;
+    spec:authored_by <urn:specspec:demo:analyst> ;
+    spec:derived_from_claims <urn:specspec:demo:legacy-behavior> ;
+    spec:id "urn:specspec:demo:rationale"^^xsd:anyURI ;
+    spec:origin "supplied" ;
+    spec:statement "Preserve the observed overdraft guard during modernization; the Java exception is a proposed adaptation of the legacy display outcome."^^xsd:string ;
+    spec:statement_mode "normative" ;
+    spec:title "Preservation rationale"^^xsd:string .
+
+<urn:specspec:demo:report-snapshot> a spec:SourceSnapshot ;
+    spec:id "urn:specspec:demo:report-snapshot"^^xsd:anyURI ;
+    spec:revision "sha256:da12567f116301e4bebb8ea8bd4bc0bc0c5245dc9d99350aa6ebf5cad43dcf7b"^^xsd:string ;
+    spec:source_uri "https://example.org/specspec-demo/check-report.txt"^^xsd:anyURI ;
+    spec:title "Report fixture source"^^xsd:string .
+
+<urn:specspec:demo:request-step> a spec:ScenarioStep ;
+    spec:action "Request a withdrawal of 150.00 with a balance of 100.00."^^xsd:string ;
+    spec:id "urn:specspec:demo:request-step"^^xsd:anyURI ;
+    spec:participant "Account holder"^^xsd:string ;
+    spec:position 1 ;
+    spec:title "Request 150.00 from balance 100.00"^^xsd:string .
+
+<urn:specspec:demo:target> a spec:Specification ;
+    spec:artifacts <urn:specspec:demo:spec-document> ;
+    spec:claims <urn:specspec:demo:modern-behavior>,
+        <urn:specspec:demo:scope-gap> ;
+    spec:decisions <urn:specspec:demo:modernization-decision> ;
+    spec:id "urn:specspec:demo:target"^^xsd:anyURI ;
+    spec:requirements <urn:specspec:demo:no-overdraft> ;
+    spec:status "proposed" ;
+    spec:title "Replacement specification"^^xsd:string ;
+    spec:use_cases <urn:specspec:demo:withdraw-use-case> ;
+    spec:version "0.1"^^xsd:string .
+
+<urn:specspec:demo:unchanged-option> a spec:DecisionOption ;
+    spec:id "urn:specspec:demo:unchanged-option"^^xsd:anyURI ;
+    spec:proposal "Continue executing the existing COBOL program."^^xsd:string ;
+    spec:title "Retain legacy implementation"^^xsd:string .
+
+<urn:specspec:demo:withdraw-use-case> a spec:UseCase ;
+    spec:goal "Withdraw available funds without an overdraft."^^xsd:string ;
+    spec:id "urn:specspec:demo:withdraw-use-case"^^xsd:anyURI ;
+    spec:participants "Account holder"^^xsd:string ;
+    spec:requirements <urn:specspec:demo:no-overdraft> ;
+    spec:scenarios <urn:specspec:demo:excessive-withdrawal> ;
+    spec:title "Withdraw funds"^^xsd:string .
+
+<urn:specspec:demo:extract> a spec:SpecActivity ;
+    spec:activity_kind "extraction" ;
+    spec:id "urn:specspec:demo:extract"^^xsd:anyURI ;
+    spec:input_snapshots <urn:specspec:demo:legacy-snapshot>,
+        <urn:specspec:demo:modern-snapshot> ;
+    spec:performed_by <urn:specspec:demo:extractor> ;
+    spec:title "Inspect source fixtures"^^xsd:string ;
+    spec:tool_version "fixture-0.1"^^xsd:string .
+
+<urn:specspec:demo:java-option> a spec:DecisionOption ;
+    spec:id "urn:specspec:demo:java-option"^^xsd:anyURI ;
+    spec:proposal "Use an explicit amount/balance comparison and reject before subtraction."^^xsd:string ;
+    spec:title "Java guard"^^xsd:string .
+
+<urn:specspec:demo:modern-behavior> a spec:Claim ;
+    spec:applies_to_snapshots <urn:specspec:demo:modern-snapshot> ;
+    spec:generated_by <urn:specspec:demo:extract> ;
+    spec:id "urn:specspec:demo:modern-behavior"^^xsd:anyURI ;
+    spec:origin "observed" ;
+    spec:review_status "unreviewed" ;
+    spec:statement "In this excerpt, an amount exceeding the balance throws before returning an updated balance."^^xsd:string ;
+    spec:statement_mode "descriptive" ;
+    spec:supporting_anchors <urn:specspec:demo:modern-guard> ;
+    spec:title "Java rejection behavior"^^xsd:string .
+
+<urn:specspec:demo:modernization-decision> a spec:Decision ;
+    spec:addresses_requirements <urn:specspec:demo:no-overdraft> ;
+    spec:chosen_option <urn:specspec:demo:java-option> ;
+    spec:consequence_claims <urn:specspec:demo:scope-gap> ;
+    spec:context "Modernize the implementation while preserving the overdraft guard; full behavioral equivalence has not been established."^^xsd:string ;
+    spec:id "urn:specspec:demo:modernization-decision"^^xsd:anyURI ;
+    spec:options <urn:specspec:demo:java-option>,
+        <urn:specspec:demo:unchanged-option> ;
+    spec:rationale_claims <urn:specspec:demo:rationale> ;
+    spec:status "proposed" ;
+    spec:title "Propose a Java implementation"^^xsd:string .
+
+<urn:specspec:demo:overdraft-criterion> a spec:AcceptanceCriterion ;
+    spec:id "urn:specspec:demo:overdraft-criterion"^^xsd:anyURI ;
+    spec:origin "supplied" ;
+    spec:statement "Given balance 100.00 and requested amount 150.00, rejection shall leave the balance at 100.00."^^xsd:string ;
+    spec:statement_mode "normative" ;
+    spec:title "Reject an excessive withdrawal"^^xsd:string ;
+    spec:verification_method "Execute both implementations through appropriate harnesses and compare rejection and final balance."^^xsd:string .
+
+<urn:specspec:demo:report-anchor> a spec:EvidenceAnchor ;
+    spec:id "urn:specspec:demo:report-anchor"^^xsd:anyURI ;
+    spec:line_end 2 ;
+    spec:line_start 1 ;
+    spec:path "check-report.txt"^^xsd:string ;
+    spec:snapshot <urn:specspec:demo:report-snapshot> ;
+    spec:title "Check record"^^xsd:string .
+
+<urn:specspec:demo:scope-gap> a spec:Claim ;
+    spec:derived_from_claims <urn:specspec:demo:legacy-behavior>,
+        <urn:specspec:demo:modern-behavior> ;
+    spec:id "urn:specspec:demo:scope-gap"^^xsd:anyURI ;
+    spec:origin "inferred" ;
+    spec:statement "Matching the guard is insufficient to establish complete equivalence of input domains, numeric precision, side effects, and transaction behavior."^^xsd:string ;
+    spec:statement_mode "descriptive" ;
+    spec:supporting_anchors <urn:specspec:demo:report-anchor> ;
+    spec:title "Equivalence remains unverified"^^xsd:string .
+
+<urn:specspec:demo:spec-document> a spec:SpecificationArtifact ;
+    spec:id "urn:specspec:demo:spec-document"^^xsd:anyURI ;
+    spec:profile <urn:specspec:demo:openspec-profile> ;
+    spec:represents <urn:specspec:demo:excessive-withdrawal>,
+        <urn:specspec:demo:no-overdraft>,
+        <urn:specspec:demo:target> ;
+    spec:title "Illustrative withdrawal specification"^^xsd:string ;
+    spec:uri "https://example.org/specspec-demo/spec.md"^^xsd:anyURI .
+
+<urn:specspec:demo:analyst> a spec:SpecAgent ;
+    spec:agent_kind "person" ;
+    spec:id "urn:specspec:demo:analyst"^^xsd:anyURI ;
+    spec:title "Example analyst"^^xsd:string .
+
+<urn:specspec:demo:excessive-withdrawal> a spec:Scenario ;
+    spec:id "urn:specspec:demo:excessive-withdrawal"^^xsd:anyURI ;
+    spec:illustrates_requirements <urn:specspec:demo:no-overdraft> ;
+    spec:outcomes <urn:specspec:demo:overdraft-criterion> ;
+    spec:steps <urn:specspec:demo:request-step> ;
+    spec:title "Withdrawal exceeds available balance"^^xsd:string .
+
+<urn:specspec:demo:legacy-behavior> a spec:Claim ;
+    spec:applies_to_snapshots <urn:specspec:demo:legacy-snapshot> ;
+    spec:generated_by <urn:specspec:demo:extract> ;
+    spec:id "urn:specspec:demo:legacy-behavior"^^xsd:anyURI ;
+    spec:origin "observed" ;
+    spec:review_status "unreviewed" ;
+    spec:statement "In this excerpt, an amount exceeding the balance takes the DECLINED branch without changing the balance."^^xsd:string ;
+    spec:statement_mode "descriptive" ;
+    spec:supporting_anchors <urn:specspec:demo:legacy-guard> ;
+    spec:title "Legacy rejection behavior"^^xsd:string .
+
+<urn:specspec:demo:legacy-snapshot> a spec:SourceSnapshot ;
+    spec:id "urn:specspec:demo:legacy-snapshot"^^xsd:anyURI ;
+    spec:revision "sha256:39eea5f6b3a9474f1d69a34d1c24aa55be99c45204e05fe954570892fdf76b5f"^^xsd:string ;
+    spec:source_uri "https://example.org/specspec-demo/withdraw.cbl"^^xsd:anyURI ;
+    spec:title "Legacy fixture source"^^xsd:string .
+
+<urn:specspec:demo:modern-snapshot> a spec:SourceSnapshot ;
+    spec:id "urn:specspec:demo:modern-snapshot"^^xsd:anyURI ;
+    spec:revision "sha256:048946a6a15312e1fd3fd842b05861326a47723053ffa5f7829f23246cd7a461"^^xsd:string ;
+    spec:source_uri "https://example.org/specspec-demo/Account.java"^^xsd:anyURI ;
+    spec:title "Modern fixture source"^^xsd:string .
+
+<urn:specspec:demo:no-overdraft> a spec:Requirement ;
+    spec:acceptance_criteria <urn:specspec:demo:overdraft-criterion> ;
+    spec:authored_by <urn:specspec:demo:analyst> ;
+    spec:derived_from_claims <urn:specspec:demo:legacy-behavior> ;
+    spec:id "urn:specspec:demo:no-overdraft"^^xsd:anyURI ;
+    spec:origin "supplied" ;
+    spec:requirement_kind "functional" ;
+    spec:statement "The replacement shall reject withdrawals exceeding the available balance without reducing that balance."^^xsd:string ;
+    spec:statement_mode "normative" ;
+    spec:title "Preserve rejection of excessive withdrawal"^^xsd:string .

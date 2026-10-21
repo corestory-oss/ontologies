@@ -1,0 +1,74 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:ChangeProposalShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:adds_requirements_52a4b182,
+        specsh:authored_by_7ded2f76,
+        specsh:baseline_018d8029,
+        specsh:created_at_d87477cd,
+        specsh:decisions_c9076bfa,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:removes_requirements_49dcf7f1,
+        specsh:replacements_96ca6dcd,
+        specsh:status_045056e5,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:ChangeProposal .
+
+specsh:DecisionOptionShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:assessment_claims_db8a2793,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:proposal_9abf2da3,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:DecisionOption .
+
+specsh:DecisionShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:addresses_requirements_610f2d03,
+        specsh:authored_by_7ded2f76,
+        specsh:chosen_option_cdac0e77,
+        specsh:consequence_claims_5110b163,
+        specsh:context_50ea3eda,
+        specsh:created_at_d87477cd,
+        specsh:decided_by_84f16012,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:options_bbfbab3d,
+        specsh:rationale_claims_c82c45da,
+        specsh:status_045056e5,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:Decision .
+
+specsh:RequirementReplacementShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:justification_claims_f80ea211,
+        specsh:previous_requirement_5cf25138,
+        specsh:replacement_requirement_0ae1c6ba,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:RequirementReplacement .

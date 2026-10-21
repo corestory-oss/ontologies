@@ -1,0 +1,683 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:SpecAgentShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:agent_kind_90695e31,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d,
+        specsh:uri_3eca90e1 ;
+    sh:targetClass spec:SpecAgent .
+
+specsh:SpecElementShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:SpecElement .
+
+specsh:acceptance_criteria_89c935ed a sh:PropertyShape ;
+    sh:class spec:AcceptanceCriterion ;
+    sh:name "acceptance_criteria" ;
+    sh:path spec:acceptance_criteria .
+
+specsh:action_abf9acba a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "action" ;
+    sh:path spec:action .
+
+specsh:activities_b7413348 a sh:PropertyShape ;
+    sh:class spec:SpecActivity ;
+    sh:name "activities" ;
+    sh:path spec:activities .
+
+specsh:activity_1a9bc617 a sh:PropertyShape ;
+    sh:class spec:SpecActivity ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "activity" ;
+    sh:path spec:activity .
+
+specsh:activity_kind_1a4b68b3 a sh:PropertyShape ;
+    sh:in specsh:ActivityKindValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "activity_kind" ;
+    sh:path spec:activity_kind .
+
+specsh:addresses_requirements_610f2d03 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "addresses_requirements" ;
+    sh:path spec:addresses_requirements .
+
+specsh:adds_requirements_52a4b182 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "adds_requirements" ;
+    sh:path spec:adds_requirements .
+
+specsh:agents_afd9842f a sh:PropertyShape ;
+    sh:class spec:SpecAgent ;
+    sh:name "agents" ;
+    sh:path spec:agents .
+
+specsh:anchors_6b2d19ed a sh:PropertyShape ;
+    sh:class spec:EvidenceAnchor ;
+    sh:name "anchors" ;
+    sh:path spec:anchors .
+
+specsh:applies_to_snapshots_516e80d2 a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:name "applies_to_snapshots" ;
+    sh:path spec:applies_to_snapshots .
+
+specsh:artifact_cec1024e a sh:PropertyShape ;
+    sh:class spec:SpecificationArtifact ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "artifact" ;
+    sh:path spec:artifact .
+
+specsh:artifacts_49a1b471 a sh:PropertyShape ;
+    sh:class spec:SpecificationArtifact ;
+    sh:name "artifacts" ;
+    sh:path spec:artifacts .
+
+specsh:assessment_claims_db8a2793 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "assessment_claims" ;
+    sh:path spec:assessment_claims .
+
+specsh:baseline_018d8029 a sh:PropertyShape ;
+    sh:class spec:Specification ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "baseline" ;
+    sh:path spec:baseline .
+
+specsh:captured_at_a5029248 a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:name "captured_at" ;
+    sh:path spec:captured_at .
+
+specsh:change_proposals_dd899439 a sh:PropertyShape ;
+    sh:class spec:ChangeProposal ;
+    sh:name "change_proposals" ;
+    sh:path spec:change_proposals .
+
+specsh:checked_snapshot_3eba03c9 a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "checked_snapshot" ;
+    sh:path spec:checked_snapshot .
+
+specsh:checks_claim_f93c3d6f a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "checks_claim" ;
+    sh:path spec:checks_claim .
+
+specsh:chosen_option_cdac0e77 a sh:PropertyShape ;
+    sh:class spec:DecisionOption ;
+    sh:maxCount 1 ;
+    sh:name "chosen_option" ;
+    sh:path spec:chosen_option .
+
+specsh:claims_79a510a1 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "claims" ;
+    sh:path spec:claims .
+
+specsh:confidence_basis_66ee8b65 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "confidence_basis" ;
+    sh:path spec:confidence_basis .
+
+specsh:confidence_e3e719db a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:maxCount 1 ;
+    sh:maxInclusive 1 ;
+    sh:minInclusive 0 ;
+    sh:name "confidence" ;
+    sh:path spec:confidence .
+
+specsh:consequence_claims_5110b163 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "consequence_claims" ;
+    sh:path spec:consequence_claims .
+
+specsh:context_50ea3eda a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "context" ;
+    sh:path spec:context .
+
+specsh:counterevidence_anchors_02f5fcd4 a sh:PropertyShape ;
+    sh:class spec:EvidenceAnchor ;
+    sh:name "counterevidence_anchors" ;
+    sh:path spec:counterevidence_anchors .
+
+specsh:decided_by_84f16012 a sh:PropertyShape ;
+    sh:class spec:SpecAgent ;
+    sh:name "decided_by" ;
+    sh:path spec:decided_by .
+
+specsh:decision_options_03722748 a sh:PropertyShape ;
+    sh:class spec:DecisionOption ;
+    sh:name "decision_options" ;
+    sh:path spec:decision_options .
+
+specsh:decisions_c9076bfa a sh:PropertyShape ;
+    sh:class spec:Decision ;
+    sh:name "decisions" ;
+    sh:path spec:decisions .
+
+specsh:derived_from_claims_118df4f4 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "derived_from_claims" ;
+    sh:path spec:derived_from_claims .
+
+specsh:ended_at_b5ece865 a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:name "ended_at" ;
+    sh:path spec:ended_at .
+
+specsh:excerpt_ffaf68c7 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "excerpt" ;
+    sh:path spec:excerpt .
+
+specsh:fragments_ba8b8483 a sh:PropertyShape ;
+    sh:class spec:ArtifactFragment ;
+    sh:name "fragments" ;
+    sh:path spec:fragments .
+
+specsh:generated_by_d7917e83 a sh:PropertyShape ;
+    sh:class spec:SpecActivity ;
+    sh:maxCount 1 ;
+    sh:name "generated_by" ;
+    sh:path spec:generated_by .
+
+specsh:goal_2edb0b8e a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "goal" ;
+    sh:path spec:goal .
+
+specsh:illustrates_requirements_92ad8f3f a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "illustrates_requirements" ;
+    sh:path spec:illustrates_requirements .
+
+specsh:input_elements_6ff3c117 a sh:PropertyShape ;
+    sh:class spec:SpecElement ;
+    sh:name "input_elements" ;
+    sh:path spec:input_elements .
+
+specsh:input_snapshots_eb0553ae a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:name "input_snapshots" ;
+    sh:path spec:input_snapshots .
+
+specsh:justification_claims_f80ea211 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "justification_claims" ;
+    sh:path spec:justification_claims .
+
+specsh:line_end_6129d76a a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:minInclusive 1 ;
+    sh:name "line_end" ;
+    sh:path spec:line_end .
+
+specsh:line_start_e48b15f8 a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:minInclusive 1 ;
+    sh:name "line_start" ;
+    sh:path spec:line_start .
+
+specsh:media_type_402cd818 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "media_type" ;
+    sh:path spec:media_type .
+
+specsh:model_identifier_a74a5aaf a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "model_identifier" ;
+    sh:path spec:model_identifier .
+
+specsh:options_bbfbab3d a sh:PropertyShape ;
+    sh:class spec:DecisionOption ;
+    sh:name "options" ;
+    sh:path spec:options .
+
+specsh:origin_636ccf1f a sh:PropertyShape ;
+    sh:in specsh:OriginModeValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "origin" ;
+    sh:path spec:origin .
+
+specsh:outcome_fbb688b0 a sh:PropertyShape ;
+    sh:in specsh:VerificationOutcomeValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "outcome" ;
+    sh:path spec:outcome .
+
+specsh:outcomes_f34c3a38 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "outcomes" ;
+    sh:path spec:outcomes .
+
+specsh:parameters_8c3c16a6 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "parameters" ;
+    sh:path spec:parameters .
+
+specsh:participant_a619e6ba a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "participant" ;
+    sh:path spec:participant .
+
+specsh:participants_4febcc3e a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:name "participants" ;
+    sh:path spec:participants .
+
+specsh:path_df9a0cef a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "path" ;
+    sh:path spec:path .
+
+specsh:performed_by_5eba15a9 a sh:PropertyShape ;
+    sh:class spec:SpecAgent ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "performed_by" ;
+    sh:path spec:performed_by .
+
+specsh:position_ad9e11de a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:minInclusive 1 ;
+    sh:name "position" ;
+    sh:path spec:position .
+
+specsh:preconditions_5fd847b7 a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "preconditions" ;
+    sh:path spec:preconditions .
+
+specsh:previous_requirement_5cf25138 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "previous_requirement" ;
+    sh:path spec:previous_requirement .
+
+specsh:priority_10be7147 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "priority" ;
+    sh:path spec:priority .
+
+specsh:profile_ca8db7d5 a sh:PropertyShape ;
+    sh:class spec:RepresentationProfile ;
+    sh:maxCount 1 ;
+    sh:name "profile" ;
+    sh:path spec:profile .
+
+specsh:profile_uri_8147a17f a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "profile_uri" ;
+    sh:path spec:profile_uri .
+
+specsh:profile_version_fbc18fec a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "profile_version" ;
+    sh:path spec:profile_version .
+
+specsh:profiles_ea747476 a sh:PropertyShape ;
+    sh:class spec:RepresentationProfile ;
+    sh:name "profiles" ;
+    sh:path spec:profiles .
+
+specsh:proposal_9abf2da3 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "proposal" ;
+    sh:path spec:proposal .
+
+specsh:rationale_claims_c82c45da a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:name "rationale_claims" ;
+    sh:path spec:rationale_claims .
+
+specsh:refines_requirements_e89016d4 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "refines_requirements" ;
+    sh:path spec:refines_requirements .
+
+specsh:removes_requirements_49dcf7f1 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "removes_requirements" ;
+    sh:path spec:removes_requirements .
+
+specsh:replacement_requirement_0ae1c6ba a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "replacement_requirement" ;
+    sh:path spec:replacement_requirement .
+
+specsh:replacements_96ca6dcd a sh:PropertyShape ;
+    sh:class spec:RequirementReplacement ;
+    sh:name "replacements" ;
+    sh:path spec:replacements .
+
+specsh:represents_42eefcd1 a sh:PropertyShape ;
+    sh:class spec:SpecElement ;
+    sh:name "represents" ;
+    sh:path spec:represents .
+
+specsh:represents_49732775 a sh:PropertyShape ;
+    sh:class spec:SpecElement ;
+    sh:minCount 1 ;
+    sh:name "represents" ;
+    sh:path spec:represents .
+
+specsh:requirement_kind_9d74dcf9 a sh:PropertyShape ;
+    sh:in specsh:RequirementKindValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "requirement_kind" ;
+    sh:path spec:requirement_kind .
+
+specsh:requirement_replacements_1e599028 a sh:PropertyShape ;
+    sh:class spec:RequirementReplacement ;
+    sh:name "requirement_replacements" ;
+    sh:path spec:requirement_replacements .
+
+specsh:requirements_6fec8ffc a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:name "requirements" ;
+    sh:path spec:requirements .
+
+specsh:result_anchors_3322d62d a sh:PropertyShape ;
+    sh:class spec:EvidenceAnchor ;
+    sh:name "result_anchors" ;
+    sh:path spec:result_anchors .
+
+specsh:review_status_25c1175f a sh:PropertyShape ;
+    sh:in specsh:ReviewStatusValues ;
+    sh:maxCount 1 ;
+    sh:name "review_status" ;
+    sh:path spec:review_status .
+
+specsh:reviewed_at_39bdebe5 a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:name "reviewed_at" ;
+    sh:path spec:reviewed_at .
+
+specsh:reviewed_by_1021670c a sh:PropertyShape ;
+    sh:class spec:SpecAgent ;
+    sh:maxCount 1 ;
+    sh:name "reviewed_by" ;
+    sh:path spec:reviewed_by .
+
+specsh:revision_a4d172f4 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "revision" ;
+    sh:path spec:revision .
+
+specsh:scenario_steps_3470593b a sh:PropertyShape ;
+    sh:class spec:ScenarioStep ;
+    sh:name "scenario_steps" ;
+    sh:path spec:scenario_steps .
+
+specsh:scenarios_8d1e0dd8 a sh:PropertyShape ;
+    sh:class spec:Scenario ;
+    sh:name "scenarios" ;
+    sh:path spec:scenarios .
+
+specsh:selector_1ff931d3 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "selector" ;
+    sh:path spec:selector .
+
+specsh:selector_656c764a a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "selector" ;
+    sh:path spec:selector .
+
+specsh:snapshot_0a6d856a a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "snapshot" ;
+    sh:path spec:snapshot .
+
+specsh:snapshot_acee3c14 a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:maxCount 1 ;
+    sh:name "snapshot" ;
+    sh:path spec:snapshot .
+
+specsh:snapshots_52979db1 a sh:PropertyShape ;
+    sh:class spec:SourceSnapshot ;
+    sh:name "snapshots" ;
+    sh:path spec:snapshots .
+
+specsh:source_uri_e212d717 a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "source_uri" ;
+    sh:path spec:source_uri .
+
+specsh:specifications_a0143a35 a sh:PropertyShape ;
+    sh:class spec:Specification ;
+    sh:name "specifications" ;
+    sh:path spec:specifications .
+
+specsh:started_at_92e7a8ad a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:name "started_at" ;
+    sh:path spec:started_at .
+
+specsh:statement_9467be65 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "statement" ;
+    sh:path spec:statement .
+
+specsh:statement_mode_145d7dae a sh:PropertyShape ;
+    sh:hasValue "normative" ;
+    sh:in specsh:StatementModeValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "statement_mode" ;
+    sh:path spec:statement_mode .
+
+specsh:statement_mode_e80bf9f1 a sh:PropertyShape ;
+    sh:in specsh:StatementModeValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "statement_mode" ;
+    sh:path spec:statement_mode .
+
+specsh:status_045056e5 a sh:PropertyShape ;
+    sh:in specsh:LifecycleStatusValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "status" ;
+    sh:path spec:status .
+
+specsh:steps_3f650b57 a sh:PropertyShape ;
+    sh:class spec:ScenarioStep ;
+    sh:name "steps" ;
+    sh:path spec:steps .
+
+specsh:supporting_anchors_d1c953c4 a sh:PropertyShape ;
+    sh:class spec:EvidenceAnchor ;
+    sh:name "supporting_anchors" ;
+    sh:path spec:supporting_anchors .
+
+specsh:tool_version_1d4c81d7 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "tool_version" ;
+    sh:path spec:tool_version .
+
+specsh:uri_06347590 a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "uri" ;
+    sh:path spec:uri .
+
+specsh:use_cases_7fd18544 a sh:PropertyShape ;
+    sh:class spec:UseCase ;
+    sh:name "use_cases" ;
+    sh:path spec:use_cases .
+
+specsh:verification_method_9fa0dcf9 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "verification_method" ;
+    sh:path spec:verification_method .
+
+specsh:verification_results_8f5992bd a sh:PropertyShape ;
+    sh:class spec:VerificationResult ;
+    sh:name "verification_results" ;
+    sh:path spec:verification_results .
+
+specsh:version_af6daf14 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "version" ;
+    sh:path spec:version .
+
+specsh:ActivityKindValues rdf:first "extraction" ;
+    rdf:rest ( "inference" "authoring" "review" "verification" "rendering" ) .
+
+specsh:AgentKindValues rdf:first "person" ;
+    rdf:rest ( "organization" "tool" ) .
+
+specsh:IgnoredType rdf:first rdf:type ;
+    rdf:rest () .
+
+specsh:LifecycleStatusValues rdf:first "draft" ;
+    rdf:rest ( "proposed" "accepted" "superseded" "retired" ) .
+
+specsh:OriginModeValues rdf:first "observed" ;
+    rdf:rest ( "inferred" "supplied" ) .
+
+specsh:RequirementKindValues rdf:first "functional" ;
+    rdf:rest ( "quality" "constraint" "compliance" ) .
+
+specsh:ReviewStatusValues rdf:first "unreviewed" ;
+    rdf:rest ( "needs_confirmation" "accepted" "rejected" "superseded" ) .
+
+specsh:VerificationOutcomeValues rdf:first "passed" ;
+    rdf:rest ( "failed" "inconclusive" "not_run" ) .
+
+specsh:agent_kind_90695e31 a sh:PropertyShape ;
+    sh:in specsh:AgentKindValues ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "agent_kind" ;
+    sh:path spec:agent_kind .
+
+specsh:uri_3eca90e1 a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:name "uri" ;
+    sh:path spec:uri .
+
+specsh:StatementModeValues rdf:first "descriptive" ;
+    rdf:rest ( "normative" "hypothetical" ) .
+
+specsh:authored_by_7ded2f76 a sh:PropertyShape ;
+    sh:class spec:SpecAgent ;
+    sh:name "authored_by" ;
+    sh:path spec:authored_by .
+
+specsh:created_at_d87477cd a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:maxCount 1 ;
+    sh:name "created_at" ;
+    sh:path spec:created_at .
+
+specsh:description_af58a6e1 a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:name "description" ;
+    sh:path spec:description .
+
+specsh:id_8a63fba6 a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "id" ;
+    sh:path spec:id .
+
+specsh:supersedes_9d6dbe3f a sh:PropertyShape ;
+    sh:class spec:SpecElement ;
+    sh:name "supersedes" ;
+    sh:path spec:supersedes .
+
+specsh:title_25c7106d a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "title" ;
+    sh:path spec:title .

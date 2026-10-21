@@ -1,0 +1,65 @@
+{
+  "brand_source": "https://app.notion.com/p/24fb12d93cb280f2a0dfc8aa8e14d18e",
+  "files": [
+    {
+      "path": "brand/corestory-logo-black.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/1. Logo/1. Digital/SVG/CoreStory-Logo-Pos-Black-RGB.svg",
+      "sha256": "703497c7a4d0629f230638f1fc9117868e9b110965a401afd5b9ce4bcce7da1d"
+    },
+    {
+      "path": "brand/corestory-logo-gold.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/1. Logo/1. Digital/SVG/CoreStory-Logo-Rev-Gold-RGB.svg",
+      "sha256": "914eeba99bf325ac27773a0b86cf7c02e3c29da12bc30f71de9f13a996f9e8b1"
+    },
+    {
+      "path": "brand/corestory-logo-white.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/1. Logo/1. Digital/SVG/CoreStory-Logo-Rev-White-RGB.svg",
+      "sha256": "8db105de6c8e0a51dc9510436a31eb08fe78be54c94cc12ad38f57098871a52b"
+    },
+    {
+      "path": "brand/corestory-symbol-black.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/2. Symbol/1. Digital/SVG/CoreStory-Logo-Pos-Black-RGB.svg",
+      "sha256": "fa14cc04c4e7c00745fd59b2c73627f2524f5206dd998be71183622aa7692a49"
+    },
+    {
+      "path": "brand/corestory-symbol-gold.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/2. Symbol/1. Digital/SVG/CoreStory-Logo-Rev-Gold-RGB.svg",
+      "sha256": "8dee989daba5eec69f6105b556774f6542163e9bab6fd88f3f32eb01583dfa85"
+    },
+    {
+      "path": "brand/corestory-symbol-white.svg",
+      "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/2. Symbol/1. Digital/SVG/CoreStory-Logo-Rev-White-RGB.svg",
+      "sha256": "e7e98943b3df73e64f5871bdf657d8fc11ad8b7ed0ec7ab2bb39abf79dae497c"
+    },
+    {
+      "path": "fonts/roboto.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/roboto/Roboto%5Bwdth,wght%5D.ttf",
+      "sha256": "d7598e12c5dbef095ff8272cfc55da0250bd07fbdecbac8a530b9b277872a134"
+    },
+    {
+      "path": "fonts/roboto-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/roboto/OFL.txt",
+      "sha256": "061402327a96aadb0bfb694a960ed289ecd38d383e396243831ab81feb109c41"
+    },
+    {
+      "path": "fonts/roboto-condensed.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/robotocondensed/RobotoCondensed%5Bwght%5D.ttf",
+      "sha256": "dace262afcee68a5276f200d8026c57221735c0118ab5fda8c2c0d3dc409a8d0"
+    },
+    {
+      "path": "fonts/roboto-condensed-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/robotocondensed/OFL.txt",
+      "sha256": "0e4cc6ece88573545be2ed25835363662a6182ba4a4c1b5c8feda52add30e8a6"
+    },
+    {
+      "path": "fonts/roboto-mono.ttf",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/robotomono/RobotoMono%5Bwght%5D.ttf",
+      "sha256": "66a80e79d17e4c7cabd162e2916578a4cc08fd19eef6e2a643305eae9c567b2b"
+    },
+    {
+      "path": "fonts/roboto-mono-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/45e3d5269e4a17d823f6d84470bc084dc5ae46f6/ofl/robotomono/OFL.txt",
+      "sha256": "50ab8dd54680d3473f649c9db86fece88434d097c7834475c1c72d2f8c429215"
+    }
+  ]
+}

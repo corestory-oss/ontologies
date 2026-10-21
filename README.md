@@ -1,262 +1,97 @@
-# Systems Abstraction Ontology (SAO)
+# CoreStory Ontologies
 
-A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.
+A shared home for two complementary, interlinked RDF ontologies:
 
-SAO describes software systems—their structure, behavior, domain concepts, and
-operating context—including libraries, services, batch programs, and applications.
+| Ontology | Scope | Namespace | Current version |
+|---|---|---|---|
+| [SAO — Systems Abstraction Ontology](docs/sao/README.md) | Software structures and abstractions | `https://ontologies.corestory.ai/sao/` | 3.0.0 candidate |
+| [SpecSpec — Specification & Evidence Ontology](docs/specspec/README.md) | Specifications, claims, decisions, and supporting evidence | `https://ontologies.corestory.ai/specspec/` | 0.1.0 draft |
 
-* **Version**: 3.0.0 candidate (unreleased)
-* **Author**: Charath Ranganathan
-* **License**: [Apache License 2.0](LICENSE)
-* **Editable sources**: [RDFS vocabulary](rdf/vocabulary/) and [SHACL shapes](rdf/shapes/) in Turtle
-* **Distributions**: [sao.ttl](sao.ttl), [sao.shacl.ttl](sao.shacl.ttl), and optional [sao.owl.ttl](sao.owl.ttl) inverse axioms
-* **Legacy baseline**: LinkML 2.1.0 retained during migration
+Both are authored in Turtle, with RDFS vocabulary, SHACL validation, and optional OWL supplements. Their namespaces and ontology versions remain separate. The Python project version describes shared tooling; the ontology versions are recorded in [the catalog](ontologies/catalog.json) and their RDF metadata.
 
-147 classes · 102 enums · 217 inverse pairs in the 3.0.0 candidate
+SpecSpec's existing optional SAO bridge is retained for now. Its three link classes connect knowledge items to software entities. This repository reorganization does not change term meanings, IRIs, constraints, or inference axioms.
 
-See [the 3.0.0 relationship migration](docs/migration-3.0.md) for breaking predicate changes.
+## Repository layout
 
-## Key Features
-
-- **Comprehensive Coverage**: Models all aspects of software systems
-- **DDD-Aligned**: Built on Domain-Driven Design principles (Aggregates, Bounded Contexts, Ubiquitous Language)
-- **Cloud-Native**: Supports microservices, containers, serverless, and cloud deployment
-- **Compliance-Ready**: Includes models for GDPR, HIPAA, SOC2, PCI-DSS, ISO 27001, and more
-- **Legacy-Ready**: First-class support for COBOL, RPG, PL/I, Assembler, JCL, CICS, IMS alongside modern languages
-- **Interoperable**: Based on LinkML standard with RDF/RDFS, SKOS, and Dublin Core alignment
-- **Extensible**: Designed for subclassing, mixins, custom enumerations, and additional relationships
-
-## Documentation
-
-The guide reflects the retained LinkML baseline; use the migration notes for current relationship names.
-
-**Start here:** [The SAO Guide](docs/guide.md) — a layered walkthrough of all 147 classes organized by abstraction level, from code structure to business intent.
-
-### Section deep dives
-
-| Doc | Topic | Key classes |
-|---|---|---|
-| [01 Enumerations](docs/01-enumerations.md) | All enum types | 102 enums with 804 permissible values |
-| [02 Structural Foundation](docs/02-structural-foundation.md) | Architecture | System, BoundedContext, Module, Component, Service, Interface |
-| [03 Actors and Identity](docs/03-actors-and-identity.md) | Identity | Actor, Identity, Credential, Tenant, Organization |
-| [04 Authorization and Policy](docs/04-authorization-and-policy.md) | Access control | Role, Permission, Policy, Scope, Constraint |
-| [05 Domain Modeling](docs/05-domain-modeling.md) | DDD | Aggregate, DomainEntity, ValueObject, Attribute, Lifecycle |
-| [06 Behavior and Workflow](docs/06-behavior-and-workflow.md) | Behavior | Action, Operation, Workflow, Rule, Event, Transaction |
-| [07 Data Management](docs/07-data-management.md) | Persistence | DataStore, Collection, Schema, DataClassification, RetentionPolicy |
-| [08 Integration](docs/08-integration.md) | External systems | ExternalSystem, Integration, Contract, Adapter, CircuitBreaker |
-| [09 Deployment and Operations](docs/09-deployment-and-operations.md) | Runtime | Environment, Deployment, Configuration, Infrastructure, Release |
-| [10 Observability](docs/10-observability.md) | Monitoring | Metric, Log, Trace, Alert, Incident, HealthCheck |
-| [11 Governance and Compliance](docs/11-governance-and-compliance.md) | Compliance | ComplianceRequirement, Control, Evidence, RiskAssessment |
-| [12 Code Structure](docs/12-code-structure.md) | Code modeling | CodeContainer, EncapsulationUnit, CallableUnit, DataStructure |
-| [13 Extended Modeling](docs/13-extended-modeling.md) | Sections 18–28 | TypeExpression, ErrorModel, FileDefinition, JobDefinition, IPC, etc. |
-
-### Other resources
-
-- [C4 Model Mapping](docs/c4/) — SAO classes mapped to C4 architecture layers ([Layer 1](docs/c4/layer-1.md), [Layer 2](docs/c4/layer-2.md), [Layer 3](docs/c4/layer-3.md), [Layer 4](docs/c4/layer-4.md))
-- [Whitepaper](docs/whitepaper.md) — "Beyond Grep and Vector Search: The Case for Ontology-driven Extraction of Software Requirements"
-
-## Getting Started
-
-1. Read the [SAO Guide](docs/guide.md) for a conceptual overview
-2. Define your **System** and **BoundedContexts**
-3. Identify **Modules** and **Components**
-4. Map domain **Aggregates** and **Entities**
-5. Document **Integrations**, **Authorization**, and **Compliance** metadata
-
-### Turtle source workflow
-
-Edit topic files in `rdf/vocabulary/` and class-specific shapes in `rdf/shapes/`.
-The manifests under `rdf/manifests/` define the distributions. The normal build
-reads Turtle directly and does not invoke LinkML:
-
-```bash
-uv sync --locked
-uv run python scripts/build_rdf.py
-uv run python scripts/build_rdf.py --check
-uv run python scripts/validate_rdf.py
-uv run python scripts/validate_axioms.py
-uv run python -m unittest discover -s tests
+```text
+ontologies/
+  catalog.json             # Namespaces, ontology versions, sources and products
+  sao/
+    vocabulary/            # Editable RDFS Turtle
+    shapes/                # Editable SHACL Turtle
+    axioms/                # Editable OWL Turtle
+    manifests/             # Explicit local source lists
+  specspec/
+    vocabulary/
+    shapes/
+    axioms/
+    manifests/
+    bridges/sao/           # Current integration vocabulary, shapes and axioms
+dist/                      # Assembled, committed Turtle distributions
+docs/sao/                  # SAO guides, reference material and changelog
+docs/specspec/             # SpecSpec model notes, mappings and changelog
+examples/sao/
+examples/specspec/
+examples/ecosystem/        # One graph validated against both ontologies
+tests/                     # RDF and composition regression tests
+scripts/                   # Shared tooling, static docs builder and ontology checks
+nix/                       # Reproducible builds, checks, preview and dev shell
+web/                       # Website prose, templates, styles, brand assets and Garden pins
+legacy/sao/                # Historical LinkML baseline and its separate tests
 ```
 
-The RDF example is synthetic. To validate another Turtle data graph, pass its
-path to `scripts/validate_rdf.py`. The initial shapes are open and do not yet
-provide full equivalence with the legacy schema. See [the migration status](docs/turtle-migration.md).
+## Build, check and preview
 
-### Legacy baseline validation
+The normal workflow uses Nix, following Plot's flake/direnv pattern:
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run
-these commands from the repository root. `uv sync` installs Python 3.13 if needed
-and the LinkML toolchain pinned in `uv.lock`.
-
-```bash
-uv sync --locked
-uv run linkml-lint --validate-only sao.yml
-uv run python scripts/check_schema.py
-uv run gen-json-schema sao.yml > /tmp/sao.schema.json
-uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
-uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
-uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration examples/integration.yaml
+```sh
+nix build                     # Static HTML docs → result/
+nix run .#preview             # Local preview at http://127.0.0.1:4173/; Ctrl-C stops it
+nix flake check               # RDF, composition, docs and link checks
+nix build .#ontologies        # Turtle distributions → result/
+nix run .#prepare-site        # Check/build committed main and prepare local site branch
 ```
 
-This repository contains an ontology and documentation; it does not include a
-codebase extractor or a deployed application. The [extraction playbook](docs/extraction/00-overview.md)
-describes how to populate the ontology. Multi-class snippets in the guides are
-conceptual illustrations; validate an individual instance with an explicit
-`-C` target class as shown above.
+If your existing direnv setup is active, run `direnv allow` once to load the pinned development tools automatically when entering this checkout. Otherwise use `nix develop`. Neither command starts a server or rebuilds the docs automatically.
 
-For RDFS consumers, use [`sao.ttl`](sao.ttl), or load the vocabulary files listed in
-[`rdf/manifests/vocabulary.json`](rdf/manifests/vocabulary.json) into one graph.
-Use [`sao.shacl.ttl`](sao.shacl.ttl) for the initial validation profile.
-For optional inverse reasoning, load the vocabulary plus [`sao.owl.ttl`](sao.owl.ttl);
-see [the inverse audit](docs/inverse-relationships.md) and [the proposed redesign](docs/migration-3.0.md).
-See [semantics and limits](docs/rdfs-export.md).
+The static site has a branded prose homepage, a combined RDF Garden browser under `reference/`, HTML guides under `guides/` and downloadable Turtle under `dist/`. Edit website prose in `web/pages/`; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.
 
-Other LinkML generators include `gen-pydantic`, `gen-typescript`, and `gen-graphql`.
+`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI invokes `nix flake check`, which validates source and builds/checks the static site; it does not publish. `nix run .#prepare-site` checks and builds committed local `main`, then creates or updates local `site` without switching your checkout. Review it, then push explicitly with `git push origin site`. Hosting integration is configured separately.
 
-## Legacy LinkML layout
+See [Nix and publishing explained](docs/nix-and-publishing.md) for the command meanings, lockfile, direnv, local preview and CDN details.
 
-`sao.yml` is the entry point for the retained LinkML baseline. It imports the topic
-modules in [schema/](schema/); pass it to legacy LinkML validators and generators. Each definition has one home. Enums used in one topic live with
-that topic; shared enums, types, base classes, and global slots live in
-[schema/common.yaml](schema/common.yaml). Cross-topic references are resolved
-through the entry point, so the topic files are not standalone schemas.
+Inside the Nix development environment, maintainers can refresh committed distributions or run individual tools:
 
-The split preserves the public `sao` term namespace. Each module has its own
-schema ID under `https://ontologies.corestory.ai/sao/schema/`, used by LinkML
-for definition provenance; these IDs do not change class or property IRIs.
-
-Generate the full Markdown reference, including imported definitions, with:
-
-```bash
-uv run gen-doc --render-imports --directory /tmp/sao-reference sao.yml
+```sh
+python scripts/build_rdf.py
+python scripts/build_rdf.py --check
+python scripts/validate_rdf.py
+python scripts/validate_axioms.py
+python -m unittest discover -s tests
 ```
 
-`--render-imports` also includes the standard LinkML types. Without this flag,
-the documentation generator omits definitions in the topic modules.
+To validate your own graph, select a profile:
 
-## Examples
-
-The YAML files under [examples/](examples/) are legacy instances checked against
-the LinkML baseline; [the RDF example](examples/rdf/system.ttl) is checked against the initial SHACL profile. Reference relationships use entity IDs; relationships declared with
-`inlined_as_list: true` embed objects. See the examples for both representations.
-
-### Simple E-Commerce System
-
-```yaml
-id: ecommerce-platform
-name: E-Commerce Platform
-contains_bounded_contexts:
-  - id: catalog-context
-    name: Catalog Context
-  - id: order-context
-    name: Order Context
-  - id: customer-context
-    name: Customer Context
-  - id: payment-context
-    name: Payment Context
+```sh
+nix develop -c python scripts/validate_rdf.py --ontology sao path/to/software.ttl
+nix develop -c python scripts/validate_rdf.py --ontology specspec path/to/specification.ttl
+nix develop -c python scripts/validate_rdf.py --ontology ecosystem path/to/combined.ttl
 ```
 
-### Order Aggregate
+The ecosystem profile applies SAO, SpecSpec and the current bridge shapes together. The independent SpecSpec profile does not load SAO. SpecSpec's graph rules use SHACL-SPARQL, so a Core-only SHACL processor cannot run the entire profile. SHACL validation does not materialize OWL inferences.
 
-```yaml
-id: order-aggregate
-name: Order
-has_root_entity: order
-aggregates_entities:
-  - id: order
-    name: Order
-  - id: order-line-item
-    name: Order Line Item
-has_value_objects:
-  - money
-  - address
-```
+## Distribution files
 
-### Integration with External Service
+[dist/](dist/) contains separate vocabulary, SHACL and OWL files for each ontology: `sao.ttl`, `sao.shacl.ttl`, `sao.owl.ttl`, and the corresponding `specspec.*ttl` files. The `specspec-sao.*ttl` files contain only the current bridge layer. Consumers can load the layers they need; there are no automatic network imports.
 
-```yaml
-id: stripe-integration
-name: Stripe Integration
-integration_type: bidirectional
-protocol: https
-integrates_with_system: stripe-payment-gateway
-uses_adapter: stripe-adapter
-protected_by_breaker: payment-circuit-breaker
-integration_governed_by_contract: stripe-api-contract
-```
+The source reorganization does not change public namespace or term IRIs. Moving local build outputs into `dist/` changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a `site` branch, served through CoreStory's CDN. Static builds and local preview are available. Publication is designed around a generated `site` branch; this checkout does not configure automatic branch updates or hosting.
 
-### Schema namespace
+## Legacy baseline
 
-The schema ID and `sao` term prefix are both `https://ontologies.corestory.ai/sao/`.
-For example, the **System** class IRI is `https://ontologies.corestory.ai/sao/System`.
-Applications using the earlier `ontology.example.org` or `https://sao.corestory.ai/`
-namespaces should migrate their schema references and term IRIs. The
-documentation site will be rendered to the `site` branch and published through
-CoreStory's CDN.
+SAO's retained LinkML 2.1.0 baseline lives under [legacy/sao/](legacy/sao/README.md). LinkML is an optional dependency group, isolated from the ordinary RDF build, tests, and validation. It remains available for historical migration checks. SpecSpec has no active LinkML source.
 
-## Technical Details
-
-- **Modeling Language**: [LinkML](https://linkml.io/) (Linked Data Modeling Language)
-- **Semantic Web**: RDF/RDFS compatible, SKOS concept schemes, Dublin Core metadata, Schema.org alignment
-- **Global Slots**: ~20 multi-domain relationship slots; all single-use relationships inlined as class attributes
-- **Extensibility**: Subclass existing classes, add mixins, define custom enumerations, or add new relationship slots
-
-## Version History
-
-### Version 3.0.0 (Candidate, unreleased)
-- Generic inverse relationships with class-specific SHACL pairing
-- Role-specific subscription and file-operation predicates
-- Replaced predicates rejected by validation; see [migration guidance](docs/migration-3.0.md)
-
-### Version 2.1.0 (Legacy baseline)
-- Relationship attributes standardized to verb-prefixed names
-- Duplicate relationship attributes removed and ML training inverse corrected
-- See [CHANGELOG.md](CHANGELOG.md) for the complete migration guide
-
-### Version 2.0.0
-- Structural refactor: ~340 single-use global slots inlined as class attributes
-- 18 new classes spanning type system, error handling, file I/O, screen definitions, job control, IPC, preprocessor, memory model, domain relationships, database schema, and programming language
-- 17 new enums for type kinds, error strategies, file organization, screen types, job steps, IPC mechanisms, ownership models, and more
-- 8 existing enums extended with legacy platform values (RPG, PL/I, Assembler, VSAM, JCL)
-- Programming Language as first-class entity replacing bare string fields
-
-### Version 1.0.0
-- Initial comprehensive ontology release with 12 major sections
-- Paradigm-agnostic code structure modeling supporting modern and legacy systems
-
-### Roadmap
-- **v2.1**: Enhanced event sourcing patterns
-- **v2.2**: Service mesh and API gateway extensions
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, validation, and submission guidance. Areas of interest: additional compliance framework mappings, domain-specific extensions, example implementations, documentation improvements, validation rules, and code generators.
+See [CONTRIBUTING.md](CONTRIBUTING.md), [the repository layout notes](docs/repository-layout.md), and [the ecosystem example](examples/ecosystem/README.md).
 
 ## License
 
-Copyright (c) 2025 CoreStory, Inc.
-
-The schema, documentation, and examples in this repository are licensed under
-[Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for attribution.
-Third-party tools and dependencies retain their respective licenses.
-
-## References
-
-- [LinkML](https://linkml.io/) — Linked Data Modeling Language
-- [Domain-Driven Design](https://www.domainlanguage.com/ddd/) — Eric Evans
-- [Microservices Patterns](https://microservices.io/patterns/) — Chris Richardson
-- [GDPR](https://gdpr.eu/) | [HIPAA](https://www.hhs.gov/hipaa/) | [SOC 2](https://www.aicpa.org/soc) | [PCI-DSS](https://www.pcisecuritystandards.org/) | [ISO 27001](https://www.iso.org/isoiec-27001-information-security.html)
-
-## Citation
-
-```
-Systems Abstraction Ontology (SAO)
-Version 3.0.0 candidate (unreleased)
-Copyright (c) 2025 CoreStory, Inc.
-Licensed under the Apache License, Version 2.0.
-```
-
----
-
-**Last Updated**: 2026-10-14
-**Ontology Version**: 3.0.0 candidate
+Copyright CoreStory, Inc. Both ontologies, documentation, and examples are licensed under [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for preserved attribution.

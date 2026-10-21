@@ -62,6 +62,50 @@
           cp -R site "$out"
         '';
       };
+      deploy = pkgs.writeShellApplication {
+        name = "ontology-deploy";
+        runtimeInputs = [
+          pkgs.wrangler
+          pkgs.coreutils
+        ];
+        text = ''
+          if [ "$#" -gt 1 ]; then
+            echo "Usage: nix run .#deploy [-- --login|--dry-run|--help]" >&2
+            exit 2
+          fi
+          case "''${1:-}" in
+            --help|-h)
+              echo "nix run .#deploy                 Build and publish the production site"
+              echo "nix run .#deploy -- --login       Sign in to Cloudflare without deploying"
+              echo "nix run .#deploy -- --dry-run     Show the built artifact and target without uploading"
+              exit 0
+              ;;
+            ""|--login|--dry-run) ;;
+            *) echo "Unknown option: $1" >&2; exit 2 ;;
+          esac
+
+          export CLOUDFLARE_ACCOUNT_ID=bea09d9cf3f7aef8adff86cc8726b9ca
+          export WRANGLER_SEND_METRICS=false
+          if [ "''${1:-}" = --dry-run ]; then
+            echo "Site: ${site}"
+            echo "Cloudflare Pages: corestory-ontologies (production branch: main)"
+            echo "URL: https://ontologies.corestory.ai"
+            exit 0
+          fi
+
+          # Ignore checkout-local Wrangler configs, dotenv files and Git branch
+          # inference. Upload only the checked Nix artifact to this fixed project.
+          deploy_tmp=$(mktemp -d)
+          trap 'rm -rf "$deploy_tmp"' EXIT
+          cd "$deploy_tmp"
+          if [ "''${1:-}" = --login ]; then
+            wrangler login
+          else
+            echo "Publishing ${site} to corestory-ontologies (production)"
+            wrangler pages deploy ${site} --project-name corestory-ontologies --branch main
+          fi
+        '';
+      };
       rdfChecks =
         pkgs.runCommand "corestory-ontology-checks"
           {
@@ -82,12 +126,16 @@
     in
     {
       packages = {
-        inherit ontologies site;
+        inherit ontologies site deploy;
         default = site;
       };
       checks = {
         rdf = rdfChecks;
         inherit site;
+      };
+      apps.deploy = {
+        type = "app";
+        program = "${deploy}/bin/ontology-deploy";
       };
       apps.preview = {
         type = "app";

@@ -9,6 +9,7 @@ nix build                     # Build static documentation; result/ points to it
 nix run .#preview             # Build and serve it locally; Ctrl-C stops it
 nix flake check               # Run RDF, composition, projection and site checks
 nix build .#ontologies        # Build just the Turtle distributions
+nix run .#deploy              # Build and publish the production documentation site
 ```
 
 `nix build` puts the completed artifact in the Nix store and creates a `result` symlink in your checkout. `result/` contains an HTML shell, JavaScript, CSS, fonts, ontology JSON, HTML guides, source downloads and Turtle distributions. It is a directory of static files, not a running service.
@@ -49,7 +50,21 @@ Garden renders term-reference pages in the visitor's browser using the bundled d
 
 The dataset is plain JSON. Its URL includes a SHA-256 content hash so changed ontology data cannot reuse an older browser cache entry. Normal CDN gzip/Brotli transport compression is handled by the browser; the application does not rely on special `.gz` response headers or server decompression behavior. `_headers` supplies a small set of static Cloudflare Pages headers.
 
-No deployment, domain changes or automatic writes to a `site` branch are enabled here. CI produces an artifact ready for that later publishing step.
+### Deploy from your workstation
+
+```sh
+nix run .#deploy -- --login     # One-time Cloudflare browser authorization
+nix run .#deploy -- --dry-run   # Build and show the artifact and target, without uploading
+nix run .#deploy               # Build, check and upload to production
+```
+
+Nix supplies a pinned Wrangler CLI and its runtime; no separate npm installation is needed. `deploy` is another repository-defined Nix application, like `preview`. It references the site derivation directly, so it builds the site even if `result` currently points at a Turtle-only build. A failing site build or its checks prevents upload. A successful upload replaces the production deployment, including when invoked from a local feature branch or dirty checkout: the Cloudflare target branch is explicitly `main`, independent of your Git branch.
+
+The command fixes the account to CoreStory Corporate Account and the project to `corestory-ontologies`, serving `https://ontologies.corestory.ai`. It runs Wrangler from a temporary directory to avoid inheriting local Wrangler configuration, dotenv files or Git branch inference. It uploads only the static Nix output. It does not change DNS, Access policies, other projects or the production branch setting.
+
+Wrangler stores browser-login credentials in its user configuration outside the checkout and Nix store. An existing `CLOUDFLARE_API_TOKEN` can be supplied through your environment instead (use Account / Cloudflare Pages / Edit permission for the CoreStory account); never put tokens in Nix files or commit them. Cloudflare API token permissions are account-scoped for Pages, so the wrapper fixes the project but a token is not inherently restricted to this one project. Deployment is a network action performed by the running app, after the reproducible build completes. `--dry-run` only builds and prints the destination; it does not invoke Wrangler or validate credentials.
+
+CI still produces an artifact without deploying. No automatic writes to a `site` branch are configured.
 
 ## Reproducibility and scope
 

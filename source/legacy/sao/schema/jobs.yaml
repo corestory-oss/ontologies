@@ -1,0 +1,158 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/jobs
+name: sao-jobs
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  JobStepType:
+    description: Types of job steps in batch processing
+    permissible_values:
+      exec_program:
+        description: Execute a program
+      exec_proc:
+        description: Execute a cataloged procedure
+      utility:
+        description: Run a system utility (SORT, IEBCOPY, etc.)
+      sort:
+        description: "Sort step."
+      file_transfer:
+        description: "File transfer step."
+      conditional:
+        description: Conditional step based on return codes
+
+  DatasetDisposition:
+    description: Dataset allocation dispositions (JCL)
+    permissible_values:
+      new_dataset:
+        description: "New dataset."
+      old_dataset:
+        description: "Old dataset (exclusive)."
+      shared:
+        description: "Shared dataset."
+      modify:
+        description: "Modify existing dataset."
+      catalog:
+        description: "Catalog dataset."
+      delete_disp:
+        description: "Delete dataset."
+      pass:
+        description: Pass dataset to next step
+
+
+classes:
+  JobDefinition:
+    comments:
+      - "Captures the structure and dependencies of batch workflows, enabling scheduling analysis and restart planning."
+    is_a: NamedEntity
+    description: >-
+      A batch job definition (JCL JOB, scheduler entry, cron job)
+    attributes:
+      job_class:
+        description: "Job class or queue assignment."
+        range: string
+      priority:
+        description: "Execution priority."
+        range: integer
+      restart_point:
+        range: string
+        description: Step or checkpoint for restart
+      scheduling_info:
+        range: string
+        description: Schedule or trigger criteria
+      contains_job_steps:
+        description: "Steps within this job."
+        range: JobStep
+        multivalued: true
+        inlined_as_list: true
+        inverse: step_in_job
+      depends_on_jobs:
+        description: "Jobs that must complete before this one."
+        range: JobDefinition
+        multivalued: true
+        inverse: depended_on_by_jobs
+      depended_on_by_jobs:
+        description: "Jobs that depend on this one."
+        range: JobDefinition
+        multivalued: true
+        inverse: depends_on_jobs
+
+  JobStep:
+    is_a: NamedEntity
+    description: >-
+      A single step within a batch job
+    attributes:
+      step_type:
+        description: "The type of step."
+        range: JobStepType
+        required: true
+      program_name:
+        range: string
+        description: Name of the program to execute
+      condition_code:
+        range: string
+        description: Condition code checks (e.g., COND=(4,LT))
+      region_size:
+        range: string
+        description: Memory region allocation
+      step_in_job:
+        description: "The job containing this step."
+        range: JobDefinition
+        inverse: contains_job_steps
+      step_executes_program:
+        description: "The program executed by this step."
+        range: EncapsulationUnit
+        inverse: executed_by_job_steps
+      allocates_datasets:
+        description: "Datasets allocated for this step."
+        range: DatasetAllocation
+        multivalued: true
+        inlined_as_list: true
+        inverse: allocated_in_step
+
+  DatasetAllocation:
+    is_a: NamedEntity
+    description: >-
+      A dataset (DD) allocation within a job step
+    attributes:
+      dd_name:
+        range: string
+        description: DD name (logical file reference)
+      dataset_name:
+        range: string
+        description: Physical dataset name (DSN)
+      disposition:
+        description: "Dataset disposition."
+        range: DatasetDisposition
+      space_primary:
+        description: "Primary space allocation."
+        range: string
+      space_secondary:
+        description: "Secondary space allocation."
+        range: string
+      record_format:
+        description: "Record format (shared enum with Section 20)."
+        range: RecordFormat
+      allocated_in_step:
+        description: "The step where this allocation occurs."
+        range: JobStep
+        inverse: allocates_datasets
+      maps_to_file_definition:
+        description: "The file definition this allocation maps to."
+        range: FileDefinition
+        inverse: mapped_from_dataset_allocations
+

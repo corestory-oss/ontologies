@@ -1,0 +1,106 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix specsao: <https://ontologies.corestory.ai/specspec/sao/> .
+@prefix specsaosh: <https://ontologies.corestory.ai/specspec/sao/shapes/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsaosh:DescriptiveBasisRuleShape a sh:NodeShape ;
+    sh:sparql specsaosh:DescriptiveBasisConstraint ;
+    sh:targetClass specsao:RequirementImplementationLink .
+
+specsaosh:RequirementImplementationLinkShape a sh:NodeShape ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsaosh:basis_claim_077cbbea,
+        specsaosh:callable_6305d261,
+        specsaosh:requirement_44f77ae4,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass specsao:RequirementImplementationLink .
+
+specsaosh:SoftwareSubjectLinkShape a sh:NodeShape ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsaosh:software_entity_8bde5f22,
+        specsaosh:subject_9e80491e,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass specsao:SoftwareSubjectLink .
+
+specsaosh:VerificationTestLinkShape a sh:NodeShape ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsaosh:result_1306e03e,
+        specsaosh:test_case_730ab0a5,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass specsao:VerificationTestLink .
+
+specsaosh:DescriptiveBasisConstraint a sh:SPARQLConstraint ;
+    sh:message "An implementation link must cite a descriptive basis claim." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+PREFIX specsao: <https://ontologies.corestory.ai/specspec/sao/>
+SELECT $this WHERE { $this specsao:basis_claim ?claim . FILTER NOT EXISTS { ?claim spec:statement_mode "descriptive" } }""" .
+
+specsaosh:basis_claim_077cbbea a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "basis_claim" ;
+    sh:path specsao:basis_claim .
+
+specsaosh:callable_6305d261 a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "callable" ;
+    sh:path specsao:callable .
+
+specsaosh:requirement_44f77ae4 a sh:PropertyShape ;
+    sh:class spec:Requirement ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "requirement" ;
+    sh:path specsao:requirement .
+
+specsaosh:result_1306e03e a sh:PropertyShape ;
+    sh:class spec:VerificationResult ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "result" ;
+    sh:path specsao:result .
+
+specsaosh:software_entity_8bde5f22 a sh:PropertyShape ;
+    sh:class sao:NamedEntity ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "software_entity" ;
+    sh:path specsao:software_entity .
+
+specsaosh:subject_9e80491e a sh:PropertyShape ;
+    sh:class spec:SpecElement ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "subject" ;
+    sh:path specsao:subject .
+
+specsaosh:test_case_730ab0a5 a sh:PropertyShape ;
+    sh:class sao:TestCase ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "test_case" ;
+    sh:path specsao:test_case .

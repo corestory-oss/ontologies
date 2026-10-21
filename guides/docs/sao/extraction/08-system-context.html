@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 8: System Context (Layer 1) · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-8-system-context-layer-1">Phase 8: System Context (Layer 1)</h1>
+<p><strong>Input:</strong> All outputs from Phases 1--7
+<strong>Output:</strong> Finalized <strong>System</strong> instance with complete top-level relationships</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Phase 8 is the capstone of the SAO extraction process. Where prior phases built individual layers from the bottom up -- code structure, architecture, domain model, business intent, cross-cutting concerns, and bridge stitching -- this phase zooms out to the highest level and asks: <strong>does the complete picture hold together?</strong></p>
+<p>The <strong>System</strong> instance was created in Phase 3 with minimal attributes (<code>name</code>, <code>description</code>, <code>version</code>). At that point, only <strong>BoundedContext</strong> and <strong>Module</strong> instances existed to link to it. Now, with all seven prior phases complete, the <strong>System</strong> MUST be revisited and finalized with every top-level relationship populated.</p>
+<p>This phase serves two purposes:</p>
+<ol>
+<li><strong>Assembly.</strong> Populate all remaining top-level attributes on the <strong>System</strong> instance.</li>
+<li><strong>Sanity check.</strong> Verify that the full ontology tells a coherent, complete story when viewed from the root.</li>
+</ol>
+<p><strong>Automation level</strong>: Low. This phase is primarily a review and assembly step. Attribute population can be scripted, but the coherence judgment requires human or LLM reasoning.</p>
+<hr />
+<h2 id="2-finalize-the-system-instance">2. Finalize the System Instance</h2>
+<p>The <strong>System</strong> class (defined in <code>legacy/sao/sao.yml</code> as <code>is_a: NamedEntity</code> with the <code>Versionable</code> mixin) has the following top-level relationship attributes. The extraction agent MUST verify that each is populated.</p>
+<h3 id="attribute-checklist">Attribute checklist</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Populated in</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_bounded_contexts</code></td>
+<td><strong>BoundedContext</strong> (multivalued)</td>
+<td>Phase 3</td>
+<td>Verify all contexts are linked</td>
+</tr>
+<tr>
+<td><code>has_integrations</code></td>
+<td><strong>Integration</strong> (multivalued)</td>
+<td>Phase 3</td>
+<td>Verify all integrations are linked</td>
+</tr>
+<tr>
+<td><code>exposes_interfaces</code></td>
+<td><strong>Interface</strong> (multivalued)</td>
+<td>Phase 3</td>
+<td>Verify all top-level interfaces are linked</td>
+</tr>
+<tr>
+<td><code>enforces_policies</code></td>
+<td><strong>Policy</strong> (multivalued)</td>
+<td>Phase 6</td>
+<td>Verify all policies are linked</td>
+</tr>
+<tr>
+<td><code>must_comply_with</code></td>
+<td><strong>ComplianceRequirement</strong> (multivalued)</td>
+<td>Phase 6</td>
+<td>Verify all compliance requirements are linked</td>
+</tr>
+<tr>
+<td><code>assessed_by</code></td>
+<td><strong>RiskAssessment</strong> (multivalued)</td>
+<td>Phase 6</td>
+<td>Verify all risk assessments are linked</td>
+</tr>
+<tr>
+<td><code>system_documented_by_artifacts</code></td>
+<td><strong>KnowledgeArtifact</strong> (multivalued)</td>
+<td>Phase 6</td>
+<td>Link relevant documentation artifacts</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note on Environments.</strong> The <strong>Environment</strong> class does not have a direct relationship to <strong>System</strong> in the current schema. Environments are linked to <strong>Deployment</strong> instances via <code>Environment.hosts_deployments</code>. The extraction agent SHOULD NOT attempt to add an <code>has_environments</code> attribute to <strong>System</strong>.</p>
+</blockquote>
+<h3 id="walk-through">Walk-through</h3>
+<p>For each attribute, the extraction agent MUST:</p>
+<ol>
+<li><strong>Collect</strong> all instances of the target class produced across Phases 1--7.</li>
+<li><strong>Verify</strong> that every relevant instance appears in the System's attribute list. An instance is "relevant" if it belongs to this system (as opposed to being an external entity like <strong>ExternalSystem</strong>).</li>
+<li><strong>Flag</strong> any instance that exists but is not linked. This is either a gap (fix it) or a deliberate exclusion (document why).</li>
+</ol>
+<h3 id="complete-yaml-example">Complete YAML example</h3>
+<p>The following shows a finalized <strong>System</strong> instance for an e-commerce order platform:</p>
+<pre><code class="language-yaml">systems:
+  - name: order-platform
+    description: &gt;-
+      E-commerce order management platform handling order placement,
+      payment processing, fulfillment tracking, and customer notifications.
+    version: 2.4.1
+    contains_bounded_contexts:
+      - name: ordering
+        description: Handles order lifecycle from cart to confirmation
+        contained_in_system: order-platform
+        contains_modules:
+          - order-api
+          - order-domain
+          - order-persistence
+        contains_aggregates:
+          - Order
+          - Cart
+      - name: payments
+        description: Processes payments and manages refunds
+        contained_in_system: order-platform
+        contains_modules:
+          - payment-gateway
+          - payment-ledger
+        contains_aggregates:
+          - Payment
+          - Refund
+      - name: fulfillment
+        description: Tracks shipment and delivery status
+        contained_in_system: order-platform
+        contains_modules:
+          - fulfillment-service
+          - shipping-adapter
+        contains_aggregates:
+          - Shipment
+    has_integrations:
+      - name: stripe-payment-integration
+        description: Payment processing via Stripe API
+        belongs_to_system: order-platform
+      - name: warehouse-integration
+        description: Fulfillment sync with warehouse management system
+        belongs_to_system: order-platform
+      - name: email-notification-integration
+        description: Transactional emails via SendGrid
+        belongs_to_system: order-platform
+    exposes_interfaces:
+      - name: storefront-ui
+        description: Customer-facing web storefront
+        exposed_by_system: order-platform
+      - name: order-rest-api
+        description: REST API for order operations
+        exposed_by_system: order-platform
+      - name: admin-dashboard
+        description: Internal admin interface for order management
+        exposed_by_system: order-platform
+    enforces_policies:
+      - name: rate-limiting-policy
+        description: API rate limiting at 1000 req/min per client
+        enforced_by_system: order-platform
+      - name: data-retention-policy
+        description: Order data retained for 7 years per regulatory requirements
+        enforced_by_system: order-platform
+    must_comply_with:
+      - name: pci-dss
+        description: Payment Card Industry Data Security Standard
+        applies_to_systems:
+          - order-platform
+      - name: gdpr
+        description: General Data Protection Regulation for EU customer data
+        applies_to_systems:
+          - order-platform
+    assessed_by:
+      - name: annual-security-assessment
+        description: Annual penetration test and security audit
+        assesses_system: order-platform
+    system_documented_by_artifacts:
+      - name: architecture-decision-records
+        description: Collection of ADRs documenting key architectural decisions
+        documents_system: order-platform
+      - name: api-documentation
+        description: OpenAPI specs and developer guides
+        documents_system: order-platform
+      - name: runbook
+        description: Operational runbook for incident response
+        documents_system: order-platform
+</code></pre>
+<hr />
+<h2 id="3-system-level-sanity-checks">3. System-Level Sanity Checks</h2>
+<p>Once the <strong>System</strong> instance is fully populated, the extraction agent MUST perform the following verification checks.</p>
+<h3 id="31-completeness">3.1 Completeness</h3>
+<p>Every <strong>BoundedContext</strong> produced in Phase 3 MUST appear in <code>System.contains_bounded_contexts</code>. To verify:</p>
+<ol>
+<li>Collect all <strong>BoundedContext</strong> instances from the extraction output.</li>
+<li>Compare against the list in <code>System.contains_bounded_contexts</code>.</li>
+<li>Any <strong>BoundedContext</strong> not linked to the <strong>System</strong> is orphaned -- either link it or justify its exclusion.</li>
+</ol>
+<p>The same check applies to <strong>Integration</strong>, <strong>Interface</strong>, <strong>Policy</strong>, <strong>ComplianceRequirement</strong>, <strong>RiskAssessment</strong>, and <strong>KnowledgeArtifact</strong> instances.</p>
+<h3 id="32-consistency">3.2 Consistency</h3>
+<p>Cross-check counts and references for internal consistency:</p>
+<ul>
+<li>The number of <strong>Integration</strong> instances SHOULD roughly correspond to the number of distinct <strong>ExternalSystem</strong> instances. If there are significantly more integrations than external systems, some external systems may have multiple integration points (valid). If there are external systems with no integration, they may be incompletely modeled.</li>
+<li>The number of top-level <strong>Interface</strong> instances linked to the <strong>System</strong> SHOULD match the number of distinct user-facing or API-facing entry points discovered in Phase 3.</li>
+<li>Every <strong>BoundedContext</strong> SHOULD contain at least one <strong>Module</strong>. A context with no modules is likely a modeling gap.</li>
+</ul>
+<h3 id="33-coverage">3.3 Coverage</h3>
+<p>Estimate what percentage of the codebase has been decomposed:</p>
+<ul>
+<li><strong>By files</strong>: How many source files are mapped to a <strong>StorageLocation</strong> that is transitively reachable from the <strong>System</strong>? Aim for &gt; 90%.</li>
+<li><strong>By modules</strong>: How many top-level directories or build modules are represented as <strong>Module</strong> instances? Aim for 100%.</li>
+<li><strong>By code units</strong>: How many <strong>EncapsulationUnit</strong> and <strong>CallableUnit</strong> instances exist relative to the number of classes/functions in the codebase?</li>
+</ul>
+<p>Coverage below 80% SHOULD trigger a review of Phases 1--2 to identify unmapped areas.</p>
+<h3 id="34-coherence">3.4 Coherence</h3>
+<p>This is the most subjective check. Read the following in sequence:</p>
+<ol>
+<li><code>System.name</code> and <code>System.description</code></li>
+<li>The <code>name</code> and <code>description</code> of each <strong>BoundedContext</strong></li>
+<li>The <code>name</code> and <code>description</code> of each <strong>Integration</strong></li>
+<li>The <code>name</code> of each top-level <strong>Interface</strong></li>
+</ol>
+<p>Ask: does this tell a coherent story? Can a newcomer read these names and descriptions and understand what the system does, how it is organized, and what it connects to? If not, revise descriptions until the narrative is clear.</p>
+<hr />
+<h2 id="4-generating-a-system-summary">4. Generating a System Summary</h2>
+<p>As a final validation artifact, the extraction agent SHOULD generate a human-readable summary from the extracted ontology. This summary serves as both documentation and a smoke test -- if anything looks wrong in the summary, the underlying data likely has a gap.</p>
+<h3 id="summary-template">Summary template</h3>
+<pre><code>System: {System.name} (v{System.version})
+{System.description}
+
+Architecture
+  Bounded contexts: {count}
+    {for each: name -- description}
+  Modules: {total count across all contexts}
+  Components: {total count across all modules}
+
+Domain Model
+  Aggregates: {count}
+  Domain entities: {count}
+  Value objects: {count}
+
+Integration Landscape
+  External systems: {count}
+  Integrations: {count}
+    {for each: name -- description}
+
+Actors
+  Human actors: {count}
+    {for each: name (actor_type)}
+  System actors: {count}
+    {for each: name}
+
+Interfaces
+  User interfaces: {count}
+  Programmatic interfaces: {count}
+  Event interfaces: {count}
+
+Governance
+  Policies: {count}
+  Compliance requirements: {count}
+
+Documentation
+  Knowledge artifacts: {count}
+</code></pre>
+<h3 id="example-output">Example output</h3>
+<pre><code>System: order-platform (v2.4.1)
+E-commerce order management platform handling order placement,
+payment processing, fulfillment tracking, and customer notifications.
+
+Architecture
+  Bounded contexts: 3
+    ordering -- Handles order lifecycle from cart to confirmation
+    payments -- Processes payments and manages refunds
+    fulfillment -- Tracks shipment and delivery status
+  Modules: 6
+  Components: 14
+
+Domain Model
+  Aggregates: 4
+  Domain entities: 12
+  Value objects: 8
+
+Integration Landscape
+  External systems: 3
+  Integrations: 3
+    stripe-payment-integration -- Payment processing via Stripe API
+    warehouse-integration -- Fulfillment sync with warehouse management system
+    email-notification-integration -- Transactional emails via SendGrid
+
+Actors
+  Human actors: 3
+    CustomerUser (end_user)
+    SupportAgent (operator)
+    PlatformAdmin (administrator)
+  System actors: 2
+    PaymentWebhookHandler
+    WarehouseSync
+
+Interfaces
+  User interfaces: 2
+  Programmatic interfaces: 1
+  Event interfaces: 0
+
+Governance
+  Policies: 2
+  Compliance requirements: 2
+
+Documentation
+  Knowledge artifacts: 3
+</code></pre>
+<p>The extraction agent SHOULD review this summary with a domain expert. If the summary accurately reflects the system as understood by stakeholders, the extraction is complete.</p>
+<hr />
+<h2 id="5-phase-8-checklist">5. Phase 8 Checklist</h2>
+<p>Before proceeding to Validation (doc 09), confirm every item:</p>
+<ul>
+<li>[ ] <strong>System instance is complete.</strong> All seven relationship attributes on <strong>System</strong> have been reviewed and populated (or explicitly marked as empty with justification).</li>
+<li>[ ] <strong>All BoundedContexts are linked.</strong> Every <strong>BoundedContext</strong> appears in <code>System.contains_bounded_contexts</code>. No orphaned contexts exist.</li>
+<li>[ ] <strong>All Integrations are linked.</strong> Every <strong>Integration</strong> appears in <code>System.has_integrations</code>.</li>
+<li>[ ] <strong>All top-level Interfaces are linked.</strong> Every system-level <strong>Interface</strong> appears in <code>System.exposes_interfaces</code>.</li>
+<li>[ ] <strong>Policies and compliance linked.</strong> All <strong>Policy</strong> instances appear in <code>System.enforces_policies</code>. All <strong>ComplianceRequirement</strong> instances appear in <code>System.must_comply_with</code>.</li>
+<li>[ ] <strong>Risk assessments linked.</strong> All <strong>RiskAssessment</strong> instances appear in <code>System.assessed_by</code>.</li>
+<li>[ ] <strong>Documentation linked.</strong> Relevant <strong>KnowledgeArtifact</strong> instances appear in <code>System.system_documented_by_artifacts</code>.</li>
+<li>[ ] <strong>System summary generated.</strong> A human-readable summary has been produced and reviewed for accuracy.</li>
+<li>[ ] <strong>Coherence verified.</strong> The system narrative (names, descriptions, relationships) tells a coherent story.</li>
+</ul>
+<p>Once all items are confirmed, the extraction is structurally complete. Proceed to <a href="09-validation.html">Phase 9: Validation</a> for schema-level validation, completeness scoring, and gap analysis.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

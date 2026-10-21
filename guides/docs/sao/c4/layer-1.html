@@ -1,0 +1,1596 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Layer 1: System Context Representation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="layer-1-system-context-representation">Layer 1: System Context Representation</h1>
+<p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 1 (System Context)</strong> -- the outermost zoom level, where the system is viewed as a black box. Layer 1 answers the big-picture questions: what is this system, who uses it (actors), what sits outside it (external systems), and how is it governed (compliance and risk).</p>
+<p>Where Layer 2 answers "what containers and services make up the system?", Layer 1 answers "what is the system, who interacts with it, and what rules constrain it?"</p>
+<hr />
+<h2 id="scope">Scope</h2>
+<p>Layer 1 covers:</p>
+<ul>
+<li><strong>The system itself</strong> -- the top-level named entity representing the software product, platform, or application</li>
+<li><strong>Actors and identity</strong> -- human users, automated agents, their verified identities, credentials, and organizational membership</li>
+<li><strong>Multi-tenancy</strong> -- tenant boundaries for systems that serve multiple isolated customer populations</li>
+<li><strong>External systems</strong> -- third-party services, partner systems, legacy systems, and SaaS applications outside the system boundary</li>
+<li><strong>Compliance and governance</strong> -- regulatory obligations, controls implementing those obligations, evidence of control effectiveness, and risk assessments</li>
+</ul>
+<p>Layer 1 is <strong>paradigm-agnostic</strong>. These concepts apply equally to a legacy mainframe CICS system, a monolithic Java EE application, and a modern cloud-native microservices platform. Every software system has actors who use it, external systems it depends on, and governance constraints it must satisfy. The differences in how these concepts are realized emerge at Layer 2 (containers) and below.</p>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Class</th>
+<th>Definition</th>
+<th>Group</th>
+<th>SAO Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>System</td>
+<td>Top-level container representing a software product, platform, or application</td>
+<td>System</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Actor (abstract)</td>
+<td>Any entity that can initiate actions -- base class for HumanActor and SystemActor</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>HumanActor</td>
+<td>A human user of the system</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SystemActor</td>
+<td>A system or automated actor</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Identity</td>
+<td>A verified representation of an actor</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Credential</td>
+<td>Authentication material proving an identity claim</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Organization</td>
+<td>A logical grouping of users and resources within a tenant</td>
+<td>Actors &amp; Identity</td>
+<td>2</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Tenant</td>
+<td>An organizational boundary for multi-tenant systems</td>
+<td>Multi-tenancy</td>
+<td>2</td>
+</tr>
+<tr>
+<td>9</td>
+<td>ExternalSystem</td>
+<td>A system outside this system's boundary</td>
+<td>External Systems</td>
+<td>7</td>
+</tr>
+<tr>
+<td>10</td>
+<td>ComplianceRequirement</td>
+<td>A regulatory or policy obligation</td>
+<td>Compliance &amp; Governance</td>
+<td>10</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Control</td>
+<td>A measure implementing a compliance requirement</td>
+<td>Compliance &amp; Governance</td>
+<td>10</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Evidence</td>
+<td>Proof that a control is operating effectively</td>
+<td>Compliance &amp; Governance</td>
+<td>10</td>
+</tr>
+<tr>
+<td>13</td>
+<td>RiskAssessment</td>
+<td>An evaluation of threats and vulnerabilities</td>
+<td>Compliance &amp; Governance</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 13 classes</strong> (including 2 subtypes: HumanActor and SystemActor that inherit from the abstract Actor).</p>
+<hr />
+<h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
+<h3 id="downward-links-to-layer-2-container">Downward links to Layer 2 (Container)</h3>
+<p>These relationships connect Layer 1 concepts to the internal structure of the system:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 1 class</th>
+<th>Attribute</th>
+<th>Layer 2 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System</td>
+<td><code>contains_bounded_contexts</code></td>
+<td>BoundedContext</td>
+<td>Bounded contexts within this system</td>
+</tr>
+<tr>
+<td>System</td>
+<td><code>has_integrations</code></td>
+<td>Integration</td>
+<td>Integration connections owned by this system</td>
+</tr>
+<tr>
+<td>System</td>
+<td><code>exposes_interfaces</code></td>
+<td>Interface</td>
+<td>Interfaces the system exposes to the outside world</td>
+</tr>
+<tr>
+<td>Identity</td>
+<td><code>belongs_to_tenant</code></td>
+<td>Tenant</td>
+<td>Tenant an identity belongs to (Tenant links further down)</td>
+</tr>
+<tr>
+<td>Tenant</td>
+<td><code>settings</code></td>
+<td>Configuration</td>
+<td>Tenant-specific configuration values</td>
+</tr>
+<tr>
+<td>ExternalSystem</td>
+<td><code>integrated_via</code></td>
+<td>Integration</td>
+<td>Integrations connecting to this external system</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-layer-links-to-layer-3-component">Cross-layer links to Layer 3 (Component)</h3>
+<p>These relationships connect Layer 1 concepts to component-level and behavioral abstractions:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 1 class</th>
+<th>Attribute</th>
+<th>Layer 3 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System</td>
+<td><code>enforces_policies</code></td>
+<td>Policy</td>
+<td>Authorization policies enforced at the system level</td>
+</tr>
+<tr>
+<td>Actor</td>
+<td><code>performs_actions</code></td>
+<td>Action</td>
+<td>Actions initiated by this actor</td>
+</tr>
+<tr>
+<td>Identity</td>
+<td><code>has_roles</code></td>
+<td>Role</td>
+<td>Roles assigned to this identity</td>
+</tr>
+<tr>
+<td>Actor</td>
+<td><code>has_subscriptions</code></td>
+<td>Subscription</td>
+<td>Event subscriptions registered by this actor</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="system-1-class">System (1 class)</h2>
+<h3 id="1-system">1. System</h3>
+<p>Top-level container representing a software product, platform, or application. This is the root node of the entire SAO model -- everything else is contained within or connected to a System.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code> (adds <code>version</code>, <code>effective_from</code>, <code>effective_to</code>, <code>is_current</code>)</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>SemanticVersion</td>
+<td>No</td>
+<td>Semantic version (from Versionable)</td>
+</tr>
+<tr>
+<td><code>effective_from</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>Version start date (from Versionable)</td>
+</tr>
+<tr>
+<td><code>effective_to</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>Version end date (from Versionable)</td>
+</tr>
+<tr>
+<td><code>is_current</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is the current version (from Versionable)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_bounded_contexts</code></td>
+<td>BoundedContext</td>
+<td>Yes</td>
+<td><code>contained_in_system</code></td>
+<td>Bounded contexts within this system (Layer 2)</td>
+</tr>
+<tr>
+<td><code>has_integrations</code></td>
+<td>Integration</td>
+<td>Yes</td>
+<td><code>belongs_to_system</code></td>
+<td>Integration connections (Layer 2)</td>
+</tr>
+<tr>
+<td><code>enforces_policies</code></td>
+<td>Policy</td>
+<td>Yes</td>
+<td><code>enforced_by_system</code></td>
+<td>Authorization policies enforced (Layer 3)</td>
+</tr>
+<tr>
+<td><code>must_comply_with</code></td>
+<td>ComplianceRequirement</td>
+<td>Yes</td>
+<td><code>applies_to_systems</code></td>
+<td>Compliance obligations</td>
+</tr>
+<tr>
+<td><code>assessed_by</code></td>
+<td>RiskAssessment</td>
+<td>Yes</td>
+<td><code>assesses_system</code></td>
+<td>Risk assessments performed</td>
+</tr>
+<tr>
+<td><code>exposes_interfaces</code></td>
+<td>Interface</td>
+<td>Yes</td>
+<td><code>exposed_by_system</code></td>
+<td>Interfaces exposed to external consumers (Layer 2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="actors-identity-6-classes">Actors &amp; Identity (6 classes)</h2>
+<h3 id="2-actor-abstract">2. Actor (abstract)</h3>
+<p>Any entity that can initiate actions. This is the abstract base class for HumanActor and SystemActor -- it is never instantiated directly. Actors have identities, perform actions, own controls, and subscribe to events.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>ActorCategory</td>
+<td>No</td>
+<td><code>human</code> or <code>system</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_identities</code></td>
+<td>Identity</td>
+<td>Yes</td>
+<td><code>represents_actor</code></td>
+<td>Verified identities for this actor</td>
+</tr>
+<tr>
+<td><code>performs_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>performed_by_actor</code></td>
+<td>Actions initiated (Layer 3)</td>
+</tr>
+<tr>
+<td><code>audit_actions_performed</code></td>
+<td>AuditEntry</td>
+<td>Yes</td>
+<td><code>audit_performed_by_actor</code></td>
+<td>Audit trail of actions</td>
+</tr>
+<tr>
+<td><code>has_subscriptions</code></td>
+<td>Subscription</td>
+<td>Yes</td>
+<td><code>subscribed_by_actor</code></td>
+<td>Event subscriptions (Layer 3)</td>
+</tr>
+<tr>
+<td><code>owns_controls</code></td>
+<td>Control</td>
+<td>Yes</td>
+<td><code>owned_by_actor</code></td>
+<td>Compliance controls owned</td>
+</tr>
+<tr>
+<td><code>verifies_evidence</code></td>
+<td>Evidence</td>
+<td>Yes</td>
+<td><code>verified_by_actor</code></td>
+<td>Evidence verified by this actor</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ActorCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>human</code></td>
+<td>A human user</td>
+</tr>
+<tr>
+<td><code>system</code></td>
+<td>An automated system or agent</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="3-humanactor">3. HumanActor</h3>
+<p>A human user of the system. Inherits all attributes and relationships from Actor.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>actor_type</code></td>
+<td>HumanActorType</td>
+<td>No</td>
+<td>Specific type of human actor</td>
+</tr>
+<tr>
+<td><code>email</code></td>
+<td>string</td>
+<td>No</td>
+<td>Email address</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<p><em>Inherits all relationships from Actor.</em></p>
+<p><strong>HumanActorType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>end_user</code></td>
+<td>Regular end user</td>
+</tr>
+<tr>
+<td><code>administrator</code></td>
+<td>System administrator</td>
+</tr>
+<tr>
+<td><code>operator</code></td>
+<td>Operations staff</td>
+</tr>
+<tr>
+<td><code>developer</code></td>
+<td>Software developer</td>
+</tr>
+<tr>
+<td><code>auditor</code></td>
+<td>Compliance or security auditor</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="4-systemactor">4. SystemActor</h3>
+<p>A system or automated actor. Inherits all attributes and relationships from Actor.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>actor_type</code></td>
+<td>SystemActorType</td>
+<td>No</td>
+<td>Specific type of system actor</td>
+</tr>
+<tr>
+<td><code>service_account</code></td>
+<td>string</td>
+<td>No</td>
+<td>Service account identifier</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<p><em>Inherits all relationships from Actor.</em></p>
+<p><strong>SystemActorType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>internal_service</code></td>
+<td>An internal service within the system</td>
+</tr>
+<tr>
+<td><code>external_system</code></td>
+<td>An external system acting as a client</td>
+</tr>
+<tr>
+<td><code>scheduled_process</code></td>
+<td>A cron job or scheduled task</td>
+</tr>
+<tr>
+<td><code>ai_agent</code></td>
+<td>An AI/ML agent or bot</td>
+</tr>
+<tr>
+<td><code>message_trigger</code></td>
+<td>A message-driven trigger</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="5-identity">5. Identity</h3>
+<p>A verified representation of an actor. An actor may have multiple identities (e.g., one per tenant, one per authentication provider). Identities hold credentials, are assigned roles, and belong to tenants and organizations.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>identity_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Freeform identity type label</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>credentials</code></td>
+<td>Credential</td>
+<td>Yes</td>
+<td>--</td>
+<td>Authentication credentials (inline)</td>
+</tr>
+<tr>
+<td><code>has_roles</code></td>
+<td>Role</td>
+<td>Yes</td>
+<td><code>assigned_to_identities</code></td>
+<td>Roles assigned to this identity (Layer 3)</td>
+</tr>
+<tr>
+<td><code>belongs_to_tenant</code></td>
+<td>Tenant</td>
+<td>No</td>
+<td><code>contains_identities</code></td>
+<td>Tenant this identity belongs to</td>
+</tr>
+<tr>
+<td><code>member_of_organizations</code></td>
+<td>Organization</td>
+<td>Yes</td>
+<td><code>has_identity_members</code></td>
+<td>Organizations this identity is a member of</td>
+</tr>
+<tr>
+<td><code>represents_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>has_identities</code></td>
+<td>Actor this identity represents</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="6-credential">6. Credential</h3>
+<p>Authentication material proving an identity claim. Credentials are inlined within Identity (not standalone top-level entities).</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>credential_type</code></td>
+<td>CredentialType</td>
+<td>No</td>
+<td>Type of credential</td>
+</tr>
+<tr>
+<td><code>expires_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>Expiration timestamp</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the credential is currently active</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<p><em>No outgoing relationships. Credentials are inlined within Identity via <code>credentials</code>.</em></p>
+<p><strong>CredentialType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>password</code></td>
+<td>Password-based authentication</td>
+</tr>
+<tr>
+<td><code>token</code></td>
+<td>Token-based authentication (JWT, bearer token)</td>
+</tr>
+<tr>
+<td><code>certificate</code></td>
+<td>Digital certificate or X.509 certificate</td>
+</tr>
+<tr>
+<td><code>api_key</code></td>
+<td>API key</td>
+</tr>
+<tr>
+<td><code>biometric</code></td>
+<td>Biometric authentication</td>
+</tr>
+<tr>
+<td><code>mfa</code></td>
+<td>Multi-factor authentication</td>
+</tr>
+<tr>
+<td><code>oauth</code></td>
+<td>OAuth 2.0 authentication flow</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="7-organization">7. Organization</h3>
+<p>A logical grouping of users and resources within a tenant. Organizations can form hierarchies via parent/child relationships.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parent</code></td>
+<td>Organization</td>
+<td>No</td>
+<td>--</td>
+<td>Parent organization in the hierarchy</td>
+</tr>
+<tr>
+<td><code>children</code></td>
+<td>Organization</td>
+<td>Yes</td>
+<td>--</td>
+<td>Child organizations</td>
+</tr>
+<tr>
+<td><code>has_identity_members</code></td>
+<td>Identity</td>
+<td>Yes</td>
+<td><code>member_of_organizations</code></td>
+<td>Identities belonging to this organization</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="multi-tenancy-1-class">Multi-tenancy (1 class)</h2>
+<h3 id="8-tenant">8. Tenant</h3>
+<p>An organizational boundary for multi-tenant systems. Tenants contain organizations, identities, and tenant-specific configuration.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organizations</code></td>
+<td>Organization</td>
+<td>Yes</td>
+<td>--</td>
+<td>Organizations within this tenant (inline)</td>
+</tr>
+<tr>
+<td><code>settings</code></td>
+<td>Configuration</td>
+<td>Yes</td>
+<td>--</td>
+<td>Tenant-specific configuration (Layer 2)</td>
+</tr>
+<tr>
+<td><code>contains_identities</code></td>
+<td>Identity</td>
+<td>Yes</td>
+<td><code>belongs_to_tenant</code></td>
+<td>Identities scoped to this tenant</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="external-systems-1-class">External Systems (1 class)</h2>
+<h3 id="9-externalsystem">9. ExternalSystem</h3>
+<p>A system outside this system's boundary. External systems are integrated via Integration objects and classified by type.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>system_type</code></td>
+<td>ExternalSystemType</td>
+<td>No</td>
+<td>Category of external system</td>
+</tr>
+<tr>
+<td><code>owner</code></td>
+<td>string</td>
+<td>No</td>
+<td>Team or organization that owns the external system</td>
+</tr>
+<tr>
+<td><code>sla</code></td>
+<td>string</td>
+<td>No</td>
+<td>Service level agreement description</td>
+</tr>
+<tr>
+<td><code>documentation_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Link to external system documentation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integrated_via</code></td>
+<td>Integration</td>
+<td>Yes</td>
+<td><code>integrates_with_system</code></td>
+<td>Integrations connecting to this system (Layer 2)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ExternalSystemType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>third_party_service</code></td>
+<td>Third-party service (Stripe, Twilio, etc.)</td>
+</tr>
+<tr>
+<td><code>partner_system</code></td>
+<td>Partner or affiliate system</td>
+</tr>
+<tr>
+<td><code>legacy_system</code></td>
+<td>Legacy system being integrated</td>
+</tr>
+<tr>
+<td><code>saas_application</code></td>
+<td>SaaS application</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="compliance-governance-4-classes">Compliance &amp; Governance (4 classes)</h2>
+<h3 id="10-compliancerequirement">10. ComplianceRequirement</h3>
+<p>A regulatory or policy obligation that the system must satisfy. Requirements reference a compliance framework, contain controls, and apply to one or more systems.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>ComplianceFramework</td>
+<td>No</td>
+<td>Compliance framework this requirement belongs to</td>
+</tr>
+<tr>
+<td><code>effective_date</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>Date the requirement takes effect</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>controls</code></td>
+<td>Control</td>
+<td>Yes</td>
+<td>--</td>
+<td>Controls implementing this requirement (inline)</td>
+</tr>
+<tr>
+<td><code>applies_to_systems</code></td>
+<td>System</td>
+<td>Yes</td>
+<td><code>must_comply_with</code></td>
+<td>Systems subject to this requirement</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ComplianceFramework Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gdpr</code></td>
+<td>General Data Protection Regulation (EU)</td>
+</tr>
+<tr>
+<td><code>hipaa</code></td>
+<td>Health Insurance Portability and Accountability Act</td>
+</tr>
+<tr>
+<td><code>soc2</code></td>
+<td>SOC 2 Trust Services Criteria</td>
+</tr>
+<tr>
+<td><code>pci_dss</code></td>
+<td>Payment Card Industry Data Security Standard</td>
+</tr>
+<tr>
+<td><code>iso27001</code></td>
+<td>ISO/IEC 27001 Information Security Management</td>
+</tr>
+<tr>
+<td><code>sox</code></td>
+<td>Sarbanes-Oxley Act</td>
+</tr>
+<tr>
+<td><code>ccpa</code></td>
+<td>California Consumer Privacy Act</td>
+</tr>
+<tr>
+<td><code>fedramp</code></td>
+<td>Federal Risk and Authorization Management Program</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="11-control">11. Control</h3>
+<p>A measure implementing a compliance requirement. Controls are owned by actors, produce evidence, and mitigate risks.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>control_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>External control identifier (e.g., "SOC2-CC6.1")</td>
+</tr>
+<tr>
+<td><code>implementation</code></td>
+<td>string</td>
+<td>No</td>
+<td>Description of how the control is implemented</td>
+</tr>
+<tr>
+<td><code>frequency</code></td>
+<td>string</td>
+<td>No</td>
+<td>How often the control is executed (e.g., "daily", "continuous")</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>evidence</code></td>
+<td>Evidence</td>
+<td>Yes</td>
+<td>--</td>
+<td>Evidence proving this control works (inline)</td>
+</tr>
+<tr>
+<td><code>owned_by_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>owns_controls</code></td>
+<td>Actor responsible for this control</td>
+</tr>
+<tr>
+<td><code>mitigates_risks</code></td>
+<td>RiskAssessment</td>
+<td>Yes</td>
+<td><code>mitigated_by_controls</code></td>
+<td>Risk assessments this control mitigates</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="12-evidence">12. Evidence</h3>
+<p>Proof that a control is operating effectively. Evidence is collected at a point in time, references an artifact, and may be verified by an actor.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>evidence_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Freeform type of evidence (e.g., "log export", "screenshot", "report")</td>
+</tr>
+<tr>
+<td><code>collected_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When the evidence was collected</td>
+</tr>
+<tr>
+<td><code>artifact_uri</code></td>
+<td>URI</td>
+<td>No</td>
+<td>URI to the evidence artifact</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verified_by_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>verifies_evidence</code></td>
+<td>Actor who verified this evidence</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="13-riskassessment">13. RiskAssessment</h3>
+<p>An evaluation of threats and vulnerabilities affecting the system. Risk assessments are linked to the system they evaluate and the controls that mitigate identified risks.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Freeform tags (from NamedEntity)</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Created/updated timestamps and version (from NamedEntity, inline)</td>
+</tr>
+<tr>
+<td><code>assessed_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When the assessment was performed</td>
+</tr>
+<tr>
+<td><code>risk_level</code></td>
+<td>string</td>
+<td>No</td>
+<td>Overall risk level (e.g., "low", "medium", "high", "critical")</td>
+</tr>
+<tr>
+<td><code>threats</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Identified threats</td>
+</tr>
+<tr>
+<td><code>vulnerabilities</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Identified vulnerabilities</td>
+</tr>
+<tr>
+<td><code>residual_risk</code></td>
+<td>string</td>
+<td>No</td>
+<td>Risk remaining after controls are applied</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mitigated_by_controls</code></td>
+<td>Control</td>
+<td>Yes</td>
+<td><code>mitigates_risks</code></td>
+<td>Controls that reduce this risk</td>
+</tr>
+<tr>
+<td><code>assesses_system</code></td>
+<td>System</td>
+<td>No</td>
+<td><code>assessed_by</code></td>
+<td>System being assessed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="relationship-map">Relationship Map</h2>
+<pre><code>                        ┌──────────────────────────────────────────────┐
+                        │  Layer 2 (Container)                         │
+                        │  BoundedContext, Integration, Interface,      │
+                        │  Module, Service, Configuration, ...         │
+                        └────────────────────▲─────────────────────────┘
+                                             │
+              contains_bounded_contexts, has_integrations,
+              exposes_interfaces, settings, integrated_via
+                                             │
+┌─────────────────────────────────────────────┼────────────────────────────────┐
+│                          SYSTEM             │                                │
+│                                             │                                │
+│                        ┌────────────────────┴──┐                             │
+│                        │       System          │                             │
+│                        │  (Versionable)        │                             │
+│                        └──┬───┬───┬───┬───┬────┘                             │
+│       must_comply_with    │   │   │   │   │  assessed_by                     │
+│              ┌────────────┘   │   │   │   └──────────────┐                   │
+│              ▼                │   │   │                   ▼                   │
+│  ┌───────────────────┐       │   │   │       ┌───────────────────┐           │
+│  │ ComplianceRequirement│    │   │   │       │  RiskAssessment   │           │
+│  │   (framework)     │       │   │   │       │  (risk_level)     │           │
+│  │        │          │       │   │   │       │        │          │           │
+│  │  controls▼        │       │   │   │       └────────┼──────────┘           │
+│  │   Control         │       │   │   │    mitigated_by_controls              │
+│  │     │  │          │       │   │   │                │                      │
+│  │  evidence│ owned_by│      │   │   │    ◄───────────┘                      │
+│  │     ▼  │  _actor  │      │   │   │                                        │
+│  │  Evidence  │      │       │   │   │                                        │
+│  │     │      │      │       │   │   │                                        │
+│  └─────┼──────┼──────┘       │   │   │                                        │
+│  verified_by  │              │   │   │                                        │
+│  _actor │     │              │   │   │  enforces_policies ──► Policy (L3)     │
+│         ▼     ▼              │   │   │                                        │
+│  ┌──────────────────────┐    │   │   │                                        │
+│  │      ACTORS          │◄───┘   │   │                                        │
+│  │                      │        │   │                                        │
+│  │  Actor (abstract)    │        │   │                                        │
+│  │    ├── HumanActor    │        │   │                                        │
+│  │    └── SystemActor   │        │   │                                        │
+│  │         │            │        │   │                                        │
+│  │   has_identities     │        │   │                                        │
+│  │         ▼            │        │   │                                        │
+│  │      Identity ───────┼── has_roles ──► Role (L3)                          │
+│  │         │    │       │        │   │                                        │
+│  │  credentials │       │        │   │                                        │
+│  │         ▼    │       │        │   │                                        │
+│  │    Credential│       │        │   │                                        │
+│  │              │ belongs_to_tenant                                           │
+│  │              │       │        │   │                                        │
+│  │              ▼       │        │   │                                        │
+│  │           Tenant ────┼── settings ──► Configuration (L2)                  │
+│  │              │       │        │   │                                        │
+│  │        organizations │        │   │                                        │
+│  │              ▼       │        │   │                                        │
+│  │         Organization │        │   │                                        │
+│  │          (hierarchy) │        │   │                                        │
+│  └──────────────────────┘        │   │                                        │
+│                                  │   │                                        │
+│  ┌──────────────────────┐        │   │                                        │
+│  │   ExternalSystem     │◄───────┘   │                                        │
+│  │   (system_type,      │            │                                        │
+│  │    owner, sla)       │────── integrated_via ──► Integration (L2)          │
+│  └──────────────────────┘            │                                        │
+│                                      │                                        │
+│  performs_actions ──► Action (L3)     │                                        │
+│  actor_subscriptions ──► Subscription (L3)                                   │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                       │
+                    enforces_policies, has_roles, performs_actions,
+                    actor_subscriptions, ...
+                                       │
+                        ┌──────────────▼────────────────────────┐
+                        │  Layer 3 (Component)                   │
+                        │  Policy, Role, Action, Subscription,   │
+                        │  Component, Aggregate, Workflow, ...   │
+                        └───────────────────────────────────────┘
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

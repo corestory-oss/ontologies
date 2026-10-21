@@ -1,0 +1,109 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+
+specsh:AcyclicPremisesRuleShape a sh:NodeShape ;
+    sh:sparql specsh:AcyclicPremisesConstraint ;
+    sh:targetClass spec:Claim .
+
+specsh:AnchorCoordinatesRuleShape a sh:NodeShape ;
+    sh:sparql specsh:AnchorCoordinatesConstraint ;
+    sh:targetClass spec:EvidenceAnchor .
+
+specsh:CanonicalIdentityRuleShape a sh:NodeShape ;
+    sh:sparql specsh:CanonicalIdentityConstraint ;
+    sh:targetClass spec:SpecElement .
+
+specsh:ChosenOptionRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ChosenOptionConstraint ;
+    sh:targetClass spec:Decision .
+
+specsh:ConfidenceBasisRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ConfidenceBasisConstraint ;
+    sh:targetClass spec:Claim .
+
+specsh:InferredSupportRuleShape a sh:NodeShape ;
+    sh:sparql specsh:InferredSupportConstraint ;
+    sh:targetClass spec:Claim .
+
+specsh:ObservedSupportRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ObservedSupportConstraint ;
+    sh:targetClass spec:Claim .
+
+specsh:RemovedBaselineRuleShape a sh:NodeShape ;
+    sh:sparql specsh:RemovedBaselineConstraint ;
+    sh:targetClass spec:ChangeProposal .
+
+specsh:ReplacedBaselineRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ReplacedBaselineConstraint ;
+    sh:targetClass spec:ChangeProposal .
+
+specsh:ReviewerRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ReviewerConstraint ;
+    sh:targetClass spec:Claim .
+
+specsh:ScenarioPositionsRuleShape a sh:NodeShape ;
+    sh:sparql specsh:ScenarioPositionsConstraint ;
+    sh:targetClass spec:Scenario .
+
+specsh:AcyclicPremisesConstraint a sh:SPARQLConstraint ;
+    sh:message "Claim derivation must not be cyclic." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:derived_from_claims+ $this }""" .
+
+specsh:AnchorCoordinatesConstraint a sh:SPARQLConstraint ;
+    sh:message "Line coordinates must occur together, with line_end at least line_start." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { OPTIONAL { $this spec:line_start ?start } OPTIONAL { $this spec:line_end ?end } FILTER((BOUND(?start) && !BOUND(?end)) || (!BOUND(?start) && BOUND(?end)) || (BOUND(?start) && BOUND(?end) && ?end < ?start)) }""" .
+
+specsh:CanonicalIdentityConstraint a sh:SPARQLConstraint ;
+    sh:message "id must match the node IRI; a knowledge identity cannot be reused for a different node." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:id ?id . FILTER(STR(?id) != STR($this)) }""" .
+
+specsh:ChosenOptionConstraint a sh:SPARQLConstraint ;
+    sh:message "The chosen option must be one of the considered options." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:chosen_option ?chosen . FILTER NOT EXISTS { $this spec:options ?chosen } }""" .
+
+specsh:ConfidenceBasisConstraint a sh:SPARQLConstraint ;
+    sh:message "A confidence value needs a nonempty confidence_basis." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:confidence ?confidence . FILTER NOT EXISTS { $this spec:confidence_basis ?basis . FILTER(STRLEN(STR(?basis)) > 0) } }""" .
+
+specsh:InferredSupportConstraint a sh:SPARQLConstraint ;
+    sh:message "An inferred claim needs evidence anchors or premise claims." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:origin "inferred" . FILTER NOT EXISTS { $this spec:supporting_anchors ?anchor } FILTER NOT EXISTS { $this spec:derived_from_claims ?premise } }""" .
+
+specsh:ObservedSupportConstraint a sh:SPARQLConstraint ;
+    sh:message "An observed claim needs a supporting evidence anchor." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:origin "observed" . FILTER NOT EXISTS { $this spec:supporting_anchors ?anchor } }""" .
+
+specsh:RemovedBaselineConstraint a sh:SPARQLConstraint ;
+    sh:message "Removed requirements must belong to the baseline." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:baseline ?baseline ; spec:removes_requirements ?requirement . FILTER NOT EXISTS { ?baseline spec:requirements ?requirement } }""" .
+
+specsh:ReplacedBaselineConstraint a sh:SPARQLConstraint ;
+    sh:message "Replaced requirements must belong to the baseline." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:baseline ?baseline ; spec:replacements ?replacement . ?replacement spec:previous_requirement ?requirement . FILTER NOT EXISTS { ?baseline spec:requirements ?requirement } }""" .
+
+specsh:ReviewerConstraint a sh:SPARQLConstraint ;
+    sh:message "Accepted or rejected claims need a reviewer." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE { $this spec:review_status ?status . FILTER(?status = "accepted" || ?status = "rejected") FILTER NOT EXISTS { $this spec:reviewed_by ?reviewer } }""" .
+
+specsh:ScenarioPositionsConstraint a sh:SPARQLConstraint ;
+    sh:message "Scenario step positions must be unique and consecutive from one." ;
+    sh:select """PREFIX spec: <https://ontologies.corestory.ai/specspec/>
+SELECT $this WHERE {
+ { SELECT $this (COUNT(DISTINCT ?step) AS ?steps) (COUNT(DISTINCT ?position) AS ?positions) (MAX(?position) AS ?maximum)
+   WHERE { $this spec:steps ?step . ?step spec:position ?position } GROUP BY $this }
+ FILTER(?steps != ?positions || ?maximum != ?steps)
+}""" .

@@ -1,0 +1,416 @@
+# Editable SHACL source; SAO 3.0.0 relationship profile.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ConstraintShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Constraint/constrains>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/expression>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/parameters>,
+        <https://ontologies.corestory.ai/sao/shapes/Constraint/tags> ;
+    sh:targetClass sao:Constraint .
+
+saosh:PermissionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Permission/allows_actions>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/applies_to_resource_types>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/evaluated_by_policies>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/granted_by_roles>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/has_constraints>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/limited_by_scope>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/required_by_capabilities>,
+        <https://ontologies.corestory.ai/sao/shapes/Permission/tags> ;
+    sh:targetClass sao:Permission .
+
+saosh:PolicyShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Policy/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/enforced_by_system>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/evaluates_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/guards_routes>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/has_rules>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/policy_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/priority>,
+        <https://ontologies.corestory.ai/sao/shapes/Policy/tags> ;
+    sh:targetClass sao:Policy .
+
+saosh:RoleShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Role/assigned_to_identities>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/can_access_features>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/grants_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/inherited_by_roles>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/inherits_from_role>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/is_system_role>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Role/tags> ;
+    sh:targetClass sao:Role .
+
+saosh:ScopeShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Scope/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/limits_permissions>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/resource_pattern>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Scope/tags> ;
+    sh:targetClass sao:Scope .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constrains> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "Permissions restricted by this authorization constraint; sharing across permissions is allowed." ;
+    sh:path sao:constrains .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type> a sh:PropertyShape ;
+    sh:description "Type of constraint." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:constraint_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values> rdf:first "temporal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/1> rdf:first "spatial" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/2> rdf:first "attribute" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/3> rdf:first "context" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/constraint_type/values/cell/4> rdf:first "rate_limit" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/expression> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Constraint expression (e.g., \"hour >= 9 AND hour <= 17\")." ;
+    sh:maxCount 1 ;
+    sh:path sao:expression .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/parameters> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Constraint parameters." ;
+    sh:path sao:parameters .
+
+<https://ontologies.corestory.ai/sao/shapes/Constraint/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/allows_actions> a sh:PropertyShape ;
+    sh:class sao:Action ;
+    sh:description "`Action` entities permitted by this permission." ;
+    sh:path sao:allows_actions .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/applies_to_resource_types> a sh:PropertyShape ;
+    sh:class sao:ResourceType ;
+    sh:description "`ResourceType` entities this permission governs." ;
+    sh:path sao:applies_to_resource_types .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/evaluated_by_policies> a sh:PropertyShape ;
+    sh:class sao:Policy ;
+    sh:description "`Policy` entities evaluating this permission." ;
+    sh:path sao:evaluated_by_policies .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/granted_by_roles> a sh:PropertyShape ;
+    sh:class sao:Role ;
+    sh:description "`Role` entities that grant this permission." ;
+    sh:path sao:granted_by_roles .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/has_constraints> a sh:PropertyShape ;
+    sh:class sao:Constraint ;
+    sh:description "List of conditions that must be satisfied." ;
+    sh:path sao:has_constraints .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/limited_by_scope> a sh:PropertyShape ;
+    sh:class sao:Scope ;
+    sh:description "`Scope` entity defining boundaries." ;
+    sh:maxCount 1 ;
+    sh:path sao:limited_by_scope .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/required_by_capabilities> a sh:PropertyShape ;
+    sh:class sao:Capability ;
+    sh:description "`Capability` entities requiring this permission." ;
+    sh:path sao:required_by_capabilities .
+
+<https://ontologies.corestory.ai/sao/shapes/Permission/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/enforced_by_system> a sh:PropertyShape ;
+    sh:class sao:System ;
+    sh:description "`System` that enforces this policy." ;
+    sh:maxCount 1 ;
+    sh:path sao:enforced_by_system .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/evaluates_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities evaluated by this policy." ;
+    sh:path sao:evaluates_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/guards_routes> a sh:PropertyShape ;
+    sh:class sao:Route ;
+    sh:description "`Route` entities guarded by this policy." ;
+    sh:path sao:guards_routes .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/has_rules> a sh:PropertyShape ;
+    sh:class sao:Rule ;
+    sh:description "List of rules within this policy." ;
+    sh:path sao:has_rules .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/policy_type> a sh:PropertyShape ;
+    sh:description "Type of policy." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:policy_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values> rdf:first "rbac" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/1> rdf:first "abac" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/2> rdf:first "rebac" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/policy_type/values/cell/3> rdf:first "pbac" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/priority> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Evaluation priority (higher priority policies evaluated first)." ;
+    sh:maxCount 1 ;
+    sh:path sao:priority .
+
+<https://ontologies.corestory.ai/sao/shapes/Policy/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/assigned_to_identities> a sh:PropertyShape ;
+    sh:class sao:Identity ;
+    sh:description "`Identity` entities that have this role." ;
+    sh:path sao:assigned_to_identities .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/can_access_features> a sh:PropertyShape ;
+    sh:class sao:Feature ;
+    sh:description "`Feature` entities accessible to this role." ;
+    sh:path sao:can_access_features .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/grants_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities included in this role." ;
+    sh:path sao:grants_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/inherited_by_roles> a sh:PropertyShape ;
+    sh:class sao:Role ;
+    sh:description "Child roles that inherit from this role." ;
+    sh:path sao:inherited_by_roles .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/inherits_from_role> a sh:PropertyShape ;
+    sh:class sao:Role ;
+    sh:description "Parent role for role hierarchy." ;
+    sh:maxCount 1 ;
+    sh:path sao:inherits_from_role .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/is_system_role> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is a built-in system role." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_system_role .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Role/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/limits_permissions> a sh:PropertyShape ;
+    sh:class sao:Permission ;
+    sh:description "`Permission` entities limited by this scope." ;
+    sh:path sao:limits_permissions .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/resource_pattern> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Pattern matching resources in scope (e.g., regex, glob)." ;
+    sh:maxCount 1 ;
+    sh:path sao:resource_pattern .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type> a sh:PropertyShape ;
+    sh:description "Type of scope." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:scope_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values> rdf:first "global" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/1> rdf:first "tenant" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/2> rdf:first "organization" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/3> rdf:first "resource" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/scope_type/values/cell/4> rdf:first "field" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Scope/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

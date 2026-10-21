@@ -1,0 +1,53 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:ArtifactFragmentShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:artifact_cec1024e,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:represents_49732775,
+        specsh:selector_656c764a,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:ArtifactFragment .
+
+specsh:RepresentationProfileShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:profile_uri_8147a17f,
+        specsh:profile_version_fbc18fec,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:RepresentationProfile .
+
+specsh:SpecificationArtifactShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:generated_by_d7917e83,
+        specsh:id_8a63fba6,
+        specsh:profile_ca8db7d5,
+        specsh:represents_42eefcd1,
+        specsh:snapshot_acee3c14,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d,
+        specsh:uri_06347590 ;
+    sh:targetClass spec:SpecificationArtifact .

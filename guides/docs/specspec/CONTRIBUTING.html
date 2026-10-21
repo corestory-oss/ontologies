@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Contributing to SpecSpec · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="contributing-to-specspec">Contributing to SpecSpec</h1>
+<p>Follow the shared <a href="../../CONTRIBUTING.html">repository contribution guide</a>. Run commands from the repository root.</p>
+<p>Edit the appropriate Turtle module under <code>ontologies/specspec/vocabulary/</code>, <code>shapes/</code> or <code>axioms/</code>, and update the corresponding manifest for new files. Existing SAO link definitions remain under <code>ontologies/specspec/bridges/sao/</code> pending a separate modeling decision. Keep the independent core free of a mandatory SAO dependency.</p>
+<p>The migration baseline and regression tests document the original draft's class IRIs and constraints. A deliberate model change should update them and explain compatibility implications. Do not silently broaden the model during a tooling change.</p>
+<p>Use <code>uv run python scripts/validate_rdf.py --ontology specspec</code> for the independent example, or <code>--ontology ecosystem</code> for full composition with SAO. To reproduce the narrower endpoint-type bridge check:</p>
+<pre><code class="language-sh">uv run python scripts/validate_rdf.py --ontology specspec \
+  --sao-vocabulary dist/sao.ttl \
+  --bridge-data examples/specspec/modernization/sao-links.ttl
+</code></pre>
+<p>The endpoint-type check does not apply the full SAO instance shapes. The ecosystem profile does, using the completed synthetic callable example.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

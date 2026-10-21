@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 6: Cross-Cutting Concerns · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-6-cross-cutting-concerns">Phase 6: Cross-Cutting Concerns</h1>
+<p><strong>Input:</strong> All prior phase outputs + configs + deployment manifests + CI/CD files + test files + documentation
+<strong>Output:</strong> Classes across SAO Sections 2-3 (Identity/Auth), 8 (Deployment), 9 (Observability), 10 (Compliance), 11 (Testing), 12 (UI), 13-14 (Build/CI/CD), 15-17 (Advanced), 30 (Knowledge)</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Cross-cutting concerns span every layer of a software system. Security, identity, testing, deployment, observability, compliance, UI structure, CI/CD, concurrency, and knowledge artifacts are not confined to a single architectural tier -- they attach everywhere.</p>
+<p>This phase can start as soon as Phase 2 completes and MAY run in parallel with Phases 3-5. It is organized into two independent groups:</p>
+<ul>
+<li><strong>Group A: Security, Governance, Quality</strong> -- Identity, authorization, compliance, testing, UI, build/CI-CD, and knowledge artifacts.</li>
+<li><strong>Group B: Runtime &amp; Ops</strong> -- Deployment, observability, and concurrency.</li>
+</ul>
+<p>The two groups have no ordering dependency on each other and MAY be worked on simultaneously. Automation varies by subsection (40-80%): identity and CI/CD extraction are largely automatable from configuration files, while compliance and knowledge artifacts typically require human judgment.</p>
+<hr />
+<h2 id="2-group-a-security-governance-quality">2. Group A: Security, Governance, Quality</h2>
+<h3 id="21-identity-and-multi-tenancy">2.1 Identity and Multi-Tenancy</h3>
+<p>Extract the identity model -- how users, services, and external actors are represented and authenticated.</p>
+<p><strong>Classes:</strong> <strong>Identity</strong>, <strong>Credential</strong>, <strong>Tenant</strong>, <strong>Organization</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Identity</strong></td>
+<td><code>identity_type</code></td>
+<td><code>represents_actor</code> -&gt; <strong>Actor</strong>, <code>has_roles</code> -&gt; <strong>Role</strong>, <code>belongs_to_tenant</code> -&gt; <strong>Tenant</strong>, <code>member_of_organizations</code> -&gt; <strong>Organization</strong></td>
+</tr>
+<tr>
+<td><strong>Credential</strong></td>
+<td><code>credential_type</code>, <code>expires_at</code>, <code>is_active</code></td>
+<td>Inlined under <strong>Identity</strong> via <code>credentials</code></td>
+</tr>
+<tr>
+<td><strong>Tenant</strong></td>
+<td><code>name</code></td>
+<td><code>organizations</code> -&gt; <strong>Organization</strong>, <code>settings</code> -&gt; <strong>Configuration</strong>, <code>contains_identities</code> -&gt; <strong>Identity</strong></td>
+</tr>
+<tr>
+<td><strong>Organization</strong></td>
+<td><code>name</code></td>
+<td><code>parent</code> / <code>children</code> -&gt; <strong>Organization</strong>, <code>has_identity_members</code> -&gt; <strong>Identity</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>credential_type</code> permissible values</strong> (enum <code>CredentialType</code>):</p>
+<ul>
+<li><code>password</code></li>
+<li><code>token</code></li>
+<li><code>certificate</code></li>
+<li><code>api_key</code></li>
+<li><code>biometric</code></li>
+<li><code>mfa</code></li>
+<li><code>oauth</code></li>
+</ul>
+<p><strong>Sources:</strong> Auth configuration files, identity provider integration code (OIDC, SAML, LDAP), user model definitions, session management code.</p>
+<p><strong>Extraction guidance:</strong> Scan for authentication middleware, login controllers, and identity provider SDKs. For each distinct identity type, create an <strong>Identity</strong> and link it to the corresponding <strong>Actor</strong> via <code>represents_actor</code>. Create <strong>Credential</strong> instances for each authentication mechanism. If the system is multi-tenant, create <strong>Tenant</strong> and <strong>Organization</strong> instances from tenant configuration or database schemas.</p>
+<pre><code class="language-yaml">identities:
+  - name: UserIdentity
+    identity_type: human_user
+    represents_actor: EndUser
+    credentials:
+      - name: PasswordCredential
+        credential_type: password
+        is_active: true
+      - name: OAuthCredential
+        credential_type: oauth
+        is_active: true
+    belongs_to_tenant: DefaultTenant
+    has_roles: [CustomerRole]
+</code></pre>
+<hr />
+<h3 id="22-authorization-and-policy">2.2 Authorization and Policy</h3>
+<p>Extract the authorization model -- how permissions are granted, scoped, and enforced.</p>
+<p><strong>Classes:</strong> <strong>Role</strong>, <strong>Permission</strong>, <strong>Policy</strong>, <strong>Scope</strong>, <strong>Constraint</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td><code>name</code>, <code>is_system_role</code></td>
+<td><code>grants_permissions</code> -&gt; <strong>Permission</strong>, <code>inherits_from_role</code> -&gt; <strong>Role</strong>, <code>can_access_features</code> -&gt; <strong>Feature</strong></td>
+</tr>
+<tr>
+<td><strong>Permission</strong></td>
+<td><code>name</code></td>
+<td><code>allows_actions</code> -&gt; <strong>Action</strong>, <code>applies_to_resource_types</code> -&gt; <strong>ResourceType</strong>, <code>limited_by_scope</code> -&gt; <strong>Scope</strong></td>
+</tr>
+<tr>
+<td><strong>Policy</strong></td>
+<td><code>policy_type</code>, <code>priority</code></td>
+<td><code>evaluates_permissions</code> -&gt; <strong>Permission</strong>, <code>enforced_by_system</code> -&gt; <strong>System</strong>, <code>guards_routes</code> -&gt; <strong>Route</strong></td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td><code>scope_type</code>, <code>resource_pattern</code></td>
+<td><code>limits_permissions</code> -&gt; <strong>Permission</strong></td>
+</tr>
+<tr>
+<td><strong>Constraint</strong></td>
+<td><code>constraint_type</code>, <code>expression</code></td>
+<td>Inlined under <strong>Permission</strong> via <code>constraints</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>policy_type</code> permissible values</strong> (enum <code>PolicyType</code>):</p>
+<ul>
+<li><code>rbac</code></li>
+<li><code>abac</code></li>
+<li><code>rebac</code></li>
+<li><code>pbac</code></li>
+</ul>
+<p><strong><code>scope_type</code> permissible values</strong> (enum <code>ScopeType</code>):</p>
+<ul>
+<li><code>global</code></li>
+<li><code>tenant</code></li>
+<li><code>organization</code></li>
+<li><code>resource</code></li>
+<li><code>field</code></li>
+</ul>
+<p><strong><code>constraint_type</code> permissible values</strong> (enum <code>ConstraintType</code>):</p>
+<ul>
+<li><code>temporal</code></li>
+<li><code>spatial</code></li>
+<li><code>attribute</code></li>
+<li><code>context</code></li>
+<li><code>rate_limit</code></li>
+</ul>
+<p><strong>Sources:</strong> RBAC configuration files, <code>@PreAuthorize</code> / <code>@Secured</code> / <code>@RolesAllowed</code> annotations, policy engines (OPA, Casbin), IAM definitions (AWS IAM policies, Azure RBAC), middleware guard code.</p>
+<p><strong>Extraction guidance:</strong> Identify all roles from configuration or code annotations. For each role, create a <strong>Role</strong> and link it to the permissions it grants. Create a <strong>Policy</strong> for each distinct authorization strategy. If roles inherit from other roles, set <code>inherits_from_role</code>. Scopes and constraints SHOULD be extracted from conditional access logic (e.g., tenant-scoped queries, time-based restrictions).</p>
+<pre><code class="language-yaml">roles:
+  - name: Admin
+    is_system_role: true
+    grants_permissions: [ManageUsers, ManageOrders]
+    inherits_from_role: Viewer
+
+permissions:
+  - name: ManageUsers
+    allows_actions: [CreateUser, UpdateUser, DeleteUser]
+    applies_to_resource_types: [UserResource]
+    limited_by_scope: TenantScope
+    constraints:
+      - name: BusinessHoursOnly
+        constraint_type: temporal
+        expression: &quot;time.hour &gt;= 9 &amp;&amp; time.hour &lt;= 17&quot;
+
+policies:
+  - name: TenantRBAC
+    policy_type: rbac
+    evaluates_permissions: [ManageUsers, ManageOrders]
+
+scopes:
+  - name: TenantScope
+    scope_type: tenant
+    resource_pattern: &quot;tenant/${tenant_id}/*&quot;
+</code></pre>
+<hr />
+<h3 id="23-compliance-and-governance">2.3 Compliance and Governance</h3>
+<p>Extract compliance obligations, controls, evidence, and risk assessments.</p>
+<p><strong>Classes:</strong> <strong>ComplianceRequirement</strong>, <strong>Control</strong>, <strong>Evidence</strong>, <strong>RiskAssessment</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ComplianceRequirement</strong></td>
+<td><code>framework</code>, <code>effective_date</code></td>
+<td><code>controls</code> -&gt; <strong>Control</strong> (inlined), <code>applies_to_systems</code> -&gt; <strong>System</strong></td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td><code>control_id</code>, <code>implementation</code>, <code>frequency</code></td>
+<td><code>evidence</code> -&gt; <strong>Evidence</strong> (inlined), <code>owned_by_actor</code> -&gt; <strong>Actor</strong>, <code>mitigates_risks</code> -&gt; <strong>RiskAssessment</strong></td>
+</tr>
+<tr>
+<td><strong>Evidence</strong></td>
+<td><code>evidence_type</code>, <code>collected_at</code>, <code>artifact_uri</code></td>
+<td><code>verified_by_actor</code> -&gt; <strong>Actor</strong></td>
+</tr>
+<tr>
+<td><strong>RiskAssessment</strong></td>
+<td><code>risk_level</code>, <code>threats</code>, <code>vulnerabilities</code>, <code>residual_risk</code></td>
+<td><code>mitigated_by_controls</code> -&gt; <strong>Control</strong>, <code>assesses_system</code> -&gt; <strong>System</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>framework</code> permissible values</strong> (enum <code>ComplianceFramework</code>):</p>
+<ul>
+<li><code>gdpr</code></li>
+<li><code>hipaa</code></li>
+<li><code>soc2</code></li>
+<li><code>pci_dss</code></li>
+<li><code>iso27001</code></li>
+<li><code>sox</code></li>
+<li><code>ccpa</code></li>
+<li><code>fedramp</code></li>
+</ul>
+<p><strong>Sources:</strong> Compliance documentation, audit records, security policies, data processing agreements, privacy impact assessments.</p>
+<p><strong>Extraction guidance:</strong> Identify applicable compliance frameworks from documentation, README files, or legal notices. For each framework, create a <strong>ComplianceRequirement</strong> and list its <strong>Control</strong> instances. Controls SHOULD reference the <strong>Actor</strong> who owns them and any <strong>Evidence</strong> that proves effectiveness. <strong>RiskAssessment</strong> instances MAY be created from security review documents or threat models.</p>
+<pre><code class="language-yaml">compliance_requirements:
+  - name: GDPR Compliance
+    framework: gdpr
+    effective_date: &quot;2024-01-01T00:00:00Z&quot;
+    applies_to_systems: [OrderManagementSystem]
+    controls:
+      - name: DataEncryptionAtRest
+        control_id: GDPR-ENC-001
+        implementation: &quot;AES-256 encryption for all PII fields&quot;
+        owned_by_actor: SecurityTeam
+        evidence:
+          - name: EncryptionAuditLog
+            evidence_type: automated_scan
+            artifact_uri: &quot;s3://audits/enc-report-2024-q2.pdf&quot;
+</code></pre>
+<hr />
+<h3 id="24-testing">2.4 Testing</h3>
+<p>Catalog test suites, individual test cases, assertions, and coverage metrics.</p>
+<p><strong>Classes:</strong> <strong>TestSuite</strong>, <strong>TestCase</strong>, <strong>TestAssertion</strong>, <strong>TestCoverage</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TestSuite</strong></td>
+<td><code>suite_type</code> (required), <code>framework</code>, <code>source_location</code>, <code>total_cases</code>, <code>passing_cases</code>, <code>failing_cases</code></td>
+<td><code>contains_test_cases</code> -&gt; <strong>TestCase</strong>, <code>tests_component</code> -&gt; <strong>Component</strong>, <code>tests_module</code> -&gt; <strong>Module</strong></td>
+</tr>
+<tr>
+<td><strong>TestCase</strong></td>
+<td><code>status</code>, <code>priority</code>, <code>is_automated</code></td>
+<td><code>assertions</code> -&gt; <strong>TestAssertion</strong> (inlined), <code>belongs_to_suite</code> -&gt; <strong>TestSuite</strong>, <code>tests_callable</code> -&gt; <strong>CallableUnit</strong>, <code>tests_operation</code> -&gt; <strong>Operation</strong></td>
+</tr>
+<tr>
+<td><strong>TestAssertion</strong></td>
+<td><code>assertion_type</code>, <code>expected_value</code>, <code>line_number</code></td>
+<td>Inlined under <strong>TestCase</strong></td>
+</tr>
+<tr>
+<td><strong>TestCoverage</strong></td>
+<td><code>line_coverage_percent</code>, <code>branch_coverage_percent</code>, <code>function_coverage_percent</code>, <code>coverage_tool</code></td>
+<td><code>coverage_for_component</code> -&gt; <strong>Component</strong>, <code>coverage_for_module</code> -&gt; <strong>Module</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>suite_type</code> permissible values</strong> (enum <code>TestSuiteType</code>):</p>
+<ul>
+<li><code>unit</code></li>
+<li><code>integration</code></li>
+<li><code>functional</code></li>
+<li><code>end_to_end</code></li>
+<li><code>performance</code></li>
+<li><code>security</code></li>
+<li><code>regression</code></li>
+<li><code>smoke</code></li>
+<li><code>contract</code></li>
+</ul>
+<p><strong><code>status</code> permissible values</strong> (enum <code>TestCaseStatus</code>):</p>
+<ul>
+<li><code>passing</code></li>
+<li><code>failing</code></li>
+<li><code>skipped</code></li>
+<li><code>flaky</code></li>
+<li><code>pending</code></li>
+</ul>
+<p><strong><code>assertion_type</code> permissible values</strong> (enum <code>AssertionType</code>):</p>
+<ul>
+<li><code>equality</code></li>
+<li><code>truthiness</code></li>
+<li><code>exception</code></li>
+<li><code>type_check</code></li>
+<li><code>containment</code></li>
+<li><code>mock_verification</code></li>
+<li><code>snapshot</code></li>
+<li><code>custom</code></li>
+</ul>
+<p><strong>Sources:</strong> Test directories (<code>test/</code>, <code>tests/</code>, <code>__tests__/</code>, <code>spec/</code>), test runner configuration (Jest, pytest, JUnit, Go test), coverage reports (Istanbul, JaCoCo, coverage.py).</p>
+<p><strong>Extraction guidance:</strong> Scan test directories and files (patterns like <code>*_test.go</code>, <code>*Test.java</code>, <code>test_*.py</code>, <code>*.spec.ts</code>). Create one <strong>TestSuite</strong> per logical grouping (typically per test file or class). For each test function, create a <strong>TestCase</strong> linked to the <strong>CallableUnit</strong> or <strong>Operation</strong> it tests. Coverage data SHOULD be extracted from coverage reports if available.</p>
+<pre><code class="language-yaml">test_suites:
+  - name: UserServiceTests
+    suite_type: unit
+    framework: pytest
+    source_location: tests/test_user_service.py
+    total_cases: 12
+    passing_cases: 11
+    failing_cases: 1
+    tests_component: UserServiceComponent
+    contains_test_cases:
+      - name: test_create_user_success
+        status: passing
+        is_automated: true
+        tests_operation: CreateUserOp
+        assertions:
+          - name: assert_user_created
+            assertion_type: equality
+            expected_value: &quot;201&quot;
+
+test_coverage:
+  - name: UserServiceCoverage
+    line_coverage_percent: 87.5
+    branch_coverage_percent: 72.0
+    coverage_tool: coverage.py
+    coverage_for_component: UserServiceComponent
+</code></pre>
+<hr />
+<h3 id="25-uifrontend">2.5 UI/Frontend</h3>
+<p>Map frontend component hierarchies, routing structure, and state management.</p>
+<p><strong>Classes:</strong> <strong>UIComponent</strong>, <strong>Route</strong>, <strong>StateStore</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UIComponent</strong></td>
+<td><code>component_type</code> (required), <code>framework</code>, <code>is_lazy_loaded</code>, <code>is_server_rendered</code>, <code>source_location</code></td>
+<td><code>has_parent_ui_component</code> / <code>has_child_ui_components</code> -&gt; <strong>UIComponent</strong>, <code>renders_on_route</code> -&gt; <strong>Route</strong>, <code>managed_by_state</code> -&gt; <strong>StateStore</strong></td>
+</tr>
+<tr>
+<td><strong>Route</strong></td>
+<td><code>path_pattern</code> (required), <code>route_type</code>, <code>is_dynamic</code>, <code>is_authenticated</code></td>
+<td><code>route_renders_component</code> -&gt; <strong>UIComponent</strong>, <code>has_parent_route</code> / <code>has_child_routes</code> -&gt; <strong>Route</strong>, <code>route_guarded_by</code> -&gt; <strong>Policy</strong></td>
+</tr>
+<tr>
+<td><strong>StateStore</strong></td>
+<td><code>management_type</code> (required), <code>framework</code>, <code>actions</code>, <code>selectors</code></td>
+<td><code>manages_ui_components</code> -&gt; <strong>UIComponent</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>component_type</code> permissible values</strong> (enum <code>UIComponentType</code>):</p>
+<ul>
+<li><code>page</code></li>
+<li><code>layout</code></li>
+<li><code>form</code></li>
+<li><code>widget</code></li>
+<li><code>modal</code></li>
+<li><code>navigation</code></li>
+<li><code>data_display</code></li>
+<li><code>composite</code></li>
+<li><code>higher_order</code></li>
+<li><code>provider</code></li>
+</ul>
+<p><strong><code>route_type</code> permissible values</strong> (enum <code>RouteType</code>):</p>
+<ul>
+<li><code>page_route</code></li>
+<li><code>api_route</code></li>
+<li><code>layout_route</code></li>
+<li><code>redirect</code></li>
+<li><code>catch_all</code></li>
+<li><code>guarded</code></li>
+</ul>
+<p><strong><code>management_type</code> permissible values</strong> (enum <code>StateManagementType</code>):</p>
+<ul>
+<li><code>local_state</code></li>
+<li><code>global_store</code></li>
+<li><code>context</code></li>
+<li><code>url_state</code></li>
+<li><code>server_state</code></li>
+<li><code>form_state</code></li>
+</ul>
+<p><strong>Sources:</strong> Frontend component files (<code>.tsx</code>, <code>.vue</code>, <code>.svelte</code>), routing configuration (<code>react-router</code>, <code>vue-router</code>, Next.js <code>app/</code> directory), state management setup (Redux store, Vuex/Pinia modules, Zustand stores).</p>
+<p><strong>Extraction guidance:</strong> Walk the frontend source tree and create a <strong>UIComponent</strong> for each component file. Set <code>has_parent_ui_component</code> / <code>has_child_ui_components</code> from import analysis and JSX/template usage. Extract routes from routing configuration; for file-based routing (Next.js, Nuxt), derive <code>path_pattern</code> from directory structure. If a route requires authentication, set <code>is_authenticated</code> to <code>true</code> and link <code>route_guarded_by</code> to the relevant <strong>Policy</strong>.</p>
+<pre><code class="language-yaml">ui_components:
+  - name: DashboardPage
+    component_type: page
+    framework: react
+    source_location: src/pages/Dashboard.tsx
+    renders_on_route: [DashboardRoute]
+    managed_by_state: [AppStore]
+    child_ui_components: [OrdersWidget, UserStatsWidget]
+
+routes:
+  - name: DashboardRoute
+    path_pattern: /dashboard
+    route_type: page_route
+    is_authenticated: true
+    route_guarded_by: [TenantRBAC]
+
+state_stores:
+  - name: AppStore
+    management_type: global_store
+    framework: zustand
+    actions: [fetchOrders, updateUser]
+    selectors: [selectCurrentUser, selectOrderList]
+</code></pre>
+<hr />
+<h3 id="26-build-cicd-and-dependencies">2.6 Build, CI/CD, and Dependencies</h3>
+<p>Document build pipelines, their stages, produced artifacts, registries, and known vulnerabilities.</p>
+<p><strong>Classes:</strong> <strong>BuildPipeline</strong>, <strong>PipelineStage</strong>, <strong>BuildArtifact</strong>, <strong>ArtifactRegistry</strong>, <strong>KnownVulnerability</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BuildPipeline</strong></td>
+<td><code>pipeline_type</code> (required), <code>platform</code>, <code>trigger</code>, <code>source_file</code></td>
+<td><code>stages</code> -&gt; <strong>PipelineStage</strong> (inlined), <code>pipeline_deploys_to_environments</code> -&gt; <strong>Environment</strong>, <code>pipeline_produces_artifacts</code> -&gt; <strong>BuildArtifact</strong></td>
+</tr>
+<tr>
+<td><strong>PipelineStage</strong></td>
+<td><code>stage_type</code> (required), <code>order</code>, <code>condition</code>, <code>runner</code>, <code>is_manual</code></td>
+<td>Inlined under <strong>BuildPipeline</strong></td>
+</tr>
+<tr>
+<td><strong>BuildArtifact</strong></td>
+<td><code>artifact_type</code> (required), <code>artifact_uri</code>, <code>size_bytes</code>, <code>checksum</code></td>
+<td><code>artifact_produced_by_pipeline</code> -&gt; <strong>BuildPipeline</strong>, <code>artifact_stored_in_registry</code> -&gt; <strong>ArtifactRegistry</strong></td>
+</tr>
+<tr>
+<td><strong>ArtifactRegistry</strong></td>
+<td><code>registry_type</code>, <code>base_url</code>, <code>is_private</code></td>
+<td><code>stores_artifacts</code> -&gt; <strong>BuildArtifact</strong></td>
+</tr>
+<tr>
+<td><strong>KnownVulnerability</strong></td>
+<td><code>cve_id</code>, <code>severity</code> (required), <code>cvss_score</code>, <code>affected_versions</code>, <code>fixed_version</code></td>
+<td>Inlined under <strong>PackageDependency</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>pipeline_type</code> permissible values</strong> (enum <code>PipelineType</code>):</p>
+<ul>
+<li><code>build</code></li>
+<li><code>test</code></li>
+<li><code>deploy</code></li>
+<li><code>release</code></li>
+<li><code>integration</code></li>
+<li><code>delivery</code></li>
+<li><code>validation</code></li>
+</ul>
+<p><strong><code>stage_type</code> permissible values</strong> (enum <code>PipelineStageType</code>):</p>
+<ul>
+<li><code>checkout</code></li>
+<li><code>build</code></li>
+<li><code>test</code></li>
+<li><code>lint</code></li>
+<li><code>security_scan</code></li>
+<li><code>package</code></li>
+<li><code>publish</code></li>
+<li><code>deploy</code></li>
+<li><code>approval</code></li>
+<li><code>rollback</code></li>
+<li><code>notify</code></li>
+</ul>
+<p><strong><code>artifact_type</code> permissible values</strong> (enum <code>ArtifactType</code>):</p>
+<ul>
+<li><code>container_image</code></li>
+<li><code>binary</code></li>
+<li><code>archive</code></li>
+<li><code>package</code></li>
+<li><code>library</code></li>
+<li><code>documentation</code></li>
+<li><code>report</code></li>
+<li><code>load_module</code></li>
+</ul>
+<p><strong><code>severity</code> permissible values</strong> (enum <code>VulnerabilitySeverity</code>):</p>
+<ul>
+<li><code>critical</code></li>
+<li><code>high</code></li>
+<li><code>medium</code></li>
+<li><code>low</code></li>
+<li><code>none</code></li>
+</ul>
+<p><strong>Sources:</strong> CI/CD configuration files (<code>.github/workflows/*.yml</code>, <code>Jenkinsfile</code>, <code>.gitlab-ci.yml</code>, <code>azure-pipelines.yml</code>, <code>Makefile</code>), package manifests, vulnerability scan reports (<code>npm audit</code>, <code>snyk</code>, <code>trivy</code>).</p>
+<p><strong>Extraction guidance:</strong> Locate all CI/CD configuration files and create one <strong>BuildPipeline</strong> per pipeline definition. Parse stages in order and create <strong>PipelineStage</strong> instances with sequential <code>order</code> values. Identify produced artifacts and their registries. For known vulnerabilities, parse audit reports or lock file advisories and link <strong>KnownVulnerability</strong> instances to the affected <strong>PackageDependency</strong> (from Phase 1).</p>
+<pre><code class="language-yaml">build_pipelines:
+  - name: MainCI
+    pipeline_type: integration
+    platform: github_actions
+    source_file: .github/workflows/ci.yml
+    trigger: [push, pull_request]
+    trigger_branches: [main, &quot;feature/**&quot;]
+    pipeline_deploys_to_environments: [Staging]
+    stages:
+      - name: Checkout
+        stage_type: checkout
+        order: 1
+      - name: Lint
+        stage_type: lint
+        order: 2
+      - name: UnitTests
+        stage_type: test
+        order: 3
+      - name: BuildImage
+        stage_type: build
+        order: 4
+      - name: PushToRegistry
+        stage_type: publish
+        order: 5
+    pipeline_produces_artifacts: [AppImage]
+
+build_artifacts:
+  - name: AppImage
+    artifact_type: container_image
+    artifact_uri: &quot;ghcr.io/acme/app:latest&quot;
+    artifact_stored_in_registry: GHCRRegistry
+
+artifact_registries:
+  - name: GHCRRegistry
+    registry_type: container
+    base_url: &quot;https://ghcr.io/acme&quot;
+    is_private: true
+</code></pre>
+<hr />
+<h3 id="27-knowledge-artifacts">2.7 Knowledge Artifacts</h3>
+<p>Index documentation, decision records, runbooks, and other knowledge artifacts.</p>
+<p><strong>Class:</strong> <strong>KnowledgeArtifact</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>artifact_type</code></td>
+<td><code>KnowledgeArtifactType</code></td>
+<td>Category of the artifact</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td><code>KnowledgeArtifactStatus</code></td>
+<td>Lifecycle state</td>
+</tr>
+<tr>
+<td><code>uri</code></td>
+<td>URI</td>
+<td>Location of the artifact</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>string</td>
+<td>Inline content (optional)</td>
+</tr>
+<tr>
+<td><code>authored_by</code></td>
+<td>string (multivalued)</td>
+<td>Author names</td>
+</tr>
+<tr>
+<td><code>authored_at</code></td>
+<td>Timestamp</td>
+<td>Creation date</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Links:</strong> <code>documents_system</code>, <code>documents_bounded_context</code>, <code>documents_module</code>, <code>documents_component</code>, <code>documents_aggregate</code>, <code>documents_domain_entity</code>, <code>documents_service</code>, <code>documents_integration</code>, <code>stored_in_container</code> -&gt; <strong>CodeContainer</strong>.</p>
+<p><strong><code>artifact_type</code> permissible values</strong> (enum <code>KnowledgeArtifactType</code>):</p>
+<ul>
+<li><code>adr</code></li>
+<li><code>readme</code></li>
+<li><code>design_doc</code></li>
+<li><code>runbook</code></li>
+<li><code>wiki_page</code></li>
+<li><code>api_doc</code></li>
+<li><code>onboarding_guide</code></li>
+<li><code>postmortem</code></li>
+<li><code>changelog</code></li>
+<li><code>comment</code></li>
+<li><code>diagram</code></li>
+<li><code>rfc</code></li>
+<li><code>sop</code></li>
+</ul>
+<p><strong><code>status</code> permissible values</strong> (enum <code>KnowledgeArtifactStatus</code>):</p>
+<ul>
+<li><code>draft</code></li>
+<li><code>published</code></li>
+<li><code>accepted</code></li>
+<li><code>superseded</code></li>
+<li><code>deprecated</code></li>
+<li><code>archived</code></li>
+</ul>
+<p><strong>Sources:</strong> README files, <code>docs/</code> directories, ADR directories (<code>docs/adr/</code>, <code>docs/decisions/</code>), wiki pages, inline code comments of architectural significance.</p>
+<p><strong>Extraction guidance:</strong> Scan for documentation files (Markdown, AsciiDoc, reStructuredText) across the repository. Create a <strong>KnowledgeArtifact</strong> for each significant document and link it to the SAO entity it documents via the appropriate <code>documents_*</code> relationship. For ADRs, set <code>status</code> to <code>accepted</code> or <code>superseded</code> based on the ADR header. Supersession chains SHOULD use <code>superseded_by</code> / <code>supersedes</code> links.</p>
+<pre><code class="language-yaml">knowledge_artifacts:
+  - name: ADR-001 Use PostgreSQL
+    artifact_type: adr
+    status: accepted
+    uri: docs/adr/001-use-postgresql.md
+    authored_by: [&quot;Jane Doe&quot;]
+    documents_system: OrderManagementSystem
+
+  - name: API Reference
+    artifact_type: api_doc
+    status: published
+    uri: docs/api-reference.md
+    documents_service: OrderService
+</code></pre>
+<hr />
+<h2 id="3-group-b-runtime-ops">3. Group B: Runtime &amp; Ops</h2>
+<h3 id="31-deployment-and-operations">3.1 Deployment and Operations</h3>
+<p>Capture the deployment topology -- environments, deployment units, configuration, infrastructure, and releases.</p>
+<p><strong>Classes:</strong> <strong>Environment</strong>, <strong>Deployment</strong>, <strong>DeploymentUnit</strong>, <strong>Configuration</strong>, <strong>Infrastructure</strong>, <strong>Release</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Environment</strong></td>
+<td><code>environment_type</code></td>
+<td><code>hosts_deployments</code> -&gt; <strong>Deployment</strong>, <code>env_configured_by</code> -&gt; <strong>Configuration</strong>, <code>uses_infrastructure</code> -&gt; <strong>Infrastructure</strong>, <code>deployed_by_pipelines</code> -&gt; <strong>BuildPipeline</strong></td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td><code>replicas</code></td>
+<td><code>deploys_service</code> -&gt; <strong>Service</strong>, <code>deployed_in_environment</code> -&gt; <strong>Environment</strong>, <code>deploys_unit</code> -&gt; <strong>DeploymentUnit</strong>, <code>deployment_configured_by</code> -&gt; <strong>Configuration</strong>, <code>deploys_release</code> -&gt; <strong>Release</strong></td>
+</tr>
+<tr>
+<td><strong>DeploymentUnit</strong></td>
+<td><code>unit_type</code>, <code>artifact_uri</code>, <code>checksum</code></td>
+<td><code>deployed_in_deployments</code> -&gt; <strong>Deployment</strong></td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td><code>config_type</code>, <code>value</code>, <code>is_secret</code>, <code>source</code></td>
+<td><code>controls_features</code> -&gt; <strong>Feature</strong>, <code>configures_environments</code> -&gt; <strong>Environment</strong>, <code>configures_deployments</code> -&gt; <strong>Deployment</strong></td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td><code>infra_type</code>, <code>provider</code>, <code>region</code></td>
+<td><code>hosts_datastores</code> -&gt; <strong>DataStore</strong>, <code>used_by_environments</code> -&gt; <strong>Environment</strong>, <code>infrastructure_provisioned_by_iac</code> -&gt; <strong>IaCDefinition</strong></td>
+</tr>
+<tr>
+<td><strong>Release</strong></td>
+<td><code>version</code>, <code>changelog</code></td>
+<td><code>artifacts</code> -&gt; <strong>DeploymentUnit</strong>, <code>deployed_in_deployments_as_release</code> -&gt; <strong>Deployment</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>environment_type</code> permissible values</strong> (enum <code>EnvironmentType</code>):</p>
+<ul>
+<li><code>development</code></li>
+<li><code>testing</code></li>
+<li><code>staging</code></li>
+<li><code>production</code></li>
+<li><code>dr</code></li>
+</ul>
+<p><strong><code>unit_type</code> permissible values</strong> (enum <code>DeploymentUnitType</code>):</p>
+<ul>
+<li><code>container</code></li>
+<li><code>vm</code></li>
+<li><code>serverless_function</code></li>
+<li><code>binary</code></li>
+<li><code>package</code></li>
+</ul>
+<p><strong><code>config_type</code> permissible values</strong> (enum <code>ConfigurationType</code>):</p>
+<ul>
+<li><code>environment_variable</code></li>
+<li><code>config_file</code></li>
+<li><code>secret</code></li>
+<li><code>feature_flag</code></li>
+<li><code>remote_config</code></li>
+</ul>
+<p><strong><code>infra_type</code> permissible values</strong> (enum <code>InfrastructureType</code>):</p>
+<ul>
+<li><code>compute</code></li>
+<li><code>storage</code></li>
+<li><code>network</code></li>
+<li><code>load_balancer</code></li>
+<li><code>dns</code></li>
+<li><code>cdn</code></li>
+<li><code>firewall</code></li>
+<li><code>api_gateway</code></li>
+<li><code>service_mesh</code></li>
+</ul>
+<p><strong>Sources:</strong> Dockerfiles, Kubernetes manifests, <code>docker-compose.yml</code>, serverless configs (<code>serverless.yml</code>, <code>sam.yaml</code>), Terraform/CloudFormation definitions, Helm charts, environment-specific config files.</p>
+<p><strong>Extraction guidance:</strong> Create one <strong>Environment</strong> per deployment target. For each service deployed to an environment, create a <strong>Deployment</strong> linking the <strong>Service</strong>, <strong>Environment</strong>, and <strong>DeploymentUnit</strong>. Extract configuration from <code>.env</code> files, <code>application.yml</code>, Kubernetes ConfigMaps/Secrets -- set <code>is_secret: true</code> for sensitive values but MUST NOT include the actual secret value. Create <strong>Infrastructure</strong> instances from IaC definitions. <strong>Release</strong> instances SHOULD be created from release tags or changelogs.</p>
+<pre><code class="language-yaml">environments:
+  - name: Production
+    environment_type: production
+    uses_infrastructure: [ProdK8sCluster, ProdPostgres]
+    env_configured_by: [ProdDatabaseUrl]
+    deployed_by_pipelines: [MainCI]
+
+deployments:
+  - name: OrderServiceProd
+    replicas: 3
+    deploys_service: OrderService
+    deployed_in_environment: Production
+    deploys_unit: OrderServiceContainer
+    deploys_release: Release_v2_1_0
+
+deployment_units:
+  - name: OrderServiceContainer
+    unit_type: container
+    artifact_uri: &quot;ghcr.io/acme/order-service:2.1.0&quot;
+
+configurations:
+  - name: ProdDatabaseUrl
+    config_type: environment_variable
+    source: kubernetes_secret
+    is_secret: true
+  - name: EnableNewCheckout
+    config_type: feature_flag
+    value: &quot;true&quot;
+    is_secret: false
+
+infrastructure:
+  - name: ProdK8sCluster
+    infra_type: compute
+    provider: aws
+    region: us-east-1
+</code></pre>
+<hr />
+<h3 id="32-observability">3.2 Observability</h3>
+<p>Document metrics, logs, traces, health checks, alerts, and incidents.</p>
+<p><strong>Classes:</strong> <strong>Metric</strong>, <strong>Log</strong>, <strong>LogEntry</strong>, <strong>Trace</strong>, <strong>Span</strong>, <strong>HealthCheck</strong>, <strong>Alert</strong>, <strong>AlertRule</strong>, <strong>Incident</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metric</strong></td>
+<td><code>metric_type</code>, <code>unit</code>, <code>labels</code></td>
+<td><code>metric_emitted_by_component</code> -&gt; <strong>Component</strong>, <code>monitored_by_alert_rules</code> -&gt; <strong>AlertRule</strong></td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td><code>log_type</code></td>
+<td><code>contains_entries</code> -&gt; <strong>LogEntry</strong>, <code>log_governed_by_retention</code> -&gt; <strong>RetentionPolicy</strong></td>
+</tr>
+<tr>
+<td><strong>LogEntry</strong></td>
+<td><code>timestamp</code>, <code>level</code>, <code>message</code></td>
+<td><code>entry_in_log</code> -&gt; <strong>Log</strong></td>
+</tr>
+<tr>
+<td><strong>Trace</strong></td>
+<td><code>trace_id</code></td>
+<td><code>contains_spans</code> -&gt; <strong>Span</strong>, <code>starts_with_span</code> -&gt; <strong>Span</strong></td>
+</tr>
+<tr>
+<td><strong>Span</strong></td>
+<td><code>span_id</code>, <code>operation_name</code>, <code>start_time</code>, <code>end_time</code>, <code>status</code></td>
+<td><code>belongs_to_trace</code> -&gt; <strong>Trace</strong>, <code>child_of_span</code> / <code>parent_of_spans</code> -&gt; <strong>Span</strong></td>
+</tr>
+<tr>
+<td><strong>HealthCheck</strong></td>
+<td><code>check_type</code>, <code>endpoint</code>, <code>interval_seconds</code>, <code>timeout_seconds</code></td>
+<td>--</td>
+</tr>
+<tr>
+<td><strong>Alert</strong></td>
+<td><code>severity</code>, <code>triggered_at</code>, <code>acknowledged_at</code>, <code>resolved_at</code></td>
+<td><code>triggered_by_rule</code> -&gt; <strong>AlertRule</strong>, <code>escalates_to_incident</code> -&gt; <strong>Incident</strong></td>
+</tr>
+<tr>
+<td><strong>AlertRule</strong></td>
+<td><code>condition</code>, <code>threshold</code>, <code>duration_seconds</code>, <code>notification_channels</code></td>
+<td><code>monitors_metrics</code> -&gt; <strong>Metric</strong>, <code>triggers_alerts</code> -&gt; <strong>Alert</strong></td>
+</tr>
+<tr>
+<td><strong>Incident</strong></td>
+<td><code>severity</code>, <code>status</code>, <code>root_cause</code>, <code>postmortem_url</code></td>
+<td><code>escalated_from_alerts</code> -&gt; <strong>Alert</strong>, <code>affects_services</code> -&gt; <strong>Service</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>metric_type</code> permissible values</strong> (enum <code>MetricType</code>):</p>
+<ul>
+<li><code>counter</code></li>
+<li><code>gauge</code></li>
+<li><code>histogram</code></li>
+<li><code>summary</code></li>
+</ul>
+<p><strong><code>log_type</code> permissible values</strong> (enum <code>LogType</code>):</p>
+<ul>
+<li><code>application</code></li>
+<li><code>access</code></li>
+<li><code>error</code></li>
+<li><code>security</code></li>
+<li><code>audit</code></li>
+<li><code>debug</code></li>
+</ul>
+<p><strong><code>check_type</code> permissible values</strong> (enum <code>HealthCheckType</code>):</p>
+<ul>
+<li><code>liveness</code></li>
+<li><code>readiness</code></li>
+<li><code>dependency</code></li>
+<li><code>startup</code></li>
+</ul>
+<p><strong>Sources:</strong> Monitoring configuration (Prometheus rules, Datadog monitors, Grafana dashboards), health check endpoints (<code>/health</code>, <code>/ready</code>), alerting rules, logging configuration (log4j, Winston, slog), distributed tracing setup (OpenTelemetry, Jaeger).</p>
+<p><strong>Extraction guidance:</strong> Scan for metric definitions in code (Prometheus registrations, StatsD calls). Create a <strong>Metric</strong> for each and link it to the emitting <strong>Component</strong>. Identify logging configuration to create <strong>Log</strong> instances -- the extraction agent SHOULD NOT create individual <strong>LogEntry</strong> instances during static extraction (those are runtime artifacts). Extract health check endpoints from framework configuration (Spring Boot Actuator, Kubernetes probes). Parse alerting rules to create <strong>AlertRule</strong> instances. <strong>Incident</strong> instances MAY be created from postmortem documents.</p>
+<pre><code class="language-yaml">metrics:
+  - name: http_requests_total
+    metric_type: counter
+    unit: requests
+    labels: [method, status_code, path]
+    metric_emitted_by_component: APIGatewayComponent
+
+health_checks:
+  - name: LivenessProbe
+    check_type: liveness
+    endpoint: /health/live
+    interval_seconds: 10
+    timeout_seconds: 3
+
+alert_rules:
+  - name: HighErrorRate
+    condition: &quot;rate(http_requests_total{status_code=~'5..'}[5m]) &gt; 0.05&quot;
+    threshold: 0.05
+    duration_seconds: 300
+    notification_channels: [&quot;#alerts-critical&quot;, pagerduty]
+    monitors_metrics: [http_requests_total]
+</code></pre>
+<hr />
+<h3 id="33-concurrency-if-applicable">3.3 Concurrency (if applicable)</h3>
+<p>Document synchronization primitives and concurrency patterns. This subsection applies only to systems with explicit concurrency management. Skip it for purely request-response web applications that delegate concurrency to the framework.</p>
+<p><strong>Classes:</strong> <strong>ConcurrencyPrimitive</strong>, <strong>ConcurrencyPattern</strong></p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Key attributes</th>
+<th>Links</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ConcurrencyPrimitive</strong></td>
+<td><code>primitive_type</code> (required), <code>is_reentrant</code>, <code>timeout_ms</code>, <code>line_number</code></td>
+<td><code>used_by_callables</code> -&gt; <strong>CallableUnit</strong>, <code>protects_data_elements</code> -&gt; <strong>DataElement</strong></td>
+</tr>
+<tr>
+<td><strong>ConcurrencyPattern</strong></td>
+<td><code>pattern_type</code> (required), <code>max_concurrency</code>, <code>framework</code>, <code>shared_resources</code></td>
+<td><code>pattern_used_by_component</code> -&gt; <strong>Component</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>primitive_type</code> permissible values</strong> (enum <code>ConcurrencyPrimitiveType</code>):</p>
+<ul>
+<li><code>mutex</code></li>
+<li><code>semaphore</code></li>
+<li><code>read_write_lock</code></li>
+<li><code>spin_lock</code></li>
+<li><code>condition_variable</code></li>
+<li><code>barrier</code></li>
+<li><code>latch</code></li>
+<li><code>atomic</code></li>
+</ul>
+<p><strong><code>pattern_type</code> permissible values</strong> (enum <code>ConcurrencyPatternType</code>):</p>
+<ul>
+<li><code>thread_pool</code></li>
+<li><code>actor</code></li>
+<li><code>channel</code></li>
+<li><code>future_promise</code></li>
+<li><code>async_await</code></li>
+<li><code>fork_join</code></li>
+<li><code>producer_consumer</code></li>
+<li><code>reactor</code></li>
+<li><code>proactor</code></li>
+<li><code>csp</code></li>
+</ul>
+<p><strong>Sources:</strong> Thread management code, async runtime configuration, channel usage, lock declarations, actor system setup (Akka, Erlang/OTP), thread pool configuration.</p>
+<p><strong>Extraction guidance:</strong> Search for lock primitives (<code>sync.Mutex</code>, <code>ReentrantLock</code>, <code>threading.Lock</code>, <code>std::mutex</code>) and create <strong>ConcurrencyPrimitive</strong> instances. Identify higher-level patterns (thread pools, actor systems, async runtimes) and create <strong>ConcurrencyPattern</strong> instances. Link primitives to the <strong>CallableUnit</strong> that uses them and the <strong>DataElement</strong> they protect.</p>
+<pre><code class="language-yaml">concurrency_primitives:
+  - name: OrderCacheLock
+    primitive_type: read_write_lock
+    is_reentrant: false
+    used_by_callables:
+      - getOrderFromCache
+      - updateOrderCache
+    protects_data_elements:
+      - orderCacheMap
+
+concurrency_patterns:
+  - name: RequestWorkerPool
+    pattern_type: thread_pool
+    max_concurrency: 50
+    framework: java.util.concurrent
+    pattern_used_by_component: OrderProcessorComponent
+
+  - name: EventProcessor
+    pattern_type: async_await
+    framework: tokio
+    pattern_used_by_component: EventHandlerComponent
+</code></pre>
+<hr />
+<h2 id="4-phase-6-checklist">4. Phase 6 Checklist</h2>
+<p>Before proceeding, verify that the following items have been addressed:</p>
+<ul>
+<li>[ ] <strong>Identity and authorization model extracted</strong> -- <strong>Identity</strong>, <strong>Credential</strong>, <strong>Role</strong>, <strong>Permission</strong>, <strong>Policy</strong>, <strong>Scope</strong>, and <strong>Constraint</strong> instances created</li>
+<li>[ ] <strong>Compliance requirements documented</strong> -- <strong>ComplianceRequirement</strong>, <strong>Control</strong>, <strong>Evidence</strong>, and <strong>RiskAssessment</strong> instances created (if applicable)</li>
+<li>[ ] <strong>Test suites cataloged</strong> -- <strong>TestSuite</strong>, <strong>TestCase</strong>, and <strong>TestCoverage</strong> instances created with links to the components and operations they test</li>
+<li>[ ] <strong>UI components mapped</strong> -- <strong>UIComponent</strong>, <strong>Route</strong>, and <strong>StateStore</strong> instances created (if frontend exists)</li>
+<li>[ ] <strong>CI/CD pipelines documented</strong> -- <strong>BuildPipeline</strong>, <strong>PipelineStage</strong>, <strong>BuildArtifact</strong>, and <strong>ArtifactRegistry</strong> instances created</li>
+<li>[ ] <strong>Knowledge artifacts indexed</strong> -- <strong>KnowledgeArtifact</strong> instances created for significant documentation</li>
+<li>[ ] <strong>Deployment topology captured</strong> -- <strong>Environment</strong>, <strong>Deployment</strong>, <strong>DeploymentUnit</strong>, <strong>Configuration</strong>, <strong>Infrastructure</strong>, and <strong>Release</strong> instances created</li>
+<li>[ ] <strong>Observability infrastructure documented</strong> -- <strong>Metric</strong>, <strong>HealthCheck</strong>, <strong>AlertRule</strong>, <strong>Log</strong>, and <strong>Trace</strong> instances created</li>
+<li>[ ] <strong>Concurrency patterns noted</strong> -- <strong>ConcurrencyPrimitive</strong> and <strong>ConcurrencyPattern</strong> instances created (if applicable)</li>
+<li>[ ] All enum values use exact <code>permissible_values</code> from <code>legacy/sao/sao.yml</code></li>
+<li>[ ] Cross-references to entities from prior phases (e.g., <strong>Component</strong>, <strong>Service</strong>, <strong>Actor</strong>, <strong>Operation</strong>) are consistent</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

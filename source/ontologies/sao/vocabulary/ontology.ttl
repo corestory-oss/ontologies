@@ -1,0 +1,12 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema1: <http://schema.org/> .
+
+sao: a schema1:DefinedTermSet ;
+    dcterms:description "A comprehensive ontology for modeling software systems, including structural components, domain modeling (DDD), security, data management, integration, deployment, and observability concerns." ;
+    dcterms:hasVersion "3.0.0" ;
+    dcterms:license <https://www.apache.org/licenses/LICENSE-2.0> ;
+    dcterms:title "Systems Abstraction Ontology" .

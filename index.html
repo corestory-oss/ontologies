@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="assets/styles/site.css">
+<script defer src="assets/legacy-reference.js"></script>
+</head>
+<body class="landing">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="index.html" aria-label="CoreStory Ontologies home"><img src="assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="reference/">Explore</a><a href="guides/">Guides</a><a href="index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><div class="hero">
+<p class="eyebrow">CORESTORY OPEN ONTOLOGIES</p>
+<h1 id="understand-softwareconnect-its-evidence">Understand software.<br>Connect its evidence.</h1>
+<p class="lead">A shared vocabulary for the structures of software and the specifications, decisions, and evidence that explain it.</p>
+<div class="actions">
+<a class="button primary" href="reference/">Explore the ontologies <span aria-hidden="true">↗</span></a>
+<a class="button secondary" href="guides/">Read the guides <span aria-hidden="true">→</span></a>
+</div>
+<p class="hero-note">Authored in Turtle. Defined with RDFS, validated with SHACL, and supplemented with OWL.</p>
+</div>
+<section aria-labelledby="two-ontologies" class="ontology-section">
+<p class="eyebrow">ONE ECOSYSTEM · TWO PERSPECTIVES</p>
+<h2 id="two-ontologies">Two ontologies, a connected understanding.</h2>
+<p>Software structure and specification describe different aspects of the same system. SAO and SpecSpec give each a vocabulary, with links between them.</p>
+<div class="ontology-grid">
+<article class="ontology-card sao">
+<p class="card-kicker">SOFTWARE STRUCTURE <span>3.0.0 · candidate</span></p>
+<h3 id="sao">SAO</h3>
+<h4 id="systems-abstraction-ontology">Systems Abstraction Ontology</h4>
+<p>Describe software through its structures and abstractions: systems, modules, callable units, data stores, and their relationships.</p>
+<p><a class="text-link" href="reference/#sao:">Explore SAO →</a>
+<a class="subtle-link" href="guides/docs/sao/README.html">Read the SAO guide</a></p>
+</article>
+<article class="ontology-card specspec">
+<p class="card-kicker">SPECIFICATION &amp; EVIDENCE <span>0.1.0 · draft</span></p>
+<h3 id="specspec">SpecSpec</h3>
+<h4 id="specification-evidence-ontology">Specification &amp; Evidence Ontology</h4>
+<p>Describe requirements, claims, decisions, and supporting evidence. Connect what a system should do to what is known about its implementation.</p>
+<p><a class="text-link" href="reference/#spec:">Explore SpecSpec →</a>
+<a class="subtle-link" href="guides/docs/specspec/README.html">Read the SpecSpec guide</a></p>
+</article>
+</div>
+</section>
+<section aria-labelledby="grounded" class="connected-section">
+<p class="eyebrow">FROM STRUCTURE TO UNDERSTANDING</p>
+<h2 id="grounded">Keep specifications grounded.</h2>
+<p>Code tells part of a system's story. Requirements, business rules, and evidence add context. These ontologies support a graph that connects those perspectives, so a specification can be traced to the software and evidence behind it.</p>
+<div aria-label="Software structures connect to specifications through evidence" class="connection"><span>Software structures<small>SAO</small></span><b aria-hidden="true">↔</b><span>Specifications &amp; evidence<small>SpecSpec</small></span></div>
+<p><a href="guides/examples/ecosystem/README.html">See an example using both ontologies →</a></p>
+</section>
+<section aria-labelledby="downloads" class="download-section">
+<p class="eyebrow">USE THE VOCABULARIES</p>
+<h2 id="downloads">Take the graph with you.</h2>
+<p>Download the layers you need. The vocabularies, validation shapes, and inference supplements are separate files. The current SAO–SpecSpec bridge is available as an optional layer.</p>
+<table>
+<thead>
+<tr>
+<th>Ontology</th>
+<th>Vocabulary · RDFS</th>
+<th>Validation · SHACL</th>
+<th>Inference · OWL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SAO</strong></td>
+<td><a href="dist/sao.ttl">sao.ttl</a></td>
+<td><a href="dist/sao.shacl.ttl">sao.shacl.ttl</a></td>
+<td><a href="dist/sao.owl.ttl">sao.owl.ttl</a></td>
+</tr>
+<tr>
+<td><strong>SpecSpec</strong></td>
+<td><a href="dist/specspec.ttl">specspec.ttl</a></td>
+<td><a href="dist/specspec.shacl.ttl">specspec.shacl.ttl</a></td>
+<td><a href="dist/specspec.owl.ttl">specspec.owl.ttl</a></td>
+</tr>
+<tr>
+<td><strong>Optional bridge</strong></td>
+<td><a href="dist/specspec-sao.ttl">specspec-sao.ttl</a></td>
+<td><a href="dist/specspec-sao.shacl.ttl">specspec-sao.shacl.ttl</a></td>
+<td><a href="dist/specspec-sao.owl.ttl">specspec-sao.owl.ttl</a></td>
+</tr>
+</tbody>
+</table>
+<p>The ontologies and documentation are licensed under Apache 2.0. SAO 3.0.0 is a release candidate; SpecSpec 0.1.0 is a draft. See the <a href="guides/">guides</a> for scope and current modeling choices.</p>
+</section></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="source/LICENSE">Apache 2.0</a> · <a href="source/NOTICE">Notices</a> · <a href="snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "format": "turtle",
+  "files": [
+    "shapes/common.ttl",
+    "shapes/decisions.ttl",
+    "shapes/evidence.ttl",
+    "shapes/graph.ttl",
+    "shapes/representations.ttl",
+    "shapes/rules.ttl",
+    "shapes/specifications.ttl"
+  ]
+}

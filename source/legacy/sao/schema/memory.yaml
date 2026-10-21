@@ -1,0 +1,109 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/memory
+name: sao-memory
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  OwnershipModel:
+    description: Memory ownership models
+    permissible_values:
+      owned:
+        description: "Owned value."
+      borrowed_shared:
+        description: Shared/immutable borrow (Rust &T)
+      borrowed_mutable:
+        description: Exclusive mutable borrow (Rust &mut T)
+      moved:
+        description: "Moved value."
+      copied:
+        description: "Copied value."
+      reference_counted:
+        description: Rc/Arc (Rust), shared_ptr (C++)
+      garbage_collected:
+        description: "Garbage-collected."
+      manual:
+        description: Manual malloc/free
+      stack_allocated:
+        description: "Stack-allocated."
+
+  LifetimeScope:
+    description: Lifetime/scope of a value
+    permissible_values:
+      static_lifetime:
+        description: "Static lifetime."
+      function_scope:
+        description: "Function scope."
+      block_scope:
+        description: "Block scope."
+      named_lifetime:
+        description: Rust named lifetime ('a)
+      heap_lifetime:
+        description: "Heap lifetime."
+
+
+classes:
+  MemoryModel:
+    comments:
+      - "Enables analysis of memory safety, ownership transfer, and resource management patterns across codebases."
+    is_a: NamedEntity
+    description: >-
+      Describes how a language or module manages memory
+    attributes:
+      primary_model:
+        description: "The primary memory management approach."
+        range: OwnershipModel
+        required: true
+      gc_type:
+        range: string
+        description: GC algorithm if applicable (e.g., "generational", "mark-sweep")
+      supports_unsafe:
+        range: boolean
+        description: Whether the model allows unsafe/manual memory access
+      modules_using_memory_model:
+        description: "Modules that use this memory model."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: memory_model_for_module
+      memory_model_for_languages:
+        description: "Languages that use this as their default memory model."
+        range: ProgrammingLanguage
+        multivalued: true
+        inverse: has_default_memory_model
+
+  OwnershipAnnotation:
+    comments:
+      - "Captures fine-grained ownership and lifetime information, particularly for Rust and C++ codebases."
+    is_a: NamedEntity
+    description: >-
+      An ownership/lifetime annotation on a data element
+    attributes:
+      ownership:
+        description: "The ownership model for this element."
+        range: OwnershipModel
+        required: true
+      lifetime:
+        description: "The lifetime scope."
+        range: LifetimeScope
+      lifetime_name:
+        range: string
+        description: Named lifetime identifier (e.g., 'a in Rust)
+      annotates_data_element:
+        description: "The data element this annotation applies to."
+        range: DataElement
+        inverse: has_ownership_annotations
+

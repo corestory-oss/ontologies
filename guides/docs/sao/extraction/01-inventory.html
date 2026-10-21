@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 1: Inventory and Language Identification · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-1-inventory-and-language-identification">Phase 1: Inventory and Language Identification</h1>
+<p><strong>Input:</strong> Raw repository (source tree, build manifests, lock files)
+<strong>Output:</strong> <strong>StorageLocation</strong> hierarchy, skeletal <strong>CodeContainer</strong> instances, <strong>ProgrammingLanguage</strong> instances, <strong>PackageManager</strong>, <strong>PackageDependency</strong></p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Phase 1 is the first extraction phase and the most mechanical. It walks the repository file tree and produces a complete inventory of where code lives, what languages are used, and what external packages the project depends on. Every subsequent phase builds on this inventory.</p>
+<p>This phase is fully automatable and deterministic: given the same repository, it MUST produce the same output. No semantic reasoning is required -- only file-system traversal, extension mapping, and manifest parsing.</p>
+<p>Why it comes first: every later phase needs to know which files exist, where they are, and what language they are written in. The <strong>StorageLocation</strong> hierarchy anchors the physical structure; <strong>CodeContainer</strong> instances become the targets that Phase 2 populates with parsed code elements.</p>
+<hr />
+<h2 id="2-step-1-build-the-storagelocation-hierarchy">2. Step 1: Build the StorageLocation hierarchy</h2>
+<p>Walk the repository file tree top-down. For each directory (or platform-equivalent namespace/package), create a <strong>StorageLocation</strong> instance.</p>
+<h3 id="required-attributes">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Directory or namespace name (e.g., <code>src</code>, <code>controllers</code>, <code>com.example.orders</code>)</td>
+</tr>
+<tr>
+<td><code>location_path</code></td>
+<td>string (required)</td>
+<td>Relative path from the repository root (e.g., <code>src/main/java/com/example</code>)</td>
+</tr>
+<tr>
+<td><code>location_type</code></td>
+<td><code>StorageLocationType</code></td>
+<td>One of the permissible values below</td>
+</tr>
+</tbody>
+</table>
+<h3 id="location_type-permissible-values"><code>location_type</code> permissible values</h3>
+<ul>
+<li><code>directory</code> -- standard filesystem directory</li>
+<li><code>library</code> -- partitioned dataset or library (mainframe PDS)</li>
+<li><code>package</code> -- language-level package (e.g., Java package, Python package with <code>__init__.py</code>)</li>
+<li><code>namespace</code> -- language-level namespace (e.g., C# namespace, C++ namespace)</li>
+<li><code>module_path</code> -- Go module path or similar module-level path</li>
+</ul>
+<p>The extraction agent MUST choose the most specific applicable value. For a Java project, <code>src/main/java/com/example/orders</code> SHOULD be typed as <code>package</code>; its parent <code>src/main/java</code> SHOULD be typed as <code>directory</code>.</p>
+<h3 id="establishing-the-hierarchy">Establishing the hierarchy</h3>
+<ul>
+<li>Set <code>has_parent_location</code> on each child to reference its parent <strong>StorageLocation</strong>.</li>
+<li>Set <code>contains_locations</code> on each parent to list its children.</li>
+<li>The root <strong>StorageLocation</strong> (the repository root) has no <code>has_parent_location</code>.</li>
+</ul>
+<h3 id="module-mapping">Module mapping</h3>
+<p>The attribute <code>maps_to_module</code> links a <strong>StorageLocation</strong> to a <strong>Module</strong> instance. In Phase 1, this SHOULD be left empty unless the mapping is unambiguous (e.g., a Go module root, a Python package with a clear <code>__init__.py</code>). Module identification is the responsibility of Phase 3.</p>
+<h3 id="directories-to-skip">Directories to skip</h3>
+<p>The extraction agent SHOULD skip directories that do not contain meaningful source code:</p>
+<ul>
+<li>Version control directories (<code>.git</code>, <code>.svn</code>, <code>.hg</code>)</li>
+<li>Dependency directories (<code>node_modules</code>, <code>vendor</code>, <code>.venv</code>, <code>target</code>, <code>build</code>, <code>dist</code>)</li>
+<li>IDE directories (<code>.idea</code>, <code>.vscode</code> -- unless extracting IDE configuration is in scope)</li>
+</ul>
+<hr />
+<h2 id="3-step-2-create-codecontainer-instances">3. Step 2: Create CodeContainer instances</h2>
+<p>For each source file in the repository, create a <strong>CodeContainer</strong> instance. Non-source files (binary assets, images, fonts) SHOULD be excluded unless they are relevant to the application's structure (e.g., compiled protobuf files).</p>
+<h3 id="required-and-recommended-attributes">Required and recommended attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>inherited</td>
+<td>File name without path (e.g., <code>UserService.java</code>)</td>
+</tr>
+<tr>
+<td><code>container_path</code></td>
+<td>string</td>
+<td>yes</td>
+<td>Full relative path from repository root (e.g., <code>src/main/java/com/example/UserService.java</code>)</td>
+</tr>
+<tr>
+<td><code>container_type</code></td>
+<td><code>CodeContainerType</code></td>
+<td>recommended</td>
+<td>Mapped from file extension (see table below)</td>
+</tr>
+<tr>
+<td><code>line_count</code></td>
+<td>integer</td>
+<td>recommended</td>
+<td>Total lines in the file</td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>integer</td>
+<td>optional</td>
+<td>File size in bytes</td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>string</td>
+<td>optional</td>
+<td>Character encoding (e.g., <code>utf-8</code>, <code>ebcdic</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="container_type-permissible-values"><code>container_type</code> permissible values</h3>
+<ul>
+<li><code>source_file</code> -- standard source code file</li>
+<li><code>library_member</code> -- member of a partitioned dataset or library (mainframe)</li>
+<li><code>include_file</code> -- shared definitions file (C/C++ header, COBOL copybook)</li>
+<li><code>script</code> -- standalone script (shell, Python script, etc.)</li>
+<li><code>configuration</code> -- configuration file (<code>application.yml</code>, <code>.env</code>, etc.)</li>
+<li><code>schema_definition</code> -- schema file (OpenAPI, GraphQL, Protobuf, DDL)</li>
+<li><code>notebook_cell</code> -- Jupyter notebook or similar</li>
+<li><code>inline_code</code> -- inline code embedded in another artifact</li>
+<li><code>jcl_member</code> -- JCL member in a PDS</li>
+<li><code>rpg_source</code> -- RPG source member</li>
+<li><code>pli_source</code> -- PL/I source member</li>
+<li><code>assembler_source</code> -- assembler source member</li>
+<li><code>cl_source</code> -- IBM CL (Control Language) source</li>
+</ul>
+<h3 id="extension-to-type-mapping-heuristic">Extension-to-type mapping heuristic</h3>
+<p>The extraction agent SHOULD use file extensions to assign <code>container_type</code>. The following table covers common cases:</p>
+<table>
+<thead>
+<tr>
+<th>Extensions</th>
+<th><code>container_type</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.java</code>, <code>.py</code>, <code>.rs</code>, <code>.go</code>, <code>.ts</code>, <code>.js</code>, <code>.c</code>, <code>.cpp</code>, <code>.cs</code>, <code>.rb</code>, <code>.kt</code>, <code>.swift</code>, <code>.scala</code></td>
+<td><code>source_file</code></td>
+</tr>
+<tr>
+<td><code>.h</code>, <code>.hpp</code>, <code>.hxx</code></td>
+<td><code>include_file</code></td>
+</tr>
+<tr>
+<td><code>.cpy</code>, <code>.cbl</code>, <code>.cob</code></td>
+<td><code>source_file</code> (COBOL) or <code>include_file</code> (copybook)</td>
+</tr>
+<tr>
+<td><code>.sh</code>, <code>.bash</code>, <code>.ps1</code>, <code>.bat</code>, <code>.cmd</code></td>
+<td><code>script</code></td>
+</tr>
+<tr>
+<td><code>.yml</code>, <code>.yaml</code>, <code>.json</code>, <code>.toml</code>, <code>.ini</code>, <code>.cfg</code>, <code>.properties</code>, <code>.env</code></td>
+<td><code>configuration</code></td>
+</tr>
+<tr>
+<td><code>.proto</code>, <code>.graphql</code>, <code>.gql</code>, <code>.xsd</code>, <code>.wsdl</code>, <code>.avsc</code></td>
+<td><code>schema_definition</code></td>
+</tr>
+<tr>
+<td><code>.ipynb</code></td>
+<td><code>notebook_cell</code></td>
+</tr>
+<tr>
+<td><code>.jcl</code></td>
+<td><code>jcl_member</code></td>
+</tr>
+<tr>
+<td><code>.rpg</code>, <code>.rpgle</code></td>
+<td><code>rpg_source</code></td>
+</tr>
+<tr>
+<td><code>.pli</code></td>
+<td><code>pli_source</code></td>
+</tr>
+<tr>
+<td><code>.asm</code>, <code>.s</code></td>
+<td><code>assembler_source</code></td>
+</tr>
+<tr>
+<td><code>.clp</code>, <code>.clle</code></td>
+<td><code>cl_source</code></td>
+</tr>
+</tbody>
+</table>
+<p>When a file extension is ambiguous (e.g., <code>.json</code> could be configuration or schema), the extraction agent SHOULD default to <code>configuration</code> and let later phases reclassify.</p>
+<h3 id="linking-to-storagelocation">Linking to StorageLocation</h3>
+<p>Each <strong>CodeContainer</strong> MUST set <code>contained_in_storage_location</code> to reference the <strong>StorageLocation</strong> for the directory that contains it. The inverse attribute <code>contains_containers</code> on the <strong>StorageLocation</strong> MUST also be populated.</p>
+<h3 id="linking-to-language">Linking to language</h3>
+<p>The attribute <code>written_in_language</code> links a <strong>CodeContainer</strong> to a <strong>ProgrammingLanguage</strong> instance. Populate this after Step 3 creates the language instances.</p>
+<hr />
+<h2 id="4-step-3-identify-programming-languages">4. Step 3: Identify programming languages</h2>
+<p>Scan the <strong>CodeContainer</strong> instances created in Step 2. For each distinct programming language found, create a single <strong>ProgrammingLanguage</strong> instance.</p>
+<h3 id="attributes">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Language name (e.g., <code>Java</code>, <code>Python</code>, <code>Rust</code>, <code>COBOL</code>)</td>
+</tr>
+<tr>
+<td><code>paradigms</code></td>
+<td><code>ProgrammingParadigm</code> (multivalued)</td>
+<td>Paradigms the language supports</td>
+</tr>
+<tr>
+<td><code>type_discipline</code></td>
+<td>string</td>
+<td>Type system characterization (e.g., <code>static_strong</code>, <code>dynamic_strong</code>)</td>
+</tr>
+<tr>
+<td><code>has_preprocessor</code></td>
+<td>boolean</td>
+<td>Whether the language has a preprocessor (e.g., <code>true</code> for C/C++)</td>
+</tr>
+<tr>
+<td><code>has_gc</code></td>
+<td>boolean</td>
+<td>Whether the language has garbage collection</td>
+</tr>
+<tr>
+<td><code>year_introduced</code></td>
+<td>integer</td>
+<td>Year the language was first released (optional)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="paradigms-permissible-values"><code>paradigms</code> permissible values</h3>
+<ul>
+<li><code>object_oriented</code></li>
+<li><code>procedural</code></li>
+<li><code>functional</code></li>
+<li><code>logic</code></li>
+<li><code>concatenative</code></li>
+<li><code>data_driven</code></li>
+<li><code>multi_paradigm</code></li>
+</ul>
+<h3 id="common-language-profiles">Common language profiles</h3>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th><code>paradigms</code></th>
+<th><code>type_discipline</code></th>
+<th><code>has_gc</code></th>
+<th><code>has_preprocessor</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Java</td>
+<td><code>object_oriented</code>, <code>multi_paradigm</code></td>
+<td><code>static_strong</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>object_oriented</code>, <code>procedural</code>, <code>functional</code>, <code>multi_paradigm</code></td>
+<td><code>dynamic_strong</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>TypeScript</td>
+<td><code>object_oriented</code>, <code>functional</code>, <code>multi_paradigm</code></td>
+<td><code>static_strong</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>C</td>
+<td><code>procedural</code></td>
+<td><code>static_weak</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>C++</td>
+<td><code>object_oriented</code>, <code>procedural</code>, <code>functional</code>, <code>multi_paradigm</code></td>
+<td><code>static_strong</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>Rust</td>
+<td><code>functional</code>, <code>procedural</code>, <code>multi_paradigm</code></td>
+<td><code>static_strong</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td>Go</td>
+<td><code>procedural</code>, <code>multi_paradigm</code></td>
+<td><code>static_strong</code></td>
+<td><code>true</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td>COBOL</td>
+<td><code>procedural</code></td>
+<td><code>static_strong</code></td>
+<td><code>false</code></td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="linking-containers-to-languages">Linking containers to languages</h3>
+<p>After creating all <strong>ProgrammingLanguage</strong> instances, iterate over every <strong>CodeContainer</strong> and set <code>written_in_language</code> to the appropriate language based on file extension. The inverse attribute <code>language_used_by_containers</code> on the <strong>ProgrammingLanguage</strong> instance lists all containers using that language.</p>
+<p>Configuration files, schema definitions, and other non-source containers MAY have <code>written_in_language</code> left empty, or MAY reference a markup/data language if one has been created (e.g., a YAML language instance).</p>
+<hr />
+<h2 id="5-step-4-parse-dependency-manifests">5. Step 4: Parse dependency manifests</h2>
+<p>Identify build and dependency manifest files in the repository. For each package manager detected, create a <strong>PackageManager</strong> instance; for each declared dependency, create a <strong>PackageDependency</strong> instance.</p>
+<h3 id="identifying-manifests">Identifying manifests</h3>
+<table>
+<thead>
+<tr>
+<th>Manifest file</th>
+<th><code>manager_type</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>package.json</code></td>
+<td><code>npm</code></td>
+</tr>
+<tr>
+<td><code>requirements.txt</code>, <code>setup.py</code>, <code>setup.cfg</code>, <code>pyproject.toml</code> (with pip/setuptools)</td>
+<td><code>pip</code></td>
+</tr>
+<tr>
+<td><code>pom.xml</code></td>
+<td><code>maven</code></td>
+</tr>
+<tr>
+<td><code>build.gradle</code>, <code>build.gradle.kts</code></td>
+<td><code>gradle</code></td>
+</tr>
+<tr>
+<td><code>Cargo.toml</code></td>
+<td><code>cargo</code></td>
+</tr>
+<tr>
+<td><code>*.csproj</code>, <code>*.sln</code> (with NuGet references)</td>
+<td><code>nuget</code></td>
+</tr>
+<tr>
+<td><code>go.mod</code></td>
+<td><code>go_modules</code></td>
+</tr>
+<tr>
+<td><code>Gemfile</code></td>
+<td><code>bundler</code></td>
+</tr>
+<tr>
+<td><code>composer.json</code></td>
+<td><code>composer</code></td>
+</tr>
+<tr>
+<td><code>conanfile.txt</code>, <code>conanfile.py</code></td>
+<td><code>conan</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="packagemanager-attributes">PackageManager attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Descriptive name (e.g., <code>npm</code>, <code>Maven Central</code>)</td>
+</tr>
+<tr>
+<td><code>manager_type</code></td>
+<td><code>PackageManagerType</code> (required)</td>
+<td>One of: <code>npm</code>, <code>pip</code>, <code>maven</code>, <code>gradle</code>, <code>nuget</code>, <code>cargo</code>, <code>go_modules</code>, <code>bundler</code>, <code>composer</code>, <code>conan</code>, <code>none</code></td>
+</tr>
+<tr>
+<td><code>manifest_file</code></td>
+<td>string</td>
+<td>Path to the manifest file (e.g., <code>package.json</code>)</td>
+</tr>
+<tr>
+<td><code>lock_file</code></td>
+<td>string</td>
+<td>Path to the lock file (e.g., <code>package-lock.json</code>)</td>
+</tr>
+<tr>
+<td><code>registry_url</code></td>
+<td>URI</td>
+<td>Package registry URL (e.g., <code>https://registry.npmjs.org</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="packagedependency-attributes">PackageDependency attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Instance name for the dependency</td>
+</tr>
+<tr>
+<td><code>package_name</code></td>
+<td>string (required)</td>
+<td>Package identifier (e.g., <code>express</code>, <code>spring-boot-starter-web</code>)</td>
+</tr>
+<tr>
+<td><code>version_constraint</code></td>
+<td>string</td>
+<td>Declared version range (e.g., <code>^4.18.0</code>, <code>&gt;=3.0,&lt;4.0</code>)</td>
+</tr>
+<tr>
+<td><code>resolved_version</code></td>
+<td>string</td>
+<td>Actual resolved version from lock file (e.g., <code>4.18.2</code>)</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td><code>DependencyScope</code></td>
+<td>One of the values below</td>
+</tr>
+<tr>
+<td><code>is_direct</code></td>
+<td>boolean</td>
+<td><code>true</code> for direct dependencies, <code>false</code> for transitive</td>
+</tr>
+<tr>
+<td><code>license</code></td>
+<td>string</td>
+<td>SPDX license identifier if known (e.g., <code>MIT</code>, <code>Apache-2.0</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scope-permissible-values"><code>scope</code> permissible values</h3>
+<ul>
+<li><code>production</code> -- required at runtime</li>
+<li><code>development</code> -- development-only tooling</li>
+<li><code>test</code> -- test-only dependencies</li>
+<li><code>build</code> -- build-time only</li>
+<li><code>optional</code> -- optional/feature-gated</li>
+<li><code>provided</code> -- expected to be provided by the runtime environment</li>
+</ul>
+<h3 id="scope-mapping-from-ecosystems">Scope mapping from ecosystems</h3>
+<table>
+<thead>
+<tr>
+<th>Ecosystem</th>
+<th>Production</th>
+<th>Development</th>
+<th>Test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npm</td>
+<td><code>dependencies</code></td>
+<td><code>devDependencies</code></td>
+<td>(convention-based)</td>
+</tr>
+<tr>
+<td>Maven</td>
+<td><code>compile</code> scope</td>
+<td>--</td>
+<td><code>test</code> scope</td>
+</tr>
+<tr>
+<td>Gradle</td>
+<td><code>implementation</code></td>
+<td>--</td>
+<td><code>testImplementation</code></td>
+</tr>
+<tr>
+<td>pip</td>
+<td>main requirements</td>
+<td><code>requirements-dev.txt</code></td>
+<td><code>requirements-test.txt</code></td>
+</tr>
+<tr>
+<td>Cargo</td>
+<td><code>[dependencies]</code></td>
+<td>--</td>
+<td><code>[dev-dependencies]</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="linking-dependencies">Linking dependencies</h3>
+<p><strong>PackageDependency</strong> links to a <strong>Module</strong> via <code>dependency_of_module</code>, and <strong>PackageManager</strong> links to a <strong>Module</strong> via <code>manages_dependencies_for_module</code>. In Phase 1, if a <strong>Module</strong> has not yet been created (modules are identified in Phase 3), the extraction agent SHOULD defer these links and record the association for later stitching.</p>
+<p>For transitive dependencies (from lock files), set <code>is_direct</code> to <code>false</code> and use <code>has_transitive_dependencies</code> / <code>transitive_dependency_of</code> to establish the dependency graph between <strong>PackageDependency</strong> instances.</p>
+<p>In Phase 1, the extraction agent SHOULD focus on direct dependencies. Transitive dependencies MAY be extracted from lock files if available, but full transitive graph construction is optional.</p>
+<hr />
+<h2 id="6-yaml-output-example">6. YAML output example</h2>
+<p>The following example shows Phase 1 output for a small Node.js project with three directories, four source files, one language, and three dependencies.</p>
+<pre><code class="language-yaml"># Phase 1 output: Inventory
+# Project: my-api
+
+storage_locations:
+  - name: my-api
+    location_path: &quot;.&quot;
+    location_type: directory
+    contains_locations:
+      - src-dir
+      - src-routes-dir
+    contains_containers:
+      - package-json
+
+  - id: src-dir
+    name: src
+    location_path: src
+    location_type: directory
+    parent_location: my-api
+    contains_locations:
+      - src-routes-dir
+    contains_containers:
+      - app-ts
+      - db-ts
+
+  - id: src-routes-dir
+    name: routes
+    location_path: src/routes
+    location_type: directory
+    parent_location: src-dir
+    contains_containers:
+      - users-ts
+
+code_containers:
+  - name: package.json
+    container_path: package.json
+    container_type: configuration
+    line_count: 28
+    contained_in_storage_location: my-api
+
+  - id: app-ts
+    name: app.ts
+    container_path: src/app.ts
+    container_type: source_file
+    line_count: 45
+    contained_in_storage_location: src-dir
+    written_in_language: typescript-lang
+
+  - id: db-ts
+    name: db.ts
+    container_path: src/db.ts
+    container_type: source_file
+    line_count: 22
+    contained_in_storage_location: src-dir
+    written_in_language: typescript-lang
+
+  - id: users-ts
+    name: users.ts
+    container_path: src/routes/users.ts
+    container_type: source_file
+    line_count: 67
+    contained_in_storage_location: src-routes-dir
+    written_in_language: typescript-lang
+
+programming_languages:
+  - id: typescript-lang
+    name: TypeScript
+    paradigms:
+      - object_oriented
+      - functional
+      - multi_paradigm
+    type_discipline: static_strong
+    has_gc: true
+    has_preprocessor: false
+    language_used_by_containers:
+      - app-ts
+      - db-ts
+      - users-ts
+
+package_managers:
+  - name: npm
+    manager_type: npm
+    manifest_file: package.json
+    lock_file: package-lock.json
+    registry_url: https://registry.npmjs.org
+
+package_dependencies:
+  - name: express-dep
+    package_name: express
+    version_constraint: &quot;^4.18.0&quot;
+    resolved_version: &quot;4.18.2&quot;
+    scope: production
+    is_direct: true
+    license: MIT
+
+  - name: pg-dep
+    package_name: pg
+    version_constraint: &quot;^8.11.0&quot;
+    resolved_version: &quot;8.11.3&quot;
+    scope: production
+    is_direct: true
+    license: MIT
+
+  - name: typescript-dep
+    package_name: typescript
+    version_constraint: &quot;^5.2.0&quot;
+    resolved_version: &quot;5.3.3&quot;
+    scope: development
+    is_direct: true
+    license: Apache-2.0
+</code></pre>
+<hr />
+<h2 id="7-checklist">7. Checklist</h2>
+<p>After Phase 1 completes, verify the following:</p>
+<ul>
+<li>[ ] Every source-relevant directory has a <strong>StorageLocation</strong> instance</li>
+<li>[ ] The <strong>StorageLocation</strong> hierarchy (via <code>has_parent_location</code> / <code>contains_locations</code>) matches the actual directory structure</li>
+<li>[ ] Every source file has a <strong>CodeContainer</strong> instance with <code>container_path</code> and <code>container_type</code> set</li>
+<li>[ ] Every <strong>CodeContainer</strong> is linked to its parent <strong>StorageLocation</strong> via <code>contained_in_storage_location</code></li>
+<li>[ ] Every source-code <strong>CodeContainer</strong> has <code>written_in_language</code> set to a <strong>ProgrammingLanguage</strong> instance</li>
+<li>[ ] At least one <strong>ProgrammingLanguage</strong> instance exists with <code>paradigms</code> and <code>type_discipline</code> populated</li>
+<li>[ ] All build/dependency manifest files have been identified</li>
+<li>[ ] A <strong>PackageManager</strong> instance exists for each package manager detected</li>
+<li>[ ] All direct dependencies are captured as <strong>PackageDependency</strong> instances with <code>package_name</code>, <code>version_constraint</code>, and <code>scope</code></li>
+<li>[ ] No files from excluded directories (<code>node_modules</code>, <code>.git</code>, <code>vendor</code>, etc.) are included</li>
+</ul>
+<p>When all items pass, proceed to <a href="02-code-structure.html">Phase 2: Code Structure</a>.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

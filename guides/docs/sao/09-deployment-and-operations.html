@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 8: Deployment and Operations · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-8-deployment-and-operations">Section 8: Deployment and Operations</h1>
+<p>This section defines environments, deployments, deployment units, configuration, infrastructure, and releases.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as <code>Environment</code>, <code>Configuration</code>, <code>Infrastructure</code>, <code>Release</code>, and <code>DeploymentUnit</code> gain back-reference attributes that make navigating the ontology more explicit.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Deployment and Operations section models how software is packaged, configured, deployed, and run across different environments.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="environment">Environment</h3>
+<p><strong>Definition</strong>: A runtime context with specific configuration.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>environment_type</strong>: <code>development</code>, <code>testing</code>, <code>staging</code>, <code>production</code>, <code>dr</code></p>
+<p><strong>Relationships</strong>:
+- <strong>hosts_deployments</strong>: <code>Deployment</code> instances running in this environment
+- <strong>env_configured_by</strong>: <code>Configuration</code> entities for this environment
+- <strong>uses_infrastructure</strong>: <code>Infrastructure</code> resources used
+- <strong>deployed_by_pipelines</strong>: <code>BuildPipeline</code> entities that deploy to this environment (v2.0 back-reference)</p>
+<p><strong>Environment Types</strong>:
+- <code>development</code>: For active software development
+- <code>testing</code>: For QA and integration testing
+- <code>staging</code>: Pre-production environment mirroring production
+- <code>production</code>: Live production environment serving users
+- <code>dr</code>: Disaster recovery environment</p>
+<p><strong>Environment Characteristics</strong>:
+- Different configurations (database connections, API keys)
+- Different scale (smaller in dev, larger in prod)
+- Different monitoring and alerting levels
+- Different access controls</p>
+<hr />
+<h3 id="deployment">Deployment</h3>
+<p><strong>Definition</strong>: An instance of a service running in an environment.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>replicas</strong>: Number of instances/replicas running</p>
+<p><strong>Relationships</strong>:
+- <strong>deploys_service</strong>: The <code>Service</code> being deployed
+- <strong>deployed_in_environment</strong>: Target <code>Environment</code>
+- <strong>deploys_unit</strong>: <code>DeploymentUnit</code> being deployed
+- <strong>deployment_configured_by</strong>: <code>Configuration</code> entities
+- <strong>deploys_release</strong>: <code>Release</code> version being deployed</p>
+<p><strong>Deployment Patterns</strong>:
+- <strong>Blue-Green</strong>: Two identical environments, switch traffic
+- <strong>Canary</strong>: Gradual rollout to subset of users
+- <strong>Rolling</strong>: Replace instances gradually
+- <strong>Recreate</strong>: Stop all old, start all new
+- <strong>Shadow</strong>: Run new version alongside old for testing</p>
+<hr />
+<h3 id="deploymentunit">DeploymentUnit</h3>
+<p><strong>Definition</strong>: The packaged artifact being deployed.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>unit_type</strong>: <code>container</code>, <code>vm</code>, <code>serverless_function</code>, <code>binary</code>, <code>package</code>
+- <strong>artifact_uri</strong>: Location of the deployment artifact
+- <strong>checksum</strong>: Artifact integrity checksum</p>
+<p><strong>Back-Reference Attributes</strong> (v2.0):
+- <strong>deployed_in_deployments</strong>: <code>Deployment</code> entities that deploy this unit</p>
+<p><strong>Deployment Unit Types</strong>:
+- <code>container</code>: Docker/OCI container image
+- <code>vm</code>: Virtual machine image (AMI, qcow2)
+- <code>serverless_function</code>: Lambda/Cloud Function package
+- <code>binary</code>: Compiled executable binary
+- <code>package</code>: Application package (JAR, WAR, ZIP)</p>
+<p><strong>Artifact Management</strong>:
+- Store in artifact repository (Artifactory, Nexus, container registry)
+- Version all artifacts
+- Sign artifacts for integrity
+- Scan for vulnerabilities
+- Implement immutable artifacts (never modify, only replace)</p>
+<hr />
+<h3 id="configuration">Configuration</h3>
+<p><strong>Definition</strong>: Runtime parameters for a deployment.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>config_type</strong>: <code>environment_variable</code>, <code>config_file</code>, <code>secret</code>, <code>feature_flag</code>, <code>remote_config</code>
+- <strong>value</strong>: Configuration value
+- <strong>is_secret</strong>: Whether this is sensitive data
+- <strong>source</strong>: Configuration source (vault, config service, etc.)</p>
+<p><strong>Configuration Types</strong>:
+- <code>environment_variable</code>: OS environment variables
+- <code>config_file</code>: YAML, JSON, properties files
+- <code>secret</code>: Sensitive values (passwords, API keys) from secret manager
+- <code>feature_flag</code>: Feature toggle configuration
+- <code>remote_config</code>: Configuration from remote service (Spring Cloud Config, AWS AppConfig)</p>
+<p><strong>Back-Reference Attributes</strong> (v2.0):
+- <strong>controls_features</strong>: <code>FeatureFlag</code> entities controlled by this configuration
+- <strong>configures_environments</strong>: <code>Environment</code> entities configured
+- <strong>configures_deployments</strong>: <code>Deployment</code> entities configured</p>
+<p><strong>Configuration Best Practices</strong>:
+1. <strong>Externalize</strong>: Keep config separate from code
+2. <strong>Environment-Specific</strong>: Different values per environment
+3. <strong>Secrets Management</strong>: Use secret managers (Vault, AWS Secrets Manager)
+4. <strong>Validation</strong>: Validate configuration on startup
+5. <strong>Hot Reload</strong>: Support dynamic configuration updates when possible</p>
+<hr />
+<h3 id="infrastructure">Infrastructure</h3>
+<p><strong>Definition</strong>: The underlying compute, storage, and network resources.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>infra_type</strong>: <code>compute</code>, <code>storage</code>, <code>network</code>, <code>load_balancer</code>, <code>dns</code>, <code>cdn</code>, <code>firewall</code>, <code>api_gateway</code>, <code>service_mesh</code>
+- <strong>provider</strong>: Cloud or infrastructure provider (AWS, Azure, GCP, on-premise)
+- <strong>region</strong>: Geographic region
+- <strong>specifications</strong>: Resource specifications (instance type, size, etc.)</p>
+<p><strong>Relationships</strong>:
+- <strong>used_by_environments</strong>: <code>Environment</code> entities using this infrastructure
+- <strong>hosts_datastores</strong>: <code>DataStore</code> entities hosted
+- <strong>infrastructure_provisioned_by_iac</strong>: <code>IaCDefinition</code> entities provisioning this infrastructure (v2.0 back-reference)</p>
+<p><strong>Infrastructure Types</strong>:
+- <code>compute</code>: VMs, containers, serverless compute
+- <code>storage</code>: Disks, volumes, object storage
+- <code>network</code>: VPC, subnets, routing
+- <code>load_balancer</code>: Application/network load balancers
+- <code>dns</code>: Domain name services
+- <code>cdn</code>: Content delivery networks
+- <code>firewall</code>: Security groups, network ACLs
+- <code>api_gateway</code>: API gateway or ingress controller
+- <code>service_mesh</code>: Service mesh control plane (Istio, Linkerd, etc.)</p>
+<p><strong>Infrastructure as Code (IaC)</strong>:
+- Terraform, CloudFormation, Pulumi
+- Version control infrastructure definitions
+- Automated provisioning and configuration
+- Reproducible environments
+- Drift detection</p>
+<hr />
+<h3 id="release">Release</h3>
+<p><strong>Definition</strong>: A versioned, deployable package of changes.</p>
+<p><strong>Key Attributes</strong>:
+- Implements <code>Versionable</code> mixin
+- <strong>version</strong>: Semantic version number
+- <strong>changelog</strong>: Release notes describing changes
+- <strong>artifacts</strong>: List of <code>DeploymentUnit</code> entities</p>
+<p><strong>Back-Reference Attributes</strong> (v2.0):
+- <strong>deployed_in_deployments_as_release</strong>: <code>Deployment</code> entities that deploy this release</p>
+<p><strong>Release Process</strong>:
+1. <strong>Build</strong>: Compile and package code
+2. <strong>Test</strong>: Run automated tests
+3. <strong>Stage</strong>: Deploy to staging environment
+4. <strong>Approve</strong>: Manual or automated approval gate
+5. <strong>Deploy</strong>: Deploy to production
+6. <strong>Monitor</strong>: Monitor for issues
+7. <strong>Rollback</strong>: Rollback if problems detected</p>
+<p><strong>Semantic Versioning (SemVer)</strong>:
+- <strong>MAJOR</strong>: Incompatible API changes (1.0.0 -&gt; 2.0.0)
+- <strong>MINOR</strong>: Backward-compatible functionality (1.0.0 -&gt; 1.1.0)
+- <strong>PATCH</strong>: Backward-compatible bug fixes (1.0.0 -&gt; 1.0.1)</p>
+<hr />
+<h2 id="deployment-strategies">Deployment Strategies</h2>
+<h3 id="blue-green-deployment">Blue-Green Deployment</h3>
+<ul>
+<li>Maintain two identical environments (Blue and Green)</li>
+<li>Deploy new version to idle environment</li>
+<li>Switch traffic to new environment</li>
+<li>Keep old environment for quick rollback</li>
+</ul>
+<p><strong>Pros</strong>: Zero downtime, easy rollback
+<strong>Cons</strong>: Requires double infrastructure</p>
+<h3 id="canary-deployment">Canary Deployment</h3>
+<ul>
+<li>Deploy new version to small subset of instances</li>
+<li>Monitor metrics and errors</li>
+<li>Gradually increase traffic to new version</li>
+<li>Rollback if issues detected</li>
+</ul>
+<p><strong>Pros</strong>: Reduces blast radius, early detection
+<strong>Cons</strong>: Requires traffic splitting, more complex</p>
+<h3 id="rolling-deployment">Rolling Deployment</h3>
+<ul>
+<li>Replace instances one at a time</li>
+<li>Health check each new instance before continuing</li>
+<li>Continue until all instances replaced</li>
+</ul>
+<p><strong>Pros</strong>: No extra infrastructure needed
+<strong>Cons</strong>: Mixed versions during deployment</p>
+<h3 id="feature-flags">Feature Flags</h3>
+<ul>
+<li>Deploy code with features disabled</li>
+<li>Enable features dynamically via configuration</li>
+<li>Decouple deployment from feature release</li>
+</ul>
+<p><strong>Pros</strong>: Instant rollback, gradual rollout, A/B testing
+<strong>Cons</strong>: Code complexity, technical debt</p>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="deployment-automation">Deployment Automation</h3>
+<ol>
+<li><strong>CI/CD Pipeline</strong>: Automate build, test, deploy</li>
+<li><strong>Immutable Infrastructure</strong>: Replace, don't modify</li>
+<li><strong>Automated Testing</strong>: Run tests before deployment</li>
+<li><strong>Deployment Gates</strong>: Approval and validation gates</li>
+<li><strong>Rollback Automation</strong>: Automated rollback on failure</li>
+</ol>
+<h3 id="configuration-management">Configuration Management</h3>
+<ol>
+<li><strong>12-Factor App</strong>: Follow 12-factor principles</li>
+<li><strong>Secrets Rotation</strong>: Rotate secrets regularly</li>
+<li><strong>Configuration Validation</strong>: Validate on startup</li>
+<li><strong>Least Privilege</strong>: Minimal permissions for services</li>
+<li><strong>Audit Logging</strong>: Log all configuration changes</li>
+</ol>
+<h3 id="environment-management">Environment Management</h3>
+<ol>
+<li><strong>Parity</strong>: Keep dev, staging, prod as similar as possible</li>
+<li><strong>Isolation</strong>: Isolate environments (network, IAM)</li>
+<li><strong>Environment Variables</strong>: Use env vars for environment-specific config</li>
+<li><strong>Testing in Production-Like</strong>: Test in staging that mirrors production</li>
+<li><strong>Cost Management</strong>: Right-size non-production environments</li>
+</ol>
+<h3 id="release-management">Release Management</h3>
+<ol>
+<li><strong>Versioning</strong>: Use semantic versioning</li>
+<li><strong>Changelog</strong>: Maintain detailed changelogs</li>
+<li><strong>Release Notes</strong>: Document changes for users</li>
+<li><strong>Rollback Plan</strong>: Have rollback plan for every release</li>
+<li><strong>Communication</strong>: Communicate releases to stakeholders</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Services are deployed</li>
+<li><strong>Section 6 (Data Management)</strong>: Data stores hosted on infrastructure</li>
+<li><strong>Section 9 (Observability)</strong>: Deployments emit metrics and logs</li>
+<li><strong>Section 10 (Governance)</strong>: Infrastructure must comply with requirements</li>
+</ul>
+<hr />
+<h2 id="example-microservice-deployment">Example: Microservice Deployment</h2>
+<pre><code>Release: OrderService v2.3.1
+  Version: 2.3.1
+  Changelog: &quot;Fixed payment validation bug, improved performance&quot;
+  Artifacts:
+    - DeploymentUnit: order-service:2.3.1
+      Type: CONTAINER
+      URI: docker.io/mycompany/order-service:2.3.1
+      Checksum: sha256:abc123...
+
+Environments:
+  Development:
+    Infrastructure:
+      - Type: COMPUTE (t3.small EC2)
+      - Region: us-east-1
+    Configuration:
+      - DB_HOST: dev-db.internal (ENVIRONMENT_VARIABLE)
+      - LOG_LEVEL: DEBUG
+      - STRIPE_API_KEY: (SECRET from AWS Secrets Manager)
+
+  Production:
+    Infrastructure:
+      - Type: COMPUTE (EKS cluster with c5.2xlarge nodes)
+      - Region: us-east-1, us-west-2 (multi-region)
+      - Type: LOAD_BALANCER (Application Load Balancer)
+      - Type: CDN (CloudFront)
+    Configuration:
+      - DB_HOST: prod-db.rds.amazonaws.com
+      - LOG_LEVEL: INFO
+      - STRIPE_API_KEY: (SECRET from AWS Secrets Manager)
+      - ENABLE_NEW_PRICING: true (FEATURE_FLAG)
+
+Deployment Strategy: Canary
+  Step 1: Deploy to 5% of instances
+    - Monitor error rate, latency, CPU, memory
+    - Duration: 30 minutes
+
+  Step 2: Deploy to 25% if metrics healthy
+    - Monitor same metrics
+    - Duration: 1 hour
+
+  Step 3: Deploy to 100% if metrics healthy
+    - Full rollout
+
+  Rollback Trigger:
+    - Error rate &gt; 1%
+    - p99 latency &gt; 500ms
+    - Manual rollback command
+
+Monitoring:
+  - Health checks: /health/live, /health/ready
+  - Metrics: request_rate, error_rate, latency_p99, cpu_usage, memory_usage
+  - Alerts: High error rate, high latency, health check failures
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

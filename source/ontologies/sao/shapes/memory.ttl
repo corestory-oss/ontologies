@@ -1,0 +1,220 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:MemoryModelShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/MemoryModel/description>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/gc_type>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/id>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/memory_model_for_languages>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/modules_using_memory_model>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/name>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/supports_unsafe>,
+        <https://ontologies.corestory.ai/sao/shapes/MemoryModel/tags> ;
+    sh:targetClass sao:MemoryModel .
+
+saosh:OwnershipAnnotationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/annotates_data_element>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime_name>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership>,
+        <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/tags> ;
+    sh:targetClass sao:OwnershipAnnotation .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/gc_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "GC algorithm if applicable (e.g., \"generational\", \"mark-sweep\")" ;
+    sh:maxCount 1 ;
+    sh:path sao:gc_type .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/memory_model_for_languages> a sh:PropertyShape ;
+    sh:class sao:ProgrammingLanguage ;
+    sh:description "Languages that use this as their default memory model." ;
+    sh:path sao:memory_model_for_languages .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/modules_using_memory_model> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Modules that use this memory model." ;
+    sh:path sao:modules_using_memory_model .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model> a sh:PropertyShape ;
+    sh:description "The primary memory management approach." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:primary_model .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values> rdf:first "owned" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/1> rdf:first "borrowed_shared" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/2> rdf:first "borrowed_mutable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/3> rdf:first "moved" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/4> rdf:first "copied" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/5> rdf:first "reference_counted" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/6> rdf:first "garbage_collected" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/7> rdf:first "manual" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/primary_model/values/cell/8> rdf:first "stack_allocated" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/supports_unsafe> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the model allows unsafe/manual memory access" ;
+    sh:maxCount 1 ;
+    sh:path sao:supports_unsafe .
+
+<https://ontologies.corestory.ai/sao/shapes/MemoryModel/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/annotates_data_element> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "The data element this annotation applies to." ;
+    sh:maxCount 1 ;
+    sh:path sao:annotates_data_element .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime> a sh:PropertyShape ;
+    sh:description "The lifetime scope." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:lifetime .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values> rdf:first "static_lifetime" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/1> rdf:first "function_scope" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/2> rdf:first "block_scope" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/3> rdf:first "named_lifetime" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime/values/cell/4> rdf:first "heap_lifetime" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/lifetime_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Named lifetime identifier (e.g., 'a in Rust)" ;
+    sh:maxCount 1 ;
+    sh:path sao:lifetime_name .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership> a sh:PropertyShape ;
+    sh:description "The ownership model for this element." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:ownership .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values> rdf:first "owned" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/1> rdf:first "borrowed_shared" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/2> rdf:first "borrowed_mutable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/3> rdf:first "moved" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/4> rdf:first "copied" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/5> rdf:first "reference_counted" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/6> rdf:first "garbage_collected" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/7> rdf:first "manual" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/ownership/values/cell/8> rdf:first "stack_allocated" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/OwnershipAnnotation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

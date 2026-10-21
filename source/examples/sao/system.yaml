@@ -1,0 +1,13 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+id: ecommerce-platform
+name: E-Commerce Platform
+contains_bounded_contexts:
+  - id: catalog-context
+    name: Catalog Context
+  - id: order-context
+    name: Order Context
+  - id: customer-context
+    name: Customer Context
+  - id: payment-context
+    name: Payment Context

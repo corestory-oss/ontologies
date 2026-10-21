@@ -1,0 +1,95 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+
+spec:SpecificationGraph a rdfs:Class ;
+    rdfs:label "SpecificationGraph" ;
+    rdfs:comment "An exchange envelope containing identified knowledge items and their references. Sources and software graphs may be stored separately." ;
+    rdfs:isDefinedBy spec: .
+
+spec:activities a rdf:Property ;
+    rdfs:label "activities" ;
+    rdfs:comment "[SpecificationGraph] Inline records of SpecActivity items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecActivity .
+
+spec:agents a rdf:Property ;
+    rdfs:label "agents" ;
+    rdfs:comment "[SpecificationGraph] Inline records of SpecAgent items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecAgent .
+
+spec:anchors a rdf:Property ;
+    rdfs:label "anchors" ;
+    rdfs:comment "[SpecificationGraph] Inline records of EvidenceAnchor items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:EvidenceAnchor .
+
+spec:change_proposals a rdf:Property ;
+    rdfs:label "change_proposals" ;
+    rdfs:comment "[SpecificationGraph] Inline records of ChangeProposal items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ChangeProposal .
+
+spec:decision_options a rdf:Property ;
+    rdfs:label "decision_options" ;
+    rdfs:comment "[SpecificationGraph] Inline records of DecisionOption items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:DecisionOption .
+
+spec:fragments a rdf:Property ;
+    rdfs:label "fragments" ;
+    rdfs:comment "[SpecificationGraph] Inline records of ArtifactFragment items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ArtifactFragment .
+
+spec:profiles a rdf:Property ;
+    rdfs:label "profiles" ;
+    rdfs:comment "[SpecificationGraph] Inline records of RepresentationProfile items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:RepresentationProfile .
+
+spec:requirement_replacements a rdf:Property ;
+    rdfs:label "requirement_replacements" ;
+    rdfs:comment "[SpecificationGraph] Inline records of RequirementReplacement items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:RequirementReplacement .
+
+spec:scenario_steps a rdf:Property ;
+    rdfs:label "scenario_steps" ;
+    rdfs:comment "[SpecificationGraph] Inline records of ScenarioStep items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ScenarioStep .
+
+spec:snapshots a rdf:Property ;
+    rdfs:label "snapshots" ;
+    rdfs:comment "[SpecificationGraph] Inline records of SourceSnapshot items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SourceSnapshot .
+
+spec:specifications a rdf:Property ;
+    rdfs:label "specifications" ;
+    rdfs:comment "[SpecificationGraph] Inline records of Specification items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Specification .
+
+spec:verification_results a rdf:Property ;
+    rdfs:label "verification_results" ;
+    rdfs:comment "[SpecificationGraph] Inline records of VerificationResult items; relationships between records use their identifiers." ;
+    rdfs:domain spec:SpecificationGraph ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:VerificationResult .

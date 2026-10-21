@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Contributing to SAO · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="contributing-to-sao">Contributing to SAO</h1>
+<p>Follow the shared <a href="../../CONTRIBUTING.html">repository contribution guide</a>. Run commands from the repository root.</p>
+<p>Edit vocabulary under <code>ontologies/sao/vocabulary/</code>, constraints under <code>ontologies/sao/shapes/</code>, and reviewed inverse axioms under <code>ontologies/sao/axioms/</code>. Update manifests when adding files. Rebuild and commit the <code>dist/sao.*ttl</code> distributions with source edits.</p>
+<p>The <a href="inverse-relationships.html">inverse audit</a> and <a href="migration-3.0.html">3.0.0 migration notes</a> explain relationship compatibility. Do not reinterpret class-local inverses as global OWL axioms without reviewing all uses. Add valid and invalid examples for changed constraints.</p>
+<p>The historical LinkML baseline and its check commands are documented under <a href="../../legacy/sao/README.html">legacy/sao/</a>. It is not the source for current Turtle authoring.</p>
+<p>Use <strong>bold</strong> for class names in prose and <code>monospace</code> for exact property names, enum values and dotted paths. Keep synthetic examples and preserved Apache attribution.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,4226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Layer 4: Code-Level Representation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="layer-4-code-level-representation">Layer 4: Code-Level Representation</h1>
+<p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 4 (Code)</strong> -- a faithful, close-to-code representation of a software codebase <strong>as written</strong>: source files, their internal structure, and the relationships between code elements. It does not cover architectural abstractions (Components, BoundedContexts), runtime behavior (Deployments, Environments), or operational concerns (Observability, Compliance). The document covers 21 primary classes and 8 supporting classes (29 total).</p>
+<p>Two profiles are defined: <strong>Modern</strong> (OOP, functional, and multi-paradigm languages) and <strong>Legacy</strong> (COBOL, RPG, PL/I, Assembler, and other procedural/mainframe languages). The profiles share a common core and diverge where the programming models differ.</p>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Class</th>
+<th>Definition</th>
+<th>Modern</th>
+<th>Legacy</th>
+<th>SAO Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>CodeContainer</td>
+<td>A physical container of source code -- a file, library member, or other storage unit</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>2</td>
+<td>StorageLocation</td>
+<td>A logical or physical location for storing code containers (directory, PDS library, package)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>3</td>
+<td>EncapsulationUnit</td>
+<td>A logical boundary grouping related code and data (class, module, program, copybook)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CallableUnit</td>
+<td>A named, invocable unit of code (method, function, paragraph, procedure, lambda)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>5</td>
+<td>DataStructure</td>
+<td>A composite data type grouping related data elements (struct, record, group item, DTO)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>6</td>
+<td>DataElement</td>
+<td>An individual data field, variable, or constant</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Parameter</td>
+<td>An input/output parameter for a callable unit</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ControlFlow</td>
+<td>Control flow between code elements -- calls, branches, jumps</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>9</td>
+<td>DataFlow</td>
+<td>Data flow between code elements -- reads, writes, assignments</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>10</td>
+<td>TypeExpression</td>
+<td>A recursive type model for complex types (generics, unions, pointers, function types)</td>
+<td>Yes</td>
+<td>--</td>
+<td>18</td>
+</tr>
+<tr>
+<td>11</td>
+<td>ExceptionType</td>
+<td>A declared exception or error type with hierarchy support</td>
+<td>Yes</td>
+<td>--</td>
+<td>19</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Operation</td>
+<td>A named, invocable unit of behavior exposed via a component's interface (API endpoint)</td>
+<td>Yes</td>
+<td>--</td>
+<td>6</td>
+</tr>
+<tr>
+<td>13</td>
+<td>FileDefinition</td>
+<td>A file defined for I/O in a program (COBOL SELECT/FD, VSAM dataset)</td>
+<td>--</td>
+<td>Yes</td>
+<td>20</td>
+</tr>
+<tr>
+<td>14</td>
+<td>FileOperation</td>
+<td>An individual I/O operation on a file (READ, WRITE, REWRITE, DELETE)</td>
+<td>--</td>
+<td>Yes</td>
+<td>20</td>
+</tr>
+<tr>
+<td>15</td>
+<td>ScreenDefinition</td>
+<td>A terminal screen or map definition (BMS map, RPG display file, MFS format)</td>
+<td>--</td>
+<td>Yes</td>
+<td>21</td>
+</tr>
+<tr>
+<td>16</td>
+<td>ScreenField</td>
+<td>An individual field on a terminal screen with row/column position</td>
+<td>--</td>
+<td>Yes</td>
+<td>21</td>
+</tr>
+<tr>
+<td>17</td>
+<td>JobDefinition</td>
+<td>A batch job definition (JCL JOB, scheduler entry)</td>
+<td>--</td>
+<td>Yes</td>
+<td>22</td>
+</tr>
+<tr>
+<td>18</td>
+<td>JobStep</td>
+<td>A single step within a batch job (JCL EXEC statement)</td>
+<td>--</td>
+<td>Yes</td>
+<td>22</td>
+</tr>
+<tr>
+<td>19</td>
+<td>DatasetAllocation</td>
+<td>A dataset allocation within a job step (JCL DD statement)</td>
+<td>--</td>
+<td>Yes</td>
+<td>22</td>
+</tr>
+<tr>
+<td>20</td>
+<td>IPCConnection</td>
+<td>A communication link between two programs or processes (CICS LINK, shared memory, pipes)</td>
+<td>--</td>
+<td>Yes</td>
+<td>23</td>
+</tr>
+<tr>
+<td>21</td>
+<td>PreprocessorDirective</td>
+<td>A preprocessor directive or metaprogramming construct (COPY REPLACING, #ifdef, macros)</td>
+<td>--</td>
+<td>Yes</td>
+<td>24</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Supporting classes</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>22</td>
+<td>CodeBlock</td>
+<td>A logical grouping of statements within a callable unit (conditional, loop, try-catch)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Statement</td>
+<td>A single executable instruction or declaration with line number</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>24</td>
+<td>ProgrammingLanguage</td>
+<td>A programming language with paradigms, type discipline, and runtime characteristics</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>28</td>
+</tr>
+<tr>
+<td>25</td>
+<td>ErrorModel</td>
+<td>Describes how a module or language handles errors (exceptions, error codes, monadic, etc.)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>19</td>
+</tr>
+<tr>
+<td>26</td>
+<td>MemoryModel</td>
+<td>Describes how a language or module manages memory (GC, manual, ownership)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>25</td>
+</tr>
+<tr>
+<td>27</td>
+<td>OwnershipAnnotation</td>
+<td>An ownership or lifetime annotation on a data element (Rust borrows, C++ smart pointers)</td>
+<td>Yes</td>
+<td>--</td>
+<td>25</td>
+</tr>
+<tr>
+<td>28</td>
+<td>PlatformExtension</td>
+<td>Abstract base for platform-specific extensions</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+<tr>
+<td>29</td>
+<td>ExecutionEnvironmentDirective</td>
+<td>Platform-specific execution directives (Docker Compose, K8s manifests, Makefiles)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p>Primary classes: Modern 12, Legacy 18, Shared core 9. Supporting classes: 8 (shared across both profiles).</p>
+<hr />
+<h2 id="base-class-namedentity">Base Class: NamedEntity</h2>
+<p>All classes in this layer inherit from <code>NamedEntity</code>, which provides:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>id</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Unique identifier (LinkML identifier)</td>
+</tr>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Human-readable name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>No</td>
+<td>Free-text description</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Arbitrary tags for categorization</td>
+</tr>
+<tr>
+<td><code>metadata</code></td>
+<td>Metadata</td>
+<td>No</td>
+<td>Inline metadata (created_at, updated_at, created_by, version)</td>
+</tr>
+</tbody>
+</table>
+<p><code>CodeContainer</code> additionally implements the <code>Versionable</code> mixin, which adds <code>version</code> (SemanticVersion), <code>effective_from</code>, <code>effective_to</code>, and <code>is_current</code>.</p>
+<hr />
+<h2 id="shared-core-9-classes">Shared Core (9 classes)</h2>
+<p>These classes appear in both Modern and Legacy profiles.</p>
+<h3 id="1-codecontainer">1. CodeContainer</h3>
+<p>A physical container of source code -- a file, library member, or other storage unit.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container_path</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Path or identifier for the container</td>
+</tr>
+<tr>
+<td><code>container_type</code></td>
+<td>CodeContainerType</td>
+<td>No</td>
+<td>Kind of container (see enum below)</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>string</td>
+<td>No</td>
+<td><strong>Deprecated</strong> -- use <code>written_in_language</code></td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>File size in bytes</td>
+</tr>
+<tr>
+<td><code>line_count</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of source lines</td>
+</tr>
+<tr>
+<td><code>encoding</code></td>
+<td>string</td>
+<td>No</td>
+<td>Character encoding (UTF-8, EBCDIC, etc.)</td>
+</tr>
+<tr>
+<td><code>checksum</code></td>
+<td>string</td>
+<td>No</td>
+<td>Content hash for change detection</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_storage_location</code></td>
+<td>StorageLocation</td>
+<td>No</td>
+<td><code>contains_containers</code></td>
+<td>Parent directory or library</td>
+</tr>
+<tr>
+<td><code>contains_encapsulation_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td>--</td>
+<td>Logical units defined in this file</td>
+</tr>
+<tr>
+<td><code>contains_code_elements</code></td>
+<td>EncapsulationUnit | CallableUnit | DataStructure</td>
+<td>Yes</td>
+<td><code>defined_in_container</code></td>
+<td>All code elements (global slot)</td>
+</tr>
+<tr>
+<td><code>references_containers</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>referenced_by_containers</code></td>
+<td>Containers this one references</td>
+</tr>
+<tr>
+<td><code>referenced_by_containers</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>references_containers</code></td>
+<td>Containers that reference this one</td>
+</tr>
+<tr>
+<td><code>includes_definitions</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>included_in_containers</code></td>
+<td>Included/copied definitions</td>
+</tr>
+<tr>
+<td><code>included_in_containers</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>includes_definitions</code></td>
+<td>Containers that include this one</td>
+</tr>
+<tr>
+<td><code>has_references</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td><code>referencing_container</code></td>
+<td>Import/include statements originating here</td>
+</tr>
+<tr>
+<td><code>referenced_via</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td><code>referenced_container</code></td>
+<td>Import/include statements targeting here</td>
+</tr>
+<tr>
+<td><code>written_in_language</code></td>
+<td>ProgrammingLanguage</td>
+<td>No</td>
+<td><code>language_used_by_containers</code></td>
+<td>Programming language</td>
+</tr>
+<tr>
+<td><code>implements_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>implemented_by_code</code></td>
+<td>Architectural component (global slot, Layer 2+)</td>
+</tr>
+<tr>
+<td><code>has_file_definitions</code></td>
+<td>FileDefinition</td>
+<td>Yes</td>
+<td><code>file_defined_in_container</code></td>
+<td>File I/O definitions (Legacy)</td>
+</tr>
+<tr>
+<td><code>has_screen_definitions</code></td>
+<td>ScreenDefinition</td>
+<td>Yes</td>
+<td><code>screen_defined_in_container</code></td>
+<td>Screen definitions (Legacy)</td>
+</tr>
+<tr>
+<td><code>has_preprocessor_directives</code></td>
+<td>PreprocessorDirective</td>
+<td>Yes</td>
+<td><code>directive_defined_in_container</code></td>
+<td>Preprocessor directives (Legacy)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CodeContainerType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+<th>Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source_file</code></td>
+<td>Standard source code file</td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>library_member</code></td>
+<td>Member of a PDS or library</td>
+<td>Legacy</td>
+</tr>
+<tr>
+<td><code>include_file</code></td>
+<td>Header or shared definitions file</td>
+<td>Both</td>
+</tr>
+<tr>
+<td><code>script</code></td>
+<td>Executable script</td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>configuration</code></td>
+<td>Configuration file (Dockerfile, Terraform, CI YAML, etc.)</td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>schema_definition</code></td>
+<td>Database or API schema file</td>
+<td>Both</td>
+</tr>
+<tr>
+<td><code>notebook_cell</code></td>
+<td>Jupyter notebook cell</td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>inline_code</code></td>
+<td>Embedded code (JS in HTML, SQL in app)</td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>jcl_member</code></td>
+<td>JCL member in a PDS</td>
+<td>Legacy</td>
+</tr>
+<tr>
+<td><code>rpg_source</code></td>
+<td>RPG source member</td>
+<td>Legacy</td>
+</tr>
+<tr>
+<td><code>pli_source</code></td>
+<td>PL/I source member</td>
+<td>Legacy</td>
+</tr>
+<tr>
+<td><code>assembler_source</code></td>
+<td>Assembler source member</td>
+<td>Legacy</td>
+</tr>
+<tr>
+<td><code>cl_source</code></td>
+<td>IBM CL (Control Language) source</td>
+<td>Legacy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="2-storagelocation">2. StorageLocation</h3>
+<p>A logical or physical location for storing code containers.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>location_path</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Path or identifier</td>
+</tr>
+<tr>
+<td><code>location_type</code></td>
+<td>StorageLocationType</td>
+<td>No</td>
+<td>Kind of location</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_parent_location</code></td>
+<td>StorageLocation</td>
+<td>No</td>
+<td><code>contains_locations</code></td>
+<td>Parent in hierarchy</td>
+</tr>
+<tr>
+<td><code>contains_locations</code></td>
+<td>StorageLocation</td>
+<td>Yes</td>
+<td><code>has_parent_location</code></td>
+<td>Child locations</td>
+</tr>
+<tr>
+<td><code>contains_containers</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>contained_in_storage_location</code></td>
+<td>Code containers in this location</td>
+</tr>
+<tr>
+<td><code>maps_to_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>mapped_from_directory</code></td>
+<td>Architectural module (Layer 2+)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>StorageLocationType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Profile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>directory</code></td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>library</code></td>
+<td>Legacy (PDS, partitioned dataset)</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>namespace</code></td>
+<td>Modern</td>
+</tr>
+<tr>
+<td><code>module_path</code></td>
+<td>Modern</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="3-encapsulationunit">3. EncapsulationUnit</h3>
+<p>A logical boundary that groups related code and data. This is the cornerstone of SAO's paradigm-agnostic design -- a single class represents Java classes, Python modules, COBOL programs, Haskell modules, and more.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>encapsulation_type</code></td>
+<td>EncapsulationType</td>
+<td><strong>Yes</strong></td>
+<td>Paradigm-specific type (see enum)</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>VisibilityType</td>
+<td>No</td>
+<td>Access level (public, private, etc.)</td>
+</tr>
+<tr>
+<td><code>qualified_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Fully qualified name (e.g., <code>com.example.UserService</code>)</td>
+</tr>
+<tr>
+<td><code>stereotype</code></td>
+<td>string</td>
+<td>No</td>
+<td>Pattern role (Service, Repository, DTO, Controller)</td>
+</tr>
+<tr>
+<td><code>is_abstract</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether abstract/incomplete</td>
+</tr>
+<tr>
+<td><code>is_final</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether extensible</td>
+</tr>
+<tr>
+<td><code>is_reusable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether designed for reuse</td>
+</tr>
+<tr>
+<td><code>line_start</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Starting line in source</td>
+</tr>
+<tr>
+<td><code>line_end</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ending line in source</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>contains_code_elements</code></td>
+<td>Source file (global slot)</td>
+</tr>
+<tr>
+<td><code>contains_callable_units</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>contained_in_unit</code></td>
+<td>Methods, functions, paragraphs</td>
+</tr>
+<tr>
+<td><code>contains_data_structures</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td>--</td>
+<td>Data structures in this unit</td>
+</tr>
+<tr>
+<td><code>contains_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td>--</td>
+<td>Fields/variables (global slot)</td>
+</tr>
+<tr>
+<td><code>extends_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>extended_by_units</code></td>
+<td>Inheritance/extension</td>
+</tr>
+<tr>
+<td><code>extended_by_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>extends_units</code></td>
+<td>Subclasses</td>
+</tr>
+<tr>
+<td><code>implements_contracts</code></td>
+<td>Contract</td>
+<td>Yes</td>
+<td><code>implemented_by_units</code></td>
+<td>Interface implementation</td>
+</tr>
+<tr>
+<td><code>uses_definitions</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td>--</td>
+<td>Imports/includes used</td>
+</tr>
+<tr>
+<td><code>implements_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>implemented_by_code</code></td>
+<td>Architectural link (global slot, Layer 2+)</td>
+</tr>
+<tr>
+<td><code>annotated_by</code></td>
+<td>Annotation</td>
+<td>Yes</td>
+<td><code>annotates_element</code></td>
+<td>Annotations/decorators (global slot)</td>
+</tr>
+<tr>
+<td><code>imported_via</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td><code>imports_symbols</code></td>
+<td>How this unit is imported (global slot)</td>
+</tr>
+<tr>
+<td><code>error_model_for_module</code></td>
+<td>ErrorModel</td>
+<td>No</td>
+<td><code>modules_using_error_model</code></td>
+<td>Error handling strategy</td>
+</tr>
+<tr>
+<td><code>memory_model_for_module</code></td>
+<td>MemoryModel</td>
+<td>No</td>
+<td><code>modules_using_memory_model</code></td>
+<td>Memory management model</td>
+</tr>
+<tr>
+<td><code>screen_used_by_programs</code></td>
+<td>ScreenDefinition</td>
+<td>Yes</td>
+<td><code>program_uses_screens</code></td>
+<td>Terminal screens (Legacy)</td>
+</tr>
+<tr>
+<td><code>has_outgoing_ipc_connections</code></td>
+<td>IPCConnection</td>
+<td>Yes</td>
+<td><code>has_source_program</code></td>
+<td>Outbound IPC (Legacy)</td>
+</tr>
+<tr>
+<td><code>has_incoming_ipc_connections</code></td>
+<td>IPCConnection</td>
+<td>Yes</td>
+<td><code>has_target_program</code></td>
+<td>Inbound IPC (Legacy)</td>
+</tr>
+<tr>
+<td><code>affected_by_directives</code></td>
+<td>PreprocessorDirective</td>
+<td>Yes</td>
+<td><code>directive_affects_encapsulation_units</code></td>
+<td>Preprocessor (Legacy)</td>
+</tr>
+<tr>
+<td><code>executed_by_job_steps</code></td>
+<td>JobStep</td>
+<td>Yes</td>
+<td><code>step_executes_program</code></td>
+<td>JCL execution (Legacy)</td>
+</tr>
+<tr>
+<td><code>encapsulation_unit_renders_ui</code></td>
+<td>UIComponent</td>
+<td>No</td>
+<td><code>ui_implements_encapsulation_unit</code></td>
+<td>UI component link</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EncapsulationType Enum (33 values):</strong></p>
+<p><em>Object-Oriented (Modern):</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class</code></td>
+<td>Standard OOP class</td>
+</tr>
+<tr>
+<td><code>interface</code></td>
+<td>Interface or contract</td>
+</tr>
+<tr>
+<td><code>abstract_class</code></td>
+<td>Abstract base class</td>
+</tr>
+<tr>
+<td><code>trait</code></td>
+<td>Trait (Rust, Scala) or mixin</td>
+</tr>
+<tr>
+<td><code>enum_class</code></td>
+<td>Enumeration class</td>
+</tr>
+<tr>
+<td><code>record_class</code></td>
+<td>Immutable record (Java records, C# records)</td>
+</tr>
+<tr>
+<td><code>singleton</code></td>
+<td>Singleton pattern</td>
+</tr>
+</tbody>
+</table>
+<p><em>Procedural / Functional (Modern):</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>program</code></td>
+<td>Standalone program</td>
+</tr>
+<tr>
+<td><code>subprogram</code></td>
+<td>Callable subprogram or subroutine library</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>Pascal/Delphi unit</td>
+</tr>
+<tr>
+<td><code>module</code></td>
+<td>Functional module (Haskell, OCaml, F#)</td>
+</tr>
+<tr>
+<td><code>namespace</code></td>
+<td>Namespace grouping</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Package (Ada, Go)</td>
+</tr>
+<tr>
+<td><code>library</code></td>
+<td>Library module</td>
+</tr>
+<tr>
+<td><code>object</code></td>
+<td>JavaScript/prototype-based object</td>
+</tr>
+</tbody>
+</table>
+<p><em>Web / Application (Modern):</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>component</code></td>
+<td>UI component (React, Angular, Vue)</td>
+</tr>
+<tr>
+<td><code>service</code></td>
+<td>Service class</td>
+</tr>
+<tr>
+<td><code>controller</code></td>
+<td>Controller (MVC pattern)</td>
+</tr>
+<tr>
+<td><code>script</code></td>
+<td>Script module</td>
+</tr>
+<tr>
+<td><code>composite</code></td>
+<td>Composite structure</td>
+</tr>
+</tbody>
+</table>
+<p><em>Database:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stored_procedure</code></td>
+<td>Database stored procedure package</td>
+</tr>
+<tr>
+<td><code>function_package</code></td>
+<td>PL/SQL or T-SQL function package</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>Database trigger</td>
+</tr>
+<tr>
+<td><code>view</code></td>
+<td>Database view definition</td>
+</tr>
+</tbody>
+</table>
+<p><em>Mainframe / Legacy:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>batch_program</code></td>
+<td>Batch processing program</td>
+</tr>
+<tr>
+<td><code>online_program</code></td>
+<td>Online transaction program (CICS, IMS)</td>
+</tr>
+<tr>
+<td><code>copybook</code></td>
+<td>COBOL copybook or include file</td>
+</tr>
+<tr>
+<td><code>rpg_module</code></td>
+<td>RPG module</td>
+</tr>
+<tr>
+<td><code>rpg_service_program</code></td>
+<td>RPG service program</td>
+</tr>
+<tr>
+<td><code>pli_procedure</code></td>
+<td>PL/I external procedure</td>
+</tr>
+<tr>
+<td><code>pli_package</code></td>
+<td>PL/I package</td>
+</tr>
+<tr>
+<td><code>assembler_csect</code></td>
+<td>Assembler control section (CSECT)</td>
+</tr>
+</tbody>
+</table>
+<p>| <code>other</code> | Catch-all |</p>
+<hr />
+<h3 id="4-callableunit">4. CallableUnit</h3>
+<p>A named, invocable unit of code. Paradigm-agnostic representation of methods, functions, paragraphs, procedures, lambdas, and more.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>callable_type</code></td>
+<td>CallableType</td>
+<td><strong>Yes</strong></td>
+<td>Paradigm-specific type (see enum)</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>VisibilityType</td>
+<td>No</td>
+<td>Access level</td>
+</tr>
+<tr>
+<td><code>callable_category</code></td>
+<td>CallableCategory</td>
+<td>No</td>
+<td><code>normal</code>, <code>operator</code>, or <code>main_entry</code></td>
+</tr>
+<tr>
+<td><code>return_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Return type as string</td>
+</tr>
+<tr>
+<td><code>is_async</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Asynchronous</td>
+</tr>
+<tr>
+<td><code>is_pure</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Pure function (no side effects)</td>
+</tr>
+<tr>
+<td><code>is_static</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Static/class-level</td>
+</tr>
+<tr>
+<td><code>is_virtual</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Virtual/overridable</td>
+</tr>
+<tr>
+<td><code>is_override</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Overrides parent</td>
+</tr>
+<tr>
+<td><code>is_recursive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Self-referencing</td>
+</tr>
+<tr>
+<td><code>is_inline</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Inline expansion</td>
+</tr>
+<tr>
+<td><code>calling_convention</code></td>
+<td>string</td>
+<td>No</td>
+<td>ABI calling convention</td>
+</tr>
+<tr>
+<td><code>line_start</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Starting line</td>
+</tr>
+<tr>
+<td><code>line_end</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ending line</td>
+</tr>
+<tr>
+<td><code>entry_point_type</code></td>
+<td>EntryPointType</td>
+<td>No</td>
+<td>If this is a program entry point</td>
+</tr>
+<tr>
+<td><code>documentation</code></td>
+<td>string</td>
+<td>No</td>
+<td>Docstring or comment</td>
+</tr>
+<tr>
+<td><code>complexity_score</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Cyclomatic complexity or similar metric</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>contains_callable_units</code></td>
+<td>Parent unit (global slot)</td>
+</tr>
+<tr>
+<td><code>defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>contains_code_elements</code></td>
+<td>Source file (global slot)</td>
+</tr>
+<tr>
+<td><code>has_parameters</code></td>
+<td>Parameter</td>
+<td>Yes</td>
+<td><code>parameter_of</code></td>
+<td>Parameters</td>
+</tr>
+<tr>
+<td><code>invokes_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>invoked_by_callables</code></td>
+<td>Outbound calls</td>
+</tr>
+<tr>
+<td><code>invoked_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>invokes_callables</code></td>
+<td>Inbound callers</td>
+</tr>
+<tr>
+<td><code>accesses_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td>--</td>
+<td>Data read</td>
+</tr>
+<tr>
+<td><code>modifies_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td>--</td>
+<td>Data written</td>
+</tr>
+<tr>
+<td><code>overrides_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td><code>overridden_by_callables</code></td>
+<td>Overridden parent</td>
+</tr>
+<tr>
+<td><code>overridden_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>overrides_callable</code></td>
+<td>Overriding children</td>
+</tr>
+<tr>
+<td><code>contains_blocks</code></td>
+<td>CodeBlock</td>
+<td>Yes</td>
+<td><code>contained_in_callable</code></td>
+<td>Nested code blocks</td>
+</tr>
+<tr>
+<td><code>tested_by_cases</code></td>
+<td>TestCase</td>
+<td>Yes</td>
+<td><code>tests_callable</code></td>
+<td>Test cases</td>
+</tr>
+<tr>
+<td><code>uses_concurrency_primitives</code></td>
+<td>ConcurrencyPrimitive</td>
+<td>Yes</td>
+<td><code>used_by_callables</code></td>
+<td>Locks, semaphores, etc.</td>
+</tr>
+<tr>
+<td><code>annotated_by</code></td>
+<td>Annotation</td>
+<td>Yes</td>
+<td><code>annotates_element</code></td>
+<td>Annotations (global slot)</td>
+</tr>
+<tr>
+<td><code>imported_via</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td><code>imports_symbols</code></td>
+<td>Import reference (global slot)</td>
+</tr>
+<tr>
+<td><code>implements_operation</code></td>
+<td>Operation</td>
+<td>No</td>
+<td><code>implemented_by_callables</code></td>
+<td>API operation (Modern)</td>
+</tr>
+<tr>
+<td><code>raises_exception_types</code></td>
+<td>ExceptionType</td>
+<td>Yes</td>
+<td><code>raised_by_callables</code></td>
+<td>Exceptions thrown (Modern)</td>
+</tr>
+<tr>
+<td><code>handles_exception_types</code></td>
+<td>ExceptionType</td>
+<td>Yes</td>
+<td><code>handled_by_callables</code></td>
+<td>Exceptions caught (Modern)</td>
+</tr>
+<tr>
+<td><code>has_return_type</code></td>
+<td>TypeExpression</td>
+<td>No</td>
+<td><code>return_type_of_callables</code></td>
+<td>Structured return type (Modern)</td>
+</tr>
+<tr>
+<td><code>uses_file_definitions</code></td>
+<td>FileDefinition</td>
+<td>Yes</td>
+<td><code>used_by_callables</code></td>
+<td>Files used (Legacy)</td>
+</tr>
+<tr>
+<td><code>has_file_operations</code></td>
+<td>FileOperation</td>
+<td>Yes</td>
+<td><code>performed_in_callable</code></td>
+<td>I/O operations (Legacy)</td>
+</tr>
+<tr>
+<td><code>callable_affected_by_directives</code></td>
+<td>PreprocessorDirective</td>
+<td>Yes</td>
+<td><code>directive_affects_callables</code></td>
+<td>Preprocessor (Legacy)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CallableType Enum (53 values):</strong></p>
+<p><em>Object-Oriented:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>method</code></td>
+<td>Instance method</td>
+</tr>
+<tr>
+<td><code>static_method</code></td>
+<td>Static/class method</td>
+</tr>
+<tr>
+<td><code>constructor</code></td>
+<td>Object constructor</td>
+</tr>
+<tr>
+<td><code>destructor</code></td>
+<td>Object destructor</td>
+</tr>
+<tr>
+<td><code>property_getter</code></td>
+<td>Property getter</td>
+</tr>
+<tr>
+<td><code>property_setter</code></td>
+<td>Property setter</td>
+</tr>
+<tr>
+<td><code>operator_overload</code></td>
+<td>Operator overloading</td>
+</tr>
+<tr>
+<td><code>conversion_operator</code></td>
+<td>Type conversion</td>
+</tr>
+<tr>
+<td><code>indexer</code></td>
+<td>Indexer/subscript</td>
+</tr>
+<tr>
+<td><code>abstract_method</code></td>
+<td>Abstract method</td>
+</tr>
+<tr>
+<td><code>virtual_method</code></td>
+<td>Virtual/overridable method</td>
+</tr>
+</tbody>
+</table>
+<p><em>Procedural:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>function</code></td>
+<td>Function</td>
+</tr>
+<tr>
+<td><code>procedure</code></td>
+<td>Procedure/subroutine</td>
+</tr>
+<tr>
+<td><code>subroutine</code></td>
+<td>Subroutine</td>
+</tr>
+<tr>
+<td><code>paragraph</code></td>
+<td>COBOL paragraph</td>
+</tr>
+<tr>
+<td><code>section</code></td>
+<td>COBOL section</td>
+</tr>
+<tr>
+<td><code>rpg_subprocedure</code></td>
+<td>RPG subprocedure</td>
+</tr>
+<tr>
+<td><code>rpg_subroutine</code></td>
+<td>RPG subroutine</td>
+</tr>
+<tr>
+<td><code>pli_entry</code></td>
+<td>PL/I entry point</td>
+</tr>
+<tr>
+<td><code>assembler_entry</code></td>
+<td>Assembler entry point</td>
+</tr>
+</tbody>
+</table>
+<p><em>Functional:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lambda</code></td>
+<td>Anonymous lambda</td>
+</tr>
+<tr>
+<td><code>closure</code></td>
+<td>Closure</td>
+</tr>
+<tr>
+<td><code>higher_order_function</code></td>
+<td>Higher-order function</td>
+</tr>
+<tr>
+<td><code>curried_function</code></td>
+<td>Curried function</td>
+</tr>
+<tr>
+<td><code>functor</code></td>
+<td>Functor</td>
+</tr>
+</tbody>
+</table>
+<p><em>Event Handling:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_handler</code></td>
+<td>Event handler</td>
+</tr>
+<tr>
+<td><code>callback</code></td>
+<td>Callback function</td>
+</tr>
+<tr>
+<td><code>delegate</code></td>
+<td>Delegate</td>
+</tr>
+<tr>
+<td><code>signal_handler</code></td>
+<td>Signal handler</td>
+</tr>
+</tbody>
+</table>
+<p><em>Database:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stored_procedure</code></td>
+<td>Database stored procedure</td>
+</tr>
+<tr>
+<td><code>stored_function</code></td>
+<td>Database function</td>
+</tr>
+<tr>
+<td><code>trigger_body</code></td>
+<td>Trigger implementation</td>
+</tr>
+<tr>
+<td><code>cursor</code></td>
+<td>Database cursor</td>
+</tr>
+</tbody>
+</table>
+<p><em>Concurrency:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>coroutine</code></td>
+<td>Coroutine</td>
+</tr>
+<tr>
+<td><code>generator</code></td>
+<td>Generator function</td>
+</tr>
+<tr>
+<td><code>async_function</code></td>
+<td>Async function</td>
+</tr>
+<tr>
+<td><code>thread_entry</code></td>
+<td>Thread entry point</td>
+</tr>
+<tr>
+<td><code>task</code></td>
+<td>Task/future</td>
+</tr>
+</tbody>
+</table>
+<p><em>Testing:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>test_case</code></td>
+<td>Test case</td>
+</tr>
+<tr>
+<td><code>test_fixture</code></td>
+<td>Test fixture/setup</td>
+</tr>
+<tr>
+<td><code>mock</code></td>
+<td>Mock function</td>
+</tr>
+</tbody>
+</table>
+<p><em>Other:</em></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>macro</code></td>
+<td>Preprocessor macro</td>
+</tr>
+<tr>
+<td><code>template</code></td>
+<td>Template function (C++)</td>
+</tr>
+<tr>
+<td><code>generic_method</code></td>
+<td>Generic method</td>
+</tr>
+<tr>
+<td><code>main_entry</code></td>
+<td>Main entry point</td>
+</tr>
+<tr>
+<td><code>interrupt_handler</code></td>
+<td>Interrupt handler</td>
+</tr>
+<tr>
+<td><code>exception_handler</code></td>
+<td>Exception handler</td>
+</tr>
+<tr>
+<td><code>finalizer</code></td>
+<td>Finalizer/cleanup</td>
+</tr>
+<tr>
+<td><code>factory_method</code></td>
+<td>Factory method</td>
+</tr>
+<tr>
+<td><code>extension_method</code></td>
+<td>Extension method</td>
+</tr>
+<tr>
+<td><code>script_function</code></td>
+<td>Script function</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>Command/action</td>
+</tr>
+<tr>
+<td><code>other</code></td>
+<td>Catch-all</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EntryPointType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>main_program</code></td>
+<td>Main program entry</td>
+</tr>
+<tr>
+<td><code>transaction_entry</code></td>
+<td>Online transaction entry (CICS)</td>
+</tr>
+<tr>
+<td><code>event_handler</code></td>
+<td>Event-driven entry</td>
+</tr>
+<tr>
+<td><code>scheduled_entry</code></td>
+<td>Scheduled/cron entry</td>
+</tr>
+<tr>
+<td><code>api_endpoint</code></td>
+<td>API endpoint handler</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="5-datastructure">5. DataStructure</h3>
+<p>A composite data type grouping related data elements.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structure_type</code></td>
+<td>DataStructureType</td>
+<td><strong>Yes</strong></td>
+<td>Paradigm-specific type (see enum)</td>
+</tr>
+<tr>
+<td><code>structure_category</code></td>
+<td>DataStructureCategory</td>
+<td>No</td>
+<td><code>composite</code>, <code>collection</code>, <code>hierarchical</code>, <code>value_type</code>, <code>reference_type</code>, <code>union</code></td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>VisibilityType</td>
+<td>No</td>
+<td>Access level</td>
+</tr>
+<tr>
+<td><code>is_mutable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Mutable or immutable</td>
+</tr>
+<tr>
+<td><code>is_nested</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether nested inside another structure</td>
+</tr>
+<tr>
+<td><code>nesting_level</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Depth (especially for COBOL level numbers)</td>
+</tr>
+<tr>
+<td><code>is_packed</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Packed/compressed layout</td>
+</tr>
+<tr>
+<td><code>alignment</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Memory alignment in bytes</td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Total size</td>
+</tr>
+<tr>
+<td><code>is_serializable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether serializable</td>
+</tr>
+<tr>
+<td><code>persistence_type</code></td>
+<td>PersistenceType</td>
+<td>No</td>
+<td>How persisted (transient, database, file, etc.)</td>
+</tr>
+<tr>
+<td><code>line_start</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Starting line</td>
+</tr>
+<tr>
+<td><code>line_end</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ending line</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>contains_data_structures</code></td>
+<td>Parent unit (global slot)</td>
+</tr>
+<tr>
+<td><code>defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>contains_code_elements</code></td>
+<td>Source file (global slot)</td>
+</tr>
+<tr>
+<td><code>structure_contains_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td><code>contained_in_structure</code></td>
+<td>Fields in this structure</td>
+</tr>
+<tr>
+<td><code>contains_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td>--</td>
+<td>Fields (global slot)</td>
+</tr>
+<tr>
+<td><code>has_parent_structure</code></td>
+<td>DataStructure</td>
+<td>No</td>
+<td><code>has_child_structures</code></td>
+<td>Parent (nested structures)</td>
+</tr>
+<tr>
+<td><code>has_child_structures</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td><code>has_parent_structure</code></td>
+<td>Children (nested structures)</td>
+</tr>
+<tr>
+<td><code>maps_to_domain_entity</code></td>
+<td>DomainEntity</td>
+<td>No</td>
+<td><code>mapped_from_structure</code></td>
+<td>Domain entity link (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>maps_to_value_object</code></td>
+<td>ValueObject</td>
+<td>No</td>
+<td><code>mapped_from_structure_vo</code></td>
+<td>Value object link (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>persisted_in_collection</code></td>
+<td>Collection</td>
+<td>No</td>
+<td><code>persists_structures</code></td>
+<td>Database collection (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>annotated_by</code></td>
+<td>Annotation</td>
+<td>Yes</td>
+<td><code>annotates_element</code></td>
+<td>Annotations (global slot)</td>
+</tr>
+<tr>
+<td><code>imported_via</code></td>
+<td>DefinitionReference</td>
+<td>Yes</td>
+<td><code>imports_symbols</code></td>
+<td>Import reference (global slot)</td>
+</tr>
+<tr>
+<td><code>passed_via_ipc</code></td>
+<td>IPCConnection</td>
+<td>Yes</td>
+<td><code>ipc_passes_data</code></td>
+<td>IPC data passing (Legacy)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DataStructureType Enum (50 values):</strong></p>
+<p><em>Object-Oriented:</em>
+<code>class_data</code>, <code>inner_class</code>, <code>anonymous_class</code></p>
+<p><em>Procedural:</em>
+<code>struct</code>, <code>record</code>, <code>union</code></p>
+<p><em>COBOL / Mainframe:</em>
+<code>group_item</code>, <code>copybook_structure</code>, <code>commarea</code>, <code>linkage_section</code>, <code>cobol_file_descriptor</code>, <code>rpg_data_structure</code>, <code>pli_structure</code>, <code>assembler_dsect</code></p>
+<p><em>Functional:</em>
+<code>algebraic_data_type</code>, <code>type_class</code>, <code>product_type</code>, <code>sum_type</code></p>
+<p><em>Collections:</em>
+<code>array</code>, <code>dynamic_array</code>, <code>list</code>, <code>dictionary</code>, <code>set</code>, <code>queue</code>, <code>stack</code>, <code>tree</code>, <code>graph</code></p>
+<p><em>Database:</em>
+<code>table_structure</code>, <code>view_structure</code>, <code>cursor_structure</code>, <code>rowtype</code></p>
+<p><em>DDD:</em>
+<code>value_object</code>, <code>dto</code></p>
+<p><em>Serialization:</em>
+<code>json_schema</code>, <code>xml_schema</code>, <code>protobuf_message</code>, <code>avro_record</code></p>
+<p><em>Other:</em>
+<code>tuple</code>, <code>pair</code>, <code>enum</code>, <code>flags</code>, <code>configuration_object</code>, <code>message</code>, <code>event</code>, <code>command</code>, <code>smart_pointer</code>, <code>reference_wrapper</code>, <code>opaque_type</code>, <code>variant</code>, <code>other</code></p>
+<hr />
+<h3 id="6-dataelement">6. DataElement</h3>
+<p>An individual data field, variable, or constant.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_type</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Data type as string. <strong>Deprecated for typed analysis</strong> -- use <code>declared_type</code></td>
+</tr>
+<tr>
+<td><code>element_category</code></td>
+<td>DataElementCategory</td>
+<td>No</td>
+<td><code>field</code>, <code>static_field</code>, <code>local_variable</code>, <code>parameter</code>, <code>constant</code>, <code>global_variable</code>, <code>computed</code>, <code>temporary</code></td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>VisibilityType</td>
+<td>No</td>
+<td>Access level</td>
+</tr>
+<tr>
+<td><code>is_constant</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Constant/final</td>
+</tr>
+<tr>
+<td><code>is_nullable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Nullable</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Default value</td>
+</tr>
+<tr>
+<td><code>size_specification</code></td>
+<td>string</td>
+<td>No</td>
+<td>Size/length (e.g., COBOL PIC, array dims)</td>
+</tr>
+<tr>
+<td><code>storage_class</code></td>
+<td>StorageClass</td>
+<td>No</td>
+<td>Storage class</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td>DataClassificationType</td>
+<td>No</td>
+<td>Data sensitivity (PII, PHI, PCI, etc.)</td>
+</tr>
+<tr>
+<td><code>line_number</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Source line number</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td>--</td>
+<td>Parent unit (global slot)</td>
+</tr>
+<tr>
+<td><code>contained_in_structure</code></td>
+<td>DataStructure</td>
+<td>No</td>
+<td><code>structure_contains_elements</code></td>
+<td>Parent structure</td>
+</tr>
+<tr>
+<td><code>has_parent_element</code></td>
+<td>DataElement</td>
+<td>No</td>
+<td><code>has_child_elements</code></td>
+<td>Parent (nested fields)</td>
+</tr>
+<tr>
+<td><code>has_child_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td><code>has_parent_element</code></td>
+<td>Children (nested fields)</td>
+</tr>
+<tr>
+<td><code>maps_to_attribute</code></td>
+<td>Attribute</td>
+<td>No</td>
+<td><code>mapped_from_element</code></td>
+<td>Domain attribute (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>annotated_by</code></td>
+<td>Annotation</td>
+<td>Yes</td>
+<td><code>annotates_element</code></td>
+<td>Annotations (global slot)</td>
+</tr>
+<tr>
+<td><code>declared_type</code></td>
+<td>TypeExpression</td>
+<td>No</td>
+<td><code>type_of_data_elements</code></td>
+<td>Structured type (Modern)</td>
+</tr>
+<tr>
+<td><code>has_ownership_annotations</code></td>
+<td>OwnershipAnnotation</td>
+<td>Yes</td>
+<td><code>annotates_data_element</code></td>
+<td>Ownership (Rust/C++)</td>
+</tr>
+<tr>
+<td><code>mapped_from_screen_fields</code></td>
+<td>ScreenField</td>
+<td>Yes</td>
+<td><code>maps_to_data_element</code></td>
+<td>Screen field mapping (Legacy)</td>
+</tr>
+<tr>
+<td><code>protected_by_primitive</code></td>
+<td>ConcurrencyPrimitive</td>
+<td>Yes</td>
+<td><code>protects_data_elements</code></td>
+<td>Concurrency guards</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="7-parameter">7. Parameter</h3>
+<p>An input/output parameter for a callable unit. Inherits from <code>DataElement</code> (all DataElement attributes and relationships apply).</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direction</code></td>
+<td>ParameterDirection</td>
+<td>No</td>
+<td><code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code></td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ordinal position in parameter list</td>
+</tr>
+<tr>
+<td><code>passing_mechanism</code></td>
+<td>PassingMechanism</td>
+<td>No</td>
+<td><code>by_value</code>, <code>by_reference</code>, <code>by_name</code>, <code>by_result</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>parameter_of</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td><code>has_parameters</code></td>
+<td>Owning callable</td>
+</tr>
+<tr>
+<td><code>has_type</code></td>
+<td>TypeExpression</td>
+<td>No</td>
+<td><code>type_of_parameters</code></td>
+<td>Structured type (Modern)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="8-controlflow">8. ControlFlow</h3>
+<p>Control flow between code elements -- calls, branches, jumps.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flow_type</code></td>
+<td>ControlFlowType</td>
+<td>No</td>
+<td><code>call</code>, <code>async_call</code>, <code>branch</code>, <code>jump</code>, <code>return</code>, <code>throw</code>, <code>yield</code></td>
+</tr>
+<tr>
+<td><code>is_conditional</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether flow depends on a condition</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Condition expression</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td>--</td>
+<td>Calling callable</td>
+</tr>
+<tr>
+<td><code>has_target_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td>--</td>
+<td>Called callable</td>
+</tr>
+<tr>
+<td><code>has_source_statement</code></td>
+<td>Statement</td>
+<td>No</td>
+<td>--</td>
+<td>Source statement (fine-grained)</td>
+</tr>
+<tr>
+<td><code>has_target_statement</code></td>
+<td>Statement</td>
+<td>No</td>
+<td>--</td>
+<td>Target statement (fine-grained)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="9-dataflow">9. DataFlow</h3>
+<p>Data flow between code elements -- reads, writes, assignments.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flow_type</code></td>
+<td>DataFlowType</td>
+<td>No</td>
+<td><code>read</code>, <code>write</code>, <code>modify</code>, <code>define</code>, <code>use</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_element</code></td>
+<td>DataElement</td>
+<td>No</td>
+<td>--</td>
+<td>Data source</td>
+</tr>
+<tr>
+<td><code>has_target_element</code></td>
+<td>DataElement</td>
+<td>No</td>
+<td>--</td>
+<td>Data target</td>
+</tr>
+<tr>
+<td><code>has_through_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td>--</td>
+<td>Callable where flow occurs</td>
+</tr>
+<tr>
+<td><code>has_through_statement</code></td>
+<td>Statement</td>
+<td>No</td>
+<td>--</td>
+<td>Statement where flow occurs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="modern-only-classes-3-classes">Modern-Only Classes (3 classes)</h2>
+<p>These classes are included in the Modern profile but not the Legacy profile.</p>
+<h3 id="10-typeexpression">10. TypeExpression</h3>
+<p>A recursive type model for expressing complex types (generics, unions, pointers, function types) across all languages. Replaces flat <code>data_type</code> strings.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type_kind</code></td>
+<td>TypeKind</td>
+<td><strong>Yes</strong></td>
+<td>Kind of type expression</td>
+</tr>
+<tr>
+<td><code>base_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Base type name (e.g., <code>List</code>, <code>int</code>, <code>String</code>)</td>
+</tr>
+<tr>
+<td><code>has_type_parameters</code></td>
+<td>TypeExpression[]</td>
+<td>No</td>
+<td>Recursive generic parameters (e.g., <code>T</code> in <code>List&lt;T&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>type_constraints</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Constraints (e.g., <code>T: Comparable</code>)</td>
+</tr>
+<tr>
+<td><code>is_nullable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether type permits null</td>
+</tr>
+<tr>
+<td><code>nullability_model</code></td>
+<td>string</td>
+<td>No</td>
+<td>How nullability is expressed (<code>optional</code>, <code>nullable</code>, <code>Option&lt;T&gt;</code>)</td>
+</tr>
+<tr>
+<td><code>pointer_semantics</code></td>
+<td>string</td>
+<td>No</td>
+<td>Pointer behavior (<code>raw</code>, <code>smart</code>, <code>weak</code>, <code>unique</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type_of_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td><code>declared_type</code></td>
+<td>Elements with this type</td>
+</tr>
+<tr>
+<td><code>type_of_parameters</code></td>
+<td>Parameter</td>
+<td>Yes</td>
+<td><code>has_type</code></td>
+<td>Parameters with this type</td>
+</tr>
+<tr>
+<td><code>return_type_of_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>has_return_type</code></td>
+<td>Callables returning this type</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TypeKind Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primitive</code></td>
+<td>Built-in scalar (int, string, bool)</td>
+</tr>
+<tr>
+<td><code>generic</code></td>
+<td>Parameterized (List\<T>, Map\<K,V>)</td>
+</tr>
+<tr>
+<td><code>union</code></td>
+<td>Union (string | number)</td>
+</tr>
+<tr>
+<td><code>intersection</code></td>
+<td>Intersection (A &amp; B)</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>Named type alias</td>
+</tr>
+<tr>
+<td><code>pointer</code></td>
+<td>Pointer type (*int, &amp;str)</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>Reference type (&amp;T)</td>
+</tr>
+<tr>
+<td><code>array_of</code></td>
+<td>Array of base type</td>
+</tr>
+<tr>
+<td><code>function_type</code></td>
+<td>Function signature as type</td>
+</tr>
+<tr>
+<td><code>tuple_type</code></td>
+<td>Tuple of types</td>
+</tr>
+<tr>
+<td><code>optional_type</code></td>
+<td>Optional wrapper (Option\<T>, T?)</td>
+</tr>
+<tr>
+<td><code>constrained</code></td>
+<td>Type with constraints</td>
+</tr>
+<tr>
+<td><code>opaque</code></td>
+<td>Opaque/unknown</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="11-exceptiontype">11. ExceptionType</h3>
+<p>A declared exception or error type with hierarchy support.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qualified_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Fully qualified type name (e.g., <code>java.io.IOException</code>)</td>
+</tr>
+<tr>
+<td><code>is_checked</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether compiler-enforced</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_parent_exception</code></td>
+<td>ExceptionType</td>
+<td>No</td>
+<td><code>has_child_exceptions</code></td>
+<td>Parent in hierarchy</td>
+</tr>
+<tr>
+<td><code>has_child_exceptions</code></td>
+<td>ExceptionType</td>
+<td>Yes</td>
+<td><code>has_parent_exception</code></td>
+<td>Children in hierarchy</td>
+</tr>
+<tr>
+<td><code>raised_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>raises_exception_types</code></td>
+<td>Callables that throw this</td>
+</tr>
+<tr>
+<td><code>handled_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>handles_exception_types</code></td>
+<td>Callables that catch this</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="12-operation">12. Operation</h3>
+<p>A named, invocable unit of behavior exposed via an interface. This bridges the code layer to the API surface -- it marks a <code>CallableUnit</code> as an externally visible endpoint.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>errors</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Possible error responses</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exposed_by_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>exposes_operations</code></td>
+<td>Component (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>executes_operation_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>executed_by_operation</code></td>
+<td>Actions performed (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>accepts_input_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>defines_operation_input</code></td>
+<td>Input schema</td>
+</tr>
+<tr>
+<td><code>produces_output_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>defines_operation_output</code></td>
+<td>Output schema</td>
+</tr>
+<tr>
+<td><code>implemented_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>implements_operation</code></td>
+<td>Code implementations</td>
+</tr>
+<tr>
+<td><code>offered_on_screens</code></td>
+<td>Screen</td>
+<td>Yes</td>
+<td><code>offers_operations</code></td>
+<td>Screens offering this operation</td>
+</tr>
+<tr>
+<td><code>operation_tested_by_cases</code></td>
+<td>TestCase</td>
+<td>Yes</td>
+<td><code>tests_operation</code></td>
+<td>Tests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="legacy-only-classes-9-classes">Legacy-Only Classes (9 classes)</h2>
+<p>These classes are included in the Legacy profile but not the Modern profile. They model file I/O, terminal screens, batch job control, inter-process communication, and preprocessor constructs that are central to mainframe and procedural codebases.</p>
+<h3 id="13-filedefinition">13. FileDefinition</h3>
+<p>A file defined for I/O in a program -- corresponds to a COBOL <code>SELECT</code>/<code>FD</code>, VSAM dataset definition, or similar construct.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organization</code></td>
+<td>FileOrganization</td>
+<td>No</td>
+<td>Physical file organization</td>
+</tr>
+<tr>
+<td><code>access_mode</code></td>
+<td>FileAccessMode</td>
+<td>No</td>
+<td>How the file is accessed</td>
+</tr>
+<tr>
+<td><code>record_format</code></td>
+<td>RecordFormat</td>
+<td>No</td>
+<td>Record format</td>
+</tr>
+<tr>
+<td><code>record_length</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Record length in bytes</td>
+</tr>
+<tr>
+<td><code>block_size</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Block size in bytes</td>
+</tr>
+<tr>
+<td><code>key_fields</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Key field names (indexed files)</td>
+</tr>
+<tr>
+<td><code>file_status_field</code></td>
+<td>string</td>
+<td>No</td>
+<td>Status variable for I/O error detection</td>
+</tr>
+<tr>
+<td><code>external_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>External/DD name or system filename</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>used_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>uses_file_definitions</code></td>
+<td>Callables that do I/O on this file</td>
+</tr>
+<tr>
+<td><code>file_defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>has_file_definitions</code></td>
+<td>Source file where defined</td>
+</tr>
+<tr>
+<td><code>persisted_in_store</code></td>
+<td>DataStore</td>
+<td>No</td>
+<td><code>store_file_definitions</code></td>
+<td>Backing data store (Layer 2+)</td>
+</tr>
+<tr>
+<td><code>file_operations</code></td>
+<td>FileOperation</td>
+<td>Yes</td>
+<td><code>operates_on_file</code></td>
+<td>I/O operations on this file</td>
+</tr>
+<tr>
+<td><code>mapped_from_dataset_allocations</code></td>
+<td>DatasetAllocation</td>
+<td>Yes</td>
+<td><code>maps_to_file_definition</code></td>
+<td>JCL DD mappings</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FileOrganization Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sequential</code></td>
+<td>Sequential file</td>
+</tr>
+<tr>
+<td><code>indexed</code></td>
+<td>Indexed file (ISAM)</td>
+</tr>
+<tr>
+<td><code>relative</code></td>
+<td>Relative record file</td>
+</tr>
+<tr>
+<td><code>vsam_ksds</code></td>
+<td>VSAM Key-Sequenced Data Set</td>
+</tr>
+<tr>
+<td><code>vsam_esds</code></td>
+<td>VSAM Entry-Sequenced Data Set</td>
+</tr>
+<tr>
+<td><code>vsam_rrds</code></td>
+<td>VSAM Relative Record Data Set</td>
+</tr>
+<tr>
+<td><code>partitioned_dataset</code></td>
+<td>Partitioned Data Set (PDS/PDSE)</td>
+</tr>
+<tr>
+<td><code>line_sequential</code></td>
+<td>Line-sequential text file</td>
+</tr>
+<tr>
+<td><code>generation_data_group</code></td>
+<td>Generation data group (GDG)</td>
+</tr>
+<tr>
+<td><code>heap</code></td>
+<td>Heap/unstructured file</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FileAccessMode Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sequential_access</code></td>
+<td>Records accessed in order</td>
+</tr>
+<tr>
+<td><code>random_access</code></td>
+<td>Records accessed by key/position</td>
+</tr>
+<tr>
+<td><code>dynamic_access</code></td>
+<td>Both sequential and random</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RecordFormat Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fixed</code></td>
+<td>Fixed-length records</td>
+</tr>
+<tr>
+<td><code>variable</code></td>
+<td>Variable-length records</td>
+</tr>
+<tr>
+<td><code>undefined</code></td>
+<td>Undefined format</td>
+</tr>
+<tr>
+<td><code>spanned</code></td>
+<td>Spanned records (across blocks)</td>
+</tr>
+<tr>
+<td><code>stream</code></td>
+<td>Stream-oriented (no record boundaries)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="14-fileoperation">14. FileOperation</h3>
+<p>An individual I/O operation on a file definition -- a single READ, WRITE, REWRITE, DELETE, etc.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operation_type</code></td>
+<td>FileOperationType</td>
+<td><strong>Yes</strong></td>
+<td>The I/O verb</td>
+</tr>
+<tr>
+<td><code>condition_handling</code></td>
+<td>string</td>
+<td>No</td>
+<td>Error handling (e.g., <code>AT END SET EOF TO TRUE</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>operates_on_file</code></td>
+<td>FileDefinition</td>
+<td>No</td>
+<td><code>file_operations</code></td>
+<td>Target file</td>
+</tr>
+<tr>
+<td><code>performed_in_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td><code>has_file_operations</code></td>
+<td>Callable performing the I/O</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FileOperationType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read</code></td>
+<td>Read a record</td>
+</tr>
+<tr>
+<td><code>write</code></td>
+<td>Write a new record</td>
+</tr>
+<tr>
+<td><code>rewrite</code></td>
+<td>Update existing record</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Delete a record</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>Position for sequential access</td>
+</tr>
+<tr>
+<td><code>open</code></td>
+<td>Open the file</td>
+</tr>
+<tr>
+<td><code>close</code></td>
+<td>Close the file</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>Sort the file</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>Merge files</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="15-screendefinition">15. ScreenDefinition</h3>
+<p>A terminal screen or map definition -- BMS maps (CICS), RPG display files, MFS formats, or TUI screens.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>screen_type</code></td>
+<td>ScreenType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of screen</td>
+</tr>
+<tr>
+<td><code>rows</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of screen rows</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of screen columns</td>
+</tr>
+<tr>
+<td><code>external_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>External map or display file name</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_screen_fields</code></td>
+<td>ScreenField</td>
+<td>Yes</td>
+<td><code>field_on_screen</code></td>
+<td>Fields on this screen</td>
+</tr>
+<tr>
+<td><code>program_uses_screens</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>screen_used_by_programs</code></td>
+<td>Programs using this screen</td>
+</tr>
+<tr>
+<td><code>screen_defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>has_screen_definitions</code></td>
+<td>Source container</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ScreenType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bms_map</code></td>
+<td>CICS Basic Mapping Support map</td>
+</tr>
+<tr>
+<td><code>rpg_display_file</code></td>
+<td>RPG display file (AS/400)</td>
+</tr>
+<tr>
+<td><code>character_terminal</code></td>
+<td>Generic character terminal</td>
+</tr>
+<tr>
+<td><code>tui</code></td>
+<td>Text UI (ncurses, etc.)</td>
+</tr>
+<tr>
+<td><code>form_based</code></td>
+<td>Form-based terminal interaction</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="16-screenfield">16. ScreenField</h3>
+<p>An individual field on a terminal screen definition.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>row</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Row position</td>
+</tr>
+<tr>
+<td><code>column</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Column position</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Field length in characters</td>
+</tr>
+<tr>
+<td><code>is_input</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether user can type into this field</td>
+</tr>
+<tr>
+<td><code>is_protected</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether field is protected from modification</td>
+</tr>
+<tr>
+<td><code>attribute_byte</code></td>
+<td>string</td>
+<td>No</td>
+<td>Display attribute (bright, dark, reverse, etc.)</td>
+</tr>
+<tr>
+<td><code>initial_value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Default display value</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>field_on_screen</code></td>
+<td>ScreenDefinition</td>
+<td>No</td>
+<td><code>contains_screen_fields</code></td>
+<td>Parent screen</td>
+</tr>
+<tr>
+<td><code>maps_to_data_element</code></td>
+<td>DataElement</td>
+<td>No</td>
+<td><code>mapped_from_screen_fields</code></td>
+<td>Data element this field maps to</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="17-jobdefinition">17. JobDefinition</h3>
+<p>A batch job definition -- JCL JOB statement, scheduler entry, or cron job.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>job_class</code></td>
+<td>string</td>
+<td>No</td>
+<td>Job class or queue assignment</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Execution priority</td>
+</tr>
+<tr>
+<td><code>restart_point</code></td>
+<td>string</td>
+<td>No</td>
+<td>Step or checkpoint for restart</td>
+</tr>
+<tr>
+<td><code>scheduling_info</code></td>
+<td>string</td>
+<td>No</td>
+<td>Schedule or trigger criteria</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_job_steps</code></td>
+<td>JobStep</td>
+<td>Yes</td>
+<td><code>step_in_job</code></td>
+<td>Steps within this job</td>
+</tr>
+<tr>
+<td><code>depends_on_jobs</code></td>
+<td>JobDefinition</td>
+<td>Yes</td>
+<td><code>depended_on_by_jobs</code></td>
+<td>Upstream job dependencies</td>
+</tr>
+<tr>
+<td><code>depended_on_by_jobs</code></td>
+<td>JobDefinition</td>
+<td>Yes</td>
+<td><code>depends_on_jobs</code></td>
+<td>Downstream dependents</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="18-jobstep">18. JobStep</h3>
+<p>A single step within a batch job -- JCL EXEC statement or equivalent.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>step_type</code></td>
+<td>JobStepType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of step</td>
+</tr>
+<tr>
+<td><code>program_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Program to execute</td>
+</tr>
+<tr>
+<td><code>condition_code</code></td>
+<td>string</td>
+<td>No</td>
+<td>Condition code expression (e.g., <code>COND=(4,LT)</code>)</td>
+</tr>
+<tr>
+<td><code>region_size</code></td>
+<td>string</td>
+<td>No</td>
+<td>Memory region allocation</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>step_in_job</code></td>
+<td>JobDefinition</td>
+<td>No</td>
+<td><code>contains_job_steps</code></td>
+<td>Parent job</td>
+</tr>
+<tr>
+<td><code>step_executes_program</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>executed_by_job_steps</code></td>
+<td>Program executed</td>
+</tr>
+<tr>
+<td><code>allocates_datasets</code></td>
+<td>DatasetAllocation</td>
+<td>Yes</td>
+<td><code>allocated_in_step</code></td>
+<td>Dataset allocations (DD statements)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>JobStepType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exec_program</code></td>
+<td>Execute a program</td>
+</tr>
+<tr>
+<td><code>exec_proc</code></td>
+<td>Execute a cataloged or in-stream procedure</td>
+</tr>
+<tr>
+<td><code>utility</code></td>
+<td>Execute a system utility</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>Execute a sort operation</td>
+</tr>
+<tr>
+<td><code>file_transfer</code></td>
+<td>File transfer step</td>
+</tr>
+<tr>
+<td><code>conditional</code></td>
+<td>Conditional execution step</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="19-datasetallocation">19. DatasetAllocation</h3>
+<p>A dataset allocation within a job step -- JCL DD statement or equivalent.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dd_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>DD name (logical file reference)</td>
+</tr>
+<tr>
+<td><code>dataset_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Physical dataset name (DSN)</td>
+</tr>
+<tr>
+<td><code>disposition</code></td>
+<td>DatasetDisposition</td>
+<td>No</td>
+<td>Dataset disposition</td>
+</tr>
+<tr>
+<td><code>space_primary</code></td>
+<td>string</td>
+<td>No</td>
+<td>Primary space allocation</td>
+</tr>
+<tr>
+<td><code>space_secondary</code></td>
+<td>string</td>
+<td>No</td>
+<td>Secondary space allocation</td>
+</tr>
+<tr>
+<td><code>record_format</code></td>
+<td>RecordFormat</td>
+<td>No</td>
+<td>Record format (shared enum with FileDefinition)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allocated_in_step</code></td>
+<td>JobStep</td>
+<td>No</td>
+<td><code>allocates_datasets</code></td>
+<td>Parent step</td>
+</tr>
+<tr>
+<td><code>maps_to_file_definition</code></td>
+<td>FileDefinition</td>
+<td>No</td>
+<td><code>mapped_from_dataset_allocations</code></td>
+<td>Logical file this DD maps to</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DatasetDisposition Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new_dataset</code></td>
+<td>Create new</td>
+</tr>
+<tr>
+<td><code>old_dataset</code></td>
+<td>Exclusive access to existing</td>
+</tr>
+<tr>
+<td><code>shared</code></td>
+<td>Shared access to existing</td>
+</tr>
+<tr>
+<td><code>modify</code></td>
+<td>Modify existing</td>
+</tr>
+<tr>
+<td><code>catalog</code></td>
+<td>Catalog after use</td>
+</tr>
+<tr>
+<td><code>delete_disp</code></td>
+<td>Delete after use</td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>Pass to next step</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="20-ipcconnection">20. IPCConnection</h3>
+<p>A communication link between two programs or processes at runtime.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mechanism</code></td>
+<td>IPCMechanism</td>
+<td><strong>Yes</strong></td>
+<td>IPC mechanism used</td>
+</tr>
+<tr>
+<td><code>is_synchronous</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Synchronous or async</td>
+</tr>
+<tr>
+<td><code>transaction_scoped</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether IPC participates in a transaction boundary</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_program</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>has_outgoing_ipc_connections</code></td>
+<td>Calling program</td>
+</tr>
+<tr>
+<td><code>has_target_program</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>has_incoming_ipc_connections</code></td>
+<td>Called program</td>
+</tr>
+<tr>
+<td><code>ipc_passes_data</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td><code>passed_via_ipc</code></td>
+<td>Data structures passed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IPCMechanism Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cics_link</code></td>
+<td>CICS LINK (call with return)</td>
+</tr>
+<tr>
+<td><code>cics_xctl</code></td>
+<td>CICS XCTL (transfer, no return)</td>
+</tr>
+<tr>
+<td><code>ims_schedule</code></td>
+<td>IMS message scheduling</td>
+</tr>
+<tr>
+<td><code>shared_memory</code></td>
+<td>Shared memory segment</td>
+</tr>
+<tr>
+<td><code>pipe</code></td>
+<td>Unix pipe</td>
+</tr>
+<tr>
+<td><code>rmi</code></td>
+<td>Java RMI</td>
+</tr>
+<tr>
+<td><code>corba</code></td>
+<td>CORBA IIOP</td>
+</tr>
+<tr>
+<td><code>database_mediated</code></td>
+<td>Communication via shared database</td>
+</tr>
+<tr>
+<td><code>message_queue</code></td>
+<td>Message queue (MQ Series, etc.)</td>
+</tr>
+<tr>
+<td><code>socket</code></td>
+<td>TCP/UDP socket</td>
+</tr>
+<tr>
+<td><code>named_pipe</code></td>
+<td>Named pipe / FIFO</td>
+</tr>
+<tr>
+<td><code>signal</code></td>
+<td>Unix signal</td>
+</tr>
+<tr>
+<td><code>semaphore</code></td>
+<td>Semaphore-based synchronization</td>
+</tr>
+<tr>
+<td><code>dcom</code></td>
+<td>Distributed COM</td>
+</tr>
+<tr>
+<td><code>rest_call</code></td>
+<td>REST API call between processes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="21-preprocessordirective">21. PreprocessorDirective</h3>
+<p>A preprocessor directive, macro, or metaprogramming construct that modifies code before or during compilation.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>directive_type</code></td>
+<td>MetaprogrammingType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of directive</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Conditional expression (e.g., <code>#ifdef DEBUG</code>)</td>
+</tr>
+<tr>
+<td><code>expansion</code></td>
+<td>string</td>
+<td>No</td>
+<td>Expanded or generated code</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>directive_defined_in_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>has_preprocessor_directives</code></td>
+<td>Source container</td>
+</tr>
+<tr>
+<td><code>directive_affects_encapsulation_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>affected_by_directives</code></td>
+<td>Units affected</td>
+</tr>
+<tr>
+<td><code>directive_affects_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>callable_affected_by_directives</code></td>
+<td>Callables affected</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MetaprogrammingType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c_preprocessor</code></td>
+<td>C/C++ preprocessor (#define, #ifdef)</td>
+</tr>
+<tr>
+<td><code>rust_macro_declarative</code></td>
+<td>Rust macro_rules!</td>
+</tr>
+<tr>
+<td><code>rust_macro_procedural</code></td>
+<td>Rust procedural macros (derive, attribute)</td>
+</tr>
+<tr>
+<td><code>cobol_copy_replacing</code></td>
+<td>COBOL COPY ... REPLACING</td>
+</tr>
+<tr>
+<td><code>template_metaprogramming</code></td>
+<td>C++ template metaprogramming</td>
+</tr>
+<tr>
+<td><code>python_metaclass</code></td>
+<td>Python metaclass</td>
+</tr>
+<tr>
+<td><code>lisp_macro</code></td>
+<td>Lisp macro</td>
+</tr>
+<tr>
+<td><code>java_annotation_processor</code></td>
+<td>Java annotation processor</td>
+</tr>
+<tr>
+<td><code>code_generator</code></td>
+<td>External code generator</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="shared-supporting-enums">Shared Supporting Enums</h2>
+<p>These enums are used across both profiles.</p>
+<p><strong>VisibilityType:</strong> <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code>, <code>package</code></p>
+<p><strong>CallableCategory:</strong> <code>normal</code>, <code>operator</code>, <code>main_entry</code></p>
+<p><strong>DataElementCategory:</strong> <code>field</code>, <code>static_field</code>, <code>local_variable</code>, <code>parameter</code>, <code>constant</code>, <code>global_variable</code>, <code>computed</code>, <code>temporary</code></p>
+<p><strong>ParameterDirection:</strong> <code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code></p>
+<p><strong>PassingMechanism:</strong> <code>by_value</code>, <code>by_reference</code>, <code>by_name</code>, <code>by_result</code></p>
+<p><strong>ControlFlowType:</strong> <code>call</code>, <code>async_call</code>, <code>branch</code>, <code>jump</code>, <code>return</code>, <code>throw</code>, <code>yield</code></p>
+<p><strong>DataFlowType:</strong> <code>read</code>, <code>write</code>, <code>modify</code>, <code>define</code>, <code>use</code></p>
+<p><strong>CodeBlockType:</strong> <code>sequential</code>, <code>conditional</code>, <code>loop</code>, <code>try_catch</code>, <code>transaction</code>, <code>critical_section</code>, <code>scope</code></p>
+<p><strong>StatementCategory:</strong> <code>declaration</code>, <code>assignment</code>, <code>invocation</code>, <code>control_transfer</code>, <code>io_operation</code>, <code>data_manipulation</code>, <code>transaction_control</code>, <code>exception_handling</code></p>
+<p><strong>ReferenceType:</strong> <code>import_module</code>, <code>import_symbol</code>, <code>include_source</code>, <code>inherit</code>, <code>implement</code></p>
+<hr />
+<h2 id="relationship-map">Relationship Map</h2>
+<p>The following diagram summarizes how the 21 classes in this layer connect to each other. Arrows indicate the direction of the relationship; labels are the attribute name on the source class.</p>
+<pre><code>StorageLocation
+  └── contains_containers ──&gt; CodeContainer
+                                 ├── contains_code_elements ──&gt; EncapsulationUnit
+                                 │                                 ├── contains_callable_units ──&gt; CallableUnit
+                                 │                                 │     ├── has_parameters ──&gt; Parameter
+                                 │                                 │     ├── invokes_callables ──&gt; CallableUnit
+                                 │                                 │     ├── accesses_data_elements ──&gt; DataElement
+                                 │                                 │     ├── modifies_data_elements ──&gt; DataElement
+                                 │                                 │     ├── implements_operation ──&gt; Operation [Modern]
+                                 │                                 │     ├── raises_exception_types ──&gt; ExceptionType [Modern]
+                                 │                                 │     ├── handles_exception_types ──&gt; ExceptionType [Modern]
+                                 │                                 │     ├── return_type_expression ──&gt; TypeExpression [Modern]
+                                 │                                 │     ├── uses_file_definitions ──&gt; FileDefinition [Legacy]
+                                 │                                 │     └── callable_file_operations ──&gt; FileOperation [Legacy]
+                                 │                                 │
+                                 │                                 ├── contains_data_structures ──&gt; DataStructure
+                                 │                                 │     ├── structure_contains_elements ──&gt; DataElement
+                                 │                                 │     │     ├── declared_type ──&gt; TypeExpression [Modern]
+                                 │                                 │     │     └── mapped_from_screen_fields ──&gt; ScreenField [Legacy]
+                                 │                                 │     └── passed_via_ipc ──&gt; IPCConnection [Legacy]
+                                 │                                 │
+                                 │                                 ├── screen_used_by_programs ──&gt; ScreenDefinition [Legacy]
+                                 │                                 │     └── contains_screen_fields ──&gt; ScreenField [Legacy]
+                                 │                                 │
+                                 │                                 ├── outgoing_ipc_connections ──&gt; IPCConnection [Legacy]
+                                 │                                 ├── affected_by_directives ──&gt; PreprocessorDirective [Legacy]
+                                 │                                 └── executed_by_job_steps ──&gt; JobStep [Legacy]
+                                 │
+                                 ├── container_file_definitions ──&gt; FileDefinition [Legacy]
+                                 │     ├── file_operations ──&gt; FileOperation [Legacy]
+                                 │     └── mapped_from_dataset_allocations ──&gt; DatasetAllocation [Legacy]
+                                 │
+                                 ├── container_screen_definitions ──&gt; ScreenDefinition [Legacy]
+                                 ├── container_preprocessor_directives ──&gt; PreprocessorDirective [Legacy]
+                                 └── written_in_language ──&gt; ProgrammingLanguage
+
+ControlFlow
+  ├── source_callable ──&gt; CallableUnit
+  └── target_callable ──&gt; CallableUnit
+
+DataFlow
+  ├── source_element ──&gt; DataElement
+  ├── target_element ──&gt; DataElement
+  └── through_callable ──&gt; CallableUnit
+
+JobDefinition [Legacy]
+  ├── contains_job_steps ──&gt; JobStep
+  │     ├── step_executes_program ──&gt; EncapsulationUnit
+  │     └── allocates_datasets ──&gt; DatasetAllocation
+  │           └── maps_to_file_definition ──&gt; FileDefinition
+  └── depends_on_jobs ──&gt; JobDefinition
+</code></pre>
+<hr />
+<h2 id="supporting-classes-8-classes">Supporting Classes (8 classes)</h2>
+<p>These classes support the primary Layer 4 classes but were not included in the original minimal set. They provide code semantics (blocks, statements), language metadata, error/memory models, and platform extensions.</p>
+<h3 id="22-codeblock">22. CodeBlock</h3>
+<p>A logical grouping of statements within a callable unit -- conditionals, loops, try-catch blocks, synchronized sections.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>block_type</code></td>
+<td>CodeBlockType</td>
+<td>No</td>
+<td>Kind of block</td>
+</tr>
+<tr>
+<td><code>line_start</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Starting line</td>
+</tr>
+<tr>
+<td><code>line_end</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ending line</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td><code>contains_blocks</code></td>
+<td>Parent callable</td>
+</tr>
+<tr>
+<td><code>contains_statements</code></td>
+<td>Statement</td>
+<td>Yes</td>
+<td><code>contained_in_block</code></td>
+<td>Statements in this block</td>
+</tr>
+<tr>
+<td><code>has_parent_block</code></td>
+<td>CodeBlock</td>
+<td>No</td>
+<td><code>has_child_blocks</code></td>
+<td>Parent block (nesting)</td>
+</tr>
+<tr>
+<td><code>has_child_blocks</code></td>
+<td>CodeBlock</td>
+<td>Yes</td>
+<td><code>has_parent_block</code></td>
+<td>Child blocks (nesting)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CodeBlockType Enum:</strong> <code>sequential</code>, <code>conditional</code>, <code>loop</code>, <code>try_catch</code>, <code>transaction</code>, <code>critical_section</code>, <code>scope</code></p>
+<hr />
+<h3 id="23-statement">23. Statement</h3>
+<p>A single executable instruction or declaration.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>statement_category</code></td>
+<td>StatementCategory</td>
+<td>No</td>
+<td>Kind of statement</td>
+</tr>
+<tr>
+<td><code>line_number</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Source line number</td>
+</tr>
+<tr>
+<td><code>is_conditional</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether conditional</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>string</td>
+<td>No</td>
+<td>Source text of statement</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_block</code></td>
+<td>CodeBlock</td>
+<td>No</td>
+<td><code>contains_statements</code></td>
+<td>Parent block</td>
+</tr>
+<tr>
+<td><code>operates_on_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td>--</td>
+<td>Data elements operated on</td>
+</tr>
+<tr>
+<td><code>invokes_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td>--</td>
+<td>Callable invoked</td>
+</tr>
+<tr>
+<td><code>transfers_control_to</code></td>
+<td>Statement</td>
+<td>No</td>
+<td>--</td>
+<td>Control transfer target</td>
+</tr>
+</tbody>
+</table>
+<p><strong>StatementCategory Enum:</strong> <code>declaration</code>, <code>assignment</code>, <code>invocation</code>, <code>control_transfer</code>, <code>io_operation</code>, <code>data_manipulation</code>, <code>transaction_control</code>, <code>exception_handling</code></p>
+<hr />
+<h3 id="24-programminglanguage">24. ProgrammingLanguage</h3>
+<p>A programming language modeled as a first-class entity, replacing bare string fields. Enables structured cross-language analysis.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>paradigms</code></td>
+<td>ProgrammingParadigm[]</td>
+<td>No</td>
+<td>Supported paradigms</td>
+</tr>
+<tr>
+<td><code>type_discipline</code></td>
+<td>string</td>
+<td>No</td>
+<td>Type system (e.g., <code>static_strong</code>, <code>dynamic_weak</code>)</td>
+</tr>
+<tr>
+<td><code>has_preprocessor</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the language has a preprocessor</td>
+</tr>
+<tr>
+<td><code>has_gc</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the language has garbage collection</td>
+</tr>
+<tr>
+<td><code>year_introduced</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Year first released</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>language_used_by_containers</code></td>
+<td>CodeContainer</td>
+<td>Yes</td>
+<td><code>written_in_language</code></td>
+<td>Code containers written in this language</td>
+</tr>
+<tr>
+<td><code>has_default_error_model</code></td>
+<td>ErrorModel</td>
+<td>No</td>
+<td><code>error_model_for_languages</code></td>
+<td>Default error handling model</td>
+</tr>
+<tr>
+<td><code>has_default_memory_model</code></td>
+<td>MemoryModel</td>
+<td>No</td>
+<td><code>memory_model_for_languages</code></td>
+<td>Default memory management model</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ProgrammingParadigm Enum:</strong> <code>object_oriented</code>, <code>procedural</code>, <code>functional</code>, <code>logic</code>, <code>concatenative</code>, <code>data_driven</code>, <code>multi_paradigm</code></p>
+<hr />
+<h3 id="25-errormodel">25. ErrorModel</h3>
+<p>Describes how a module or language handles errors.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>strategy</code></td>
+<td>ErrorHandlingStrategy</td>
+<td><strong>Yes</strong></td>
+<td>Error handling paradigm</td>
+</tr>
+<tr>
+<td><code>checkedness</code></td>
+<td>ExceptionCheckedness</td>
+<td>No</td>
+<td>Whether exceptions are checked or unchecked</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>modules_using_error_model</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>error_model_for_module</code></td>
+<td>Modules using this model</td>
+</tr>
+<tr>
+<td><code>error_model_for_languages</code></td>
+<td>ProgrammingLanguage</td>
+<td>Yes</td>
+<td><code>has_default_error_model</code></td>
+<td>Languages using this as default</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ErrorHandlingStrategy Enum:</strong> <code>exception_based</code>, <code>return_value_based</code>, <code>condition_based</code>, <code>error_code_based</code>, <code>panic_recover</code>, <code>monadic</code></p>
+<p><strong>ExceptionCheckedness Enum:</strong> <code>checked</code>, <code>unchecked</code>, <code>not_applicable</code></p>
+<hr />
+<h3 id="26-memorymodel">26. MemoryModel</h3>
+<p>Describes the memory management strategy for a module or language.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_model</code></td>
+<td>OwnershipModel</td>
+<td><strong>Yes</strong></td>
+<td>Primary memory management approach</td>
+</tr>
+<tr>
+<td><code>gc_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>GC algorithm (e.g., <code>generational</code>, <code>mark-sweep</code>)</td>
+</tr>
+<tr>
+<td><code>supports_unsafe</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether unsafe/manual memory access is allowed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>modules_using_memory_model</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>memory_model_for_module</code></td>
+<td>Modules using this model</td>
+</tr>
+<tr>
+<td><code>memory_model_for_languages</code></td>
+<td>ProgrammingLanguage</td>
+<td>Yes</td>
+<td><code>has_default_memory_model</code></td>
+<td>Languages using this as default</td>
+</tr>
+</tbody>
+</table>
+<p><strong>OwnershipModel Enum:</strong> <code>owned</code>, <code>borrowed_shared</code>, <code>borrowed_mutable</code>, <code>moved</code>, <code>copied</code>, <code>reference_counted</code>, <code>garbage_collected</code>, <code>manual</code>, <code>stack_allocated</code></p>
+<hr />
+<h3 id="27-ownershipannotation">27. OwnershipAnnotation</h3>
+<p>An ownership or lifetime annotation on a specific data element. Primarily for Rust and C++ codebases.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ownership</code></td>
+<td>OwnershipModel</td>
+<td><strong>Yes</strong></td>
+<td>Ownership model for this element</td>
+</tr>
+<tr>
+<td><code>lifetime</code></td>
+<td>LifetimeScope</td>
+<td>No</td>
+<td>Lifetime scope</td>
+</tr>
+<tr>
+<td><code>lifetime_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Named lifetime identifier (e.g., <code>'a</code> in Rust)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annotates_data_element</code></td>
+<td>DataElement</td>
+<td>No</td>
+<td><code>has_ownership_annotations</code></td>
+<td>Data element this applies to</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LifetimeScope Enum:</strong> <code>static_lifetime</code>, <code>function_scope</code>, <code>block_scope</code>, <code>named_lifetime</code>, <code>heap_lifetime</code></p>
+<hr />
+<h3 id="28-platformextension-abstract">28. PlatformExtension (abstract)</h3>
+<p>Abstract base class for platform-specific extensions.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>platform</code></td>
+<td>string</td>
+<td>No</td>
+<td>Platform identifier</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="29-executionenvironmentdirective">29. ExecutionEnvironmentDirective</h3>
+<p>Platform-specific execution directives -- Docker Compose, Kubernetes manifests, Makefiles, shell scripts, and build files.</p>
+<p><strong>Inherits from:</strong> PlatformExtension (adds <code>platform</code> attribute)</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>directive_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Type of directive</td>
+</tr>
+<tr>
+<td><code>configuration</code></td>
+<td>string</td>
+<td>No</td>
+<td>Configuration content</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orchestrates_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td>--</td>
+<td>Units orchestrated</td>
+</tr>
+<tr>
+<td><code>defines_execution_order</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td>--</td>
+<td>Execution ordering</td>
+</tr>
+<tr>
+<td><code>allocates_resources</code></td>
+<td>Infrastructure</td>
+<td>Yes</td>
+<td>--</td>
+<td>Resources allocated (Layer 2)</td>
+</tr>
+</tbody>
+</table></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

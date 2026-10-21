@@ -1,0 +1,243 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/identity
+name: sao-identity
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ActorCategory:
+    description: Categories of actors
+    permissible_values:
+      human:
+        description: "Human user or operator."
+      system:
+        description: "Automated system or service."
+
+  HumanActorType:
+    description: Types of human actors
+    permissible_values:
+      end_user:
+        description: "Regular end user of the system."
+      administrator:
+        description: "System administrator with elevated privileges."
+      operator:
+        description: "Operations personnel managing system runtime."
+      developer:
+        description: "Software developer or engineer."
+      auditor:
+        description: "Compliance or security auditor."
+
+  SystemActorType:
+    description: Types of system actors
+    permissible_values:
+      internal_service:
+        description: "Internal service within the system."
+      external_system:
+        description: "External third-party system."
+      scheduled_process:
+        description: "Scheduled or cron-based process."
+      ai_agent:
+        description: "Artificial intelligence agent or bot."
+      message_trigger:
+        description: "Message or event-triggered automation."
+
+  CredentialType:
+    description: Types of authentication credentials
+    permissible_values:
+      password:
+        description: "Username and password credentials."
+      token:
+        description: Token-based authentication (JWT, bearer token)
+      certificate:
+        description: Digital certificate or X.509 certificate
+      api_key:
+        description: "API key for service authentication."
+      biometric:
+        description: "Biometric authentication (fingerprint, face recognition)."
+      mfa:
+        description: Multi-factor authentication
+      oauth:
+        description: OAuth 2.0 authentication flow
+
+
+classes:
+  Actor:
+    comments:
+      - "Provides a unified abstraction for both human users and automated systems that interact with the application."
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      Any entity that can initiate actions
+    attributes:
+      category:
+        description: "Actor category (`human`, `system`)."
+        range: ActorCategory
+      has_identities:
+        description: "One or more `Identity` entities associated with this actor."
+        range: Identity
+        multivalued: true
+        inverse: represents_actor
+      performs_actions:
+        description: "`Action` entities performed by this actor."
+        range: Action
+        multivalued: true
+        inverse: performed_by_actor
+      audit_actions_performed:
+        description: "`AuditEntry` entities recording actions by this actor."
+        range: AuditEntry
+        multivalued: true
+        inverse: audit_performed_by_actor
+      has_subscriptions:
+        description: "`Subscription` entities owned by this actor."
+        range: Subscription
+        multivalued: true
+        inverse: subscribed_by_actor
+      owns_controls:
+        description: "`Control` entities owned by this actor."
+        range: Control
+        multivalued: true
+        inverse: owned_by_actor
+      verifies_evidence:
+        description: "`Evidence` entities verified by this actor."
+        range: Evidence
+        multivalued: true
+        inverse: verified_by_actor
+
+  HumanActor:
+    is_a: Actor
+    description: A human user of the system
+    attributes:
+      actor_type:
+        description: "Type of human actor."
+        range: HumanActorType
+      email:
+        description: "Contact email address."
+        range: string
+
+  SystemActor:
+    is_a: Actor
+    description: A system or automated actor
+    attributes:
+      actor_type:
+        description: "Type of system actor."
+        range: SystemActorType
+      service_account:
+        description: "Service account identifier."
+        range: string
+
+  Identity:
+    comments:
+      - "Represents the authenticated identity of an actor, which can have multiple roles and credentials."
+    is_a: NamedEntity
+    description: >-
+      A verified representation of an actor
+    attributes:
+      identity_type:
+        description: "Type of identity (user, service, device)."
+        range: string
+      has_credentials:
+        description: "List of associated credentials."
+        range: Credential
+        multivalued: true
+        inverse: credential_for_identity
+      has_roles:
+        description: "`Role` entities assigned to this identity."
+        range: Role
+        multivalued: true
+        inverse: assigned_to_identities
+      belongs_to_tenant:
+        description: "The `Tenant` this identity belongs to."
+        range: Tenant
+        inverse: contains_identities
+      member_of_organizations:
+        description: "`Organization` entities this identity is a member of."
+        range: Organization
+        multivalued: true
+        inverse: has_identity_members
+      represents_actor:
+        description: "The `Actor` this identity represents."
+        range: Actor
+        inverse: has_identities
+
+  Credential:
+    comments:
+      - "Represents the means by which an identity can be authenticated."
+    is_a: NamedEntity
+    description: >-
+      Authentication material proving an identity claim
+    attributes:
+      credential_type:
+        description: "Type of credential."
+        range: CredentialType
+      expires_at:
+        description: "Expiration timestamp."
+        range: Timestamp
+      is_active:
+        description: "Whether the credential is currently active."
+        range: boolean
+      credential_for_identity:
+        range: Identity
+        inverse: has_credentials
+
+  Tenant:
+    comments:
+      - "Isolates data and configuration for different customers or organizational units in a multi-tenant application."
+    is_a: NamedEntity
+    description: >-
+      An organizational boundary for multi-tenant systems
+    attributes:
+      has_organizations:
+        description: "List of organizations within this tenant."
+        range: Organization
+        multivalued: true
+        inverse: organization_in_tenant
+      has_settings:
+        description: "Tenant-specific configuration."
+        range: Configuration
+        multivalued: true
+        inverse: setting_for_tenant
+      contains_identities:
+        description: "`Identity` entities within this tenant."
+        range: Identity
+        multivalued: true
+        inverse: belongs_to_tenant
+
+  Organization:
+    comments:
+      - "Provides hierarchical organization structure within a tenant for managing users, permissions, and resources."
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of users and resources within a tenant
+    attributes:
+      has_parent:
+        description: "Parent organization for hierarchical structures."
+        range: Organization
+        inverse: has_children
+      has_children:
+        description: "Child organizations."
+        range: Organization
+        multivalued: true
+        inverse: has_parent
+      has_identity_members:
+        description: "`Identity` entities that are members of this organization."
+        range: Identity
+        multivalued: true
+        inverse: member_of_organizations
+      organization_in_tenant:
+        range: Tenant
+        inverse: has_organizations
+

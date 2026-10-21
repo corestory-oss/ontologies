@@ -1,0 +1,92 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/ipc
+name: sao-ipc
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  IPCMechanism:
+    description: Inter-process communication mechanisms
+    permissible_values:
+      cics_link:
+        description: CICS LINK to another program
+      cics_xctl:
+        description: CICS XCTL transfer of control
+      ims_schedule:
+        description: IMS message scheduling
+      shared_memory:
+        description: "Shared memory."
+      pipe:
+        description: "Pipe."
+      rmi:
+        description: Java Remote Method Invocation
+      corba:
+        description: "CORBA invocation."
+      database_mediated:
+        description: Communication via shared database tables
+      message_queue:
+        description: "Message queue."
+      socket:
+        description: "Socket communication."
+      named_pipe:
+        description: "Named pipe."
+      signal:
+        description: "Signal."
+      semaphore:
+        description: "Semaphore."
+      dcom:
+        description: "Distributed COM."
+      rest_call:
+        description: HTTP-based inter-process call
+      grpc_call:
+        description: gRPC inter-process call
+      event_bus:
+        description: Event bus communication
+
+
+classes:
+  IPCConnection:
+    comments:
+      - "Captures how programs communicate at runtime, enabling dependency analysis across process boundaries."
+    is_a: NamedEntity
+    description: >-
+      A communication link between two programs/processes
+    attributes:
+      mechanism:
+        description: "The IPC mechanism used."
+        range: IPCMechanism
+        required: true
+      is_synchronous:
+        description: "Whether the communication is synchronous."
+        range: boolean
+      transaction_scoped:
+        range: boolean
+        description: Whether the IPC participates in a transaction boundary
+      has_source_program:
+        description: "Calling program."
+        range: EncapsulationUnit
+        inverse: has_outgoing_ipc_connections
+      has_target_program:
+        description: "Called program."
+        range: EncapsulationUnit
+        inverse: has_incoming_ipc_connections
+      ipc_passes_data:
+        description: "Data structures passed."
+        range: DataStructure
+        multivalued: true
+        inverse: passed_via_ipc
+

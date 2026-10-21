@@ -1,0 +1,369 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:CodeContainerShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/CodeContainer/checksum>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contained_in_storage_location>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_path>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_encapsulation_units>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_knowledge_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/description>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/encoding>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/format>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_file_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_preprocessor_directives>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_references>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_screen_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/id>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/implements_component>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/included_in_containers>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/includes_definitions>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/line_count>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/name>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/referenced_by_containers>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/referenced_via>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/references_containers>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/size_bytes>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/version>,
+        <https://ontologies.corestory.ai/sao/shapes/CodeContainer/written_in_language> ;
+    sh:targetClass sao:CodeContainer .
+
+saosh:StorageLocationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/StorageLocation/contains_containers>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/contains_locations>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/description>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/has_parent_location>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/id>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_path>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/maps_to_module>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/name>,
+        <https://ontologies.corestory.ai/sao/shapes/StorageLocation/tags> ;
+    sh:targetClass sao:StorageLocation .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/checksum> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Content hash for version tracking." ;
+    sh:maxCount 1 ;
+    sh:path sao:checksum .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contained_in_storage_location> a sh:PropertyShape ;
+    sh:class sao:StorageLocation ;
+    sh:description "Parent directory or library." ;
+    sh:maxCount 1 ;
+    sh:path sao:contained_in_storage_location .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_path> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Path or identifier for the container." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:container_path .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type> a sh:PropertyShape ;
+    sh:description "Type of container (source_file, library_member, copybook, script, etc.)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:container_type .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values> rdf:first "source_file" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/1> rdf:first "library_member" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/10> rdf:first "pli_source" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/11> rdf:first "assembler_source" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/12> rdf:first "cl_source" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/2> rdf:first "include_file" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/3> rdf:first "script" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/4> rdf:first "configuration" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/5> rdf:first "schema_definition" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/6> rdf:first "notebook_cell" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/7> rdf:first "inline_code" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/8> rdf:first "jcl_member" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/9> rdf:first "rpg_source" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/container_type/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements> a sh:PropertyShape ;
+    sh:description "All code elements defined in this container." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives> ;
+    sh:path sao:contains_code_elements .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/0> sh:class sao:EncapsulationUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/1> sh:class sao:CallableUnit .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/2> sh:class sao:DataStructure .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/1> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternatives/cell/2> rdf:first <https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_code_elements/alternative/2> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_encapsulation_units> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Logical units defined in this file." ;
+    sh:path sao:contains_encapsulation_units .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/contains_knowledge_artifacts> a sh:PropertyShape ;
+    sh:class sao:KnowledgeArtifact ;
+    sh:path sao:contains_knowledge_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/encoding> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Character encoding." ;
+    sh:maxCount 1 ;
+    sh:path sao:encoding .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/format> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Format or language (DEPRECATED -- use written_in_language relationship)" ;
+    sh:maxCount 1 ;
+    sh:path sao:format .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_file_definitions> a sh:PropertyShape ;
+    sh:class sao:FileDefinition ;
+    sh:description "FileDefinition[] associated with this container." ;
+    sh:path sao:has_file_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_preprocessor_directives> a sh:PropertyShape ;
+    sh:class sao:PreprocessorDirective ;
+    sh:description "PreprocessorDirective[] associated with this container." ;
+    sh:path sao:has_preprocessor_directives .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_references> a sh:PropertyShape ;
+    sh:class sao:DefinitionReference ;
+    sh:description "Import/include statements originating here." ;
+    sh:path sao:has_references .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/has_screen_definitions> a sh:PropertyShape ;
+    sh:class sao:ScreenDefinition ;
+    sh:description "ScreenDefinition[] associated with this container." ;
+    sh:path sao:has_screen_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/implements_component> a sh:PropertyShape ;
+    sh:class sao:Component ;
+    sh:description "Architectural component implemented by this code." ;
+    sh:maxCount 1 ;
+    sh:path sao:implements_component .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/included_in_containers> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Containers that include this one." ;
+    sh:path sao:included_in_containers .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/includes_definitions> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Included/copied definitions." ;
+    sh:path sao:includes_definitions .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/line_count> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Number of lines." ;
+    sh:maxCount 1 ;
+    sh:path sao:line_count .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/referenced_by_containers> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Containers that reference this one." ;
+    sh:path sao:referenced_by_containers .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/referenced_via> a sh:PropertyShape ;
+    sh:class sao:DefinitionReference ;
+    sh:description "Import/include statements targeting here." ;
+    sh:path sao:referenced_via .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/references_containers> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Containers this one references." ;
+    sh:path sao:references_containers .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/size_bytes> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Size in bytes." ;
+    sh:maxCount 1 ;
+    sh:path sao:size_bytes .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/CodeContainer/written_in_language> a sh:PropertyShape ;
+    sh:class sao:ProgrammingLanguage ;
+    sh:description "Programming language." ;
+    sh:maxCount 1 ;
+    sh:path sao:written_in_language .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/contains_containers> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Code containers in this location." ;
+    sh:path sao:contains_containers .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/contains_locations> a sh:PropertyShape ;
+    sh:class sao:StorageLocation ;
+    sh:description "Child storage locations." ;
+    sh:path sao:contains_locations .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/has_parent_location> a sh:PropertyShape ;
+    sh:class sao:StorageLocation ;
+    sh:description "Parent storage location (hierarchical)." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent_location .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_path> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Path or identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:location_path .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type> a sh:PropertyShape ;
+    sh:description "Type (directory, library, package, namespace, module_path)." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:location_type .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values> rdf:first "directory" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/1> rdf:first "library" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/2> rdf:first "package" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/3> rdf:first "namespace" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/location_type/values/cell/4> rdf:first "module_path" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/maps_to_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "Corresponding architectural Module." ;
+    sh:maxCount 1 ;
+    sh:path sao:maps_to_module .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/StorageLocation/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

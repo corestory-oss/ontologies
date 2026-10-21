@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Worked Example: Order Service · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="worked-example-order-service">Worked Example: Order Service</h1>
+<p>This document walks a small Python/Flask order service through all eight extraction phases, showing the SAO YAML output growing at each step. The goal is to demonstrate the end-to-end process on a concrete codebase small enough to fit in a single document.</p>
+<hr />
+<h2 id="1-the-example-codebase">1. The Example Codebase</h2>
+<p>The example is a minimal order management microservice with five files.</p>
+<h3 id="apppy-flask-application-entry-point"><code>app.py</code> -- Flask application entry point</h3>
+<pre><code class="language-python">from flask import Flask, request, jsonify
+from models import db, Order, OrderItem
+from services import OrderService
+
+app = Flask(__name__)
+app.config[&quot;SQLALCHEMY_DATABASE_URI&quot;] = &quot;sqlite:///orders.db&quot;
+db.init_app(app)
+
+order_service = OrderService()
+
+@app.route(&quot;/orders&quot;, methods=[&quot;POST&quot;])
+def create_order():
+    data = request.get_json()
+    order = order_service.create_order(data)
+    return jsonify(order.to_dict()), 201
+
+@app.route(&quot;/orders/&lt;int:order_id&gt;&quot;, methods=[&quot;GET&quot;])
+def get_order(order_id):
+    order = order_service.get_order(order_id)
+    return jsonify(order.to_dict()), 200
+
+@app.route(&quot;/orders/&lt;int:order_id&gt;/cancel&quot;, methods=[&quot;PUT&quot;])
+def cancel_order(order_id):
+    order = order_service.cancel_order(order_id)
+    return jsonify(order.to_dict()), 200
+
+if __name__ == &quot;__main__&quot;:
+    app.run(debug=True)
+</code></pre>
+<h3 id="modelspy-sqlalchemy-models"><code>models.py</code> -- SQLAlchemy models</h3>
+<pre><code class="language-python">from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
+db = SQLAlchemy()
+
+class Order(db.Model):
+    __tablename__ = &quot;orders&quot;
+    id = db.Column(db.Integer, primary_key=True)
+    customer_id = db.Column(db.String(64), nullable=False)
+    status = db.Column(db.String(20), default=&quot;pending&quot;)  # pending, confirmed, cancelled
+    total_amount = db.Column(db.Float, default=0.0)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    items = db.relationship(&quot;OrderItem&quot;, backref=&quot;order&quot;, cascade=&quot;all,delete-orphan&quot;)
+
+class OrderItem(db.Model):
+    __tablename__ = &quot;order_items&quot;
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey(&quot;orders.id&quot;), nullable=False)
+    product_name = db.Column(db.String(128), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    unit_price = db.Column(db.Float, nullable=False)
+</code></pre>
+<h3 id="servicespy-business-logic"><code>services.py</code> -- Business logic</h3>
+<pre><code class="language-python">from models import db, Order, OrderItem
+
+class OrderService:
+    def create_order(self, data):
+        order = Order(customer_id=data[&quot;customer_id&quot;])
+        for item_data in data[&quot;items&quot;]:
+            order.items.append(OrderItem(**item_data))
+        order.total_amount = sum(i.quantity * i.unit_price for i in order.items)
+        db.session.add(order)
+        db.session.commit()
+        return order
+
+    def get_order(self, order_id):
+        return Order.query.get_or_404(order_id)
+
+    def cancel_order(self, order_id):
+        order = self.get_order(order_id)
+        if order.status != &quot;pending&quot;:
+            raise ValueError(&quot;Only pending orders can be cancelled&quot;)
+        order.status = &quot;cancelled&quot;
+        db.session.commit()
+        self._emit_event(&quot;OrderCancelled&quot;, {&quot;order_id&quot;: order.id})
+        return order
+
+    def _emit_event(self, event_type, payload):
+        pass  # placeholder
+</code></pre>
+<h3 id="requirementstxt-and-dockerfile"><code>requirements.txt</code> and <code>Dockerfile</code></h3>
+<p><code>requirements.txt</code> declares two direct dependencies: <code>Flask==3.0.0</code> and <code>Flask-SQLAlchemy==3.1.1</code>. The <code>Dockerfile</code> builds a <code>python:3.12-slim</code> image, installs dependencies, copies source, exposes port 5000, and runs <code>app.py</code>.</p>
+<hr />
+<h2 id="2-phase-1-inventory">2. Phase 1: Inventory</h2>
+<p>Phase 1 walks the file tree and produces the physical inventory.</p>
+<pre><code class="language-yaml"># Phase 1 output
+
+storage_locations:
+  - name: order-service-root
+    location_path: &quot;.&quot;
+    location_type: directory
+    contains_containers:
+      - app-py
+      - models-py
+      - services-py
+      - requirements-txt
+      - dockerfile
+
+code_containers:
+  - id: app-py
+    name: app.py
+    container_path: app.py
+    container_type: source_file
+    line_count: 27
+    contained_in_storage_location: order-service-root
+    written_in_language: python-lang
+
+  - id: models-py
+    name: models.py
+    container_path: models.py
+    container_type: source_file
+    line_count: 20
+    contained_in_storage_location: order-service-root
+    written_in_language: python-lang
+
+  - id: services-py
+    name: services.py
+    container_path: services.py
+    container_type: source_file
+    line_count: 27
+    contained_in_storage_location: order-service-root
+    written_in_language: python-lang
+
+  - id: requirements-txt
+    name: requirements.txt
+    container_path: requirements.txt
+    container_type: configuration
+    line_count: 2
+    contained_in_storage_location: order-service-root
+
+  - id: dockerfile
+    name: Dockerfile
+    container_path: Dockerfile
+    container_type: configuration
+    line_count: 7
+    contained_in_storage_location: order-service-root
+
+programming_languages:
+  - id: python-lang
+    name: Python
+    paradigms:
+      - object_oriented
+      - procedural
+      - functional
+      - multi_paradigm
+    type_discipline: dynamic_strong
+    has_gc: true
+    has_preprocessor: false
+    language_used_by_containers:
+      - app-py
+      - models-py
+      - services-py
+
+package_managers:
+  - name: pip
+    manager_type: pip
+    manifest_file: requirements.txt
+
+package_dependencies:
+  - name: flask-dep
+    package_name: Flask
+    version_constraint: &quot;==3.0.0&quot;
+    scope: production
+    is_direct: true
+    license: BSD-3-Clause
+
+  - name: flask-sqlalchemy-dep
+    package_name: Flask-SQLAlchemy
+    version_constraint: &quot;==3.1.1&quot;
+    scope: production
+    is_direct: true
+    license: BSD-3-Clause
+</code></pre>
+<hr />
+<h2 id="3-phase-2-code-structure">3. Phase 2: Code Structure</h2>
+<p>Phase 2 parses each source file and populates the structural layer.</p>
+<p>Three <strong>EncapsulationUnit</strong> instances (one per class), seven <strong>CallableUnit</strong> instances (three route handlers + four service methods), two <strong>DataStructure</strong> instances (one per model), and ten <strong>DataElement</strong> instances (one per column).</p>
+<pre><code class="language-yaml"># Phase 2 output (adds to Phase 1)
+
+encapsulation_units:
+  - id: order-class
+    name: Order
+    encapsulation_type: class
+    qualified_name: models.Order
+    stereotype: Model
+    line_start: 6
+    line_end: 14
+    defined_in_container: models-py
+
+  - id: order-item-class
+    name: OrderItem
+    encapsulation_type: class
+    qualified_name: models.OrderItem
+    stereotype: Model
+    line_start: 16
+    line_end: 21
+    defined_in_container: models-py
+
+  - id: order-service-class
+    name: OrderService
+    encapsulation_type: class
+    qualified_name: services.OrderService
+    stereotype: Service
+    line_start: 3
+    line_end: 27
+    defined_in_container: services-py
+
+callable_units:
+  # Flask route handlers (module-level functions in app.py)
+  - id: create-order-route
+    name: create_order
+    callable_type: function
+    defined_in_container: app-py
+    line_start: 12
+    line_end: 15
+
+  - id: get-order-route
+    name: get_order
+    callable_type: function
+    defined_in_container: app-py
+    line_start: 17
+    line_end: 19
+
+  - id: cancel-order-route
+    name: cancel_order
+    callable_type: function
+    defined_in_container: app-py
+    line_start: 21
+    line_end: 24
+
+  # OrderService methods
+  - id: create-order-method
+    name: create_order
+    callable_type: method
+    return_type: Order
+    contained_in_unit: order-service-class
+    line_start: 4
+    line_end: 13
+
+  - id: get-order-method
+    name: get_order
+    callable_type: method
+    return_type: Order
+    contained_in_unit: order-service-class
+    line_start: 15
+    line_end: 16
+
+  - id: cancel-order-method
+    name: cancel_order
+    callable_type: method
+    return_type: Order
+    contained_in_unit: order-service-class
+    line_start: 18
+    line_end: 25
+
+  - id: emit-event-method
+    name: _emit_event
+    callable_type: method
+    visibility: private
+    contained_in_unit: order-service-class
+
+data_structures:
+  - id: order-structure
+    name: Order
+    structure_type: class_data
+    structure_category: composite
+    persistence_type: database_table
+    line_start: 6
+    line_end: 14
+    defined_in_container: models-py
+    contained_in_unit: order-class
+    structure_contains_elements:
+      - order-id-elem
+      - order-customer-id-elem
+      - order-status-elem
+      - order-total-amount-elem
+      - order-created-at-elem
+
+  - id: order-item-structure
+    name: OrderItem
+    structure_type: class_data
+    structure_category: composite
+    persistence_type: database_table
+    line_start: 16
+    line_end: 21
+    defined_in_container: models-py
+    contained_in_unit: order-item-class
+    structure_contains_elements:
+      - item-id-elem
+      - item-order-id-elem
+      - item-product-name-elem
+      - item-quantity-elem
+      - item-unit-price-elem
+
+data_elements:
+  # Order fields (5 elements, showing first two; remainder follow same pattern)
+  - id: order-id-elem
+    name: id
+    data_type: integer
+    element_category: field
+    contained_in_structure: order-structure
+
+  - id: order-customer-id-elem
+    name: customer_id
+    data_type: string
+    element_category: field
+    contained_in_structure: order-structure
+
+  # ... order-status-elem (string), order-total-amount-elem (float),
+  #     order-created-at-elem (datetime) -- same pattern
+
+  # OrderItem fields (5 elements, showing first two)
+  - id: item-id-elem
+    name: id
+    data_type: integer
+    element_category: field
+    contained_in_structure: order-item-structure
+
+  - id: item-order-id-elem
+    name: order_id
+    data_type: integer
+    element_category: field
+    contained_in_structure: order-item-structure
+
+  # ... item-product-name-elem (string), item-quantity-elem (integer),
+  #     item-unit-price-elem (float) -- same pattern
+
+definition_references:
+  - id: app-imports-models
+    name: app-imports-models
+    reference_type: import_symbol
+    reference_path: models
+    referencing_container: app-py
+    referenced_container: models-py
+
+  - id: app-imports-services
+    name: app-imports-services
+    reference_type: import_symbol
+    reference_path: services
+    referencing_container: app-py
+    referenced_container: services-py
+
+  - id: services-imports-models
+    name: services-imports-models
+    reference_type: import_symbol
+    reference_path: models
+    referencing_container: services-py
+    referenced_container: models-py
+
+control_flows:
+  - id: route-calls-create
+    name: create_order_route_calls_service
+    flow_type: call
+    source_callable: create-order-route
+    target_callable: create-order-method
+
+  - id: route-calls-get
+    name: get_order_route_calls_service
+    flow_type: call
+    source_callable: get-order-route
+    target_callable: get-order-method
+
+  - id: route-calls-cancel
+    name: cancel_order_route_calls_service
+    flow_type: call
+    source_callable: cancel-order-route
+    target_callable: cancel-order-method
+
+  - id: cancel-calls-get
+    name: cancel_order_calls_get_order
+    flow_type: call
+    source_callable: cancel-order-method
+    target_callable: get-order-method
+
+  - id: cancel-calls-emit
+    name: cancel_order_calls_emit_event
+    flow_type: call
+    source_callable: cancel-order-method
+    target_callable: emit-event-method
+</code></pre>
+<hr />
+<h2 id="4-phase-3-architecture">4. Phase 3: Architecture</h2>
+<p>Phase 3 establishes the logical architecture: a single <strong>System</strong>, one <strong>Module</strong>, one <strong>BoundedContext</strong>, three <strong>Components</strong>, one <strong>Service</strong>, and the REST API.</p>
+<pre><code class="language-yaml"># Phase 3 output (adds to Phases 1-2)
+
+systems:
+  - id: order-service-system
+    name: Order Service
+    description: &gt;-
+      Microservice for creating, retrieving, and cancelling customer orders.
+    version: 1.0.0
+    contains_bounded_contexts:
+      - order-mgmt-context
+    exposes_interfaces:
+      - order-rest-api
+    has_integrations:
+      - order-db-integration
+
+bounded_contexts:
+  - id: order-mgmt-context
+    name: Order Management
+    contained_in_system: order-service-system
+    contains_modules:
+      - order-module
+    ubiquitous_language:
+      - order
+      - order item
+      - cancellation
+
+modules:
+  - id: order-module
+    name: order-service
+    mapped_from_directory: order-service-root
+    contained_in_context: order-mgmt-context
+    contains_components:
+      - order-api-component
+      - order-service-component
+      - order-repository-component
+    runs_as_services:
+      - order-api-service
+
+components:
+  - id: order-api-component
+    name: Order API Controller
+    component_type: controller
+    contained_in_module: order-module
+    implemented_by_code: [app-py]
+
+  - id: order-service-component
+    name: Order Service
+    component_type: service
+    contained_in_module: order-module
+    implemented_by_code: [order-service-class]
+
+  - id: order-repository-component
+    name: Order Repository
+    component_type: repository
+    contained_in_module: order-module
+    implemented_by_code: [order-class, order-item-class]
+
+services:
+  - id: order-api-service
+    name: order-api
+    service_type: microservice
+    runs_module: order-module
+    exposes_endpoints:
+      [create-order-endpoint, get-order-endpoint, cancel-order-endpoint]
+
+programmatic_interfaces:
+  - id: order-rest-api
+    name: Order REST API
+    category: programmatic_interface
+    api_type: rest_api
+    exposed_by_system: order-service-system
+    has_endpoints:
+      - { id: create-order-endpoint, path: /orders, method: POST, protocol: http }
+      - { id: get-order-endpoint, path: /orders/{id}, method: GET, protocol: http }
+      - { id: cancel-order-endpoint, path: /orders/{id}/cancel, method: PUT, protocol: http }
+
+external_systems:
+  - id: order-database-ext
+    name: SQLite Database
+    system_type: third_party_service
+
+integrations:
+  - id: order-db-integration
+    name: Order Database Integration
+    integration_type: bidirectional
+    protocol: tcp
+    integrates_with_system: order-database-ext
+    belongs_to_system: order-service-system
+</code></pre>
+<hr />
+<h2 id="5-phase-4-domain-model">5. Phase 4: Domain Model</h2>
+<p>Phase 4 maps the <strong>DataStructure</strong> instances from Phase 2 to domain concepts.</p>
+<pre><code class="language-yaml"># Phase 4 output (adds to Phases 1-3)
+
+domain_entities:
+  - id: order-entity
+    name: Order
+    mapped_from_structure: order-structure
+    governed_by_lifecycle: order-lifecycle
+    attributes:
+      - name: id
+        data_type: integer
+        category: required
+        is_identifier: true
+        mapped_from_element: order-id-elem
+      - name: customer_id
+        data_type: string
+        category: required
+        mapped_from_element: order-customer-id-elem
+      - name: status
+        data_type: string
+        category: required
+        mapped_from_element: order-status-elem
+      - name: total_amount
+        data_type: decimal
+        category: derived        # computed from line items
+        mapped_from_element: order-total-amount-elem
+      - name: created_at
+        data_type: timestamp
+        category: required
+        mapped_from_element: order-created-at-elem
+
+  - id: order-item-entity
+    name: OrderItem
+    mapped_from_structure: order-item-structure
+    attributes:
+      - { name: id, data_type: integer, category: required,
+          is_identifier: true, mapped_from_element: item-id-elem }
+      - { name: order_id, data_type: integer, category: required,
+          mapped_from_element: item-order-id-elem }
+      - { name: product_name, data_type: string, category: required,
+          mapped_from_element: item-product-name-elem }
+      - { name: quantity, data_type: integer, category: required,
+          mapped_from_element: item-quantity-elem }
+      - { name: unit_price, data_type: decimal, category: required,
+          mapped_from_element: item-unit-price-elem }
+
+# Backlinks on DataStructures
+# order-structure.maps_to_domain_entity: order-entity
+# order-item-structure.maps_to_domain_entity: order-item-entity
+
+aggregates:
+  - id: order-aggregate
+    name: Order
+    has_root_entity: order-entity
+    aggregates_entities:
+      - order-item-entity
+    enforced_by_invariant_rules:
+      - pending-cancel-rule
+    persisted_in_stores:
+      - order-datastore
+    contained_in_bounded_context: order-mgmt-context
+
+# Backlink on BoundedContext
+# order-mgmt-context.contains_aggregates: [order-aggregate]
+
+domain_relationships:
+  - id: order-has-items
+    name: OrderHasItems
+    source_entity: order-entity
+    target_entity: order-item-entity
+    cardinality: one_to_many
+    is_composition: true
+    is_navigable: true
+    is_bidirectional: true
+    foreign_key_field: order_id
+
+lifecycles:
+  - id: order-lifecycle
+    name: OrderLifecycle
+    governs_entities:
+      - order-entity
+    starts_with_state: pending-state
+    states:
+      - id: pending-state
+        name: pending
+        is_initial: true
+        is_terminal: false
+      - id: confirmed-state
+        name: confirmed
+        is_initial: false
+        is_terminal: false
+      - id: cancelled-state
+        name: cancelled
+        is_initial: false
+        is_terminal: true
+    transitions:
+      - name: ConfirmOrder
+        transitions_from_state: pending-state
+        transitions_to_state: confirmed-state
+      - name: CancelOrder
+        transitions_from_state: pending-state
+        transitions_to_state: cancelled-state
+        guarded_by_rules:
+          - pending-cancel-rule
+
+data_stores:
+  - id: order-datastore
+    name: OrderDatabase
+    store_type: relational_db
+    persists_aggregates: [order-aggregate]
+    collections:
+      - name: orders
+        persists_structures: [order-structure]
+        has_constraints:
+          - { name: pk_orders, constraint_type: primary_key, columns: [id] }
+        has_indexes:
+          - { name: idx_orders_customer_id, index_type: btree, columns: [customer_id] }
+      - name: order_items
+        persists_structures: [order-item-structure]
+        has_constraints:
+          - { name: pk_order_items, constraint_type: primary_key, columns: [id] }
+          - { name: fk_order_items_order, constraint_type: foreign_key,
+              columns: [order_id], reference_table: orders, reference_columns: [id] }
+</code></pre>
+<hr />
+<h2 id="6-phase-5-business-intent">6. Phase 5: Business Intent</h2>
+<p>Phase 5 captures actors, operations, commands, queries, rules, and events.</p>
+<pre><code class="language-yaml"># Phase 5 output (adds to Phases 1-4)
+
+human_actors:
+  - id: customer-actor
+    name: Customer
+    description: End user who creates and manages orders
+    category: human
+    actor_type: end_user
+
+operations:
+  - id: create-order-op
+    name: CreateOrder
+    description: Creates a new order with line items
+    exposed_by_component: order-api-component
+    implemented_by_callables:
+      - create-order-route
+      - create-order-method
+
+  - id: get-order-op
+    name: GetOrder
+    description: Retrieves an order by its identifier
+    exposed_by_component: order-api-component
+    implemented_by_callables:
+      - get-order-route
+      - get-order-method
+
+  - id: cancel-order-op
+    name: CancelOrder
+    description: Cancels a pending order
+    exposed_by_component: order-api-component
+    implemented_by_callables:
+      - cancel-order-route
+      - cancel-order-method
+
+commands:
+  - id: create-order-cmd
+    name: CreateOrder
+    category: command
+    command_type: create
+    performed_by_actor: customer-actor
+    targets_resources:
+      - order-aggregate
+    emits_events_from_action: []
+
+  - id: cancel-order-cmd
+    name: CancelOrder
+    category: command
+    command_type: execute
+    performed_by_actor: customer-actor
+    targets_resources:
+      - order-aggregate
+    validated_by_action_rules:
+      - pending-cancel-rule
+    emits_events_from_action:
+      - order-cancelled-event
+
+queries:
+  - id: get-order-query
+    name: GetOrder
+    category: query
+    performed_by_actor: customer-actor
+    targets_resources:
+      - order-aggregate
+
+rules:
+  - id: pending-cancel-rule
+    name: OnlyPendingOrdersCancellable
+    category: business
+    condition: &quot;order.status == 'pending'&quot;
+    action: &quot;Allow cancellation to proceed&quot;
+    priority: 1
+    is_active: true
+    validates_actions:
+      - cancel-order-cmd
+    governs_domain_entities:
+      - order-entity
+    guards_transitions:
+      - CancelOrder  # transition name from Phase 4
+
+domain_events:
+  - id: order-cancelled-event
+    name: OrderCancelled
+    description: Emitted when a pending order is successfully cancelled
+    category: domain_event
+    produced_by_aggregate: order-aggregate
+    emitted_by_component: order-service-component
+</code></pre>
+<hr />
+<h2 id="7-phase-6-cross-cutting-concerns-brief">7. Phase 6: Cross-Cutting Concerns (Brief)</h2>
+<p>Phase 6 covers deployment, environments, and testing. This small codebase has minimal cross-cutting infrastructure, but the Dockerfile provides deployment information.</p>
+<pre><code class="language-yaml"># Phase 6 output (adds to Phases 1-5)
+
+environments:
+  - id: dev-env
+    name: development
+    environment_type: development
+    hosts_deployments:
+      - order-dev-deployment
+
+deployment_units:
+  - id: order-container-unit
+    name: order-service-container
+    unit_type: container
+    artifact_uri: &quot;order-service:latest&quot;
+
+deployments:
+  - id: order-dev-deployment
+    name: order-service-dev
+    replicas: 1
+    deploys_service: order-api-service
+    deployed_in_environment: dev-env
+    deploys_unit: order-container-unit
+
+test_suites:
+  - id: order-unit-tests
+    name: Order Service Unit Tests
+    suite_type: unit
+    framework: pytest
+    source_location: tests/
+    tests_component: order-service-component
+    tests_module: order-module
+</code></pre>
+<hr />
+<h2 id="8-phase-7-bridge-stitching">8. Phase 7: Bridge Stitching</h2>
+<p>Phase 7 verifies all eight cross-layer bridges. No new entities are created; only missing links are filled.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Bridge</th>
+<th>Forward</th>
+<th>Inverse</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Module to StorageLocation</td>
+<td><code>order-module.mapped_from_directory</code> = <code>order-service-root</code></td>
+<td><code>order-service-root.maps_to_module</code> = <code>order-module</code></td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Component to EncapsulationUnit</td>
+<td>All 3 components have <code>implemented_by_code</code> set</td>
+<td>Inverse <code>implements_component</code> set on each EncapsulationUnit</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>3</td>
+<td>DomainEntity to DataStructure</td>
+<td><code>order-entity</code> -&gt; <code>order-structure</code>; <code>order-item-entity</code> -&gt; <code>order-item-structure</code></td>
+<td><code>maps_to_domain_entity</code> set on both structures</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Attribute to DataElement</td>
+<td>All 10 Attributes have <code>mapped_from_element</code></td>
+<td><code>maps_to_attribute</code> set on all 10 DataElements</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Operation to CallableUnit</td>
+<td>Each Operation links to its route handler + service method</td>
+<td><code>implements_operation</code> set on each CallableUnit</td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Aggregate to BoundedContext</td>
+<td><code>order-aggregate.contained_in_bounded_context</code> = <code>order-mgmt-context</code></td>
+<td><code>order-mgmt-context.contains_aggregates</code> = <code>[order-aggregate]</code></td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Service to Module</td>
+<td><code>order-api-service.runs_module</code> = <code>order-module</code></td>
+<td><code>order-module.runs_as_services</code> = <code>[order-api-service]</code></td>
+<td>Pass</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Deployment to Service</td>
+<td><code>order-dev-deployment.deploys_service</code> = <code>order-api-service</code></td>
+<td><code>order-api-service.deployed_as</code> = <code>order-dev-deployment</code></td>
+<td>Pass</td>
+</tr>
+</tbody>
+</table>
+<p>All eight bridges verified. The graph is fully connected from <strong>Environment</strong> down through <strong>Deployment</strong>, <strong>Service</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>EncapsulationUnit</strong>, <strong>DataStructure</strong>, <strong>DomainEntity</strong>, and up through <strong>Aggregate</strong>, <strong>BoundedContext</strong>, to <strong>System</strong>.</p>
+<hr />
+<h2 id="9-phase-8-system-context">9. Phase 8: System Context</h2>
+<p>Phase 8 finalizes the <strong>System</strong> instance with all top-level relationships populated.</p>
+<pre><code class="language-yaml"># Phase 8 -- finalized System
+
+systems:
+  - id: order-service-system
+    name: Order Service
+    description: &gt;-
+      Microservice for creating, retrieving, and cancelling customer orders.
+    version: 1.0.0
+    contains_bounded_contexts:
+      - order-mgmt-context
+    exposes_interfaces:
+      - order-rest-api
+    has_integrations:
+      - order-db-integration
+</code></pre>
+<p>All top-level attributes verified:</p>
+<ul>
+<li><code>contains_bounded_contexts</code> -- one context: <strong>Order Management</strong></li>
+<li><code>exposes_interfaces</code> -- one interface: <strong>Order REST API</strong> with three endpoints</li>
+<li><code>has_integrations</code> -- one integration: <strong>Order Database Integration</strong></li>
+<li><code>enforces_policies</code> -- none (no auth policies extracted)</li>
+<li><code>must_comply_with</code> -- none (no compliance requirements in scope)</li>
+</ul>
+<p>The <strong>System</strong> is the single root from which the entire graph is reachable.</p>
+<hr />
+<h2 id="10-complete-extraction-summary">10. Complete Extraction Summary</h2>
+<p>The full extraction is the union of all YAML blocks shown in Phases 1-8 above. The following table summarizes the instance counts.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>SAO Classes produced</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 -- Inventory</td>
+<td><strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong>, <strong>PackageManager</strong>, <strong>PackageDependency</strong></td>
+<td>10</td>
+</tr>
+<tr>
+<td>2 -- Code Structure</td>
+<td><strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>DataElement</strong>, <strong>DefinitionReference</strong>, <strong>ControlFlow</strong></td>
+<td>30</td>
+</tr>
+<tr>
+<td>3 -- Architecture</td>
+<td><strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, <strong>ProgrammaticInterface</strong>, <strong>Endpoint</strong>, <strong>ExternalSystem</strong>, <strong>Integration</strong></td>
+<td>13</td>
+</tr>
+<tr>
+<td>4 -- Domain Model</td>
+<td><strong>DomainEntity</strong>, <strong>Aggregate</strong>, <strong>DomainRelationship</strong>, <strong>Lifecycle</strong>, <strong>State</strong>, <strong>DataStore</strong>, <strong>Collection</strong></td>
+<td>11</td>
+</tr>
+<tr>
+<td>5 -- Business Intent</td>
+<td><strong>HumanActor</strong>, <strong>Operation</strong>, <strong>Command</strong>, <strong>Query</strong>, <strong>Rule</strong>, <strong>DomainEvent</strong></td>
+<td>9</td>
+</tr>
+<tr>
+<td>6 -- Cross-Cutting</td>
+<td><strong>Environment</strong>, <strong>Deployment</strong>, <strong>DeploymentUnit</strong>, <strong>TestSuite</strong></td>
+<td>4</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>37 distinct classes</strong></td>
+<td><strong>77</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-observations">Key observations</h3>
+<ol>
+<li>Even a five-file codebase produces 77 SAO instances across 37 distinct classes. Real applications will produce thousands.</li>
+<li>The bridges are what make the extraction valuable. Without them, the 77 instances would be seven isolated clusters. With them, every instance is reachable from the <strong>System</strong> root.</li>
+<li>The YAML is additive: each phase appends new instance blocks and backlinks without modifying earlier outputs. This makes incremental extraction and review practical.</li>
+<li>Phase 2 (Code Structure) produces the most instances by count, but Phase 4 (Domain Model) and Phase 5 (Business Intent) add the most semantic value.</li>
+</ol></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,79 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:EvidenceAnchorShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:excerpt_ffaf68c7,
+        specsh:id_8a63fba6,
+        specsh:line_end_6129d76a,
+        specsh:line_start_e48b15f8,
+        specsh:path_df9a0cef,
+        specsh:selector_1ff931d3,
+        specsh:snapshot_0a6d856a,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:EvidenceAnchor .
+
+specsh:SourceSnapshotShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:authored_by_7ded2f76,
+        specsh:captured_at_a5029248,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:media_type_402cd818,
+        specsh:revision_a4d172f4,
+        specsh:source_uri_e212d717,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:SourceSnapshot .
+
+specsh:SpecActivityShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:activity_kind_1a4b68b3,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:ended_at_b5ece865,
+        specsh:id_8a63fba6,
+        specsh:input_elements_6ff3c117,
+        specsh:input_snapshots_eb0553ae,
+        specsh:model_identifier_a74a5aaf,
+        specsh:parameters_8c3c16a6,
+        specsh:performed_by_5eba15a9,
+        specsh:started_at_92e7a8ad,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d,
+        specsh:tool_version_1d4c81d7 ;
+    sh:targetClass spec:SpecActivity .
+
+specsh:VerificationResultShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:activity_1a9bc617,
+        specsh:authored_by_7ded2f76,
+        specsh:checked_snapshot_3eba03c9,
+        specsh:checks_claim_f93c3d6f,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:outcome_fbb688b0,
+        specsh:result_anchors_3322d62d,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass spec:VerificationResult .

@@ -1,0 +1,153 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:TypeExpressionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/TypeExpression/base_type>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/description>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/has_type_parameters>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/id>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/is_nullable>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/name>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/nullability_model>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/pointer_semantics>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/return_type_of_callables>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_constraints>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_of_data_elements>,
+        <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_of_parameters> ;
+    sh:targetClass sao:TypeExpression .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/base_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Base type name (e.g., \"List\", \"int\", \"String\")" ;
+    sh:maxCount 1 ;
+    sh:path sao:base_type .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/has_type_parameters> a sh:PropertyShape ;
+    sh:class sao:TypeExpression ;
+    sh:description "Generic type parameters (e.g., T in List<T>)" ;
+    sh:path sao:has_type_parameters .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/is_nullable> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the type permits null values." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_nullable .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/nullability_model> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "How nullability is expressed (e.g., \"optional\", \"nullable\", \"Option<T>\")" ;
+    sh:maxCount 1 ;
+    sh:path sao:nullability_model .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/pointer_semantics> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Pointer/reference semantics (e.g., \"raw\", \"smart\", \"weak\")" ;
+    sh:maxCount 1 ;
+    sh:path sao:pointer_semantics .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/return_type_of_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables that return this type." ;
+    sh:path sao:return_type_of_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_constraints> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Constraints on type parameters" ;
+    sh:path sao:type_constraints .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind> a sh:PropertyShape ;
+    sh:description "The kind of type expression." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:type_kind .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values> rdf:first "primitive" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/1> rdf:first "generic" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/10> rdf:first "optional_type" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/11> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/11> rdf:first "constrained" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/12> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/12> rdf:first "opaque" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/2> rdf:first "union" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/3> rdf:first "intersection" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/4> rdf:first "alias" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/5> rdf:first "pointer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/6> rdf:first "reference" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/7> rdf:first "array_of" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/8> rdf:first "function_type" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/9> rdf:first "tuple_type" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_kind/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_of_data_elements> a sh:PropertyShape ;
+    sh:class sao:DataElement ;
+    sh:description "Data elements that have this type." ;
+    sh:path sao:type_of_data_elements .
+
+<https://ontologies.corestory.ai/sao/shapes/TypeExpression/type_of_parameters> a sh:PropertyShape ;
+    sh:class sao:Parameter ;
+    sh:description "Parameters that have this type." ;
+    sh:path sao:type_of_parameters .

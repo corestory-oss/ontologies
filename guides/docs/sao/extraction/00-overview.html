@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>SAO Extraction Playbook: Overview · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="sao-extraction-playbook-overview">SAO Extraction Playbook: Overview</h1>
+<p>This document series is a step-by-step playbook for decomposing any software codebase into SAO-conformant YAML. It covers modern cloud-native applications, legacy mainframe systems, and everything in between.</p>
+<h2 id="how-to-use-this-series">How to use this series</h2>
+<p><strong>Audience.</strong> These documents are written for both software engineers performing manual extraction and LLM agents (e.g., Claude Code) performing automated extraction. The term "extraction agent" refers to whoever or whatever is performing the work.</p>
+<p><strong>Reading path.</strong> Start here, then follow the phases in order. Each phase document is self-contained: it states its inputs, outputs, steps, and the SAO classes it populates. Once you are familiar with the overall flow, you can use individual phase documents as standalone references.</p>
+<p><strong>Notation conventions.</strong> This series follows the formatting conventions established in the SAO documentation:</p>
+<ul>
+<li><strong>Bold</strong> for class and entity names in prose (e.g., <strong>ControlFlow</strong>, <strong>DataStore</strong>, <strong>Actor</strong>)</li>
+<li><code>Monospace</code> for enum values, attribute names, and literal identifiers (e.g., <code>web_ui</code>, <code>rest_api</code>, <code>contained_in_unit</code>)</li>
+<li><code>Dotted.path</code> references in monospace (e.g., <code>Component.implemented_by_code</code>)</li>
+</ul>
+<p><strong>RFC 2119 keywords.</strong> Throughout this series:</p>
+<ul>
+<li><strong>MUST</strong> — required for a valid SAO instance</li>
+<li><strong>SHOULD</strong> — strongly recommended; omission requires justification</li>
+<li><strong>MAY</strong> — optional enrichment that adds value but is not required</li>
+</ul>
+<hr />
+<h2 id="prerequisites-and-inputs">Prerequisites and inputs</h2>
+<p>Before starting extraction, gather the following:</p>
+<h3 id="required-inputs">Required inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full source tree</td>
+<td>Repository access (all branches relevant to the extraction scope)</td>
+</tr>
+<tr>
+<td>Build manifests</td>
+<td><code>pom.xml</code>, <code>package.json</code>, <code>Cargo.toml</code>, <code>go.mod</code>, Makefile, JCL procs, etc.</td>
+</tr>
+<tr>
+<td>Dependency lock files</td>
+<td><code>package-lock.json</code>, <code>Cargo.lock</code>, <code>poetry.lock</code>, etc.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="strongly-recommended-inputs">Strongly recommended inputs</h3>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deployment manifests</td>
+<td>Dockerfiles, Kubernetes YAML, docker-compose, serverless configs, JCL</td>
+</tr>
+<tr>
+<td>API schemas</td>
+<td>OpenAPI, GraphQL, gRPC <code>.proto</code>, WSDL</td>
+</tr>
+<tr>
+<td>Database schemas</td>
+<td>DDL scripts, migration files, ORM model definitions</td>
+</tr>
+<tr>
+<td>Documentation</td>
+<td>READMEs, wikis, ADRs, API docs, runbooks</td>
+</tr>
+<tr>
+<td>CI/CD configs</td>
+<td>GitHub Actions, Jenkinsfile, GitLab CI, Azure Pipelines</td>
+</tr>
+<tr>
+<td>IaC definitions</td>
+<td>Terraform, CloudFormation, Pulumi</td>
+</tr>
+</tbody>
+</table>
+<h3 id="optional-inputs-if-available">Optional inputs (if available)</h3>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Runtime telemetry</td>
+<td>Logs, traces, APM data</td>
+</tr>
+<tr>
+<td>Config files</td>
+<td><code>application.yml</code>, <code>.env</code>, feature flag configs</td>
+</tr>
+<tr>
+<td>Test suites</td>
+<td>Test files, coverage reports</td>
+</tr>
+</tbody>
+</table>
+<h3 id="identification-checklist">Identification checklist</h3>
+<p>Before extraction begins, identify and record:</p>
+<ol>
+<li><strong>Programming language(s)</strong> present in the repository</li>
+<li><strong>Build system</strong> (Maven, Gradle, npm, Cargo, Make, etc.)</li>
+<li><strong>Package manager</strong> and dependency resolution mechanism</li>
+<li><strong>Deployment model</strong> (containers, VMs, mainframe LPAR, serverless, bare metal)</li>
+<li><strong>External dependencies</strong> visible from configuration (databases, message brokers, third-party APIs)</li>
+<li><strong>Architectural style</strong> if apparent (monolith, microservices, modular monolith, mainframe batch/online)</li>
+</ol>
+<h3 id="tools-needed">Tools needed</h3>
+<table>
+<thead>
+<tr>
+<th>Tool category</th>
+<th>Purpose</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Language-appropriate AST parser</td>
+<td>Code structure extraction</td>
+<td>Phase 2</td>
+</tr>
+<tr>
+<td>LinkML validator (<code>linkml-validate</code>)</td>
+<td>Schema validation</td>
+<td>Phase 9 (Validation)</td>
+</tr>
+<tr>
+<td>LLM with large context window</td>
+<td>Semantic inference</td>
+<td>Phases 4-5</td>
+</tr>
+<tr>
+<td>YAML serializer</td>
+<td>Output generation</td>
+<td>All phases</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="extraction-philosophy">Extraction philosophy</h2>
+<h3 id="bottom-up-then-top-down">Bottom-up, then top-down</h3>
+<p>Extract the mechanical layers first, then infer the semantic layers from them. Code structure (Layer 3) is deterministic — a parser can extract it with near-perfect accuracy. Architecture (Layer 4) is heuristic — it can be inferred from code organization with high confidence. Domain model (Layer 5) and business intent (Layer 6) are inferential — they require semantic reasoning and human validation.</p>
+<p>This matches the SAO guide's core insight:</p>
+<blockquote>
+<p>Layers 3 and 4 are largely structural (you can derive them from code organization and dependency graphs), while layers 5 and 6 require semantic understanding (recognizing business meaning in code patterns).</p>
+</blockquote>
+<h3 id="confidence-gradient">Confidence gradient</h3>
+<p>Each extraction phase operates at a different confidence level:</p>
+<table>
+<thead>
+<tr>
+<th>Confidence</th>
+<th>Meaning</th>
+<th>Phases</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deterministic</strong></td>
+<td>Extracted directly from AST; no interpretation needed</td>
+<td>Phase 1, Phase 2</td>
+</tr>
+<tr>
+<td><strong>Heuristic</strong></td>
+<td>Inferred from structural patterns with high confidence</td>
+<td>Phase 3</td>
+</tr>
+<tr>
+<td><strong>Inferential</strong></td>
+<td>Requires semantic reasoning; may need correction</td>
+<td>Phases 4-5</td>
+</tr>
+<tr>
+<td><strong>Manual</strong></td>
+<td>Requires human domain expert validation</td>
+<td>Parts of Phases 5-6</td>
+</tr>
+</tbody>
+</table>
+<p>When populating SAO instances, the extraction agent SHOULD be aware of which confidence level applies and flag inferential results for human review.</p>
+<h3 id="incremental-extraction">Incremental extraction</h3>
+<p>You do not need to extract everything at once. Start with a single bounded context or module, complete it through all phases, then expand. This approach:</p>
+<ul>
+<li>Validates your extraction process on a manageable scope</li>
+<li>Produces usable output quickly</li>
+<li>Reveals gaps in your tooling or understanding early</li>
+</ul>
+<h3 id="idempotency">Idempotency</h3>
+<p>Re-running a phase with the same inputs SHOULD produce the same outputs. Phases should be designed as deterministic transformations wherever possible, with non-deterministic steps (LLM inference) clearly marked.</p>
+<hr />
+<h2 id="phase-dependency-map">Phase dependency map</h2>
+<p>The eight extraction phases execute in a defined order. Each phase consumes the outputs of prior phases.</p>
+<pre><code>Phase 1: Inventory ─────────────────────────────────┐
+    │                                                │
+    v                                                │
+Phase 2: Code Structure (Layer 3) ──────────────┐   │
+    │                                            │   │
+    v                                            │   │
+Phase 3: Architecture (Layers 2/4) ─────────┐   │   │
+    │                                        │   │   │
+    ├───&gt; Phase 4: Domain Model (Layer 5)    │   │   │
+    │         │                              │   │   │
+    │         v                              │   │   │
+    ├───&gt; Phase 5: Business Intent (Layer 6) │   │   │
+    │                                        │   │   │
+    ├───&gt; Phase 6: Cross-Cutting ◄───────────┘   │   │
+    │         (parallel with 3-5)                │   │
+    v                                            │   │
+Phase 7: Bridge Stitching ◄──────────────────────┘   │
+    │          (requires all prior)                   │
+    v                                                │
+Phase 8: System Context (Layer 1) ◄──────────────────┘
+    │          (capstone)
+    v
+  Validation (doc 09)
+</code></pre>
+<h3 id="phase-summary-table">Phase summary table</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Doc</th>
+<th>SAO layers</th>
+<th>Primary technique</th>
+<th>Automation</th>
+<th>Key outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Inventory</td>
+<td><a href="01-inventory.html">01</a></td>
+<td>3 (partial)</td>
+<td>File system traversal</td>
+<td>High</td>
+<td><strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong></td>
+</tr>
+<tr>
+<td>2. Code structure</td>
+<td><a href="02-code-structure.html">02</a></td>
+<td>3</td>
+<td>AST parsing</td>
+<td>High</td>
+<td><strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>ControlFlow</strong>, <strong>DataFlow</strong></td>
+</tr>
+<tr>
+<td>3. Architecture</td>
+<td><a href="03-architecture.html">03</a></td>
+<td>2, 4</td>
+<td>Heuristic + manifest parsing</td>
+<td>Medium</td>
+<td><strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, <strong>Interface</strong></td>
+</tr>
+<tr>
+<td>4. Domain model</td>
+<td><a href="04-domain-model.html">04</a></td>
+<td>5</td>
+<td>LLM inference + patterns</td>
+<td>Medium-Low</td>
+<td><strong>Aggregate</strong>, <strong>DomainEntity</strong>, <strong>ValueObject</strong>, <strong>DataStore</strong></td>
+</tr>
+<tr>
+<td>5. Business intent</td>
+<td><a href="05-business-intent.html">05</a></td>
+<td>6</td>
+<td>LLM inference + docs</td>
+<td>Low</td>
+<td><strong>Actor</strong>, <strong>Operation</strong>, <strong>Rule</strong>, <strong>Event</strong>, <strong>Workflow</strong>, <strong>Capability</strong></td>
+</tr>
+<tr>
+<td>6. Cross-cutting</td>
+<td><a href="06-cross-cutting.html">06</a></td>
+<td>1, 2</td>
+<td>Mixed</td>
+<td>Medium</td>
+<td><strong>Role</strong>, <strong>Permission</strong>, <strong>TestSuite</strong>, <strong>Deployment</strong>, <strong>Metric</strong></td>
+</tr>
+<tr>
+<td>7. Bridge stitching</td>
+<td><a href="07-bridge-stitching.html">07</a></td>
+<td>All</td>
+<td>Verification</td>
+<td>Medium</td>
+<td>Cross-layer relationship completeness</td>
+</tr>
+<tr>
+<td>8. System context</td>
+<td><a href="08-system-context.html">08</a></td>
+<td>1</td>
+<td>Capstone assembly</td>
+<td>Low</td>
+<td>Finalized <strong>System</strong> with all top-level links</td>
+</tr>
+</tbody>
+</table>
+<p>After all phases: <a href="09-validation.html">Validation</a> | <a href="10-worked-example.html">Worked Example</a> | <a href="11-reference.html">Reference</a></p>
+<hr />
+<h2 id="document-index">Document index</h2>
+<table>
+<thead>
+<tr>
+<th>Doc</th>
+<th>Title</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>00</strong> (this doc)</td>
+<td>Overview</td>
+<td>How to use, prerequisites, philosophy, phase map</td>
+</tr>
+<tr>
+<td><a href="01-inventory.html"><strong>01</strong></a></td>
+<td>Inventory</td>
+<td>Phase 1: file tree, languages, dependencies</td>
+</tr>
+<tr>
+<td><a href="02-code-structure.html"><strong>02</strong></a></td>
+<td>Code Structure</td>
+<td>Phase 2: the foundation layer (8 sub-phases)</td>
+</tr>
+<tr>
+<td><a href="03-architecture.html"><strong>03</strong></a></td>
+<td>Architecture</td>
+<td>Phase 3: system, contexts, modules, components, services</td>
+</tr>
+<tr>
+<td><a href="04-domain-model.html"><strong>04</strong></a></td>
+<td>Domain Model</td>
+<td>Phase 4: aggregates, entities, value objects, persistence</td>
+</tr>
+<tr>
+<td><a href="05-business-intent.html"><strong>05</strong></a></td>
+<td>Business Intent</td>
+<td>Phase 5: actors, operations, rules, events, workflows</td>
+</tr>
+<tr>
+<td><a href="06-cross-cutting.html"><strong>06</strong></a></td>
+<td>Cross-Cutting</td>
+<td>Phase 6: security, testing, deployment, observability</td>
+</tr>
+<tr>
+<td><a href="07-bridge-stitching.html"><strong>07</strong></a></td>
+<td>Bridge Stitching</td>
+<td>Phase 7: cross-layer relationship verification</td>
+</tr>
+<tr>
+<td><a href="08-system-context.html"><strong>08</strong></a></td>
+<td>System Context</td>
+<td>Phase 8: capstone assembly</td>
+</tr>
+<tr>
+<td><a href="09-validation.html"><strong>09</strong></a></td>
+<td>Validation</td>
+<td>Completeness checks, iteration, gap-filling</td>
+</tr>
+<tr>
+<td><a href="10-worked-example.html"><strong>10</strong></a></td>
+<td>Worked Example</td>
+<td>End-to-end extraction of a small order service</td>
+</tr>
+<tr>
+<td><a href="11-reference.html"><strong>11</strong></a></td>
+<td>Reference</td>
+<td>Technique table, class checklist, decision trees</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="relationship-to-other-sao-documentation">Relationship to other SAO documentation</h2>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Role</th>
+<th>When to consult</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../guide.html">SAO Guide</a></td>
+<td>Explains what each class means and how classes relate</td>
+<td>When you need to understand a class's purpose or attributes</td>
+</tr>
+<tr>
+<td><a href="../../../../source/legacy/sao/sao.yml">sao.yml</a></td>
+<td>The canonical LinkML schema</td>
+<td>When you need exact attribute names, types, or enum values</td>
+</tr>
+<tr>
+<td>Section deep-dives (<a href="../01-enumerations.html">01</a>–<a href="../13-extended-modeling.html">13</a>)</td>
+<td>Detailed per-section documentation with YAML examples</td>
+<td>When you need attribute-level detail for a specific section</td>
+</tr>
+<tr>
+<td><a href="../whitepaper.html">Whitepaper</a></td>
+<td>Theoretical grounding for ontology-based extraction</td>
+<td>Background reading on why this approach works</td>
+</tr>
+</tbody>
+</table></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

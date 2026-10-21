@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Existing formats as representations · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="existing-formats-as-representations">Existing formats as representations</h1>
+<p>These are proposed mappings for adapter design, not claims of exact equivalence, conformance, or implemented import/export support. The graph vocabulary is independent of document headings and folder conventions. External profile versions should be pinned when adapters are implemented.</p>
+<table>
+<thead>
+<tr>
+<th>Convention</th>
+<th>Native concept</th>
+<th>Initial SpecSpec representation</th>
+<th>Important limit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OpenSpec</td>
+<td>Current behavior specs, requirements and scenarios</td>
+<td>Specification, Requirement, Scenario, ArtifactFragment</td>
+<td>Distinguish a stated requirement from evidence that current code satisfies it.</td>
+</tr>
+<tr>
+<td>OpenSpec</td>
+<td>Change proposal, design and spec deltas</td>
+<td>ChangeProposal, Decision, RequirementReplacement</td>
+<td>Task execution and complete native delta syntax are not modeled yet.</td>
+</tr>
+<tr>
+<td>arc42</td>
+<td>Context, building-block, runtime and deployment views</td>
+<td>SpecificationArtifact and ArtifactFragment linked through the SAO bridge</td>
+<td>Software structures belong in SAO; a view can describe many entities.</td>
+</tr>
+<tr>
+<td>arc42</td>
+<td>Quality requirements and architecture decisions</td>
+<td>Requirement, Scenario, Decision</td>
+<td>Full quality-scenario dimensions and template section ordering are not modeled yet.</td>
+</tr>
+<tr>
+<td>MADR</td>
+<td>Context, considered options, decision and consequences</td>
+<td>Decision, DecisionOption and rationale/consequence Claim nodes</td>
+<td>Preserve native drivers, tradeoffs and prose; there is no lossless adapter yet.</td>
+</tr>
+<tr>
+<td>Old SpecSpec</td>
+<td>Stable concept IDs, origin and code anchors</td>
+<td>SpecElement IDs, Claim.origin, SourceSnapshot and EvidenceAnchor</td>
+<td>Its mandatory abstraction ladder and proprietary Markdown layout are not core ontology requirements.</td>
+</tr>
+<tr>
+<td>PRD / user-authored use-case documents</td>
+<td>Goals, requirements and interactions</td>
+<td>Specification, Requirement, UseCase, Scenario</td>
+<td>PRD is a family of conventions; identify the specific template with a RepresentationProfile.</td>
+</tr>
+</tbody>
+</table>
+<p>Authoritative references used for this initial mapping:</p>
+<ul>
+<li><a href="https://github.com/Fission-AI/OpenSpec/blob/main/docs/overview.md">OpenSpec overview</a>: specs and change artifacts.</li>
+<li><a href="https://arc42.org/overview/">arc42 template overview</a>: architecture documentation views and sections.</li>
+<li><a href="https://adr.github.io/madr/decisions/adr-template.html">MADR template</a>: decision context, alternatives, outcome and consequences.</li>
+</ul>
+<p>No external template text or code is copied into this repository. These are semantic mappings written for this draft. The old SpecSpec checkout was consulted locally as background; its normative document instructions are not adopted as instructions for this ontology.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

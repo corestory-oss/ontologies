@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 1: Structural Foundation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-1-structural-foundation">Section 1: Structural Foundation</h1>
+<p>This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Classes no longer reference global <code>slots:</code> for single-domain relationships. Back-reference attributes are now defined directly on the relevant classes.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Structural Foundation provides a comprehensive framework for modeling software architecture at multiple levels of granularity, aligned with Domain-Driven Design (DDD) principles.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="system">System</h3>
+<p><strong>Definition</strong>: Top-level container representing a software product, platform, or application.</p>
+<p><strong>Purpose</strong>: The System is the root entity that encapsulates all aspects of a software system, including its bounded contexts, integrations, policies, and compliance requirements.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- Implements <code>Versionable</code> mixin
+- Contains bounded contexts
+- Has integrations with external systems
+- Enforces security policies
+- Must comply with regulatory requirements
+- Is assessed for risks
+- Exposes interfaces to users and other systems</p>
+<p><strong>Relationships</strong>:
+- <strong>contains_bounded_contexts</strong>: Links to <code>BoundedContext</code> entities within the system
+- <strong>has_integrations</strong>: Links to <code>Integration</code> entities for external system connections
+- <strong>enforces_policies</strong>: Links to <code>Policy</code> entities that govern access control
+- <strong>must_comply_with</strong>: Links to <code>ComplianceRequirement</code> entities
+- <strong>assessed_by</strong>: Links to <code>RiskAssessment</code> entities
+- <strong>exposes_interfaces</strong>: Links to <code>Interface</code> entities (user, programmatic, event)</p>
+<p><strong>Example Use Cases</strong>:
+- Enterprise resource planning (ERP) system
+- E-commerce platform
+- Customer relationship management (CRM) system
+- Financial trading platform</p>
+<hr />
+<h3 id="boundedcontext">BoundedContext</h3>
+<p><strong>Definition</strong>: A semantic boundary within which a domain model applies consistently. Corresponds to the DDD bounded context concept.</p>
+<p><strong>Purpose</strong>: Isolates domain models to prevent ambiguity and maintain consistency within a specific business domain or subdomain.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>ubiquitous_language</strong>: Key terms in the shared language for this context
+- <strong>context_map_relationship</strong>: Relationship pattern (e.g., Customer-Supplier, Partnership)</p>
+<p><strong>Relationships</strong>:
+- <strong>contained_in_system</strong>: Parent <code>System</code>
+- <strong>contains_modules</strong>: Child <code>Module</code> entities
+- <strong>upstream_from</strong>: Bounded contexts this one depends on
+- <strong>downstream_from</strong>: Bounded contexts that depend on this one
+- <strong>contains_aggregates</strong>: <code>Aggregate</code> entities within this context</p>
+<p><strong>Context Mapping Patterns</strong>:
+- <strong>Customer-Supplier</strong>: Downstream context depends on upstream
+- <strong>Partnership</strong>: Two contexts collaborate as equals
+- <strong>Shared Kernel</strong>: Shared subset of the domain model
+- <strong>Conformist</strong>: Downstream conforms to upstream model
+- <strong>Anti-Corruption Layer</strong>: Translation layer between contexts</p>
+<p><strong>Example Use Cases</strong>:
+- Order Management context in an e-commerce system
+- Patient Care context in a healthcare system
+- Trading context in a financial platform
+- Inventory context in a warehouse system</p>
+<hr />
+<h3 id="module">Module</h3>
+<p><strong>Definition</strong>: A deployable, cohesive unit of functionality within a bounded context.</p>
+<p><strong>Purpose</strong>: Provides a logical grouping of related components that can be independently versioned and deployed.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- Implements <code>Versionable</code> mixin
+- <strong>dependencies</strong>: List of module dependencies with types (runtime, build, optional, dev)
+- <strong>is_optional</strong>: Whether the module is optional
+- <strong>required_features</strong>: Features needed to enable this module
+- <strong>mapped_from_directory</strong>: Directory path this module is mapped from <em>(v2.0)</em>
+- <strong>module_tested_by_suites</strong>: <code>TestSuite</code> entities that test this module <em>(v2.0)</em>
+- <strong>module_has_coverage</strong>: <code>TestCoverage</code> entities for this module <em>(v2.0)</em>
+- <strong>module_managed_by_package_manager</strong>: <code>PackageManager</code> managing this module <em>(v2.0)</em>
+- <strong>module_has_dependencies</strong>: <code>Dependency</code> entities for this module <em>(v2.0)</em></p>
+<p><strong>Relationships</strong>:
+- <strong>contained_in_context</strong>: Parent <code>BoundedContext</code>
+- <strong>contains_components</strong>: Child <code>Component</code> entities
+- <strong>depends_on_module</strong>: Other modules this module depends on
+- <strong>depended_on_by_module</strong>: Modules that depend on this module
+- <strong>provides_capabilities</strong>: <code>Capability</code> entities offered by this module
+- <strong>runs_as_services</strong>: <code>Service</code> entities that execute this module</p>
+<p><strong>Dependency Types</strong>:
+- <code>runtime</code>: Required at runtime for execution
+- <code>build</code>: Required at build/compile time
+- <code>optional</code>: Optional dependency for additional features
+- <code>dev</code>: Required only for development/testing</p>
+<p><strong>Example Use Cases</strong>:
+- Payment processing module
+- Authentication and authorization module
+- Notification module
+- Analytics module</p>
+<hr />
+<h3 id="component">Component</h3>
+<p><strong>Definition</strong>: A logical building block within a module (class, function group, service handler, etc.).</p>
+<p><strong>Purpose</strong>: Represents the finest-grained structural element that encapsulates specific functionality and can emit events, metrics, and logs.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>component_type</strong>: Type of component (e.g., class, service, handler)
+- <strong>language</strong>: Implementation language <em>(deprecated in v2.0 -- use <code>written_in_language</code> on CodeContainer instead)</em>
+- <strong>source_location</strong>: Path to source code
+- <strong>dependencies</strong>: Component-level dependencies
+- <strong>emits_metrics</strong>: Metrics emitted by this component
+- <strong>generates_logs</strong>: Logs generated by this component</p>
+<p><strong>Back-Reference Attributes</strong> <em>(v2.0)</em>:
+- <strong>tested_by_suites</strong>: <code>TestSuite</code> entities that test this component
+- <strong>has_coverage</strong>: <code>TestCoverage</code> entities for this component
+- <strong>component_serves_model</strong>: <code>MLModel</code> entities this component serves
+- <strong>component_uses_concurrency_pattern</strong>: <code>ConcurrencyPattern</code> entities used by this component</p>
+<p><strong>Relationships</strong>:
+- <strong>contained_in_module</strong>: Parent <code>Module</code>
+- <strong>exposes_operations</strong>: <code>Operation</code> entities that can be invoked
+- <strong>emits_events</strong>: <code>Event</code> entities produced by this component</p>
+<p><strong>Component Types</strong>:
+- <strong>Class</strong>: Object-oriented class
+- <strong>Service</strong>: Stateless service component
+- <strong>Handler</strong>: Event or request handler
+- <strong>Repository</strong>: Data access component
+- <strong>Controller</strong>: API controller
+- <strong>Processor</strong>: Business logic processor</p>
+<p><strong>Example Use Cases</strong>:
+- OrderController class
+- PaymentGatewayService
+- EmailNotificationHandler
+- UserRepository</p>
+<hr />
+<h3 id="capability">Capability</h3>
+<p><strong>Definition</strong>: A discrete business or technical ability the system provides.</p>
+<p><strong>Purpose</strong>: Represents what the system can do, abstracting the implementation details.</p>
+<p><strong>Relationships</strong>:
+- <strong>realizes_features</strong>: <code>Feature</code> entities enabled by this capability
+- <strong>requires_permissions</strong>: <code>Permission</code> entities needed to use this capability</p>
+<p><strong>Example Use Cases</strong>:
+- Process credit card payments
+- Send email notifications
+- Generate PDF reports
+- Authenticate users via OAuth</p>
+<hr />
+<h3 id="feature">Feature</h3>
+<p><strong>Definition</strong>: A user-facing manifestation of one or more capabilities.</p>
+<p><strong>Purpose</strong>: Represents functionality as perceived by end users or consumers of the system.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>category</strong>: Feature category (<code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>enabled_by_capabilities</strong>: <code>Capability</code> entities that enable this feature
+- <strong>controlled_by_configs</strong>: <code>Configuration</code> entities that control availability
+- <strong>accessible_by_roles</strong>: <code>Role</code> entities that can access this feature</p>
+<p><strong>Feature Categories</strong>:
+- <code>core</code>: Essential feature required for basic operation
+- <code>optional</code>: Add-on feature that can be enabled/disabled
+- <code>experimental</code>: Beta feature under development
+- <code>deprecated</code>: Feature scheduled for removal</p>
+<p><strong>Example Use Cases</strong>:
+- Dark mode toggle
+- Multi-factor authentication
+- Advanced search filters
+- Export to Excel</p>
+<hr />
+<h3 id="interface">Interface</h3>
+<p><strong>Definition</strong>: A contract-defined boundary through which interaction occurs (abstract base class).</p>
+<p><strong>Purpose</strong>: Defines how actors and systems interact with the application.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>category</strong>: Interface category (<code>user_interface</code>, <code>programmatic_interface</code>, <code>event_interface</code>)
+- <strong>authentication_required</strong>: Whether authentication is required
+- <strong>rate_limit</strong>: Requests per minute limit</p>
+<p><strong>Relationships</strong>:
+- <strong>defined_by_contract</strong>: <code>Contract</code> entity specifying the interface</p>
+<p><strong>Specialized Interface Types</strong>:</p>
+<h4 id="userinterface">UserInterface</h4>
+<p>User-facing interface for human interaction.</p>
+<p><strong>Attributes</strong>:
+- <strong>ui_type</strong>: <code>web_ui</code>, <code>mobile_ui</code>, <code>desktop_ui</code>, <code>cli</code>
+- <strong>screens</strong>: List of <code>Screen</code> entities</p>
+<h4 id="programmaticinterface">ProgrammaticInterface</h4>
+<p>Machine-to-machine API interface.</p>
+<p><strong>Attributes</strong>:
+- <strong>api_type</strong>: <code>rest_api</code>, <code>graphql_api</code>, <code>grpc_api</code>, <code>sdk</code>, <code>soap_api</code>
+- <strong>base_url</strong>: Base URL for the API
+- <strong>has_endpoints</strong>: <code>Endpoint</code> entities</p>
+<h4 id="eventinterface">EventInterface</h4>
+<p>Event-driven asynchronous interface.</p>
+<p><strong>Attributes</strong>:
+- <strong>event_type</strong>: <code>webhook</code>, <code>message_queue</code>, <code>event_stream</code>, <code>pub_sub</code>
+- <strong>topics</strong>: Event topics or channels
+- <strong>has_subscriptions</strong>: <code>Subscription</code> entities</p>
+<hr />
+<h3 id="screen">Screen</h3>
+<p><strong>Definition</strong>: A single screen or view in a user interface.</p>
+<p><strong>Purpose</strong>: Represents a specific UI view that offers operations to users.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code> <em>(v2.0 change: Screen no longer inherits from UserInterface)</em>
+- <strong>route</strong>: URL route or navigation path
+- <strong>part_of_ui</strong>: The <code>UserInterface</code> this screen belongs to (range: UserInterface, inverse: <code>contains_screens</code>)</p>
+<blockquote>
+<p><strong>v2.1 Note</strong>: Screen's parent class is <code>NamedEntity</code> (changed from <code>UserInterface</code> in v2.0). The relationship to a UserInterface is expressed via the <code>part_of_ui</code> attribute. UserInterface has a <code>contains_screens</code> attribute to reference its screens. In v2.1, this relationship was renamed from <code>ui_screens</code> to <code>contains_screens</code> and a duplicate <code>screens</code> attribute was removed.</p>
+</blockquote>
+<p><strong>Relationships</strong>:
+- <strong>offers_operations</strong>: <code>Operation</code> entities available on this screen</p>
+<p><strong>Example Use Cases</strong>:
+- Login screen
+- Dashboard view
+- User profile page
+- Settings panel</p>
+<hr />
+<h3 id="service">Service</h3>
+<p><strong>Definition</strong>: An independently deployable runtime unit.</p>
+<p><strong>Purpose</strong>: Represents a running process that exposes endpoints and can be deployed independently.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>service_type</strong>: <code>microservice</code>, <code>monolith</code>, <code>function</code>, <code>job</code>, <code>daemon</code>, <code>cics_transaction</code>, <code>ims_transaction</code>, <code>batch_program</code>, <code>stored_proc_service</code>
+- <strong>health_checks</strong>: Health check definitions
+- <strong>emits_metrics</strong>: Metrics emitted by the service</p>
+<p><strong>Relationships</strong>:
+- <strong>exposes_endpoints</strong>: <code>Endpoint</code> entities
+- <strong>depends_on_service</strong>: Service dependencies
+- <strong>depended_on_by_service</strong>: Services that depend on this one
+- <strong>deployed_as</strong>: <code>Deployment</code> entities</p>
+<p><strong>Service Types</strong>:
+- <code>microservice</code>: Small, independently deployable service
+- <code>monolith</code>: Single-tier monolithic application
+- <code>function</code>: Serverless function or lambda
+- <code>job</code>: Batch processing job
+- <code>daemon</code>: Background service or daemon process
+- <code>cics_transaction</code>: CICS online transaction
+- <code>ims_transaction</code>: IMS online transaction
+- <code>batch_program</code>: Mainframe batch program
+- <code>stored_proc_service</code>: Stored procedure exposed as service</p>
+<p><strong>Example Use Cases</strong>:
+- Order processing microservice
+- User authentication service
+- Payment gateway service
+- Nightly batch job for report generation</p>
+<hr />
+<h3 id="endpoint">Endpoint</h3>
+<p><strong>Definition</strong>: A specific addressable entry point on a service.</p>
+<p><strong>Purpose</strong>: Represents a concrete API endpoint or service entry point.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>path</strong>: URL path or route
+- <strong>method</strong>: HTTP method or operation type
+- <strong>operations</strong>: Operations available at this endpoint
+- <strong>protocol</strong>: Communication protocol
+- <strong>port</strong>: Port number</p>
+<p><strong>Relationships</strong>:
+- <strong>exposed_by_service</strong>: Parent <code>Service</code>
+- <strong>belongs_to_interface</strong>: <code>ProgrammaticInterface</code> this endpoint is part of</p>
+<p><strong>Example Use Cases</strong>:
+- <code>POST /api/v1/orders</code>
+- <code>GET /api/v1/users/{id}</code>
+- <code>PUT /api/v1/products/{id}</code>
+- <code>DELETE /api/v1/sessions/{id}</code></p>
+<hr />
+<h3 id="dependency">Dependency</h3>
+<p><strong>Definition</strong>: A required relationship between components or services.</p>
+<p><strong>Purpose</strong>: Documents dependencies for build, deployment, and runtime management.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>dependency_type</strong>: <code>runtime</code>, <code>build</code>, <code>optional</code>, <code>dev</code>
+- <strong>target</strong>: Target entity of the dependency
+- <strong>version_constraint</strong>: Version constraint expression
+- <strong>is_optional</strong>: Whether the dependency is optional</p>
+<p><strong>Example Use Cases</strong>:
+- Runtime dependency on PostgreSQL database
+- Build dependency on TypeScript compiler
+- Optional dependency on Redis for caching
+- Dev dependency on Jest for testing</p>
+<hr />
+<h2 id="architectural-patterns">Architectural Patterns</h2>
+<h3 id="layered-architecture">Layered Architecture</h3>
+<p>The structural foundation supports layered architecture by allowing modules to be organized into presentation, application, domain, and infrastructure layers.</p>
+<h3 id="microservices-architecture">Microservices Architecture</h3>
+<p>Services can be independently deployed and scaled, with clear dependency relationships and communication through endpoints.</p>
+<h3 id="domain-driven-design">Domain-Driven Design</h3>
+<p>Bounded contexts align with business domains, aggregates enforce transactional boundaries, and modules provide cohesive units of functionality.</p>
+<h3 id="modular-monolith">Modular Monolith</h3>
+<p>A system can start as a modular monolith with well-defined module boundaries, making it easier to extract microservices later.</p>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li>
+<p><strong>Bounded Context Boundaries</strong>: Keep bounded contexts aligned with business domains, not technical layers.</p>
+</li>
+<li>
+<p><strong>Module Cohesion</strong>: Ensure modules have high internal cohesion and low coupling with other modules.</p>
+</li>
+<li>
+<p><strong>Dependency Management</strong>: Document all dependencies explicitly with appropriate types and version constraints.</p>
+</li>
+<li>
+<p><strong>Interface Contracts</strong>: Define clear contracts for all interfaces to enable independent evolution.</p>
+</li>
+<li>
+<p><strong>Service Granularity</strong>: Choose service granularity based on team organization, deployment needs, and business capabilities.</p>
+</li>
+<li>
+<p><strong>Capability-Feature Mapping</strong>: Keep capabilities implementation-agnostic and map features to capabilities for flexibility.</p>
+</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 2 (Actors and Identity)</strong>: Actors interact with interfaces and perform operations</li>
+<li><strong>Section 3 (Authorization)</strong>: Policies govern access to capabilities and features</li>
+<li><strong>Section 4 (Domain Modeling)</strong>: Aggregates are contained within bounded contexts</li>
+<li><strong>Section 5 (Behavior)</strong>: Components expose operations and emit events</li>
+<li><strong>Section 6 (Data Management)</strong>: Aggregates are persisted in data stores</li>
+<li><strong>Section 7 (Integration)</strong>: Systems integrate with external systems</li>
+<li><strong>Section 8 (Deployment)</strong>: Services are deployed as deployment units</li>
+<li><strong>Section 9 (Observability)</strong>: Components emit metrics and logs</li>
+<li><strong>Section 10 (Governance)</strong>: Systems must comply with requirements</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

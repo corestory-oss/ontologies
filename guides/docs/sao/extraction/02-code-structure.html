@@ -1,0 +1,1859 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 2: Code Structure (Layer 3) · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-2-code-structure-layer-3">Phase 2: Code Structure (Layer 3)</h1>
+<p>This phase populates SAO Layer 3 --- the direct structural representation of source code. It is the largest and most critical extraction phase: every subsequent phase depends on the code structure graph built here.</p>
+<p><strong>Confidence level:</strong> Deterministic. No inference is needed; this phase captures what the code literally says. AST parsing is the primary technique, achieving ~90% automation.</p>
+<p><strong>Input:</strong> Phase 1 outputs --- <strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong> instances.</p>
+<p><strong>Output:</strong> <strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>DataElement</strong>, <strong>Parameter</strong>, <strong>TypeExpression</strong>, <strong>ControlFlow</strong>, <strong>DataFlow</strong>, <strong>DefinitionReference</strong>, <strong>CodeBlock</strong>, <strong>Statement</strong>, <strong>Annotation</strong>, plus platform-specific extension classes.</p>
+<hr />
+<h2 id="containment-hierarchy">Containment hierarchy</h2>
+<p>Phase 2 builds the structural spine of the SAO model. Every element produced here lives within this containment hierarchy:</p>
+<pre><code>StorageLocation
+  └── CodeContainer
+        └── EncapsulationUnit
+              ├── CallableUnit
+              │     ├── Parameter
+              │     ├── CodeBlock
+              │     │     └── Statement
+              │     ├── ControlFlow (edges)
+              │     └── DataFlow (edges)
+              ├── DataStructure
+              │     └── DataElement
+              │           └── TypeExpression
+              ├── DataElement (unit-level fields)
+              └── DefinitionReference
+</code></pre>
+<p>The extraction agent MUST process sub-phases in order (2a through 2h) because later sub-phases reference entities created in earlier ones.</p>
+<hr />
+<h2 id="sub-phase-2a-encapsulation-units">Sub-phase 2a: Encapsulation Units</h2>
+<p>Parse each <strong>CodeContainer</strong> using a language-appropriate AST parser and create an <strong>EncapsulationUnit</strong> for every class, module, program, package, trait, or interface found.</p>
+<h3 id="required-attributes">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>encapsulation_type</code></td>
+<td><code>EncapsulationType</code></td>
+<td>MUST set. See enum values below.</td>
+</tr>
+<tr>
+<td><code>qualified_name</code></td>
+<td>string</td>
+<td>MUST set to the fully qualified name (e.g., <code>com.example.UserService</code>).</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>VisibilityType</code></td>
+<td>SHOULD set when the language has visibility modifiers.</td>
+</tr>
+<tr>
+<td><code>is_abstract</code></td>
+<td>boolean</td>
+<td>SHOULD set for abstract classes, interfaces, and traits.</td>
+</tr>
+<tr>
+<td><code>is_final</code></td>
+<td>boolean</td>
+<td>SHOULD set when the language supports sealed/final.</td>
+</tr>
+<tr>
+<td><code>is_reusable</code></td>
+<td>boolean</td>
+<td>MAY set if the unit is designed for reuse (libraries, shared modules).</td>
+</tr>
+<tr>
+<td><code>stereotype</code></td>
+<td>string</td>
+<td>MAY set to indicate a pattern role (e.g., <code>Service</code>, <code>Repository</code>, <code>Controller</code>, <code>DTO</code>).</td>
+</tr>
+<tr>
+<td><code>line_start</code> / <code>line_end</code></td>
+<td>integer</td>
+<td>SHOULD set for source-level traceability.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="encapsulationtype-enum-33-values">EncapsulationType enum (33 values)</h3>
+<p><strong>Object-oriented:</strong>
+- <code>class</code>
+- <code>interface</code>
+- <code>abstract_class</code>
+- <code>trait</code>
+- <code>enum_class</code>
+- <code>record_class</code>
+- <code>singleton</code></p>
+<p><strong>Procedural:</strong>
+- <code>program</code>
+- <code>subprogram</code>
+- <code>unit</code></p>
+<p><strong>Functional / organizational:</strong>
+- <code>module</code>
+- <code>namespace</code>
+- <code>package</code>
+- <code>library</code></p>
+<p><strong>Component / pattern:</strong>
+- <code>object</code>
+- <code>component</code>
+- <code>service</code>
+- <code>controller</code>
+- <code>script</code>
+- <code>composite</code>
+- <code>other</code></p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code>
+- <code>function_package</code>
+- <code>trigger</code>
+- <code>view</code></p>
+<p><strong>Mainframe:</strong>
+- <code>batch_program</code>
+- <code>online_program</code>
+- <code>copybook</code>
+- <code>rpg_module</code>
+- <code>rpg_service_program</code>
+- <code>pli_procedure</code>
+- <code>pli_package</code>
+- <code>assembler_csect</code></p>
+<h3 id="required-relationships">Required relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defined_in_container</code></td>
+<td><strong>CodeContainer</strong></td>
+<td>MUST link every unit to its source container.</td>
+</tr>
+<tr>
+<td><code>extends_units</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST set for inheritance (e.g., Java <code>extends</code>, Python base classes).</td>
+</tr>
+<tr>
+<td><code>implements_contracts</code></td>
+<td><strong>Contract</strong></td>
+<td>MUST set for interface implementation (e.g., Java <code>implements</code>, Rust <code>impl Trait</code>).</td>
+</tr>
+<tr>
+<td><code>contains_callable_units</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>Populated in sub-phase 2b.</td>
+</tr>
+<tr>
+<td><code>contains_data_structures</code></td>
+<td><strong>DataStructure</strong></td>
+<td>Populated in sub-phase 2c.</td>
+</tr>
+<tr>
+<td><code>contains_data_elements</code></td>
+<td><strong>DataElement</strong></td>
+<td>For unit-level fields not inside a <strong>DataStructure</strong>.</td>
+</tr>
+<tr>
+<td><code>uses_definitions</code></td>
+<td><strong>DefinitionReference</strong></td>
+<td>Populated in sub-phase 2d.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="visibilitytype-enum">VisibilityType enum</h3>
+<ul>
+<li><code>public</code></li>
+<li><code>private</code></li>
+<li><code>protected</code></li>
+<li><code>internal</code></li>
+<li><code>package</code></li>
+</ul>
+<h3 id="procedure">Procedure</h3>
+<ol>
+<li>For each <strong>CodeContainer</strong>, invoke the AST parser for the container's language (determined via <code>written_in_language</code>).</li>
+<li>Walk the top-level AST nodes. For each class/module/program/trait/interface/enum/record declaration, create an <strong>EncapsulationUnit</strong>.</li>
+<li>For nested types (inner classes, companion objects), create a separate <strong>EncapsulationUnit</strong> and record the nesting relationship via a second <code>defined_in_container</code> link to the same <strong>CodeContainer</strong>.</li>
+<li>Resolve inheritance: set <code>extends_units</code> to the parent <strong>EncapsulationUnit</strong> by matching qualified names. If the parent is in an external dependency, create a stub <strong>EncapsulationUnit</strong> with a <code>qualified_name</code> only.</li>
+<li>Resolve interface implementation: set <code>implements_contracts</code> to the corresponding <strong>Contract</strong> instance. If no <strong>Contract</strong> exists yet, create one.</li>
+</ol>
+<h3 id="example">Example</h3>
+<pre><code class="language-yaml"># Java class with inheritance and interface implementation
+order_service:
+  a: EncapsulationUnit
+  name: OrderService
+  encapsulation_type: class
+  visibility: public
+  qualified_name: com.example.orders.OrderService
+  is_abstract: false
+  is_final: false
+  stereotype: Service
+  line_start: 15
+  line_end: 280
+  defined_in_container: order_service_file
+  extends_units:
+    - base_service
+  implements_contracts:
+    - order_operations_contract
+
+# COBOL batch program
+payroll_calc:
+  a: EncapsulationUnit
+  name: PAYROLL-CALC
+  encapsulation_type: batch_program
+  qualified_name: PAYROLL-CALC
+  defined_in_container: payroll_calc_source
+</code></pre>
+<hr />
+<h2 id="sub-phase-2b-callable-units">Sub-phase 2b: Callable Units</h2>
+<p>For each <strong>EncapsulationUnit</strong>, extract every method, function, paragraph, procedure, or other invocable construct.</p>
+<h3 id="required-attributes_1">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>callable_type</code></td>
+<td><code>CallableType</code></td>
+<td>MUST set. See enum values below.</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>VisibilityType</code></td>
+<td>SHOULD set when the language has visibility modifiers.</td>
+</tr>
+<tr>
+<td><code>return_type</code></td>
+<td>string</td>
+<td>SHOULD set (use the source-level type name as-is).</td>
+</tr>
+<tr>
+<td><code>has_return_type</code></td>
+<td><strong>TypeExpression</strong></td>
+<td>MAY set for structured type modeling (see sub-phase 2c).</td>
+</tr>
+<tr>
+<td><code>is_async</code></td>
+<td>boolean</td>
+<td>MUST set to <code>true</code> for async/await functions.</td>
+</tr>
+<tr>
+<td><code>is_static</code></td>
+<td>boolean</td>
+<td>MUST set to <code>true</code> for static/class methods.</td>
+</tr>
+<tr>
+<td><code>is_pure</code></td>
+<td>boolean</td>
+<td>MAY set if determinable (no side effects).</td>
+</tr>
+<tr>
+<td><code>is_virtual</code></td>
+<td>boolean</td>
+<td>SHOULD set for virtual/overridable methods.</td>
+</tr>
+<tr>
+<td><code>is_override</code></td>
+<td>boolean</td>
+<td>SHOULD set for methods that override a parent.</td>
+</tr>
+<tr>
+<td><code>is_recursive</code></td>
+<td>boolean</td>
+<td>MAY set if the callable calls itself.</td>
+</tr>
+<tr>
+<td><code>is_inline</code></td>
+<td>boolean</td>
+<td>MAY set for inline functions.</td>
+</tr>
+<tr>
+<td><code>complexity_score</code></td>
+<td>integer</td>
+<td>SHOULD compute cyclomatic complexity.</td>
+</tr>
+<tr>
+<td><code>entry_point_type</code></td>
+<td><code>EntryPointType</code></td>
+<td>MUST set for program entry points.</td>
+</tr>
+<tr>
+<td><code>documentation</code></td>
+<td>string</td>
+<td>MAY extract from docstrings/Javadoc.</td>
+</tr>
+<tr>
+<td><code>line_start</code> / <code>line_end</code></td>
+<td>integer</td>
+<td>SHOULD set for source-level traceability.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="callabletype-enum-53-values">CallableType enum (53 values)</h3>
+<p><strong>Object-oriented methods:</strong>
+- <code>method</code>
+- <code>static_method</code>
+- <code>constructor</code>
+- <code>destructor</code>
+- <code>property_getter</code>
+- <code>property_setter</code>
+- <code>operator_overload</code>
+- <code>conversion_operator</code>
+- <code>indexer</code>
+- <code>abstract_method</code>
+- <code>virtual_method</code></p>
+<p><strong>Procedural:</strong>
+- <code>function</code>
+- <code>procedure</code>
+- <code>subroutine</code>
+- <code>paragraph</code>
+- <code>section</code>
+- <code>rpg_subprocedure</code>
+- <code>pli_entry</code>
+- <code>assembler_entry</code>
+- <code>rpg_subroutine</code></p>
+<p><strong>Functional:</strong>
+- <code>lambda</code>
+- <code>closure</code>
+- <code>higher_order_function</code>
+- <code>curried_function</code>
+- <code>functor</code></p>
+<p><strong>Event handling:</strong>
+- <code>event_handler</code>
+- <code>callback</code>
+- <code>delegate</code>
+- <code>signal_handler</code></p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code>
+- <code>stored_function</code>
+- <code>trigger_body</code>
+- <code>cursor</code></p>
+<p><strong>Concurrency:</strong>
+- <code>coroutine</code>
+- <code>generator</code>
+- <code>async_function</code>
+- <code>thread_entry</code>
+- <code>task</code></p>
+<p><strong>Testing:</strong>
+- <code>test_case</code>
+- <code>test_fixture</code>
+- <code>mock</code></p>
+<p><strong>Other:</strong>
+- <code>macro</code>
+- <code>template</code>
+- <code>generic_method</code>
+- <code>main_entry</code>
+- <code>interrupt_handler</code>
+- <code>exception_handler</code>
+- <code>finalizer</code>
+- <code>factory_method</code>
+- <code>extension_method</code>
+- <code>script_function</code>
+- <code>command</code>
+- <code>other</code></p>
+<h3 id="entrypointtype-enum">EntryPointType enum</h3>
+<ul>
+<li><code>main_program</code></li>
+<li><code>transaction_entry</code></li>
+<li><code>event_handler</code></li>
+<li><code>scheduled_entry</code></li>
+<li><code>api_endpoint</code></li>
+</ul>
+<h3 id="callablecategory-enum">CallableCategory enum</h3>
+<p>The <code>callable_category</code> attribute classifies a callable's behavioral role:</p>
+<ul>
+<li><code>normal</code></li>
+<li><code>operator</code></li>
+<li><code>main_entry</code></li>
+</ul>
+<h3 id="required-relationships_1">Required relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST link every callable to its containing unit.</td>
+</tr>
+<tr>
+<td><code>has_parameters</code></td>
+<td><strong>Parameter</strong></td>
+<td>Populated below.</td>
+</tr>
+<tr>
+<td><code>overrides_callable</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>MUST set when a method overrides a parent method.</td>
+</tr>
+<tr>
+<td><code>invokes_callables</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>Populated in sub-phase 2e.</td>
+</tr>
+<tr>
+<td><code>accesses_data_elements</code></td>
+<td><strong>DataElement</strong></td>
+<td>Populated in sub-phase 2f.</td>
+</tr>
+<tr>
+<td><code>modifies_data_elements</code></td>
+<td><strong>DataElement</strong></td>
+<td>Populated in sub-phase 2f.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parameters">Parameters</h3>
+<p>For each parameter of a <strong>CallableUnit</strong>, create a <strong>Parameter</strong> instance.</p>
+<p><strong>Parameter</strong> inherits from <strong>DataElement</strong> and adds:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>direction</code></td>
+<td><code>ParameterDirection</code></td>
+<td>SHOULD set. Values: <code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code>.</td>
+</tr>
+<tr>
+<td><code>position</code></td>
+<td>integer</td>
+<td>MUST set (0-based or 1-based, be consistent).</td>
+</tr>
+<tr>
+<td><code>passing_mechanism</code></td>
+<td><code>PassingMechanism</code></td>
+<td>SHOULD set. Values: <code>by_value</code>, <code>by_reference</code>, <code>by_name</code>, <code>by_result</code>.</td>
+</tr>
+<tr>
+<td><code>has_type</code></td>
+<td><strong>TypeExpression</strong></td>
+<td>MAY set for structured type modeling.</td>
+</tr>
+<tr>
+<td><code>data_type</code></td>
+<td>string</td>
+<td>SHOULD set (inherited from <strong>DataElement</strong>; use source-level type name).</td>
+</tr>
+<tr>
+<td><code>is_nullable</code></td>
+<td>boolean</td>
+<td>SHOULD set when determinable.</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>SHOULD set when a default is declared.</td>
+</tr>
+</tbody>
+</table>
+<p>Link each <strong>Parameter</strong> back via <code>parameter_of</code> to its <strong>CallableUnit</strong>.</p>
+<h3 id="procedure_1">Procedure</h3>
+<ol>
+<li>For each <strong>EncapsulationUnit</strong>, walk the AST children that are callable declarations.</li>
+<li>Create a <strong>CallableUnit</strong> for each, setting <code>callable_type</code> based on the AST node kind.</li>
+<li>For each parameter in the callable's signature, create a <strong>Parameter</strong> and link via <code>has_parameters</code> / <code>parameter_of</code>.</li>
+<li>Compute <code>complexity_score</code> if the AST parser supports control-flow analysis.</li>
+<li>For <code>main</code> functions, <code>__init__</code> methods, or COBOL <code>PROCEDURE DIVISION</code>, set <code>entry_point_type</code>.</li>
+</ol>
+<h3 id="example_1">Example</h3>
+<pre><code class="language-yaml"># Java method with parameters
+create_order:
+  a: CallableUnit
+  name: createOrder
+  callable_type: method
+  visibility: public
+  return_type: Order
+  is_async: false
+  is_static: false
+  complexity_score: 12
+  line_start: 45
+  line_end: 92
+  contained_in_unit: order_service
+  has_parameters:
+    - create_order_request_param
+    - create_order_user_param
+
+create_order_request_param:
+  a: Parameter
+  name: request
+  data_type: CreateOrderRequest
+  direction: input
+  position: 1
+  passing_mechanism: by_value
+  is_nullable: false
+  parameter_of: create_order
+
+create_order_user_param:
+  a: Parameter
+  name: currentUser
+  data_type: User
+  direction: input
+  position: 2
+  passing_mechanism: by_value
+  is_nullable: false
+  parameter_of: create_order
+
+# COBOL paragraph
+calc_totals:
+  a: CallableUnit
+  name: CALCULATE-TOTALS
+  callable_type: paragraph
+  contained_in_unit: payroll_calc
+</code></pre>
+<hr />
+<h2 id="sub-phase-2c-data-structures-and-data-elements">Sub-phase 2c: Data Structures and Data Elements</h2>
+<p>Extract struct/record/group declarations and their fields from each <strong>EncapsulationUnit</strong>.</p>
+<h3 id="datastructure-attributes">DataStructure attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structure_type</code></td>
+<td><code>DataStructureType</code></td>
+<td>MUST set. See enum values below.</td>
+</tr>
+<tr>
+<td><code>structure_category</code></td>
+<td><code>DataStructureCategory</code></td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>VisibilityType</code></td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>is_mutable</code></td>
+<td>boolean</td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>is_serializable</code></td>
+<td>boolean</td>
+<td>MAY set.</td>
+</tr>
+<tr>
+<td><code>is_nested</code></td>
+<td>boolean</td>
+<td>MUST set to <code>true</code> for nested/inner structures.</td>
+</tr>
+<tr>
+<td><code>nesting_level</code></td>
+<td>integer</td>
+<td>MUST set for COBOL group items (01, 05, 10, etc.).</td>
+</tr>
+<tr>
+<td><code>is_packed</code></td>
+<td>boolean</td>
+<td>MAY set for packed structs.</td>
+</tr>
+<tr>
+<td><code>alignment</code></td>
+<td>integer</td>
+<td>MAY set for explicit alignment.</td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>integer</td>
+<td>MAY set when determinable.</td>
+</tr>
+<tr>
+<td><code>persistence_type</code></td>
+<td><code>PersistenceType</code></td>
+<td>MAY set (e.g., <code>transient</code>, <code>database</code>, <code>file</code>, <code>memory</code>, <code>cache</code>).</td>
+</tr>
+<tr>
+<td><code>line_start</code> / <code>line_end</code></td>
+<td>integer</td>
+<td>SHOULD set.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="datastructuretype-enum-50-values">DataStructureType enum (50 values)</h3>
+<p><strong>Object-oriented:</strong>
+- <code>class_data</code>
+- <code>inner_class</code>
+- <code>anonymous_class</code></p>
+<p><strong>Procedural:</strong>
+- <code>struct</code>
+- <code>record</code>
+- <code>union</code></p>
+<p><strong>COBOL / Mainframe:</strong>
+- <code>group_item</code>
+- <code>copybook_structure</code>
+- <code>commarea</code>
+- <code>linkage_section</code>
+- <code>rpg_data_structure</code>
+- <code>pli_structure</code>
+- <code>assembler_dsect</code>
+- <code>cobol_file_descriptor</code></p>
+<p><strong>Functional:</strong>
+- <code>algebraic_data_type</code>
+- <code>type_class</code>
+- <code>product_type</code>
+- <code>sum_type</code></p>
+<p><strong>Collections:</strong>
+- <code>array</code>
+- <code>dynamic_array</code>
+- <code>list</code>
+- <code>dictionary</code>
+- <code>set</code>
+- <code>queue</code>
+- <code>stack</code>
+- <code>tree</code>
+- <code>graph</code></p>
+<p><strong>Database:</strong>
+- <code>table_structure</code>
+- <code>view_structure</code>
+- <code>cursor_structure</code>
+- <code>rowtype</code></p>
+<p><strong>DDD:</strong>
+- <code>value_object</code>
+- <code>dto</code></p>
+<p><strong>Other:</strong>
+- <code>tuple</code>
+- <code>pair</code>
+- <code>enum</code>
+- <code>flags</code>
+- <code>configuration_object</code>
+- <code>message</code>
+- <code>event</code>
+- <code>command</code>
+- <code>json_schema</code>
+- <code>xml_schema</code>
+- <code>protobuf_message</code>
+- <code>avro_record</code>
+- <code>smart_pointer</code>
+- <code>reference_wrapper</code>
+- <code>opaque_type</code>
+- <code>variant</code>
+- <code>other</code></p>
+<h3 id="datastructurecategory-enum">DataStructureCategory enum</h3>
+<ul>
+<li><code>composite</code></li>
+<li><code>collection</code></li>
+<li><code>hierarchical</code></li>
+<li><code>value_type</code></li>
+<li><code>reference_type</code></li>
+<li><code>union</code></li>
+</ul>
+<h3 id="datastructure-relationships">DataStructure relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST link to the containing unit.</td>
+</tr>
+<tr>
+<td><code>structure_contains_elements</code></td>
+<td><strong>DataElement</strong></td>
+<td>Populated below.</td>
+</tr>
+<tr>
+<td><code>has_parent_structure</code></td>
+<td><strong>DataStructure</strong></td>
+<td>MUST set for nested structures.</td>
+</tr>
+<tr>
+<td><code>has_child_structures</code></td>
+<td><strong>DataStructure</strong></td>
+<td>Inverse of <code>has_parent_structure</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataelement-attributes">DataElement attributes</h3>
+<p>For each field, variable, or constant within a <strong>DataStructure</strong> (or directly within an <strong>EncapsulationUnit</strong>), create a <strong>DataElement</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_type</code></td>
+<td>string</td>
+<td>MUST set (source-level type name).</td>
+</tr>
+<tr>
+<td><code>element_category</code></td>
+<td><code>DataElementCategory</code></td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td><code>VisibilityType</code></td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>is_constant</code></td>
+<td>boolean</td>
+<td>MUST set to <code>true</code> for constants/finals.</td>
+</tr>
+<tr>
+<td><code>is_nullable</code></td>
+<td>boolean</td>
+<td>SHOULD set when determinable.</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>SHOULD set when a default is declared.</td>
+</tr>
+<tr>
+<td><code>size_specification</code></td>
+<td>string</td>
+<td>SHOULD set for COBOL PIC clauses or array dimensions.</td>
+</tr>
+<tr>
+<td><code>storage_class</code></td>
+<td><code>StorageClass</code></td>
+<td>MAY set. Values: <code>automatic</code>, <code>static</code>, <code>heap</code>, <code>register</code>, <code>thread_local</code>, <code>external</code>.</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td><code>DataClassificationType</code></td>
+<td>MAY set for data governance.</td>
+</tr>
+<tr>
+<td><code>line_number</code></td>
+<td>integer</td>
+<td>SHOULD set.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataelementcategory-enum">DataElementCategory enum</h3>
+<ul>
+<li><code>field</code></li>
+<li><code>static_field</code></li>
+<li><code>local_variable</code></li>
+<li><code>parameter</code></li>
+<li><code>constant</code></li>
+<li><code>global_variable</code></li>
+<li><code>computed</code></li>
+<li><code>temporary</code></li>
+</ul>
+<h3 id="dataelement-relationships">DataElement relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_structure</code></td>
+<td><strong>DataStructure</strong></td>
+<td>MUST link when element belongs to a structure.</td>
+</tr>
+<tr>
+<td><code>contained_in_unit</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST link when element is at the unit level.</td>
+</tr>
+<tr>
+<td><code>has_parent_element</code></td>
+<td><strong>DataElement</strong></td>
+<td>MUST set for COBOL hierarchical data items.</td>
+</tr>
+<tr>
+<td><code>has_child_elements</code></td>
+<td><strong>DataElement</strong></td>
+<td>Inverse of <code>has_parent_element</code>.</td>
+</tr>
+<tr>
+<td><code>declared_type</code></td>
+<td><strong>TypeExpression</strong></td>
+<td>MAY set for structured type modeling.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typeexpression">TypeExpression</h3>
+<p>For complex types (generics, unions, optional wrappers, function types), create a <strong>TypeExpression</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type_kind</code></td>
+<td><code>TypeKind</code></td>
+<td>MUST set.</td>
+</tr>
+<tr>
+<td><code>base_type</code></td>
+<td>string</td>
+<td>MUST set (e.g., <code>List</code>, <code>int</code>, <code>String</code>).</td>
+</tr>
+<tr>
+<td><code>has_type_parameters</code></td>
+<td><strong>TypeExpression</strong>[]</td>
+<td>MUST set for generic types (recursive).</td>
+</tr>
+<tr>
+<td><code>type_constraints</code></td>
+<td>string[]</td>
+<td>MAY set (e.g., <code>T: Comparable</code>).</td>
+</tr>
+<tr>
+<td><code>is_nullable</code></td>
+<td>boolean</td>
+<td>SHOULD set.</td>
+</tr>
+<tr>
+<td><code>nullability_model</code></td>
+<td>string</td>
+<td>MAY set (e.g., <code>option_type</code>, <code>nullable_annotation</code>).</td>
+</tr>
+<tr>
+<td><code>pointer_semantics</code></td>
+<td>string</td>
+<td>MAY set for pointer types (e.g., <code>raw</code>, <code>smart</code>, <code>weak</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typekind-enum">TypeKind enum</h3>
+<ul>
+<li><code>primitive</code></li>
+<li><code>generic</code></li>
+<li><code>union</code></li>
+<li><code>intersection</code></li>
+<li><code>alias</code></li>
+<li><code>pointer</code></li>
+<li><code>reference</code></li>
+<li><code>array_of</code></li>
+<li><code>function_type</code></li>
+<li><code>tuple_type</code></li>
+<li><code>optional_type</code></li>
+<li><code>constrained</code></li>
+<li><code>opaque</code></li>
+</ul>
+<h3 id="procedure_2">Procedure</h3>
+<ol>
+<li>For each <strong>EncapsulationUnit</strong>, walk its AST children for struct/record/class-data/enum declarations.</li>
+<li>Create a <strong>DataStructure</strong> for each, choosing <code>structure_type</code> based on the language construct.</li>
+<li>For each field within the structure, create a <strong>DataElement</strong> and link via <code>structure_contains_elements</code> / <code>contained_in_structure</code>.</li>
+<li>For fields at the unit level (e.g., Java class fields not inside an inner struct), link directly via <code>contains_data_elements</code> on the <strong>EncapsulationUnit</strong>.</li>
+<li>For complex types, create a <strong>TypeExpression</strong> and link via <code>declared_type</code> on the <strong>DataElement</strong>.</li>
+<li>For COBOL group items, preserve the level-number hierarchy using <code>has_parent_element</code> / <code>has_child_elements</code>.</li>
+</ol>
+<h3 id="example_2">Example</h3>
+<pre><code class="language-yaml"># Java DTO with fields and a generic type
+order_data:
+  a: DataStructure
+  name: Order
+  structure_type: class_data
+  structure_category: composite
+  visibility: public
+  is_mutable: true
+  contained_in_unit: order_entity
+  structure_contains_elements:
+    - order_id_field
+    - order_items_field
+    - order_total_field
+
+order_id_field:
+  a: DataElement
+  name: id
+  data_type: Long
+  element_category: field
+  visibility: private
+  is_constant: false
+  is_nullable: false
+  contained_in_structure: order_data
+
+order_items_field:
+  a: DataElement
+  name: items
+  data_type: &quot;List&lt;OrderItem&gt;&quot;
+  element_category: field
+  visibility: private
+  is_constant: false
+  is_nullable: false
+  contained_in_structure: order_data
+  declared_type: list_of_order_item
+
+list_of_order_item:
+  a: TypeExpression
+  name: &quot;List&lt;OrderItem&gt;&quot;
+  type_kind: generic
+  base_type: List
+  type_parameters:
+    - a: TypeExpression
+      name: OrderItem
+      type_kind: primitive
+      base_type: OrderItem
+
+order_total_field:
+  a: DataElement
+  name: total
+  data_type: BigDecimal
+  element_category: field
+  visibility: private
+  is_constant: false
+  is_nullable: false
+  default_value: &quot;0.00&quot;
+  contained_in_structure: order_data
+
+# COBOL group item with hierarchy
+employee_record:
+  a: DataStructure
+  name: EMPLOYEE-RECORD
+  structure_type: group_item
+  nesting_level: 1
+  contained_in_unit: payroll_calc
+
+emp_name:
+  a: DataElement
+  name: EMP-NAME
+  data_type: &quot;PIC X(30)&quot;
+  element_category: field
+  size_specification: &quot;PIC X(30)&quot;
+  contained_in_structure: employee_record
+  parent_element: null
+
+emp_salary:
+  a: DataElement
+  name: EMP-SALARY
+  data_type: &quot;PIC 9(7)V99&quot;
+  element_category: field
+  size_specification: &quot;PIC 9(7)V99&quot;
+  contained_in_structure: employee_record
+</code></pre>
+<hr />
+<h2 id="sub-phase-2d-definition-references">Sub-phase 2d: Definition References</h2>
+<p>Create a <strong>DefinitionReference</strong> for each import, include, COPY, using, or require statement.</p>
+<h3 id="attributes">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reference_type</code></td>
+<td><code>ReferenceType</code></td>
+<td>MUST set.</td>
+</tr>
+<tr>
+<td><code>reference_path</code></td>
+<td>string</td>
+<td>MUST set (the import path or module name as written in source).</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>string</td>
+<td>SHOULD set when an alias is used (e.g., Python <code>import x as y</code>).</td>
+</tr>
+<tr>
+<td><code>is_wildcard</code></td>
+<td>boolean</td>
+<td>MUST set to <code>true</code> for wildcard imports (e.g., <code>import java.util.*</code>).</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>MAY set to indicate the scope of the import.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="referencetype-enum">ReferenceType enum</h3>
+<ul>
+<li><code>import_module</code></li>
+<li><code>import_symbol</code></li>
+<li><code>include_source</code></li>
+<li><code>inherit</code></li>
+<li><code>implement</code></li>
+</ul>
+<h3 id="relationships">Relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>referencing_container</code></td>
+<td><strong>CodeContainer</strong></td>
+<td>MUST link to the source file performing the import.</td>
+</tr>
+<tr>
+<td><code>referenced_container</code></td>
+<td><strong>CodeContainer</strong></td>
+<td>SHOULD link to the target file being imported (when resolvable).</td>
+</tr>
+<tr>
+<td><code>imports_symbols</code></td>
+<td><strong>EncapsulationUnit</strong> / <strong>CallableUnit</strong> / <strong>DataStructure</strong></td>
+<td>SHOULD set to the specific entities imported.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="procedure_3">Procedure</h3>
+<ol>
+<li>Walk each <strong>CodeContainer</strong>'s AST for import/include/COPY/using/require statements.</li>
+<li>Create a <strong>DefinitionReference</strong> for each statement.</li>
+<li>Resolve <code>referenced_container</code> by matching the import path to known <strong>CodeContainer</strong> instances from Phase 1.</li>
+<li>If the import targets a specific symbol, set <code>imports_symbols</code> to the corresponding <strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, or <strong>DataStructure</strong>.</li>
+<li>Link the <strong>DefinitionReference</strong> to the containing <strong>EncapsulationUnit</strong> via <code>EncapsulationUnit.uses_definitions</code>.</li>
+</ol>
+<h3 id="example_3">Example</h3>
+<pre><code class="language-yaml"># Python import
+import_order_model:
+  a: DefinitionReference
+  name: &quot;from models.order import Order&quot;
+  reference_type: import_symbol
+  reference_path: models.order
+  is_wildcard: false
+  referencing_container: order_service_file
+  referenced_container: order_model_file
+  imports_symbols:
+    - order_entity
+
+# COBOL COPY statement
+copy_employee_record:
+  a: DefinitionReference
+  name: &quot;COPY EMPREC&quot;
+  reference_type: include_source
+  reference_path: EMPREC
+  is_wildcard: false
+  referencing_container: payroll_calc_source
+  referenced_container: emprec_copybook
+
+# Java wildcard import
+import_java_util:
+  a: DefinitionReference
+  name: &quot;import java.util.*&quot;
+  reference_type: import_module
+  reference_path: java.util
+  is_wildcard: true
+  referencing_container: order_service_file
+</code></pre>
+<hr />
+<h2 id="sub-phase-2e-call-graph-controlflow">Sub-phase 2e: Call Graph (ControlFlow)</h2>
+<p>For each <strong>CallableUnit</strong>, identify what it calls and build the call graph using <strong>ControlFlow</strong> edges.</p>
+<h3 id="attributes_1">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flow_type</code></td>
+<td><code>ControlFlowType</code></td>
+<td>MUST set.</td>
+</tr>
+<tr>
+<td><code>is_conditional</code></td>
+<td>boolean</td>
+<td>SHOULD set to <code>true</code> if the call is inside a conditional branch.</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>MAY set to the guard expression (e.g., <code>if user != null</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="controlflowtype-enum">ControlFlowType enum</h3>
+<ul>
+<li><code>call</code></li>
+<li><code>async_call</code></li>
+<li><code>branch</code></li>
+<li><code>jump</code></li>
+<li><code>return</code></li>
+<li><code>throw</code></li>
+<li><code>yield</code></li>
+</ul>
+<h3 id="relationships_1">Relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_callable</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>MUST set (the caller).</td>
+</tr>
+<tr>
+<td><code>has_target_callable</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>MUST set (the callee).</td>
+</tr>
+<tr>
+<td><code>has_source_statement</code></td>
+<td><strong>Statement</strong></td>
+<td>MAY set for statement-level precision.</td>
+</tr>
+<tr>
+<td><code>has_target_statement</code></td>
+<td><strong>Statement</strong></td>
+<td>MAY set for statement-level precision.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bidirectional-call-links">Bidirectional call links</h3>
+<p>In addition to <strong>ControlFlow</strong> edge entities, the extraction agent MUST also populate:</p>
+<ul>
+<li><code>CallableUnit.invokes_callables</code> --- the list of callables this one calls</li>
+<li><code>CallableUnit.invoked_by_callables</code> --- the inverse (auto-populated if using LinkML inverse)</li>
+</ul>
+<p>These provide direct navigation without querying <strong>ControlFlow</strong> entities.</p>
+<h3 id="procedure_4">Procedure</h3>
+<ol>
+<li>For each <strong>CallableUnit</strong>, walk its AST body for call expressions, method invocations, and PERFORM statements.</li>
+<li>Resolve each call target to a known <strong>CallableUnit</strong> by matching name and scope.</li>
+<li>Create a <strong>ControlFlow</strong> edge with <code>flow_type: call</code> (or <code>async_call</code> for awaited calls).</li>
+<li>Also append the target to <code>invokes_callables</code> on the source <strong>CallableUnit</strong>.</li>
+<li>For unresolvable calls (external libraries, dynamic dispatch), create a stub <strong>CallableUnit</strong> with the name and mark it as external.</li>
+</ol>
+<h3 id="example_4">Example</h3>
+<pre><code class="language-yaml"># Direct method call
+call_create_to_validate:
+  a: ControlFlow
+  name: createOrder_calls_validateOrder
+  flow_type: call
+  is_conditional: false
+  source_callable: create_order
+  target_callable: validate_order
+
+# Conditional async call
+call_notify_async:
+  a: ControlFlow
+  name: createOrder_calls_notifyAsync
+  flow_type: async_call
+  is_conditional: true
+  condition: &quot;order.requiresNotification()&quot;
+  source_callable: create_order
+  target_callable: send_notification
+
+# Update the source callable's invocation list
+create_order:
+  a: CallableUnit
+  # ... (other attributes from sub-phase 2b)
+  invokes_callables:
+    - validate_order
+    - calculate_total
+    - save_order
+    - send_notification
+</code></pre>
+<hr />
+<h2 id="sub-phase-2f-data-flow">Sub-phase 2f: Data Flow</h2>
+<p>For each <strong>CallableUnit</strong>, identify which <strong>DataElements</strong> it reads, writes, or transforms, and create <strong>DataFlow</strong> edges.</p>
+<h3 id="attributes_2">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>flow_type</code></td>
+<td><code>DataFlowType</code></td>
+<td>MUST set.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dataflowtype-enum">DataFlowType enum</h3>
+<ul>
+<li><code>read</code></li>
+<li><code>write</code></li>
+<li><code>modify</code></li>
+<li><code>define</code></li>
+<li><code>use</code></li>
+</ul>
+<h3 id="relationships_2">Relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_element</code></td>
+<td><strong>DataElement</strong></td>
+<td>MUST set (the data being read from or defined).</td>
+</tr>
+<tr>
+<td><code>has_target_element</code></td>
+<td><strong>DataElement</strong></td>
+<td>MUST set (the data being written to or consumed).</td>
+</tr>
+<tr>
+<td><code>has_through_callable</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>SHOULD set (the callable performing the flow).</td>
+</tr>
+<tr>
+<td><code>has_through_statement</code></td>
+<td><strong>Statement</strong></td>
+<td>MAY set for statement-level precision.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="bidirectional-data-links">Bidirectional data links</h3>
+<p>The extraction agent MUST also populate:</p>
+<ul>
+<li><code>CallableUnit.accesses_data_elements</code> --- data elements the callable reads</li>
+<li><code>CallableUnit.modifies_data_elements</code> --- data elements the callable writes</li>
+</ul>
+<h3 id="procedure_5">Procedure</h3>
+<ol>
+<li>For each <strong>CallableUnit</strong>, perform a lightweight data-flow analysis on its AST body.</li>
+<li>Identify variable reads (right-hand side of assignments, arguments to calls) and writes (left-hand side of assignments, output parameters).</li>
+<li>Create a <strong>DataFlow</strong> edge for each read/write/modify relationship.</li>
+<li>Populate <code>accesses_data_elements</code> and <code>modifies_data_elements</code> on the <strong>CallableUnit</strong>.</li>
+</ol>
+<blockquote>
+<p><strong>Note:</strong> Full data-flow analysis (reaching definitions, def-use chains) is valuable but not required. At minimum, capture direct field reads and writes.</p>
+</blockquote>
+<h3 id="example_5">Example</h3>
+<pre><code class="language-yaml"># Reading a field
+read_order_total:
+  a: DataFlow
+  name: createOrder_reads_total
+  flow_type: read
+  source_element: order_total_field
+  target_element: invoice_amount_field
+  through_callable: create_order
+
+# Writing a field
+write_order_status:
+  a: DataFlow
+  name: createOrder_writes_status
+  flow_type: write
+  source_element: status_pending_constant
+  target_element: order_status_field
+  through_callable: create_order
+
+# Update the callable
+create_order:
+  a: CallableUnit
+  # ... (other attributes)
+  accesses_data_elements:
+    - order_total_field
+    - customer_id_field
+  modifies_data_elements:
+    - order_status_field
+    - order_created_at_field
+</code></pre>
+<hr />
+<h2 id="sub-phase-2g-annotations">Sub-phase 2g: Annotations</h2>
+<p>Extract decorators, attributes, annotations, and pragmas attached to code elements.</p>
+<h3 id="attributes_3">Attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Range</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annotation_syntax</code></td>
+<td>string</td>
+<td>SHOULD set (the raw syntax, e.g., <code>@Override</code>, <code>#[derive(Debug)]</code>).</td>
+</tr>
+<tr>
+<td><code>parameters</code></td>
+<td>string[]</td>
+<td>SHOULD set for annotation parameters/arguments.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="relationships_3">Relationships</h3>
+<p><strong>Annotation</strong> uses two global (multi-domain) slots:</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Target</th>
+<th>Rule</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annotates_element</code></td>
+<td><strong>EncapsulationUnit</strong> / <strong>CallableUnit</strong> / <strong>DataStructure</strong> / <strong>DataElement</strong></td>
+<td>MUST link to the annotated entity.</td>
+</tr>
+<tr>
+<td><code>affects_behavior_of</code></td>
+<td><strong>EncapsulationUnit</strong> / <strong>CallableUnit</strong></td>
+<td>MAY set when the annotation changes runtime behavior.</td>
+</tr>
+</tbody>
+</table>
+<p>The inverse slot on target entities is <code>annotated_by</code>.</p>
+<h3 id="procedure_6">Procedure</h3>
+<ol>
+<li>For each <strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, or <strong>DataElement</strong>, check the AST for attached annotations/decorators.</li>
+<li>Create an <strong>Annotation</strong> for each, capturing the name and parameters.</li>
+<li>Link via <code>annotates_element</code> to the annotated entity.</li>
+<li>Mark behavior-affecting annotations (e.g., <code>@Transactional</code>, <code>@Cached</code>, <code>@Async</code>) via <code>affects_behavior_of</code>.</li>
+</ol>
+<h3 id="example_6">Example</h3>
+<pre><code class="language-yaml"># Java annotation
+override_annotation:
+  a: Annotation
+  name: Override
+  annotation_syntax: &quot;@Override&quot;
+  annotates_element: create_order
+
+# Python decorator with parameters
+route_annotation:
+  a: Annotation
+  name: route
+  annotation_syntax: '@app.route(&quot;/orders&quot;, methods=[&quot;POST&quot;])'
+  parameters:
+    - '&quot;/orders&quot;'
+    - 'methods=[&quot;POST&quot;]'
+  annotates_element: create_order_handler
+  affects_behavior_of: create_order_handler
+
+# Rust derive macro
+derive_debug:
+  a: Annotation
+  name: derive
+  annotation_syntax: &quot;#[derive(Debug, Clone, Serialize)]&quot;
+  parameters:
+    - Debug
+    - Clone
+    - Serialize
+  annotates_element: order_struct
+</code></pre>
+<hr />
+<h2 id="sub-phase-2h-platform-specific-extensions">Sub-phase 2h: Platform-Specific Extensions</h2>
+<p>This sub-phase is conditional. The extraction agent MUST determine which extensions apply based on the <strong>ProgrammingLanguage</strong> instances from Phase 1, then extract only the relevant ones.</p>
+<h3 id="decision-tree">Decision tree</h3>
+<pre><code>What language/platform?
+│
+├── COBOL, PL/I, RPG, Assembler (Mainframe)
+│   ├── Extract FileDefinition, FileOperation
+│   ├── Extract ScreenDefinition, ScreenField
+│   ├── Extract JobDefinition, JobStep, DatasetAllocation
+│   └── Extract IPCConnection
+│
+├── C / C++
+│   ├── Extract PreprocessorDirective
+│   ├── Extract MemoryModel
+│   └── Extract OwnershipAnnotation (smart pointers)
+│
+├── Rust
+│   ├── Extract MemoryModel
+│   └── Extract OwnershipAnnotation (ownership/lifetimes)
+│
+├── Any language with macro/metaprogramming
+│   └── Extract PreprocessorDirective
+│
+└── All languages
+    ├── Extract ErrorModel (per-module error handling strategy)
+    └── Extract ExceptionType (exception hierarchies)
+</code></pre>
+<h3 id="mainframe-extensions">Mainframe extensions</h3>
+<h4 id="filedefinition-and-fileoperation">FileDefinition and FileOperation</h4>
+<p>Extract for every COBOL SELECT clause, PL/I DECLARE FILE, or equivalent file declaration.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>organization</code></td>
+<td>File organization: <code>sequential</code>, <code>indexed</code>, <code>relative</code>, <code>vsam_ksds</code>, <code>vsam_esds</code>, <code>vsam_rrds</code>, <code>partitioned_dataset</code>, <code>generation_data_group</code>, <code>line_sequential</code>, <code>heap</code></td>
+</tr>
+<tr>
+<td><code>access_mode</code></td>
+<td>Access pattern: <code>sequential_access</code>, <code>random_access</code>, <code>dynamic_access</code></td>
+</tr>
+<tr>
+<td><code>record_format</code></td>
+<td>Record format: <code>fixed</code>, <code>variable</code>, <code>undefined</code>, <code>spanned</code>, <code>stream</code></td>
+</tr>
+<tr>
+<td><code>record_length</code></td>
+<td>Record length in bytes</td>
+</tr>
+<tr>
+<td><code>key_fields</code></td>
+<td>Key field names for indexed files</td>
+</tr>
+<tr>
+<td><code>file_status_field</code></td>
+<td>Variable receiving I/O status codes</td>
+</tr>
+<tr>
+<td><code>external_name</code></td>
+<td>DD name or physical file name</td>
+</tr>
+</tbody>
+</table>
+<p>Link <code>file_defined_in_container</code> to the <strong>CodeContainer</strong> and <code>used_by_callables</code> to the <strong>CallableUnits</strong> that perform I/O on the file.</p>
+<p>For each I/O verb (READ, WRITE, REWRITE, DELETE, OPEN, CLOSE), create a <strong>FileOperation</strong> linked to the <strong>FileDefinition</strong> via <code>operates_on_file</code> and to the <strong>CallableUnit</strong> via <code>performed_in_callable</code>.</p>
+<pre><code class="language-yaml">customer_file:
+  a: FileDefinition
+  name: CUSTOMER-MASTER
+  organization: vsam_ksds
+  access_mode: random_access
+  record_format: fixed
+  record_length: 200
+  key_fields: [CUSTOMER-ID]
+  file_status_field: WS-FILE-STATUS
+  external_name: CUSTMAST
+  file_defined_in_container: customer_pgm_source
+
+read_customer_op:
+  a: FileOperation
+  name: READ-CUSTOMER
+  operation_type: read
+  operates_on_file: customer_file
+  performed_in_callable: process_customer_paragraph
+</code></pre>
+<h4 id="screendefinition-and-screenfield">ScreenDefinition and ScreenField</h4>
+<p>Extract for CICS BMS map definitions, RPG display files, and similar character-mode UIs.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>screen_type</code></td>
+<td>Type of screen (e.g., <code>bms_map</code>, <code>display_file</code>)</td>
+</tr>
+<tr>
+<td><code>rows</code> / <code>columns</code></td>
+<td>Screen dimensions</td>
+</tr>
+<tr>
+<td><code>external_name</code></td>
+<td>External map or display file name</td>
+</tr>
+</tbody>
+</table>
+<p>For each field on the screen, create a <strong>ScreenField</strong> with <code>row</code>, <code>column</code>, <code>length</code>, <code>is_input</code>, <code>is_protected</code>, and <code>maps_to_data_element</code> linking to the corresponding <strong>DataElement</strong>.</p>
+<p>Link the <strong>ScreenDefinition</strong> to its <strong>EncapsulationUnit</strong> via <code>program_uses_screens</code>.</p>
+<pre><code class="language-yaml">inquiry_screen:
+  a: ScreenDefinition
+  name: CUSTINQ
+  screen_type: bms_map
+  rows: 24
+  columns: 80
+  external_name: CUSTMAP
+  program_uses_screens:
+    - customer_inquiry_program
+
+cust_name_field:
+  a: ScreenField
+  name: CUST-NAME
+  row: 5
+  column: 20
+  length: 30
+  is_input: false
+  is_protected: true
+  field_on_screen: inquiry_screen
+  maps_to_data_element: ws_customer_name
+</code></pre>
+<h4 id="jobdefinition-jobstep-datasetallocation">JobDefinition, JobStep, DatasetAllocation</h4>
+<p>Extract from JCL members, scheduler definitions, or cron configurations.</p>
+<ul>
+<li><strong>JobDefinition</strong>: one per JOB card. Set <code>job_class</code>, <code>priority</code>, <code>scheduling_info</code>.</li>
+<li><strong>JobStep</strong>: one per EXEC statement. Set <code>step_type</code>, <code>program_name</code>, link <code>step_executes_program</code> to the <strong>EncapsulationUnit</strong>.</li>
+<li><strong>DatasetAllocation</strong>: one per DD statement. Set <code>dd_name</code>, <code>dataset_name</code>, <code>disposition</code>, <code>record_format</code>. Link <code>maps_to_file_definition</code> to the corresponding <strong>FileDefinition</strong>.</li>
+</ul>
+<pre><code class="language-yaml">payroll_job:
+  a: JobDefinition
+  name: PAYROLLJ
+  job_class: A
+  priority: 10
+  contains_job_steps:
+    - payroll_step1
+
+payroll_step1:
+  a: JobStep
+  name: CALC
+  step_type: exec_pgm
+  program_name: PAYROLL-CALC
+  step_in_job: payroll_job
+  step_executes_program: payroll_calc
+  allocates_datasets:
+    - emp_file_alloc
+
+emp_file_alloc:
+  a: DatasetAllocation
+  name: EMPFILE-DD
+  dd_name: EMPFILE
+  dataset_name: PROD.EMPLOYEE.MASTER
+  disposition: shr
+  allocated_in_step: payroll_step1
+  maps_to_file_definition: employee_master_file
+</code></pre>
+<h4 id="ipcconnection">IPCConnection</h4>
+<p>Extract for CICS LINK/XCTL, MQ calls, shared memory references, or any inter-program communication.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mechanism</code></td>
+<td>IPC mechanism (e.g., <code>cics_link</code>, <code>cics_xctl</code>, <code>mq_put</code>, <code>mq_get</code>, <code>shared_memory</code>, <code>pipe</code>, <code>rmi</code>, <code>corba</code>)</td>
+</tr>
+<tr>
+<td><code>is_synchronous</code></td>
+<td>Whether the call is synchronous</td>
+</tr>
+<tr>
+<td><code>transaction_scoped</code></td>
+<td>Whether the IPC participates in a transaction boundary</td>
+</tr>
+</tbody>
+</table>
+<p>Link <code>has_source_program</code> and <code>has_target_program</code> to <strong>EncapsulationUnit</strong> instances. Link <code>ipc_passes_data</code> to the <strong>DataStructure</strong> being exchanged (typically a COMMAREA or message structure).</p>
+<pre><code class="language-yaml">link_to_validation:
+  a: IPCConnection
+  name: CUSTPGM-LINK-VALPGM
+  mechanism: cics_link
+  is_synchronous: true
+  transaction_scoped: true
+  ipc_source_program: customer_inquiry_program
+  ipc_target_program: validation_program
+  ipc_passes_data:
+    - customer_commarea
+</code></pre>
+<h3 id="cc-and-rust-extensions">C/C++ and Rust extensions</h3>
+<h4 id="preprocessordirective">PreprocessorDirective</h4>
+<p>Extract for <code>#include</code>, <code>#define</code>, <code>#ifdef</code>, <code>#pragma</code>, and similar constructs. Also applies to languages with compile-time metaprogramming (Rust <code>macro_rules!</code>, Lisp macros, etc.).</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>directive_type</code></td>
+<td>Metaprogramming type (from <code>MetaprogrammingType</code> enum)</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>Conditional compilation expression (e.g., <code>#ifdef DEBUG</code>)</td>
+</tr>
+<tr>
+<td><code>expansion</code></td>
+<td>Expanded text or transformation result</td>
+</tr>
+</tbody>
+</table>
+<p>Link <code>directive_defined_in_container</code> to the <strong>CodeContainer</strong> and <code>directive_affects_encapsulation_units</code> / <code>directive_affects_callables</code> to the affected entities.</p>
+<pre><code class="language-yaml">debug_guard:
+  a: PreprocessorDirective
+  name: DEBUG_IFDEF
+  directive_type: conditional_compilation
+  condition: &quot;defined(DEBUG)&quot;
+  directive_defined_in_container: main_c_file
+  directive_affects_callables:
+    - debug_log_function
+</code></pre>
+<h4 id="memorymodel-and-ownershipannotation">MemoryModel and OwnershipAnnotation</h4>
+<p>Extract one <strong>MemoryModel</strong> per language or module to describe the memory management strategy.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_model</code></td>
+<td>Ownership model (e.g., <code>manual</code>, <code>garbage_collected</code>, <code>reference_counted</code>, <code>ownership_borrowing</code>)</td>
+</tr>
+<tr>
+<td><code>gc_type</code></td>
+<td>GC algorithm if applicable (e.g., <code>generational</code>, <code>mark_sweep</code>)</td>
+</tr>
+<tr>
+<td><code>supports_unsafe</code></td>
+<td>Whether unsafe/manual access is permitted</td>
+</tr>
+</tbody>
+</table>
+<p>For Rust and C++ smart pointers, create <strong>OwnershipAnnotation</strong> instances on individual <strong>DataElements</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ownership</code></td>
+<td>Ownership model for this element</td>
+</tr>
+<tr>
+<td><code>lifetime</code></td>
+<td>Lifetime scope (e.g., <code>static_lifetime</code>, <code>function_scope</code>, <code>block_scope</code>, <code>named</code>)</td>
+</tr>
+<tr>
+<td><code>lifetime_name</code></td>
+<td>Named lifetime identifier (e.g., <code>'a</code> in Rust)</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">rust_memory:
+  a: MemoryModel
+  name: RustOwnership
+  primary_model: ownership_borrowing
+  supports_unsafe: true
+  modules_using_memory_model:
+    - order_service_module
+
+buffer_ownership:
+  a: OwnershipAnnotation
+  name: buffer_ref
+  ownership: ownership_borrowing
+  lifetime: named
+  lifetime_name: &quot;'a&quot;
+  annotates_data_element: buffer_data_element
+</code></pre>
+<h3 id="error-handling-extensions-all-languages">Error handling extensions (all languages)</h3>
+<h4 id="errormodel">ErrorModel</h4>
+<p>Create one <strong>ErrorModel</strong> per error handling paradigm observed in the codebase.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>strategy</code></td>
+<td>Error handling paradigm: <code>exception_based</code>, <code>return_value_based</code>, <code>condition_based</code>, <code>error_code_based</code>, <code>panic_recover</code>, <code>monadic</code></td>
+</tr>
+<tr>
+<td><code>checkedness</code></td>
+<td>Exception checkedness: <code>checked</code>, <code>unchecked</code>, <code>not_applicable</code></td>
+</tr>
+</tbody>
+</table>
+<p>Link <code>modules_using_error_model</code> to the <strong>EncapsulationUnit</strong> instances that use this paradigm.</p>
+<h4 id="exceptiontype">ExceptionType</h4>
+<p>Create an <strong>ExceptionType</strong> for each declared exception or error type in the codebase.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qualified_name</code></td>
+<td>Fully qualified exception name</td>
+</tr>
+<tr>
+<td><code>is_checked</code></td>
+<td>Whether this is a checked exception</td>
+</tr>
+<tr>
+<td><code>has_parent_exception</code></td>
+<td>Parent in the exception hierarchy</td>
+</tr>
+</tbody>
+</table>
+<p>Link <code>raised_by_callables</code> and <code>handled_by_callables</code> to the relevant <strong>CallableUnit</strong> instances.</p>
+<pre><code class="language-yaml">java_errors:
+  a: ErrorModel
+  name: JavaExceptions
+  strategy: exception_based
+  checkedness: checked
+  modules_using_error_model:
+    - order_service
+
+order_not_found:
+  a: ExceptionType
+  name: OrderNotFoundException
+  qualified_name: com.example.orders.OrderNotFoundException
+  is_checked: false
+  parent_exception: runtime_exception
+  raised_by_callables:
+    - find_order_by_id
+  handled_by_callables:
+    - create_order
+</code></pre>
+<hr />
+<h2 id="phase-2-checklist">Phase 2 Checklist</h2>
+<p>Before proceeding to Phase 3, verify the following:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>How to verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Every <strong>CodeContainer</strong> has been parsed</td>
+<td>Count of parsed containers equals count from Phase 1.</td>
+</tr>
+<tr>
+<td>Every class/module/program has an <strong>EncapsulationUnit</strong></td>
+<td>No top-level AST declarations lack a corresponding unit.</td>
+</tr>
+<tr>
+<td>Every method/function/paragraph has a <strong>CallableUnit</strong></td>
+<td>No callable AST nodes lack a corresponding unit.</td>
+</tr>
+<tr>
+<td>Every field/variable has a <strong>DataElement</strong></td>
+<td>Spot-check representative classes for completeness.</td>
+</tr>
+<tr>
+<td>Every parameter has a <strong>Parameter</strong></td>
+<td>Compare parameter counts against source signatures.</td>
+</tr>
+<tr>
+<td>Import/include relationships are captured as <strong>DefinitionReferences</strong></td>
+<td>Count of references matches import statement count per container.</td>
+</tr>
+<tr>
+<td>Call graph (<strong>ControlFlow</strong>) is built</td>
+<td>Every <strong>CallableUnit</strong> with call expressions has <code>invokes_callables</code> populated.</td>
+</tr>
+<tr>
+<td>Data flow edges are captured</td>
+<td>At minimum, direct field reads/writes are recorded.</td>
+</tr>
+<tr>
+<td>Annotations are extracted</td>
+<td>Spot-check decorated/annotated elements for <strong>Annotation</strong> instances.</td>
+</tr>
+<tr>
+<td>Platform-specific extensions are populated where applicable</td>
+<td>Mainframe: file definitions, screens, JCL. C/C++/Rust: memory model. All: error model.</td>
+</tr>
+<tr>
+<td><code>encapsulation_type</code> is set on every <strong>EncapsulationUnit</strong></td>
+<td>No unit has a null or missing type.</td>
+</tr>
+<tr>
+<td><code>callable_type</code> is set on every <strong>CallableUnit</strong></td>
+<td>No callable has a null or missing type.</td>
+</tr>
+<tr>
+<td><code>structure_type</code> is set on every <strong>DataStructure</strong></td>
+<td>No structure has a null or missing type.</td>
+</tr>
+<tr>
+<td><code>data_type</code> is set on every <strong>DataElement</strong></td>
+<td>No element has a null or missing type.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="common-pitfalls">Common pitfalls</h3>
+<ul>
+<li><strong>Missing nested types.</strong> Inner classes, companion objects, and anonymous classes are easily skipped. Ensure the AST walker recurses into nested type declarations.</li>
+<li><strong>Unresolved call targets.</strong> Dynamic dispatch, reflection, and dependency injection make call graph construction incomplete. Create stub <strong>CallableUnit</strong> instances for unresolvable targets and annotate them.</li>
+<li><strong>COBOL hierarchy.</strong> COBOL data items use level numbers (01, 05, 10, etc.) to express hierarchy. Map these to <code>has_parent_element</code> / <code>has_child_elements</code> rather than flattening.</li>
+<li><strong>Generic types.</strong> Do not flatten <code>List&lt;Map&lt;String, Order&gt;&gt;</code> to a string. Use nested <strong>TypeExpression</strong> instances.</li>
+<li><strong>Visibility defaults.</strong> Languages have different default visibilities (Java: <code>package</code>, Python: <code>public</code>, C++: <code>private</code> for class members). Apply the correct default when no modifier is present.</li>
+</ul>
+<hr />
+<h2 id="next-phase">Next phase</h2>
+<p><a href="03-architecture.html">Phase 3: Architecture (Layers 2/4)</a> --- infers <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, and <strong>Interface</strong> from the code structure graph built here.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

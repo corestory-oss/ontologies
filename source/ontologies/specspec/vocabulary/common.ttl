@@ -1,0 +1,528 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/specspec/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:SpecAgent a rdfs:Class ;
+    rdfs:label "SpecAgent" ;
+    rdfs:comment "A person, organization, or tool responsible for authoring, producing, or reviewing knowledge." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:SpecElement a rdfs:Class ;
+    rdfs:label "SpecElement" ;
+    rdfs:comment "An independently identified item of specification knowledge. Its identifier denotes this knowledge item, not the software entity it describes." ;
+    rdfs:isDefinedBy spec: .
+
+spec:OriginMode a rdfs:Datatype ;
+    rdfs:label "OriginMode" ;
+    rdfs:comment "How a statement was obtained, independently of its correctness or review status." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/OriginMode/inferred>,
+        <https://ontologies.corestory.ai/specspec/export/values/OriginMode/observed>,
+        <https://ontologies.corestory.ai/specspec/export/values/OriginMode/supplied> .
+
+spec:ReviewStatus a rdfs:Datatype ;
+    rdfs:label "ReviewStatus" ;
+    rdfs:comment "Explicit review disposition of a claim." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/accepted>,
+        <https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/needs_confirmation>,
+        <https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/rejected>,
+        <https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/superseded>,
+        <https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/unreviewed> .
+
+spec:StatementMode a rdfs:Datatype ;
+    rdfs:label "StatementMode" ;
+    rdfs:comment "Distinguishes actual behavior from obligations and hypothetical behavior." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/StatementMode/descriptive>,
+        <https://ontologies.corestory.ai/specspec/export/values/StatementMode/hypothetical>,
+        <https://ontologies.corestory.ai/specspec/export/values/StatementMode/normative> .
+
+spec:acceptance_criteria a rdf:Property ;
+    rdfs:label "acceptance_criteria" ;
+    schema:domainIncludes spec:Requirement,
+        spec:SpecificationGraph ;
+    rdfs:comment "[Requirement] Checkable conditions for accepting satisfaction of this requirement.",
+        "[SpecificationGraph] Inline records of AcceptanceCriterion items; relationships between records use their identifiers." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:AcceptanceCriterion .
+
+spec:agent_kind a rdf:Property ;
+    rdfs:label "agent_kind" ;
+    rdfs:comment "[SpecAgent] Kind of responsible agent." ;
+    rdfs:domain spec:SpecAgent ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:AgentKind .
+
+spec:artifacts a rdf:Property ;
+    rdfs:label "artifacts" ;
+    schema:domainIncludes spec:Specification,
+        spec:SpecificationGraph ;
+    rdfs:comment "[SpecificationGraph] Inline records of SpecificationArtifact items; relationships between records use their identifiers.",
+        "[Specification] Documents representing this specification." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecificationArtifact .
+
+spec:authored_by a rdf:Property ;
+    rdfs:label "authored_by" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] People or tools credited with creating this item; authorship does not imply verification.",
+        "[ArtifactFragment] People or tools credited with creating this item; authorship does not imply verification.",
+        "[ChangeProposal] People or tools credited with creating this item; authorship does not imply verification.",
+        "[Claim] People or tools credited with creating this item; authorship does not imply verification.",
+        "[DecisionOption] People or tools credited with creating this item; authorship does not imply verification.",
+        "[Decision] People or tools credited with creating this item; authorship does not imply verification.",
+        "[EvidenceAnchor] People or tools credited with creating this item; authorship does not imply verification.",
+        "[RepresentationProfile] People or tools credited with creating this item; authorship does not imply verification.",
+        "[RequirementReplacement] People or tools credited with creating this item; authorship does not imply verification.",
+        "[Requirement] People or tools credited with creating this item; authorship does not imply verification.",
+        "[ScenarioStep] People or tools credited with creating this item; authorship does not imply verification.",
+        "[Scenario] People or tools credited with creating this item; authorship does not imply verification.",
+        "[SourceSnapshot] People or tools credited with creating this item; authorship does not imply verification.",
+        "[SpecActivity] People or tools credited with creating this item; authorship does not imply verification.",
+        "[SpecAgent] People or tools credited with creating this item; authorship does not imply verification.",
+        "[SpecElement] People or tools credited with creating this item; authorship does not imply verification.",
+        "[SpecificationArtifact] People or tools credited with creating this item; authorship does not imply verification.",
+        "[Specification] People or tools credited with creating this item; authorship does not imply verification.",
+        "[UseCase] People or tools credited with creating this item; authorship does not imply verification.",
+        "[VerificationResult] People or tools credited with creating this item; authorship does not imply verification." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecAgent .
+
+spec:claims a rdf:Property ;
+    rdfs:label "claims" ;
+    schema:domainIncludes spec:ScenarioStep,
+        spec:Specification,
+        spec:SpecificationGraph ;
+    rdfs:comment "[ScenarioStep] Statements characterizing this interaction or its effects.",
+        "[SpecificationGraph] Inline records of Claim items; relationships between records use their identifiers.",
+        "[Specification] Statements about current or past behavior included in this collection." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:created_at a rdf:Property ;
+    rdfs:label "created_at" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] Time this item was first recorded.",
+        "[ArtifactFragment] Time this item was first recorded.",
+        "[ChangeProposal] Time this item was first recorded.",
+        "[Claim] Time this item was first recorded.",
+        "[DecisionOption] Time this item was first recorded.",
+        "[Decision] Time this item was first recorded.",
+        "[EvidenceAnchor] Time this item was first recorded.",
+        "[RepresentationProfile] Time this item was first recorded.",
+        "[RequirementReplacement] Time this item was first recorded.",
+        "[Requirement] Time this item was first recorded.",
+        "[ScenarioStep] Time this item was first recorded.",
+        "[Scenario] Time this item was first recorded.",
+        "[SourceSnapshot] Time this item was first recorded.",
+        "[SpecActivity] Time this item was first recorded.",
+        "[SpecAgent] Time this item was first recorded.",
+        "[SpecElement] Time this item was first recorded.",
+        "[SpecificationArtifact] Time this item was first recorded.",
+        "[Specification] Time this item was first recorded.",
+        "[UseCase] Time this item was first recorded.",
+        "[VerificationResult] Time this item was first recorded." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:dateTime .
+
+spec:decisions a rdf:Property ;
+    rdfs:label "decisions" ;
+    schema:domainIncludes spec:ChangeProposal,
+        spec:Specification,
+        spec:SpecificationGraph ;
+    rdfs:comment "[ChangeProposal] Choices motivating or governing the change.",
+        "[SpecificationGraph] Inline records of Decision items; relationships between records use their identifiers.",
+        "[Specification] Decisions relevant to this collection." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Decision .
+
+spec:description a rdf:Property ;
+    rdfs:label "description" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[ArtifactFragment] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[ChangeProposal] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[Claim] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[DecisionOption] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[Decision] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[EvidenceAnchor] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[RepresentationProfile] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[RequirementReplacement] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[Requirement] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[ScenarioStep] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[Scenario] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[SourceSnapshot] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[SpecActivity] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[SpecAgent] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[SpecElement] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[SpecificationArtifact] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[Specification] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[UseCase] Explanatory prose; claims requiring provenance should be represented as Claim nodes.",
+        "[VerificationResult] Explanatory prose; claims requiring provenance should be represented as Claim nodes." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+export:permissibleValue a rdf:Property ;
+    rdfs:label "permissibleValue" ;
+    rdfs:comment "A declared enum value annotation. SHACL, rather than RDFS, enforces membership." ;
+    rdfs:isDefinedBy spec: .
+
+spec:generated_by a rdf:Property ;
+    rdfs:label "generated_by" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement,
+        spec:SpecificationArtifact ;
+    rdfs:comment "[AcceptanceCriterion] Activity that produced this claim.",
+        "[Claim] Activity that produced this claim.",
+        "[Requirement] Activity that produced this claim.",
+        "[SpecificationArtifact] Activity that produced this representation, if generated." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecActivity .
+
+spec:id a rdf:Property ;
+    rdfs:label "id" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] Stable URI or CURIE identifying this item across representations.",
+        "[ArtifactFragment] Stable URI or CURIE identifying this item across representations.",
+        "[ChangeProposal] Stable URI or CURIE identifying this item across representations.",
+        "[Claim] Stable URI or CURIE identifying this item across representations.",
+        "[DecisionOption] Stable URI or CURIE identifying this item across representations.",
+        "[Decision] Stable URI or CURIE identifying this item across representations.",
+        "[EvidenceAnchor] Stable URI or CURIE identifying this item across representations.",
+        "[RepresentationProfile] Stable URI or CURIE identifying this item across representations.",
+        "[RequirementReplacement] Stable URI or CURIE identifying this item across representations.",
+        "[Requirement] Stable URI or CURIE identifying this item across representations.",
+        "[ScenarioStep] Stable URI or CURIE identifying this item across representations.",
+        "[Scenario] Stable URI or CURIE identifying this item across representations.",
+        "[SourceSnapshot] Stable URI or CURIE identifying this item across representations.",
+        "[SpecActivity] Stable URI or CURIE identifying this item across representations.",
+        "[SpecAgent] Stable URI or CURIE identifying this item across representations.",
+        "[SpecElement] Stable URI or CURIE identifying this item across representations.",
+        "[SpecificationArtifact] Stable URI or CURIE identifying this item across representations.",
+        "[Specification] Stable URI or CURIE identifying this item across representations.",
+        "[UseCase] Stable URI or CURIE identifying this item across representations.",
+        "[VerificationResult] Stable URI or CURIE identifying this item across representations." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:anyURI .
+
+spec:requirements a rdf:Property ;
+    rdfs:label "requirements" ;
+    schema:domainIncludes spec:Specification,
+        spec:SpecificationGraph,
+        spec:UseCase ;
+    rdfs:comment "[SpecificationGraph] Inline records of Requirement items; relationships between records use their identifiers.",
+        "[Specification] Normative requirements included in this collection.",
+        "[UseCase] Requirements addressed by the interaction." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:scenarios a rdf:Property ;
+    rdfs:label "scenarios" ;
+    schema:domainIncludes spec:SpecificationGraph,
+        spec:UseCase ;
+    rdfs:comment "[SpecificationGraph] Inline records of Scenario items; relationships between records use their identifiers.",
+        "[UseCase] Concrete paths illustrating this interaction." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Scenario .
+
+spec:selector a rdf:Property ;
+    rdfs:label "selector" ;
+    schema:domainIncludes spec:ArtifactFragment,
+        spec:EvidenceAnchor ;
+    rdfs:comment "[ArtifactFragment] Heading anchor or other format-specific location.",
+        "[EvidenceAnchor] Optional fragment, symbol, JSON pointer, or other source-specific selector." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:snapshot a rdf:Property ;
+    rdfs:label "snapshot" ;
+    schema:domainIncludes spec:EvidenceAnchor,
+        spec:SpecificationArtifact ;
+    rdfs:comment "[EvidenceAnchor] Source state containing this evidence.",
+        "[SpecificationArtifact] Immutable source state containing this version of the document." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SourceSnapshot .
+
+spec:status a rdf:Property ;
+    rdfs:label "status" ;
+    schema:domainIncludes spec:ChangeProposal,
+        spec:Decision,
+        spec:Specification ;
+    rdfs:comment "[ChangeProposal] Lifecycle of the proposal.",
+        "[Decision] Lifecycle of the decision.",
+        "[Specification] Lifecycle disposition of the collection." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:LifecycleStatus .
+
+spec:supersedes a rdf:Property ;
+    rdfs:label "supersedes" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[ArtifactFragment] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[ChangeProposal] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[Claim] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[DecisionOption] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[Decision] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[EvidenceAnchor] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[RepresentationProfile] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[RequirementReplacement] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[Requirement] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[ScenarioStep] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[Scenario] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[SourceSnapshot] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[SpecActivity] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[SpecAgent] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[SpecElement] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[SpecificationArtifact] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[Specification] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[UseCase] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them.",
+        "[VerificationResult] Earlier knowledge items replaced by this item; retain historical items rather than overwriting them." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecElement .
+
+spec:title a rdf:Property ;
+    rdfs:label "title" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:ArtifactFragment,
+        spec:ChangeProposal,
+        spec:Claim,
+        spec:Decision,
+        spec:DecisionOption,
+        spec:EvidenceAnchor,
+        spec:RepresentationProfile,
+        spec:Requirement,
+        spec:RequirementReplacement,
+        spec:Scenario,
+        spec:ScenarioStep,
+        spec:SourceSnapshot,
+        spec:SpecActivity,
+        spec:SpecAgent,
+        spec:SpecElement,
+        spec:Specification,
+        spec:SpecificationArtifact,
+        spec:UseCase,
+        spec:VerificationResult ;
+    rdfs:comment "[AcceptanceCriterion] Short human-readable title.",
+        "[ArtifactFragment] Short human-readable title.",
+        "[ChangeProposal] Short human-readable title.",
+        "[Claim] Short human-readable title.",
+        "[DecisionOption] Short human-readable title.",
+        "[Decision] Short human-readable title.",
+        "[EvidenceAnchor] Short human-readable title.",
+        "[RepresentationProfile] Short human-readable title.",
+        "[RequirementReplacement] Short human-readable title.",
+        "[Requirement] Short human-readable title.",
+        "[ScenarioStep] Short human-readable title.",
+        "[Scenario] Short human-readable title.",
+        "[SourceSnapshot] Short human-readable title.",
+        "[SpecActivity] Short human-readable title.",
+        "[SpecAgent] Short human-readable title.",
+        "[SpecElement] Short human-readable title.",
+        "[SpecificationArtifact] Short human-readable title.",
+        "[Specification] Short human-readable title.",
+        "[UseCase] Short human-readable title.",
+        "[VerificationResult] Short human-readable title." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:uri a rdf:Property ;
+    rdfs:label "uri" ;
+    schema:domainIncludes spec:SpecAgent,
+        spec:SpecificationArtifact ;
+    rdfs:comment "[SpecAgent] External identity or tool documentation URI.",
+        "[SpecificationArtifact] Location of this representation." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:anyURI .
+
+spec:use_cases a rdf:Property ;
+    rdfs:label "use_cases" ;
+    schema:domainIncludes spec:Specification,
+        spec:SpecificationGraph ;
+    rdfs:comment "[SpecificationGraph] Inline records of UseCase items; relationships between records use their identifiers.",
+        "[Specification] User or stakeholder goals and their scenarios." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:UseCase .
+
+spec:AgentKind a rdfs:Datatype ;
+    rdfs:label "AgentKind" ;
+    rdfs:comment "Kinds of authors, producers, and reviewers." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/AgentKind/organization>,
+        <https://ontologies.corestory.ai/specspec/export/values/AgentKind/person>,
+        <https://ontologies.corestory.ai/specspec/export/values/AgentKind/tool> .
+
+spec:LifecycleStatus a rdfs:Datatype ;
+    rdfs:label "LifecycleStatus" ;
+    rdfs:comment "Lifecycle of specifications and decisions." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/accepted>,
+        <https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/draft>,
+        <https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/proposed>,
+        <https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/retired>,
+        <https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/superseded> .
+
+<https://ontologies.corestory.ai/specspec/export/values/AgentKind/organization> rdf:value "organization" ;
+    rdfs:comment "An organization or team." .
+
+<https://ontologies.corestory.ai/specspec/export/values/AgentKind/person> rdf:value "person" ;
+    rdfs:comment "An individual person." .
+
+<https://ontologies.corestory.ai/specspec/export/values/AgentKind/tool> rdf:value "tool" ;
+    rdfs:comment "An automated tool or service." .
+
+<https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/accepted> rdf:value "accepted" ;
+    rdfs:comment "Accepted for use." .
+
+<https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/draft> rdf:value "draft" ;
+    rdfs:comment "Being developed." .
+
+<https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/proposed> rdf:value "proposed" ;
+    rdfs:comment "Presented for consideration." .
+
+<https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/retired> rdf:value "retired" ;
+    rdfs:comment "No longer in active use." .
+
+<https://ontologies.corestory.ai/specspec/export/values/LifecycleStatus/superseded> rdf:value "superseded" ;
+    rdfs:comment "Replaced by a later item." .
+
+<https://ontologies.corestory.ai/specspec/export/values/OriginMode/inferred> rdf:value "inferred" ;
+    rdfs:comment "Derived by interpretation or synthesis; supporting evidence and premises should be recorded." .
+
+<https://ontologies.corestory.ai/specspec/export/values/OriginMode/observed> rdf:value "observed" ;
+    rdfs:comment "Directly read from a source; an observation can still be mistaken or incomplete." .
+
+<https://ontologies.corestory.ai/specspec/export/values/OriginMode/supplied> rdf:value "supplied" ;
+    rdfs:comment "Provided as intent or external knowledge; not automatically validated or correct." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/accepted> rdf:value "accepted" ;
+    rdfs:comment "Accepted by a reviewer within its stated scope; not a guarantee of universal truth." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/needs_confirmation> rdf:value "needs_confirmation" ;
+    rdfs:comment "A reviewer should resolve uncertainty or a possible contradiction." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/rejected> rdf:value "rejected" ;
+    rdfs:comment "Rejected by a reviewer; retain the claim and its provenance." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/superseded> rdf:value "superseded" ;
+    rdfs:comment "Replaced by a later claim." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ReviewStatus/unreviewed> rdf:value "unreviewed" ;
+    rdfs:comment "No review disposition has been recorded." .
+
+<https://ontologies.corestory.ai/specspec/export/values/StatementMode/descriptive> rdf:value "descriptive" ;
+    rdfs:comment "States what a source or system does or did." .
+
+<https://ontologies.corestory.ai/specspec/export/values/StatementMode/hypothetical> rdf:value "hypothetical" ;
+    rdfs:comment "States a possibility or assumption." .
+
+<https://ontologies.corestory.ai/specspec/export/values/StatementMode/normative> rdf:value "normative" ;
+    rdfs:comment "States intended or required behavior." .

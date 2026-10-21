@@ -1,0 +1,21 @@
+# Generated distribution; edit ontologies/specspec/, then run scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix specsao: <https://ontologies.corestory.ai/specspec/sao/> .
+
+<https://ontologies.corestory.ai/specspec/sao/axioms/> a owl:Ontology .
+
+specsao:basis_claim a owl:ObjectProperty .
+
+specsao:callable a owl:ObjectProperty .
+
+specsao:requirement a owl:ObjectProperty .
+
+specsao:result a owl:ObjectProperty .
+
+specsao:software_entity a owl:ObjectProperty .
+
+specsao:subject a owl:ObjectProperty .
+
+specsao:test_case a owl:ObjectProperty .

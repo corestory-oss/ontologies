@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Code Structure · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="code-structure">Code Structure</h1>
+<p>The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between architectural concepts (Components, Operations) and the actual source code that implements them, supporting both modern and legacy systems.</p>
+<blockquote>
+<p><strong>v2.0 Note:</strong> In SAO v2.0, all single-use relationship slots have been inlined as class attributes on their owning classes. Only approximately 20 multi-domain slots remain as global relationships: <code>defined_in_container</code>, <code>contained_in_unit</code>, <code>contains_data_elements</code>, <code>implements_component</code>, <code>implemented_by_code</code>, <code>annotates_element</code>, <code>annotated_by</code>, <code>affects_behavior_of</code>, <code>imports_symbols</code>, and <code>imported_via</code>.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The code structure model consists of three main levels:</p>
+<ol>
+<li><strong>Physical Structure</strong> - Storage and organization of code files</li>
+<li><strong>Logical Structure</strong> - Encapsulation units, callable units, and data structures</li>
+<li><strong>Semantic Structure</strong> - Control flow, data flow, and code semantics</li>
+</ol>
+<p>This design principle ensures that a single ontology can represent:
+- Modern object-oriented systems (Java, Python, C#)
+- Procedural systems (C, Pascal, Fortran)
+- Functional systems (Haskell, OCaml, F#)
+- Mainframe systems (COBOL, PL/I, Assembler)
+- Database systems (SQL stored procedures, triggers)</p>
+<h2 id="design-philosophy-paradigm-agnosticism">Design Philosophy: Paradigm Agnosticism</h2>
+<p>Rather than creating separate classes for each programming paradigm (e.g., <code>Class</code>, <code>Program</code>, <code>Module</code>), this ontology uses <strong>type-based polymorphism</strong>:</p>
+<ul>
+<li>A single class (<code>EncapsulationUnit</code>) represents all forms of code grouping</li>
+<li>The <code>encapsulation_type</code> attribute specifies the paradigm-specific type</li>
+<li>Enumerations provide comprehensive coverage across all paradigms</li>
+</ul>
+<h3 id="example-mappings">Example Mappings</h3>
+<pre><code class="language-yaml"># Java class
+my_service:
+  a: EncapsulationUnit
+  name: UserService
+  encapsulation_type: class
+  visibility: public
+
+# COBOL program
+batch_job:
+  a: EncapsulationUnit
+  name: PAYROLL
+  encapsulation_type: batch_program
+
+# Haskell module
+utils:
+  a: EncapsulationUnit
+  name: Utils
+  encapsulation_type: module
+</code></pre>
+<h2 id="physical-code-structure">Physical Code Structure</h2>
+<h3 id="codecontainer">CodeContainer</h3>
+<p>Represents the physical storage of source code - files, library members, or other storage units.</p>
+<p><strong>Key Attributes:</strong>
+- <code>container_path</code> - Path or identifier for the container
+- <code>container_type</code> - Type of container (source_file, library_member, copybook, script, etc.)
+- <code>format</code> - ~~Language or format (COBOL, Java, Python, SQL, etc.)~~ <strong>Deprecated in v2.0</strong> — use <code>written_in_language</code> (range: ProgrammingLanguage) instead
+- <code>written_in_language</code> - <strong>(v2.0)</strong> ProgrammingLanguage relationship replacing <code>format</code>
+- <code>size_bytes</code> - Size in bytes
+- <code>line_count</code> - Number of lines
+- <code>encoding</code> - Character encoding
+- <code>checksum</code> - Content hash for version tracking
+- <code>has_file_definitions</code> - <strong>(v2.0)</strong> FileDefinition[] associated with this container
+- <code>has_screen_definitions</code> - <strong>(v2.0)</strong> ScreenDefinition[] associated with this container
+- <code>has_preprocessor_directives</code> - <strong>(v2.0)</strong> PreprocessorDirective[] associated with this container</p>
+<p><strong>Container Types:</strong>
+- <code>source_file</code> - Standard source code file
+- <code>library_member</code> - Member of a partitioned dataset or library (mainframe)
+- <code>include_file</code> - Header or include file
+- <code>script</code> - Executable script
+- <code>configuration</code> - Configuration file
+- <code>schema_definition</code> - Database or API schema
+- <code>notebook_cell</code> - Jupyter notebook cell
+- <code>inline_code</code> - Embedded code (JavaScript in HTML, SQL in application)
+- <code>jcl_member</code> - <strong>(v2.0)</strong> JCL member
+- <code>rpg_source</code> - <strong>(v2.0)</strong> RPG source member
+- <code>pli_source</code> - <strong>(v2.0)</strong> PL/I source member
+- <code>assembler_source</code> - <strong>(v2.0)</strong> Assembler source member
+- <code>cl_source</code> - <strong>(v2.0)</strong> CL (Control Language) source member</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">user_service_file:
+  a: CodeContainer
+  container_path: /src/services/UserService.java
+  container_type: source_file
+  format: Java
+  line_count: 450
+  encoding: UTF-8
+</code></pre>
+<h3 id="storagelocation">StorageLocation</h3>
+<p>Represents a logical or physical location for storing code containers.</p>
+<p><strong>Key Attributes:</strong>
+- <code>location_path</code> - Path or identifier
+- <code>location_type</code> - Type (directory, library, package, namespace, module_path)</p>
+<p><strong>Location Types:</strong>
+- <code>directory</code> - Filesystem directory
+- <code>library</code> - Partitioned dataset (mainframe) or static library
+- <code>package</code> - Language package or module
+- <code>namespace</code> - Logical namespace
+- <code>module_path</code> - Module search path</p>
+<p><strong>Relationships:</strong>
+- <code>has_parent_location</code> - Parent storage location (hierarchical)
+- <code>contains_locations</code> - Child storage locations
+- <code>contains_containers</code> - Code containers in this location
+- <code>maps_to_module</code> - Corresponding architectural Module</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">services_directory:
+  a: StorageLocation
+  location_path: /src/services
+  location_type: directory
+  maps_to_module: user_management_module
+
+cobol_library:
+  a: StorageLocation
+  location_path: SYS1.COBLIB
+  location_type: library
+</code></pre>
+<h2 id="logical-code-structure">Logical Code Structure</h2>
+<h3 id="encapsulationunit">EncapsulationUnit</h3>
+<p>A logical boundary that groups related code and data. This is the cornerstone of the paradigm-agnostic design.</p>
+<p><strong>Key Attributes:</strong>
+- <code>encapsulation_type</code> - <strong>Required.</strong> The paradigm-specific type (see EncapsulationType enum)
+- <code>visibility</code> - Visibility level (public, private, protected, internal, package)
+- <code>qualified_name</code> - Fully qualified name (e.g., com.example.UserService)
+- <code>stereotype</code> - Additional stereotype (Service, Repository, DTO, Controller, etc.)
+- <code>is_abstract</code> - Whether this is abstract/incomplete
+- <code>is_final</code> - Whether this can be extended
+- <code>error_model_for_module</code> - <strong>(v2.0)</strong> ErrorModel associated with this unit
+- <code>screen_used_by_programs</code> - <strong>(v2.0)</strong> ScreenDefinition[] used by this unit
+- <code>has_outgoing_ipc_connections</code> - <strong>(v2.0)</strong> IPCConnection[] originating from this unit
+- <code>has_incoming_ipc_connections</code> - <strong>(v2.0)</strong> IPCConnection[] targeting this unit
+- <code>affected_by_directives</code> - <strong>(v2.0)</strong> PreprocessorDirective[] affecting this unit
+- <code>memory_model_for_module</code> - <strong>(v2.0)</strong> MemoryModel associated with this unit
+- <code>executed_by_job_steps</code> - <strong>(v2.0)</strong> JobStep[] that execute this unit</p>
+<p><strong>EncapsulationType Values</strong> (33 total):</p>
+<p><strong>Object-Oriented:</strong>
+- <code>class</code> - Standard OOP class
+- <code>interface</code> - Interface/contract definition
+- <code>abstract_class</code> - Abstract base class
+- <code>trait</code> - Trait (Rust, Scala) or mixin
+- <code>enum_class</code> - Enumeration class
+- <code>record_class</code> - Immutable record (Java, C#)
+- <code>singleton</code> - Singleton pattern</p>
+<p><strong>Procedural:</strong>
+- <code>program</code> - Standalone program
+- <code>subprogram</code> - Subprogram or subroutine module
+- <code>unit</code> - Pascal/Ada unit</p>
+<p><strong>Functional:</strong>
+- <code>module</code> - Functional module (Haskell, OCaml, F#)
+- <code>namespace</code> - Namespace grouping
+- <code>package</code> - Package grouping
+- <code>library</code> - Library module</p>
+<p><strong>Mainframe:</strong>
+- <code>batch_program</code> - Batch processing program
+- <code>online_program</code> - Online transaction program (CICS, IMS)
+- <code>copybook</code> - COBOL copybook
+- <code>rpg_module</code> - <strong>(v2.0)</strong> RPG module
+- <code>rpg_service_program</code> - <strong>(v2.0)</strong> RPG service program
+- <code>pli_procedure</code> - <strong>(v2.0)</strong> PL/I external procedure
+- <code>pli_package</code> - <strong>(v2.0)</strong> PL/I package
+- <code>assembler_csect</code> - <strong>(v2.0)</strong> Assembler control section (CSECT)</p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code> - Database stored procedure package
+- <code>function_package</code> - Function package (Oracle)
+- <code>trigger</code> - Database trigger
+- <code>view</code> - Database view</p>
+<p><strong>Other:</strong>
+- <code>object</code> - JavaScript/prototype-based object
+- <code>component</code> - Component definition
+- <code>service</code> - Service class
+- <code>controller</code> - Controller class
+- <code>script</code> - Script module
+- <code>composite</code> - Composite structure
+- <code>other</code> - Other types</p>
+<p><strong>Relationships:</strong>
+- <code>defined_in_container</code> - Code container where this is defined
+- <code>contains_callable_units</code> - Callable units (methods, functions, etc.) in this unit
+- <code>contains_data_structures</code> - Data structures in this unit
+- <code>contains_data_elements</code> - Data elements (fields, variables) in this unit
+- <code>extends_units</code> - Units this extends/inherits from
+- <code>implements_contracts</code> - Contracts (interfaces) this implements
+- <code>uses_definitions</code> - Definition references (imports, includes) used
+- <code>implements_component</code> - Architectural Component this implements</p>
+<p><strong>Example - Java Class:</strong></p>
+<pre><code class="language-yaml">user_service:
+  a: EncapsulationUnit
+  name: UserService
+  encapsulation_type: class
+  visibility: public
+  stereotype: Service
+  qualified_name: com.example.services.UserService
+  implements_component: user_management_component
+</code></pre>
+<p><strong>Example - COBOL Program:</strong></p>
+<pre><code class="language-yaml">payroll_batch:
+  a: EncapsulationUnit
+  name: PAYROLL
+  encapsulation_type: batch_program
+  qualified_name: PAYROLL
+  defined_in_container: payroll_source
+</code></pre>
+<h3 id="callableunit">CallableUnit</h3>
+<p>A named, invocable unit of code - the paradigm-agnostic representation of functions, methods, procedures, etc.</p>
+<p><strong>Key Attributes:</strong>
+- <code>callable_type</code> - <strong>Required.</strong> The paradigm-specific type (see CallableType enum)
+- <code>visibility</code> - Visibility level
+- <code>return_type</code> - Return type (if applicable)
+- <code>is_async</code> - Whether this is asynchronous
+- <code>is_pure</code> - Whether this is a pure function (no side effects)
+- <code>is_static</code> - Whether this is static
+- <code>is_virtual</code> - Whether this is virtual/overridable
+- <code>complexity_score</code> - Cyclomatic complexity or similar metric
+- <code>entry_point_type</code> - If this is an entry point (main, constructor, handler, etc.)
+- <code>has_return_type</code> - <strong>(v2.0)</strong> TypeExpression for the return type
+- <code>uses_file_definitions</code> - <strong>(v2.0)</strong> FileDefinition[] used by this callable
+- <code>has_file_operations</code> - <strong>(v2.0)</strong> FileOperation[] performed by this callable
+- <code>callable_affected_by_directives</code> - <strong>(v2.0)</strong> PreprocessorDirective[] affecting this callable</p>
+<p><strong>CallableType Values</strong> (53 total):</p>
+<p><strong>Object-Oriented Methods:</strong>
+- <code>method</code> - Instance method
+- <code>static_method</code> - Static/class method
+- <code>constructor</code> - Object constructor
+- <code>destructor</code> - Object destructor
+- <code>property_getter</code> - Property getter
+- <code>property_setter</code> - Property setter
+- <code>operator_overload</code> - Operator overloading
+- <code>conversion_operator</code> - Type conversion operator
+- <code>indexer</code> - Indexer/subscript operator
+- <code>abstract_method</code> - Abstract method declaration
+- <code>virtual_method</code> - Virtual/overridable method</p>
+<p><strong>Procedural:</strong>
+- <code>function</code> - Function (procedural or functional)
+- <code>procedure</code> - Procedure/subroutine
+- <code>subroutine</code> - Subroutine
+- <code>paragraph</code> - COBOL paragraph
+- <code>section</code> - COBOL section
+- <code>rpg_subprocedure</code> - <strong>(v2.0)</strong> RPG subprocedure
+- <code>pli_entry</code> - <strong>(v2.0)</strong> PL/I entry point
+- <code>assembler_entry</code> - <strong>(v2.0)</strong> Assembler entry point
+- <code>rpg_subroutine</code> - <strong>(v2.0)</strong> RPG subroutine</p>
+<p><strong>Functional:</strong>
+- <code>lambda</code> - Anonymous lambda function
+- <code>closure</code> - Closure
+- <code>higher_order_function</code> - Higher-order function
+- <code>curried_function</code> - Curried function
+- <code>functor</code> - Functor</p>
+<p><strong>Event Handling:</strong>
+- <code>event_handler</code> - Event handler
+- <code>callback</code> - Callback function
+- <code>delegate</code> - Delegate
+- <code>signal_handler</code> - Signal handler</p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code> - Database stored procedure
+- <code>stored_function</code> - Database function
+- <code>trigger_body</code> - Trigger implementation
+- <code>cursor</code> - Database cursor</p>
+<p><strong>Concurrency:</strong>
+- <code>coroutine</code> - Coroutine
+- <code>generator</code> - Generator function
+- <code>async_function</code> - Async function
+- <code>thread_entry</code> - Thread entry point
+- <code>task</code> - Task/future</p>
+<p><strong>Testing:</strong>
+- <code>test_case</code> - Test case
+- <code>test_fixture</code> - Test fixture/setup
+- <code>mock</code> - Mock function</p>
+<p><strong>Other:</strong>
+- <code>macro</code> - Preprocessor macro
+- <code>template</code> - Template/generic function
+- <code>generic_method</code> - Generic method
+- <code>main_entry</code> - Main entry point
+- <code>interrupt_handler</code> - Interrupt handler
+- <code>exception_handler</code> - Exception handler
+- <code>finalizer</code> - Finalizer/cleanup
+- <code>factory_method</code> - Factory method
+- <code>extension_method</code> - Extension method
+- <code>script_function</code> - Script function
+- <code>command</code> - Command/action
+- <code>other</code> - Other types</p>
+<p><strong>Relationships:</strong>
+- <code>contained_in_unit</code> - Encapsulation unit containing this callable
+- <code>has_parameters</code> - Parameters of this callable
+- <code>invokes_callables</code> - Other callables invoked by this one
+- <code>accesses_data_elements</code> - Data elements accessed (read)
+- <code>modifies_data_elements</code> - Data elements modified (written)
+- <code>raises_exceptions</code> - ~~Exceptions that may be raised~~ <strong>Deprecated in v2.0</strong> — use <code>raises_exception_types</code> (ExceptionType[]) instead
+- <code>handles_exceptions</code> - ~~Exceptions handled~~ <strong>Deprecated in v2.0</strong> — use <code>handles_exception_types</code> (ExceptionType[]) instead
+- <code>raises_exception_types</code> - <strong>(v2.0)</strong> ExceptionType[] that may be raised
+- <code>handles_exception_types</code> - <strong>(v2.0)</strong> ExceptionType[] that are handled
+- <code>overrides_callable</code> - Callable in parent this overrides
+- <code>implements_operation</code> - Architectural Operation this implements</p>
+<p><strong>Example - Java Method:</strong></p>
+<pre><code class="language-yaml">create_user:
+  a: CallableUnit
+  name: createUser
+  callable_type: method
+  visibility: public
+  return_type: User
+  complexity_score: 8
+  contained_in_unit: user_service
+  implements_operation: create_user_operation
+</code></pre>
+<p><strong>Example - COBOL Paragraph:</strong></p>
+<pre><code class="language-yaml">calculate_totals:
+  a: CallableUnit
+  name: CALCULATE-TOTALS
+  callable_type: paragraph
+  contained_in_unit: payroll_batch
+</code></pre>
+<h3 id="datastructure">DataStructure</h3>
+<p>Represents organized data storage - the paradigm-agnostic representation of classes, records, structs, etc.</p>
+<p><strong>Key Attributes:</strong>
+- <code>structure_type</code> - <strong>Required.</strong> The paradigm-specific type (see DataStructureType enum)
+- <code>nesting_level</code> - Nesting depth (for hierarchical structures like COBOL)
+- <code>is_mutable</code> - Whether data can be modified
+- <code>is_serializable</code> - Whether this can be serialized
+- <code>persistence_type</code> - How this is persisted (transient, database, file, memory, cache)
+- <code>passed_via_ipc</code> - <strong>(v2.0)</strong> IPCConnection[] through which this structure is passed</p>
+<p><strong>DataStructureType Values</strong> (50 total):</p>
+<p><strong>Object-Oriented:</strong>
+- <code>class_data</code> - Data members of a class
+- <code>inner_class</code> - Inner/nested class
+- <code>anonymous_class</code> - Anonymous class</p>
+<p><strong>Procedural:</strong>
+- <code>struct</code> - C/C++ struct
+- <code>record</code> - Pascal/Ada record or COBOL record
+- <code>union</code> - C union</p>
+<p><strong>COBOL:</strong>
+- <code>group_item</code> - COBOL group item (composite data)
+- <code>copybook_structure</code> - COBOL copybook structure
+- <code>commarea</code> - CICS communication area
+- <code>rpg_data_structure</code> - <strong>(v2.0)</strong> RPG data structure
+- <code>pli_structure</code> - <strong>(v2.0)</strong> PL/I structure
+- <code>assembler_dsect</code> - <strong>(v2.0)</strong> Assembler DSECT
+- <code>cobol_file_descriptor</code> - <strong>(v2.0)</strong> COBOL file descriptor (FD)</p>
+<p><strong>Functional:</strong>
+- <code>algebraic_data_type</code> - ADT (Haskell, ML)
+- <code>type_class</code> - Type class
+- <code>product_type</code> - Product type (tuple-like)
+- <code>sum_type</code> - Sum/variant type</p>
+<p><strong>Collections:</strong>
+- <code>array</code> - Fixed-size array
+- <code>dynamic_array</code> - Dynamic array
+- <code>list</code> - List structure
+- <code>dictionary</code> - Dictionary/map/hash
+- <code>set</code> - Set structure
+- <code>queue</code> - Queue
+- <code>stack</code> - Stack
+- <code>tree</code> - Tree structure
+- <code>graph</code> - Graph structure</p>
+<p><strong>Database:</strong>
+- <code>table_structure</code> - Database table structure
+- <code>view_structure</code> - Database view structure
+- <code>cursor_structure</code> - Cursor structure
+- <code>rowtype</code> - Database row type</p>
+<p><strong>Domain-Driven Design:</strong>
+- <code>value_object</code> - DDD value object
+- <code>dto</code> - Data Transfer Object</p>
+<p><strong>Other:</strong>
+- <code>tuple</code> - Tuple
+- <code>pair</code> - Key-value pair
+- <code>enum</code> - Enumeration
+- <code>flags</code> - Bit flags
+- <code>configuration_object</code> - Configuration data
+- <code>message</code> - Message structure
+- <code>event</code> - Event data
+- <code>command</code> - Command data
+- <code>json_schema</code> - JSON schema structure
+- <code>xml_schema</code> - XML schema structure
+- <code>protobuf_message</code> - Protocol Buffers message
+- <code>avro_record</code> - Avro record
+- <code>smart_pointer</code> - Smart pointer wrapper
+- <code>reference_wrapper</code> - Reference wrapper</p>
+<p><strong>Relationships:</strong>
+- <code>contained_in_unit</code> - Encapsulation unit containing this structure
+- <code>contains_data_elements</code> - Data elements in this structure
+- <code>has_parent_structure</code> - Parent structure (for nested structures)
+- <code>has_child_structures</code> - Child/nested structures
+- <code>maps_to_domain_entity</code> - Domain entity this maps to
+- <code>maps_to_value_object</code> - Value object this maps to
+- <code>persisted_in_collection</code> - Collection where this is persisted</p>
+<p><strong>Example - Java Class Data:</strong></p>
+<pre><code class="language-yaml">user_data:
+  a: DataStructure
+  name: UserData
+  structure_type: class_data
+  contained_in_unit: user_entity
+  maps_to_domain_entity: user_entity
+</code></pre>
+<p><strong>Example - COBOL Group Item:</strong></p>
+<pre><code class="language-yaml">employee_record:
+  a: DataStructure
+  name: EMPLOYEE-RECORD
+  structure_type: group_item
+  nesting_level: 1
+  contained_in_unit: payroll_copybook
+</code></pre>
+<h3 id="dataelement">DataElement</h3>
+<p>Individual data fields, variables, or constants.</p>
+<p><strong>Key Attributes:</strong>
+- <code>element_category</code> - Category of element (field, static_field, local_variable, parameter, constant, global_variable, computed, temporary)
+- <code>data_type</code> - Data type (string, integer, User, etc.) — <strong>Deprecated for typed analysis in v2.0</strong> — use <code>declared_type</code> (TypeExpression) instead
+- <code>declared_type</code> - <strong>(v2.0)</strong> TypeExpression for the declared type
+- <code>visibility</code> - Visibility level
+- <code>is_constant</code> - Whether this is a constant/immutable
+- <code>is_nullable</code> - Whether this can be null
+- <code>default_value</code> - Default value
+- <code>has_ownership_annotations</code> - <strong>(v2.0)</strong> OwnershipAnnotation[] for this element
+- <code>mapped_from_screen_fields</code> - <strong>(v2.0)</strong> ScreenField[] mapped to this element</p>
+<p><strong>Relationships:</strong>
+- <code>contained_in_unit</code> - Encapsulation unit containing this element
+- <code>contained_in_structure</code> - Data structure containing this element
+- <code>has_parent_element</code> - Parent element (for nested fields)
+- <code>has_type_definition</code> - Type definition reference</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">user_email:
+  a: DataElement
+  name: email
+  element_category: field
+  data_type: String
+  visibility: private
+  is_nullable: false
+  contained_in_structure: user_data
+</code></pre>
+<h3 id="parameter">Parameter</h3>
+<p>Function/method parameter.</p>
+<p><strong>Key Attributes:</strong>
+- <code>direction</code> - Direction (range: <code>ParameterDirection</code>): <code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code>
+- <code>position</code> - Position in parameter list
+- <code>passing_mechanism</code> - How passed (by_value, by_reference, by_name, by_result)</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">username_param:
+  a: Parameter
+  name: username
+  direction: input
+  data_type: String
+  position: 1
+  parameter_of: create_user
+</code></pre>
+<h2 id="semantic-code-structure">Semantic Code Structure</h2>
+<h3 id="codeblock">CodeBlock</h3>
+<p>A logical block of code (conditional, loop, try-catch, etc.).</p>
+<p><strong>Key Attributes:</strong>
+- <code>block_type</code> - Type (sequential, conditional, loop, try_catch, transaction, critical_section, scope)</p>
+<h3 id="statement">Statement</h3>
+<p>Individual code statement.</p>
+<p><strong>Key Attributes:</strong>
+- <code>statement_category</code> - Category (declaration, assignment, invocation, control_transfer, io_operation, data_manipulation, transaction_control, exception_handling)
+- <code>line_number</code> - Source line number</p>
+<h3 id="controlflow">ControlFlow</h3>
+<p>Control flow between code elements (calls, branches, etc.).</p>
+<p><strong>Key Attributes:</strong>
+- <code>flow_type</code> - Type (call, async_call, branch, jump, return, throw, yield)
+- <code>is_conditional</code> - Whether flow is conditional
+- <code>condition</code> - Condition expression</p>
+<p><strong>Relationships:</strong>
+- <code>has_source_callable</code> - Source callable
+- <code>has_target_callable</code> - Target callable
+- <code>has_source_statement</code> - Source statement
+- <code>has_target_statement</code> - Target statement</p>
+<h3 id="dataflow">DataFlow</h3>
+<p>Data flow between elements.</p>
+<p><strong>Key Attributes:</strong>
+- <code>flow_type</code> - Type (read, write, modify, define, use)</p>
+<p><strong>Relationships:</strong>
+- <code>has_source_element</code> - Source data element
+- <code>has_target_element</code> - Target data element</p>
+<h2 id="mapping-to-architecture">Mapping to Architecture</h2>
+<p>The code structure model integrates with the architectural model:</p>
+<h3 id="component-implementation">Component Implementation</h3>
+<pre><code class="language-yaml">user_service_component:
+  a: Component
+  name: UserManagement
+
+user_service_class:
+  a: EncapsulationUnit
+  encapsulation_type: class
+  implements_component: user_service_component
+
+user_repository_class:
+  a: EncapsulationUnit
+  encapsulation_type: class
+  implements_component: user_service_component
+</code></pre>
+<h3 id="operation-implementation">Operation Implementation</h3>
+<pre><code class="language-yaml">create_user_op:
+  a: Operation
+  name: CreateUser
+
+create_user_method:
+  a: CallableUnit
+  callable_type: method
+  implements_operation: create_user_op
+</code></pre>
+<h3 id="domain-entity-mapping">Domain Entity Mapping</h3>
+<pre><code class="language-yaml">user_entity:
+  a: DomainEntity
+  name: User
+
+user_class:
+  a: EncapsulationUnit
+  encapsulation_type: class
+
+user_data_structure:
+  a: DataStructure
+  structure_type: class_data
+  maps_to_domain_entity: user_entity
+</code></pre>
+<h2 id="cross-paradigm-examples">Cross-Paradigm Examples</h2>
+<h3 id="modern-java-microservice">Modern Java Microservice</h3>
+<pre><code class="language-yaml"># File
+user_service_file:
+  a: CodeContainer
+  container_path: /src/main/java/com/example/UserService.java
+  container_type: source_file
+  format: Java
+
+# Class
+user_service:
+  a: EncapsulationUnit
+  name: UserService
+  encapsulation_type: class
+  visibility: public
+  stereotype: Service
+  defined_in_container: user_service_file
+
+# Method
+create_user:
+  a: CallableUnit
+  name: createUser
+  callable_type: method
+  visibility: public
+  return_type: User
+  contained_in_unit: user_service
+</code></pre>
+<h3 id="cobol-mainframe-application">COBOL Mainframe Application</h3>
+<pre><code class="language-yaml"># Library Member
+payroll_source:
+  a: CodeContainer
+  container_path: SYS1.COBLIB(PAYROLL)
+  container_type: library_member
+  format: COBOL
+
+# Program
+payroll_program:
+  a: EncapsulationUnit
+  name: PAYROLL
+  encapsulation_type: batch_program
+  defined_in_container: payroll_source
+
+# Paragraph
+calculate_pay:
+  a: CallableUnit
+  name: CALCULATE-PAY
+  callable_type: paragraph
+  contained_in_unit: payroll_program
+
+# Copybook
+employee_copybook:
+  a: CodeContainer
+  container_path: SYS1.COPYLIB(EMPLOYEE)
+  container_type: library_member
+  format: COBOL
+
+employee_structure:
+  a: EncapsulationUnit
+  name: EMPLOYEE-RECORD
+  encapsulation_type: copybook
+  defined_in_container: employee_copybook
+
+# Group Item
+employee_data:
+  a: DataStructure
+  name: EMPLOYEE-RECORD
+  structure_type: group_item
+  nesting_level: 1
+  contained_in_unit: employee_structure
+</code></pre>
+<h3 id="python-script">Python Script</h3>
+<pre><code class="language-yaml"># File
+data_processor_file:
+  a: CodeContainer
+  container_path: /scripts/process_data.py
+  container_type: script
+  format: Python
+
+# Module
+data_processor:
+  a: EncapsulationUnit
+  name: process_data
+  encapsulation_type: module
+  defined_in_container: data_processor_file
+
+# Function
+process_records:
+  a: CallableUnit
+  name: process_records
+  callable_type: function
+  is_async: true
+  contained_in_unit: data_processor
+</code></pre>
+<h3 id="sql-stored-procedure">SQL Stored Procedure</h3>
+<pre><code class="language-yaml"># Database Object
+update_inventory_proc:
+  a: EncapsulationUnit
+  name: update_inventory
+  encapsulation_type: stored_procedure
+
+# Procedure Body
+update_inventory_impl:
+  a: CallableUnit
+  name: update_inventory
+  callable_type: stored_procedure
+  contained_in_unit: update_inventory_proc
+</code></pre>
+<h2 id="supporting-enumerations">Supporting Enumerations</h2>
+<h3 id="additional-type-enumerations">Additional Type Enumerations</h3>
+<ul>
+<li><strong>VisibilityType</strong>: <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code>, <code>package</code></li>
+<li><strong>CallableCategory</strong>: <code>normal</code>, <code>operator</code>, <code>main_entry</code> <strong>(v2.0 — cleaned to 3 values)</strong></li>
+<li><strong>EntryPointType</strong>: <code>main_program</code>, <code>transaction_entry</code>, <code>event_handler</code>, <code>scheduled_entry</code>, <code>api_endpoint</code></li>
+<li><strong>DataStructureCategory</strong>: <code>composite</code>, <code>collection</code>, <code>hierarchical</code>, <code>value_type</code>, <code>reference_type</code>, <code>union</code></li>
+<li><strong>DataElementCategory</strong>: <code>field</code>, <code>static_field</code>, <code>local_variable</code>, <code>parameter</code>, <code>constant</code>, <code>global_variable</code>, <code>computed</code>, <code>temporary</code></li>
+<li><strong>ParameterDirection</strong>: <code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code></li>
+<li><strong>PassingMechanism</strong>: <code>by_value</code>, <code>by_reference</code>, <code>by_name</code>, <code>by_result</code></li>
+<li><strong>CodeBlockType</strong>: <code>sequential</code>, <code>conditional</code>, <code>loop</code>, <code>try_catch</code>, <code>transaction</code>, <code>critical_section</code>, <code>scope</code></li>
+<li><strong>StatementCategory</strong>: <code>declaration</code>, <code>assignment</code>, <code>invocation</code>, <code>control_transfer</code>, <code>io_operation</code>, <code>data_manipulation</code>, <code>transaction_control</code>, <code>exception_handling</code></li>
+<li><strong>ReferenceType</strong>: <code>import_module</code>, <code>import_symbol</code>, <code>include_source</code>, <code>inherit</code>, <code>implement</code></li>
+<li><strong>ControlFlowType</strong>: <code>call</code>, <code>async_call</code>, <code>branch</code>, <code>jump</code>, <code>return</code>, <code>throw</code>, <code>yield</code></li>
+<li><strong>DataFlowType</strong>: <code>read</code>, <code>write</code>, <code>modify</code>, <code>define</code>, <code>use</code></li>
+</ul>
+<h2 id="usage-patterns">Usage Patterns</h2>
+<h3 id="tracing-implementation">Tracing Implementation</h3>
+<p>Trace from architectural concept to implementation:</p>
+<pre><code class="language-sparql"># Find all code implementing a Component
+SELECT ?code ?type WHERE {
+  ?code sao:implements_component :user_management_component .
+  ?code sao:encapsulation_type ?type .
+}
+</code></pre>
+<h3 id="call-graph-analysis">Call Graph Analysis</h3>
+<pre><code class="language-sparql"># Find call chains
+SELECT ?caller ?callee WHERE {
+  ?flow a sao:ControlFlow ;
+        sao:flow_type &quot;call&quot; ;
+        sao:source_callable ?caller ;
+        sao:target_callable ?callee .
+}
+</code></pre>
+<h3 id="cross-reference-analysis">Cross-Reference Analysis</h3>
+<pre><code class="language-sparql"># Find all places a function is called
+SELECT ?caller WHERE {
+  ?flow a sao:ControlFlow ;
+        sao:target_callable :create_user_method ;
+        sao:source_callable ?caller .
+}
+</code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use Qualified Names</strong>: Always provide <code>qualified_name</code> for encapsulation units</li>
+<li><strong>Link to Architecture</strong>: Connect code to Components and Operations via <code>implements_component</code> and <code>implements_operation</code></li>
+<li><strong>Track Dependencies</strong>: Use DefinitionReference to model imports/includes</li>
+<li><strong>Model Call Graphs</strong>: Use ControlFlow to represent invocation relationships</li>
+<li><strong>Map Data</strong>: Connect DataStructures to DomainEntities via <code>maps_to_domain_entity</code></li>
+<li><strong>Specify Types Precisely</strong>: Use the most specific type enum value available</li>
+<li><strong>Document Visibility</strong>: Always specify visibility for encapsulation units and callables</li>
+<li><strong>Track Complexity</strong>: Record complexity metrics for callables to support quality analysis</li>
+</ol>
+<h2 id="integration-with-other-layers">Integration with Other Layers</h2>
+<ul>
+<li><strong>Structural Foundation</strong>: CodeContainers map to Modules, EncapsulationUnits implement Components</li>
+<li><strong>Domain Modeling</strong>: DataStructures map to DomainEntities and ValueObjects</li>
+<li><strong>Behavior</strong>: CallableUnits implement Operations and participate in Workflows</li>
+<li><strong>Data Management</strong>: DataStructures are persisted in Collections</li>
+<li><strong>Integration</strong>: EncapsulationUnits may expose or consume Interfaces</li>
+</ul>
+<h2 id="new-sections-in-v20">New Sections in v2.0</h2>
+<p>The following sections were introduced in SAO v2.0 to support advanced type modeling, error handling, file I/O, screen interaction, batch orchestration, inter-process communication, preprocessor/metaprogramming, memory/ownership models, database schema objects, and programming language metadata.</p>
+<h3 id="type-system-modeling-section-18">Type System Modeling (Section 18)</h3>
+<p><strong>TypeExpression</strong> (is_a NamedEntity)</p>
+<p>A recursive type model capable of representing generics, unions, pointers, and function types.</p>
+<p><strong>Key Attributes:</strong>
+- <code>type_kind</code> - TypeKind (e.g., primitive, generic, union, pointer, function_type, array)
+- <code>base_type</code> - Base type name or reference
+- <code>has_type_parameters</code> - TypeExpression[] (self-referential, multivalued) for generic parameters
+- <code>type_constraints</code> - Constraints on type parameters
+- <code>is_nullable</code> - Whether this type is nullable
+- <code>nullability_model</code> - Nullability model (e.g., optional, nullable_reference, maybe)
+- <code>pointer_semantics</code> - Pointer semantics (e.g., raw, shared, unique, weak)</p>
+<p><strong>Relationships:</strong>
+- Connected to DataElement via <code>declared_type</code> / <code>type_of_data_elements</code>
+- Connected to Parameter via <code>has_type</code> / <code>type_of_parameters</code>
+- Connected to CallableUnit via <code>has_return_type</code> / <code>return_type_of_callables</code></p>
+<h3 id="error-handling-model-section-19">Error Handling Model (Section 19)</h3>
+<p><strong>ErrorModel</strong> (is_a NamedEntity)</p>
+<p>Describes the error handling strategy for a module or language.</p>
+<p><strong>Key Attributes:</strong>
+- <code>strategy</code> - ErrorHandlingStrategy (e.g., exceptions, error_codes, result_type, condition_system)
+- <code>checkedness</code> - ExceptionCheckedness (e.g., checked, unchecked, mixed)</p>
+<p><strong>Relationships:</strong>
+- Connected to EncapsulationUnit via <code>error_model_for_module</code>
+- Connected to ProgrammingLanguage</p>
+<hr />
+<p><strong>ExceptionType</strong> (is_a NamedEntity)</p>
+<p>Represents a specific exception or error type in the exception hierarchy.</p>
+<p><strong>Key Attributes:</strong>
+- <code>qualified_name</code> - Fully qualified exception class name
+- <code>is_checked</code> - Whether this is a checked exception
+- <code>has_parent_exception</code> - Parent ExceptionType in the hierarchy
+- <code>has_child_exceptions</code> - Child ExceptionType[] in the hierarchy</p>
+<p><strong>Relationships:</strong>
+- Connected to CallableUnit via <code>raises_exception_types</code> / <code>handles_exception_types</code></p>
+<h3 id="file-io-definitions-section-20">File I/O Definitions (Section 20)</h3>
+<p><strong>FileDefinition</strong> (is_a NamedEntity)</p>
+<p>Represents a declared file or dataset used by a program.</p>
+<p><strong>Key Attributes:</strong>
+- <code>organization</code> - FileOrganization (e.g., sequential, indexed, relative, vsam_ksds, vsam_rrds)
+- <code>access_mode</code> - FileAccessMode (e.g., sequential, random, dynamic)
+- <code>record_format</code> - RecordFormat (e.g., fixed, variable, undefined)
+- <code>record_length</code> - Record length
+- <code>block_size</code> - Block size
+- <code>key_fields</code> - Key field names
+- <code>file_status_field</code> - File status variable name
+- <code>external_name</code> - External dataset or file name</p>
+<p><strong>Relationships:</strong>
+- Connected to CallableUnit via <code>uses_file_definitions</code>
+- Connected to CodeContainer via <code>has_file_definitions</code>
+- Connected to DataStore</p>
+<hr />
+<p><strong>FileOperation</strong> (is_a NamedEntity)</p>
+<p>Represents an individual file I/O operation within code.</p>
+<p><strong>Key Attributes:</strong>
+- <code>operation_type</code> - FileOperationType (e.g., open, close, read, write, rewrite, delete, start)
+- <code>condition_handling</code> - Condition or error handling for this operation</p>
+<p><strong>Relationships:</strong>
+- Connected to FileDefinition
+- Connected to CallableUnit via <code>has_file_operations</code></p>
+<h3 id="screen-terminal-interaction-section-21">Screen / Terminal Interaction (Section 21)</h3>
+<p><strong>ScreenDefinition</strong> (is_a NamedEntity)</p>
+<p>Represents a terminal screen or display definition (e.g., BMS map, DDS display file).</p>
+<p><strong>Key Attributes:</strong>
+- <code>screen_type</code> - ScreenType (e.g., bms_map, dds_display, mfs_format, panel)
+- <code>rows</code> - Number of rows
+- <code>columns</code> - Number of columns
+- <code>external_name</code> - External map or screen name</p>
+<p><strong>Relationships:</strong>
+- Connected to ScreenField (contains fields)
+- Connected to EncapsulationUnit via <code>screen_used_by_programs</code>
+- Connected to CodeContainer via <code>has_screen_definitions</code></p>
+<hr />
+<p><strong>ScreenField</strong> (is_a NamedEntity)</p>
+<p>Represents an individual field on a screen definition.</p>
+<p><strong>Key Attributes:</strong>
+- <code>row</code> - Row position
+- <code>column</code> - Column position
+- <code>length</code> - Field length
+- <code>is_input</code> - Whether this field accepts input
+- <code>is_protected</code> - Whether this field is protected
+- <code>attribute_byte</code> - Display attribute byte
+- <code>initial_value</code> - Initial/default value</p>
+<p><strong>Relationships:</strong>
+- Connected to ScreenDefinition
+- Connected to DataElement via <code>mapped_from_screen_fields</code></p>
+<h3 id="job-control-batch-orchestration-section-22">Job Control / Batch Orchestration (Section 22)</h3>
+<p><strong>JobDefinition</strong> (is_a NamedEntity)</p>
+<p>Represents a batch job definition (e.g., JCL JOB statement).</p>
+<p><strong>Key Attributes:</strong>
+- <code>job_class</code> - Job execution class
+- <code>priority</code> - Job priority
+- <code>restart_point</code> - Restart step or checkpoint
+- <code>scheduling_info</code> - Scheduling metadata</p>
+<p><strong>Relationships:</strong>
+- Contains JobStep[] (ordered steps within the job)
+- Can depend on other JobDefinition[] (job dependencies)</p>
+<hr />
+<p><strong>JobStep</strong> (is_a NamedEntity)</p>
+<p>Represents an individual step within a batch job.</p>
+<p><strong>Key Attributes:</strong>
+- <code>step_type</code> - JobStepType (e.g., exec_program, exec_proc, utility)
+- <code>program_name</code> - Program or procedure to execute
+- <code>condition_code</code> - Condition code for step execution
+- <code>region_size</code> - Memory region size</p>
+<p><strong>Relationships:</strong>
+- Connected to JobDefinition (parent job)
+- Connected to EncapsulationUnit via <code>executed_by_job_steps</code></p>
+<hr />
+<p><strong>DatasetAllocation</strong> (is_a NamedEntity)</p>
+<p>Represents a dataset or file allocation within a job step (e.g., JCL DD statement).</p>
+<p><strong>Key Attributes:</strong>
+- <code>dd_name</code> - DD name (logical file name)
+- <code>dataset_name</code> - Physical dataset name
+- <code>disposition</code> - DatasetDisposition (e.g., new, old, shr, mod)
+- <code>space_primary</code> - Primary space allocation
+- <code>space_secondary</code> - Secondary space allocation
+- <code>record_format</code> - Record format</p>
+<p><strong>Relationships:</strong>
+- Connected to JobStep
+- Connected to FileDefinition</p>
+<h3 id="inter-process-communication-section-23">Inter-Process Communication (Section 23)</h3>
+<p><strong>IPCConnection</strong> (is_a NamedEntity)</p>
+<p>Represents a communication channel between processes or programs.</p>
+<p><strong>Key Attributes:</strong>
+- <code>mechanism</code> - IPCMechanism (e.g., message_queue, socket, shared_memory, named_pipe, cics_link, cics_xctl, grpc_call, event_bus)
+- <code>is_synchronous</code> - Whether the communication is synchronous
+- <code>transaction_scoped</code> - Whether the connection is scoped to a transaction</p>
+<p><strong>Relationships:</strong>
+- Connects source EncapsulationUnit (<code>has_outgoing_ipc_connections</code>) to target EncapsulationUnit (<code>has_incoming_ipc_connections</code>)
+- Passes DataStructure[] via <code>passed_via_ipc</code></p>
+<h3 id="preprocessor-metaprogramming-section-24">Preprocessor / Metaprogramming (Section 24)</h3>
+<p><strong>PreprocessorDirective</strong> (is_a NamedEntity)</p>
+<p>Represents a preprocessor directive or metaprogramming construct.</p>
+<p><strong>Key Attributes:</strong>
+- <code>directive_type</code> - MetaprogrammingType (e.g., conditional_compilation, macro_definition, include, pragma, template_instantiation)
+- <code>condition</code> - Condition expression (for conditional compilation)
+- <code>expansion</code> - Expanded text or result</p>
+<p><strong>Relationships:</strong>
+- Connected to CodeContainer via <code>has_preprocessor_directives</code>
+- Connected to EncapsulationUnit via <code>affected_by_directives</code>
+- Connected to CallableUnit via <code>callable_affected_by_directives</code></p>
+<h3 id="memory-ownership-model-section-25">Memory / Ownership Model (Section 25)</h3>
+<p><strong>MemoryModel</strong> (is_a NamedEntity)</p>
+<p>Describes the memory management model for a module or language.</p>
+<p><strong>Key Attributes:</strong>
+- <code>primary_model</code> - OwnershipModel (e.g., gc_managed, reference_counted, manual, ownership_based, arena)
+- <code>gc_type</code> - Garbage collector type (e.g., generational, concurrent, reference_counting)
+- <code>supports_unsafe</code> - Whether unsafe/unmanaged memory access is supported</p>
+<p><strong>Relationships:</strong>
+- Connected to EncapsulationUnit via <code>memory_model_for_module</code>
+- Connected to ProgrammingLanguage</p>
+<hr />
+<p><strong>OwnershipAnnotation</strong> (is_a NamedEntity)</p>
+<p>Represents an ownership or lifetime annotation on a data element.</p>
+<p><strong>Key Attributes:</strong>
+- <code>ownership</code> - OwnershipModel (e.g., owned, borrowed, shared, static)
+- <code>lifetime</code> - LifetimeScope (e.g., static, local, heap, parameter)
+- <code>lifetime_name</code> - Named lifetime identifier (e.g., <code>'a</code> in Rust)</p>
+<p><strong>Relationships:</strong>
+- Connected to DataElement via <code>has_ownership_annotations</code></p>
+<h3 id="database-schema-objects-section-27">Database Schema Objects (Section 27)</h3>
+<p><strong>DatabaseConstraint</strong> (is_a NamedEntity)</p>
+<p>Represents a constraint on a database table or collection.</p>
+<p><strong>Key Attributes:</strong>
+- <code>constraint_type</code> - DatabaseConstraintType (e.g., primary_key, foreign_key, unique, check, not_null, default)
+- <code>columns</code> - Column names involved
+- <code>reference_table</code> - Referenced table (for foreign keys)
+- <code>reference_columns</code> - Referenced column names
+- <code>expression</code> - Constraint expression (for check constraints)</p>
+<p><strong>Relationships:</strong>
+- Connected to Collection</p>
+<hr />
+<p><strong>DatabaseIndex</strong> (is_a NamedEntity)</p>
+<p>Represents an index on a database table or collection.</p>
+<p><strong>Key Attributes:</strong>
+- <code>index_type</code> - IndexType (e.g., btree, hash, gin, gist, fulltext)
+- <code>columns</code> - Indexed column names
+- <code>is_unique</code> - Whether this is a unique index
+- <code>is_partial</code> - Whether this is a partial/filtered index
+- <code>filter_expression</code> - Filter expression (for partial indexes)</p>
+<p><strong>Relationships:</strong>
+- Connected to Collection</p>
+<h3 id="programming-language-section-28">Programming Language (Section 28)</h3>
+<p><strong>ProgrammingLanguage</strong> (is_a NamedEntity)</p>
+<p>Represents a programming language and its characteristics, replacing the string-based <code>format</code> attribute on CodeContainer.</p>
+<p><strong>Key Attributes:</strong>
+- <code>paradigms</code> - ProgrammingParadigm[] (e.g., object_oriented, procedural, functional, logic, declarative)
+- <code>type_discipline</code> - Type discipline (e.g., static, dynamic, gradual, untyped)
+- <code>has_preprocessor</code> - Whether the language has a preprocessor
+- <code>has_gc</code> - Whether the language has garbage collection
+- <code>year_introduced</code> - Year the language was introduced</p>
+<p><strong>Relationships:</strong>
+- Connected to CodeContainer via <code>written_in_language</code> (replaces <code>format</code> string)
+- Connected to ErrorModel
+- Connected to MemoryModel</p>
+<p>This code structure model provides complete traceability from high-level architecture down to individual lines of code, supporting analysis, documentation, and transformation across any programming paradigm.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

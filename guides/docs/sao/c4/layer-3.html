@@ -1,0 +1,3498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Layer 3: Component-Level Representation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="layer-3-component-level-representation">Layer 3: Component-Level Representation</h1>
+<p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 3 (Component)</strong> -- the logical building blocks inside a deployable unit, their responsibilities, and relationships. This layer sits between the code (Layer 4) and the container/service boundary (Layer 2).</p>
+<p>Where Layer 4 answers "what does the source code look like?", Layer 3 answers "what are the logical parts of this application, what do they do, and how do they interact?"</p>
+<hr />
+<h2 id="scope">Scope</h2>
+<p>Layer 3 covers:</p>
+<ul>
+<li><strong>Component architecture</strong> -- logical building blocks, operations they expose, capabilities and features they provide</li>
+<li><strong>Domain model</strong> -- aggregates, entities, value objects, their attributes, relationships, and lifecycle</li>
+<li><strong>Behavior and workflow</strong> -- actions, rules, events, workflows, and transactions</li>
+<li><strong>Authorization and policy</strong> -- roles, permissions, policies, scopes, and constraints</li>
+<li><strong>Supporting structures</strong> -- schemas, tests, annotations, imports, concurrency, and UI components</li>
+</ul>
+<p>Unlike Layer 4, which splits into Modern and Legacy profiles based on programming paradigm, <strong>Layer 3 is largely paradigm-agnostic</strong>. A COBOL batch system and a Java microservice both have components, domain entities, business rules, and authorization models. The differences emerge in <em>how</em> these concepts are implemented (Layer 4), not in <em>what</em> they are (Layer 3).</p>
+<p>The one exception is <strong>UIComponent</strong>, which specifically models modern component-tree UI frameworks (React, Angular, Vue) -- with concepts like props, lazy loading, server rendering, route binding, state store management, and parent/child component hierarchies. Legacy terminal screens (CICS BMS maps, RPG display files, MFS formats) are a fundamentally different model -- fixed-grid character maps with positional fields compiled from source members -- and are fully captured at Layer 4 via ScreenDefinition/ScreenField. This creates a deliberate asymmetry: modern UI has representation at both Layer 3 (UIComponent as a logical building block) and Layer 4 (EncapsulationUnit for the source file), while legacy UI lives entirely at Layer 4 (ScreenDefinition as a compiled source artifact).</p>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Class</th>
+<th>Definition</th>
+<th>Group</th>
+<th>SAO Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Component</td>
+<td>A logical building block within a module or service, grouping related operations</td>
+<td>Component Architecture</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Operation</td>
+<td>A named, invocable unit of behavior exposed via a component's interface</td>
+<td>Component Architecture</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Capability</td>
+<td>A business capability the system provides, realized by features and requiring permissions</td>
+<td>Component Architecture</td>
+<td>2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Feature</td>
+<td>A user-facing feature that can be toggled, access-controlled, and categorized</td>
+<td>Component Architecture</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>UIComponent</td>
+<td>A UI component in a modern component-tree framework (React, Angular, Vue)</td>
+<td>Component Architecture</td>
+<td>2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Aggregate</td>
+<td>A cluster of domain entities treated as a single transactional consistency boundary</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>7</td>
+<td>DomainEntity</td>
+<td>A uniquely identifiable object within the domain with identity, lifecycle, and state</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>8</td>
+<td>ValueObject</td>
+<td>An immutable domain object defined entirely by its attributes, with no identity</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Attribute</td>
+<td>A named property of a domain entity or value object (domain-level, not code-level)</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>10</td>
+<td>DomainRelationship</td>
+<td>A named, typed relationship between two domain entities with cardinality and composition</td>
+<td>Domain Model</td>
+<td>26</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Resource</td>
+<td>A domain entity or value object exposed for external interaction (API representation / DTO)</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>12</td>
+<td>ResourceType</td>
+<td>A classification of resources sharing common structure, permissions, and schema</td>
+<td>Domain Model</td>
+<td>5</td>
+</tr>
+<tr>
+<td>13</td>
+<td>State</td>
+<td>A discrete condition in an entity's lifecycle (e.g., Draft, Active, Closed)</td>
+<td>Lifecycle</td>
+<td>5</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Transition</td>
+<td>A valid movement between two states, with guards, triggers, and side effects</td>
+<td>Lifecycle</td>
+<td>5</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Lifecycle</td>
+<td>The complete state machine for an entity type -- all states and valid transitions</td>
+<td>Lifecycle</td>
+<td>5</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Action (abstract)</td>
+<td>An atomic operation that can be performed; base for Query and Command</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Query</td>
+<td>A read-only action that retrieves data, with filters and projections</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Command</td>
+<td>A state-changing action (create, update, delete, execute, archive, restore)</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Rule</td>
+<td>A declarative constraint or trigger governing validation, business logic, or invariants</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Event</td>
+<td>A notification that something occurred in the system</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>21</td>
+<td>DomainEvent</td>
+<td>An event produced by an aggregate within a bounded context</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>22</td>
+<td>IntegrationEvent</td>
+<td>An event for cross-service communication</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Subscription</td>
+<td>A registration to receive events of a certain type, with filtering</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Workflow</td>
+<td>A coordinated sequence of actions achieving a business goal (saga, choreography, etc.)</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>25</td>
+<td>Step</td>
+<td>A discrete stage within a workflow, with ordering and compensation</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Transaction</td>
+<td>A unit of work with ACID or BASE guarantees (local, distributed, saga, 2PC)</td>
+<td>Behavior</td>
+<td>6</td>
+</tr>
+<tr>
+<td>27</td>
+<td>Role</td>
+<td>A collection of permissions assignable to identities, with inheritance</td>
+<td>Authorization</td>
+<td>4</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Permission</td>
+<td>An atomic access grant connecting actions to resources, scoped and constrained</td>
+<td>Authorization</td>
+<td>4</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Policy</td>
+<td>A rule set for access decisions (RBAC, ABAC, REBAC, PBAC)</td>
+<td>Authorization</td>
+<td>4</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Scope</td>
+<td>A permission boundary defining where a permission applies (global, tenant, resource, field)</td>
+<td>Authorization</td>
+<td>4</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Constraint</td>
+<td>A contextual restriction on a permission (temporal, spatial, attribute, rate limit)</td>
+<td>Authorization</td>
+<td>4</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Schema</td>
+<td>A versioned data structure definition used by operations, resources, events, and messages</td>
+<td>Supporting</td>
+<td>7</td>
+</tr>
+<tr>
+<td>33</td>
+<td>SchemaVersion</td>
+<td>A specific version of a schema, with migration support and compatibility tracking</td>
+<td>Supporting</td>
+<td>7</td>
+</tr>
+<tr>
+<td>34</td>
+<td>TestCase</td>
+<td>A test case targeting a callable unit or operation, with assertions and fixtures</td>
+<td>Supporting</td>
+<td>12</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Annotation</td>
+<td>A metadata annotation or decorator attached to code elements (@Override, #[derive])</td>
+<td>Supporting</td>
+<td>12</td>
+</tr>
+<tr>
+<td>36</td>
+<td>DefinitionReference</td>
+<td>A reference from one code container to another (import, include, COPY, using)</td>
+<td>Supporting</td>
+<td>12</td>
+</tr>
+<tr>
+<td>37</td>
+<td>ConcurrencyPrimitive</td>
+<td>A synchronization primitive used by callables to protect data (mutex, semaphore, lock)</td>
+<td>Supporting</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 37 classes</strong> (including 4 subtypes: Query, Command, DomainEvent, IntegrationEvent that inherit from abstract parents).</p>
+<hr />
+<h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
+<h3 id="downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</h3>
+<p>These relationships connect Layer 3 concepts to their code-level implementations:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 3 class</th>
+<th>Attribute</th>
+<th>Layer 4 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td><code>implemented_by_code</code></td>
+<td>EncapsulationUnit, CallableUnit, DataStructure</td>
+<td>Global slot -- code that implements this component</td>
+</tr>
+<tr>
+<td>Operation</td>
+<td><code>implemented_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Methods/functions that implement this operation</td>
+</tr>
+<tr>
+<td>DomainEntity</td>
+<td><code>mapped_from_structure</code></td>
+<td>DataStructure</td>
+<td>Code-level data structures representing this entity</td>
+</tr>
+<tr>
+<td>ValueObject</td>
+<td><code>mapped_from_structure_vo</code></td>
+<td>DataStructure</td>
+<td>Code-level structures representing this value object</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td><code>mapped_from_element</code></td>
+<td>DataElement</td>
+<td>Code-level fields mapping to this domain attribute</td>
+</tr>
+<tr>
+<td>TestCase</td>
+<td><code>tests_callable</code></td>
+<td>CallableUnit</td>
+<td>Callable being tested</td>
+</tr>
+<tr>
+<td>Annotation</td>
+<td><code>annotates_element</code></td>
+<td>EncapsulationUnit, CallableUnit, DataStructure, DataElement</td>
+<td>Code elements bearing this annotation</td>
+</tr>
+<tr>
+<td>ConcurrencyPrimitive</td>
+<td><code>used_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Callables using this primitive</td>
+</tr>
+<tr>
+<td>ConcurrencyPrimitive</td>
+<td><code>protects_data_elements</code></td>
+<td>DataElement</td>
+<td>Data elements guarded by this primitive</td>
+</tr>
+<tr>
+<td>UIComponent</td>
+<td><code>ui_implements_encapsulation_unit</code></td>
+<td>EncapsulationUnit</td>
+<td>Code unit rendering this UI component</td>
+</tr>
+</tbody>
+</table>
+<h3 id="upward-links-to-layer-2-container">Upward links to Layer 2 (Container)</h3>
+<p>These relationships connect Layer 3 concepts to their container-level parents:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 3 class</th>
+<th>Attribute</th>
+<th>Layer 2 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Component</td>
+<td><code>contained_in_module</code></td>
+<td>Module</td>
+<td>Module containing this component</td>
+</tr>
+<tr>
+<td>Aggregate</td>
+<td><code>contained_in_bounded_context</code></td>
+<td>BoundedContext</td>
+<td>Bounded context owning this aggregate</td>
+</tr>
+<tr>
+<td>Aggregate</td>
+<td><code>persisted_in_stores</code></td>
+<td>DataStore</td>
+<td>Data stores backing this aggregate</td>
+</tr>
+<tr>
+<td>Capability</td>
+<td><code>provided_by_modules</code></td>
+<td>Module</td>
+<td>Modules providing this capability</td>
+</tr>
+<tr>
+<td>Feature</td>
+<td><code>controlled_by_configs</code></td>
+<td>Configuration</td>
+<td>Runtime feature configuration</td>
+</tr>
+<tr>
+<td>IntegrationEvent</td>
+<td><code>targeted_at_services</code></td>
+<td>Service</td>
+<td>Services receiving this event</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td><code>enforced_by_system</code></td>
+<td>System</td>
+<td>System enforcing this policy</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="component-architecture-5-classes">Component Architecture (5 classes)</h2>
+<h3 id="1-component">1. Component</h3>
+<p>A logical building block within a module or service. Components group related operations and encapsulate a coherent responsibility.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>component_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Freeform type (e.g., "controller", "repository", "service", "gateway")</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>string</td>
+<td>No</td>
+<td><strong>Deprecated</strong> -- use CodeContainer.written_in_language via Layer 4</td>
+</tr>
+<tr>
+<td><code>source_location</code></td>
+<td>string</td>
+<td>No</td>
+<td>Source path hint</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>contains_components</code></td>
+<td>Parent module (Layer 2)</td>
+</tr>
+<tr>
+<td><code>exposes_operations</code></td>
+<td>Operation</td>
+<td>Yes</td>
+<td><code>exposed_by_component</code></td>
+<td>Operations this component provides</td>
+</tr>
+<tr>
+<td><code>emits_events</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>emitted_by_component</code></td>
+<td>Events produced</td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td>Dependency</td>
+<td>Yes</td>
+<td>--</td>
+<td>Inline dependency declarations</td>
+</tr>
+<tr>
+<td><code>implemented_by_code</code></td>
+<td>EncapsulationUnit | CallableUnit | DataStructure</td>
+<td>Yes</td>
+<td><code>implements_component</code></td>
+<td>Code implementations (Layer 4, global slot)</td>
+</tr>
+<tr>
+<td><code>tested_by_suites</code></td>
+<td>TestSuite</td>
+<td>Yes</td>
+<td><code>tests_component</code></td>
+<td>Test suites</td>
+</tr>
+<tr>
+<td><code>has_coverage</code></td>
+<td>TestCoverage</td>
+<td>No</td>
+<td><code>coverage_for_component</code></td>
+<td>Coverage metrics</td>
+</tr>
+<tr>
+<td><code>emits_metrics</code></td>
+<td>Metric</td>
+<td>Yes</td>
+<td>--</td>
+<td>Metrics emitted</td>
+</tr>
+<tr>
+<td><code>generates_logs</code></td>
+<td>Log</td>
+<td>Yes</td>
+<td>--</td>
+<td>Logs generated</td>
+</tr>
+<tr>
+<td><code>emits_metric</code></td>
+<td>Metric</td>
+<td>Yes</td>
+<td><code>metric_emitted_by_component</code></td>
+<td>Named metric link</td>
+</tr>
+<tr>
+<td><code>component_serves_model</code></td>
+<td>MLModel</td>
+<td>Yes</td>
+<td><code>model_served_by_component</code></td>
+<td>ML models served</td>
+</tr>
+<tr>
+<td><code>component_uses_concurrency_pattern</code></td>
+<td>ConcurrencyPattern</td>
+<td>Yes</td>
+<td><code>pattern_used_by_component</code></td>
+<td>Concurrency patterns</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="2-operation">2. Operation</h3>
+<p>A named, invocable unit of behavior exposed via a component's interface. This is the primary bridge between the API surface (what the system exposes) and the code (what implements it).</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>errors</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Possible error responses</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exposed_by_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>exposes_operations</code></td>
+<td>Component providing this operation</td>
+</tr>
+<tr>
+<td><code>executes_operation_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>executed_by_operation</code></td>
+<td>Actions performed when invoked</td>
+</tr>
+<tr>
+<td><code>accepts_input_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>defines_operation_input</code></td>
+<td>Input schema/contract</td>
+</tr>
+<tr>
+<td><code>produces_output_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>defines_operation_output</code></td>
+<td>Output schema/contract</td>
+</tr>
+<tr>
+<td><code>implemented_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>implements_operation</code></td>
+<td>Code implementations (Layer 4)</td>
+</tr>
+<tr>
+<td><code>offered_on_screens</code></td>
+<td>Screen</td>
+<td>Yes</td>
+<td><code>offers_operations</code></td>
+<td>Screens presenting this operation</td>
+</tr>
+<tr>
+<td><code>operation_tested_by_cases</code></td>
+<td>TestCase</td>
+<td>Yes</td>
+<td><code>tests_operation</code></td>
+<td>Test cases</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="3-capability">3. Capability</h3>
+<p>A business capability that the system provides. Capabilities are realized by features and require specific permissions.</p>
+<p><strong>Attributes:</strong></p>
+<p><em>No additional attributes beyond NamedEntity.</em></p>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>realizes_features</code></td>
+<td>Feature</td>
+<td>Yes</td>
+<td><code>realized_by_capabilities</code></td>
+<td>Features this capability realizes</td>
+</tr>
+<tr>
+<td><code>enables_features</code></td>
+<td>Feature</td>
+<td>Yes</td>
+<td><code>enabled_by_capabilities</code></td>
+<td>Features enabled by this capability</td>
+</tr>
+<tr>
+<td><code>requires_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>required_by_capabilities</code></td>
+<td>Permissions needed</td>
+</tr>
+<tr>
+<td><code>provided_by_modules</code></td>
+<td>Module</td>
+<td>Yes</td>
+<td><code>provides_capabilities</code></td>
+<td>Modules providing this (Layer 2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="4-feature">4. Feature</h3>
+<p>A user-facing feature that can be toggled, access-controlled, and categorized.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>FeatureCategory</td>
+<td>No</td>
+<td><code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled_by_capabilities</code></td>
+<td>Capability</td>
+<td>Yes</td>
+<td><code>enables_features</code></td>
+<td>Capabilities enabling this feature</td>
+</tr>
+<tr>
+<td><code>realized_by_capabilities</code></td>
+<td>Capability</td>
+<td>Yes</td>
+<td><code>realizes_features</code></td>
+<td>Capabilities realizing this feature</td>
+</tr>
+<tr>
+<td><code>controlled_by_configs</code></td>
+<td>Configuration</td>
+<td>Yes</td>
+<td><code>controls_features</code></td>
+<td>Feature flag configurations (Layer 2)</td>
+</tr>
+<tr>
+<td><code>accessible_by_roles</code></td>
+<td>Role</td>
+<td>Yes</td>
+<td><code>can_access_features</code></td>
+<td>Roles with access</td>
+</tr>
+</tbody>
+</table>
+<p><strong>FeatureCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>core</code></td>
+<td>Core functionality, always active</td>
+</tr>
+<tr>
+<td><code>optional</code></td>
+<td>Optional, can be toggled</td>
+</tr>
+<tr>
+<td><code>experimental</code></td>
+<td>Under experimentation</td>
+</tr>
+<tr>
+<td><code>deprecated</code></td>
+<td>Scheduled for removal</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="5-uicomponent">5. UIComponent</h3>
+<p>A UI component in a modern component-tree framework (React, Angular, Vue, Svelte). This class models the logical component hierarchy -- props, composition, routing, state management, lazy loading, and server rendering -- concepts specific to virtual-DOM and component-based architectures. It is <strong>not</strong> a general-purpose "screen" abstraction. Legacy terminal screens (CICS BMS maps, RPG display files) are fundamentally different -- fixed-grid character maps compiled from source -- and are modeled at Layer 4 via ScreenDefinition/ScreenField.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>component_type</code></td>
+<td>UIComponentType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of UI component</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>string</td>
+<td>No</td>
+<td>Framework (React, Angular, Vue, etc.)</td>
+</tr>
+<tr>
+<td><code>props</code></td>
+<td>UIProperty[]</td>
+<td>No</td>
+<td>Component properties (inline)</td>
+</tr>
+<tr>
+<td><code>emitted_events</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Events this component emits</td>
+</tr>
+<tr>
+<td><code>is_lazy_loaded</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether lazily loaded</td>
+</tr>
+<tr>
+<td><code>is_server_rendered</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether server-side rendered</td>
+</tr>
+<tr>
+<td><code>accessibility_role</code></td>
+<td>string</td>
+<td>No</td>
+<td>ARIA role</td>
+</tr>
+<tr>
+<td><code>source_location</code></td>
+<td>string</td>
+<td>No</td>
+<td>Source path</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_parent_ui_component</code></td>
+<td>UIComponent</td>
+<td>No</td>
+<td><code>has_child_ui_components</code></td>
+<td>Parent in component tree</td>
+</tr>
+<tr>
+<td><code>has_child_ui_components</code></td>
+<td>UIComponent</td>
+<td>Yes</td>
+<td><code>has_parent_ui_component</code></td>
+<td>Children in component tree</td>
+</tr>
+<tr>
+<td><code>renders_on_route</code></td>
+<td>Route</td>
+<td>Yes</td>
+<td><code>route_renders_component</code></td>
+<td>Routes rendering this component</td>
+</tr>
+<tr>
+<td><code>managed_by_state</code></td>
+<td>StateStore</td>
+<td>Yes</td>
+<td><code>manages_ui_components</code></td>
+<td>State stores managing this component</td>
+</tr>
+<tr>
+<td><code>ui_implements_encapsulation_unit</code></td>
+<td>EncapsulationUnit</td>
+<td>No</td>
+<td><code>encapsulation_unit_renders_ui</code></td>
+<td>Code implementation (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>UIComponentType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page</code></td>
+<td>Full page component</td>
+</tr>
+<tr>
+<td><code>layout</code></td>
+<td>Layout wrapper</td>
+</tr>
+<tr>
+<td><code>form</code></td>
+<td>Form component</td>
+</tr>
+<tr>
+<td><code>widget</code></td>
+<td>Standalone widget</td>
+</tr>
+<tr>
+<td><code>modal</code></td>
+<td>Modal/dialog</td>
+</tr>
+<tr>
+<td><code>navigation</code></td>
+<td>Navigation component</td>
+</tr>
+<tr>
+<td><code>data_display</code></td>
+<td>Data display (table, chart, list)</td>
+</tr>
+<tr>
+<td><code>composite</code></td>
+<td>Composite of other components</td>
+</tr>
+<tr>
+<td><code>higher_order</code></td>
+<td>Higher-order component (wrapper)</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>Context/state provider</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="domain-model-7-classes">Domain Model (7 classes)</h2>
+<h3 id="6-aggregate">6. Aggregate</h3>
+<p>A cluster of domain entities treated as a single transactional unit. The fundamental consistency boundary in domain-driven design.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_value_objects</code></td>
+<td>ValueObject[]</td>
+<td>No</td>
+<td>Value objects within this aggregate (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_root_entity</code></td>
+<td>DomainEntity</td>
+<td>No</td>
+<td><code>is_root_of_aggregate</code></td>
+<td><strong>Required.</strong> The root entity</td>
+</tr>
+<tr>
+<td><code>aggregates_entities</code></td>
+<td>DomainEntity</td>
+<td>Yes</td>
+<td><code>aggregated_by</code></td>
+<td>Entities within this aggregate (inline)</td>
+</tr>
+<tr>
+<td><code>enforced_by_invariant_rules</code></td>
+<td>Rule</td>
+<td>Yes</td>
+<td><code>enforces_aggregate_invariants</code></td>
+<td>Invariant rules</td>
+</tr>
+<tr>
+<td><code>persisted_in_stores</code></td>
+<td>DataStore</td>
+<td>Yes</td>
+<td><code>persists_aggregates</code></td>
+<td>Backing data stores (Layer 2)</td>
+</tr>
+<tr>
+<td><code>contained_in_bounded_context</code></td>
+<td>BoundedContext</td>
+<td>No</td>
+<td><code>contains_aggregates</code></td>
+<td>Parent bounded context (Layer 2)</td>
+</tr>
+<tr>
+<td><code>produces_domain_events</code></td>
+<td>DomainEvent</td>
+<td>Yes</td>
+<td><code>produced_by_aggregate</code></td>
+<td>Domain events produced</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="7-domainentity">7. DomainEntity</h3>
+<p>A uniquely identifiable object within the domain. Entities have identity, lifecycle, and mutable state.</p>
+<p><strong>Mixins:</strong> <code>Auditable</code> (adds audit tracking fields)</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attributes</code></td>
+<td>Attribute[]</td>
+<td>No</td>
+<td>Domain attributes (inline)</td>
+</tr>
+<tr>
+<td><code>classifications</code></td>
+<td>DataClassificationType[]</td>
+<td>No</td>
+<td>Data classification (PII, PHI, PCI, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aggregated_by</code></td>
+<td>Aggregate</td>
+<td>No</td>
+<td><code>aggregates_entities</code></td>
+<td>Parent aggregate</td>
+</tr>
+<tr>
+<td><code>is_root_of_aggregate</code></td>
+<td>Aggregate</td>
+<td>No</td>
+<td><code>has_root_entity</code></td>
+<td>Aggregate for which this is root</td>
+</tr>
+<tr>
+<td><code>exposes_as_resource</code></td>
+<td>Resource</td>
+<td>Yes</td>
+<td><code>represents_entity</code></td>
+<td>API resources exposing this entity</td>
+</tr>
+<tr>
+<td><code>governed_by_lifecycle</code></td>
+<td>Lifecycle</td>
+<td>No</td>
+<td><code>governs_entities</code></td>
+<td>State machine governing this entity</td>
+</tr>
+<tr>
+<td><code>in_state</code></td>
+<td>State</td>
+<td>No</td>
+<td><code>current_for_entities</code></td>
+<td>Current lifecycle state</td>
+</tr>
+<tr>
+<td><code>governed_by_rules</code></td>
+<td>Rule</td>
+<td>Yes</td>
+<td><code>governs_domain_entities</code></td>
+<td>Business rules governing this entity</td>
+</tr>
+<tr>
+<td><code>mapped_from_structure</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td><code>maps_to_domain_entity</code></td>
+<td>Code structures (Layer 4)</td>
+</tr>
+<tr>
+<td><code>has_outgoing_relationships</code></td>
+<td>DomainRelationship</td>
+<td>Yes</td>
+<td><code>has_source_entity</code></td>
+<td>Relationships originating from this entity</td>
+</tr>
+<tr>
+<td><code>has_incoming_relationships</code></td>
+<td>DomainRelationship</td>
+<td>Yes</td>
+<td><code>has_target_entity</code></td>
+<td>Relationships targeting this entity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="8-valueobject">8. ValueObject</h3>
+<p>An immutable domain object defined entirely by its attributes, with no conceptual identity. Compared by value, not by ID.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>attributes</code></td>
+<td>Attribute[]</td>
+<td>No</td>
+<td>Attributes defining this value object (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapped_from_structure_vo</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td><code>maps_to_value_object</code></td>
+<td>Code structures (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="9-attribute">9. Attribute</h3>
+<p>A named property of a domain entity or value object. This is the <em>domain-level</em> attribute (not the code-level DataElement, which lives at Layer 4).</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_type</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Data type</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>AttributeCategory</td>
+<td>No</td>
+<td><code>required</code>, <code>optional</code>, <code>computed</code>, <code>derived</code>, <code>transient</code></td>
+</tr>
+<tr>
+<td><code>is_identifier</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is an identity attribute</td>
+</tr>
+<tr>
+<td><code>is_indexed</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether indexed for querying</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Default value</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td>DataClassificationType</td>
+<td>No</td>
+<td>Data sensitivity (PII, PHI, PCI, PUBLIC, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validated_by_rules</code></td>
+<td>Rule</td>
+<td>Yes</td>
+<td><code>validates_attributes</code></td>
+<td>Validation rules</td>
+</tr>
+<tr>
+<td><code>mapped_from_element</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td><code>maps_to_attribute</code></td>
+<td>Code-level fields (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AttributeCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>required</code></td>
+<td>Must have a value</td>
+</tr>
+<tr>
+<td><code>optional</code></td>
+<td>May be null</td>
+</tr>
+<tr>
+<td><code>computed</code></td>
+<td>Calculated from other attributes</td>
+</tr>
+<tr>
+<td><code>derived</code></td>
+<td>Derived from other entities or data</td>
+</tr>
+<tr>
+<td><code>transient</code></td>
+<td>Not persisted</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="10-domainrelationship">10. DomainRelationship</h3>
+<p>A named, typed relationship between two domain entities with cardinality, navigability, and composition semantics. Introduced in SAO v2.0 (Section 26).</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cardinality</code></td>
+<td>Cardinality</td>
+<td><strong>Yes</strong></td>
+<td>Multiplicity of the relationship</td>
+</tr>
+<tr>
+<td><code>is_navigable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Traversable from source to target</td>
+</tr>
+<tr>
+<td><code>is_bidirectional</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Traversable in both directions</td>
+</tr>
+<tr>
+<td><code>is_composition</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>UML composition (strong ownership) vs aggregation</td>
+</tr>
+<tr>
+<td><code>foreign_key_field</code></td>
+<td>string</td>
+<td>No</td>
+<td>Implementing field in data layer</td>
+</tr>
+<tr>
+<td><code>join_entity</code></td>
+<td>string</td>
+<td>No</td>
+<td>Join table/entity for many-to-many</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_source_entity</code></td>
+<td>DomainEntity</td>
+<td>No</td>
+<td><code>has_outgoing_relationships</code></td>
+<td>Entity originating the relationship</td>
+</tr>
+<tr>
+<td><code>has_target_entity</code></td>
+<td>DomainEntity</td>
+<td>No</td>
+<td><code>has_incoming_relationships</code></td>
+<td>Entity referenced</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cardinality Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>one_to_one</code></td>
+<td>1:1</td>
+</tr>
+<tr>
+<td><code>one_to_many</code></td>
+<td>1:N</td>
+</tr>
+<tr>
+<td><code>many_to_one</code></td>
+<td>N:1</td>
+</tr>
+<tr>
+<td><code>many_to_many</code></td>
+<td>M:N</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="11-resource">11. Resource</h3>
+<p>A domain entity or value object exposed for external interaction -- the API representation (DTO) of a domain object.</p>
+<p><strong>Attributes:</strong></p>
+<p><em>No additional attributes beyond NamedEntity.</em></p>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>represents_entity</code></td>
+<td>DomainEntity</td>
+<td>No</td>
+<td><code>exposes_as_resource</code></td>
+<td>Domain entity this resource represents</td>
+</tr>
+<tr>
+<td><code>classified_as_type</code></td>
+<td>ResourceType</td>
+<td>No</td>
+<td><code>classifies_resources</code></td>
+<td>Resource type classification</td>
+</tr>
+<tr>
+<td><code>targeted_by_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>targets_resources</code></td>
+<td>Actions that can target this resource</td>
+</tr>
+<tr>
+<td><code>affected_in_audit</code></td>
+<td>AuditEntry</td>
+<td>Yes</td>
+<td><code>affects_resource</code></td>
+<td>Audit trail entries</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="12-resourcetype">12. ResourceType</h3>
+<p>A classification of resources sharing common structure, permissions, and schema.</p>
+<p><strong>Attributes:</strong></p>
+<p><em>No additional attributes beyond NamedEntity.</em></p>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structured_by_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>structures_resource_types</code></td>
+<td>Schema defining this type's structure</td>
+</tr>
+<tr>
+<td><code>classifies_resources</code></td>
+<td>Resource</td>
+<td>Yes</td>
+<td><code>classified_as_type</code></td>
+<td>Resource instances of this type</td>
+</tr>
+<tr>
+<td><code>governed_by_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>applies_to_resource_types</code></td>
+<td>Permissions governing access</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="lifecycle-3-classes">Lifecycle (3 classes)</h2>
+<h3 id="13-state">13. State</h3>
+<p>A discrete condition in an entity's lifecycle.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_initial</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is the starting state</td>
+</tr>
+<tr>
+<td><code>is_terminal</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is a final state</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allows_actions_in_state</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>allowed_in_states</code></td>
+<td>Actions allowed in this state</td>
+</tr>
+<tr>
+<td><code>current_for_entities</code></td>
+<td>DomainEntity</td>
+<td>Yes</td>
+<td><code>in_state</code></td>
+<td>Entities currently in this state</td>
+</tr>
+<tr>
+<td><code>source_of_transitions</code></td>
+<td>Transition</td>
+<td>Yes</td>
+<td><code>transitions_from_state</code></td>
+<td>Transitions out of this state</td>
+</tr>
+<tr>
+<td><code>target_of_transitions</code></td>
+<td>Transition</td>
+<td>Yes</td>
+<td><code>transitions_to_state</code></td>
+<td>Transitions into this state</td>
+</tr>
+<tr>
+<td><code>initial_for_lifecycle</code></td>
+<td>Lifecycle</td>
+<td>No</td>
+<td><code>starts_with_state</code></td>
+<td>Lifecycle for which this is the start</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="14-transition">14. Transition</h3>
+<p>A valid movement between two states, with guards, triggers, and side effects.</p>
+<p><strong>Attributes:</strong></p>
+<p><em>No additional attributes beyond NamedEntity.</em></p>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>transitions_from_state</code></td>
+<td>State</td>
+<td>No</td>
+<td><code>source_of_transitions</code></td>
+<td><strong>Required.</strong> Source state</td>
+</tr>
+<tr>
+<td><code>transitions_to_state</code></td>
+<td>State</td>
+<td>No</td>
+<td><code>target_of_transitions</code></td>
+<td><strong>Required.</strong> Target state</td>
+</tr>
+<tr>
+<td><code>triggered_by_events</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>triggers_transitions</code></td>
+<td>Events that trigger this transition</td>
+</tr>
+<tr>
+<td><code>guarded_by_rules</code></td>
+<td>Rule</td>
+<td>Yes</td>
+<td><code>guards_transitions</code></td>
+<td>Rules that must pass</td>
+</tr>
+<tr>
+<td><code>executes_actions_on_transition</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>executed_during_transition</code></td>
+<td>Actions executed during transition</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="15-lifecycle">15. Lifecycle</h3>
+<p>The complete state machine for an entity type -- all states and valid transitions.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>states</code></td>
+<td>State[]</td>
+<td>No</td>
+<td>All states (inline)</td>
+</tr>
+<tr>
+<td><code>transitions</code></td>
+<td>Transition[]</td>
+<td>No</td>
+<td>All transitions (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>starts_with_state</code></td>
+<td>State</td>
+<td>No</td>
+<td><code>initial_for_lifecycle</code></td>
+<td>Initial state</td>
+</tr>
+<tr>
+<td><code>governs_entities</code></td>
+<td>DomainEntity</td>
+<td>Yes</td>
+<td><code>governed_by_lifecycle</code></td>
+<td>Entities following this lifecycle</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="behavior-and-workflow-11-classes">Behavior and Workflow (11 classes)</h2>
+<h3 id="16-action-abstract">16. Action (abstract)</h3>
+<p>An atomic operation that can be performed. Abstract base for Query and Command.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>ActionCategory</td>
+<td>No</td>
+<td><code>query</code>, <code>command</code>, <code>mutation</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allowed_by_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>allows_actions</code></td>
+<td>Permissions required</td>
+</tr>
+<tr>
+<td><code>performed_by_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>performs_actions</code></td>
+<td>Actor performing (Layer 2)</td>
+</tr>
+<tr>
+<td><code>targets_resources</code></td>
+<td>Resource</td>
+<td>Yes</td>
+<td><code>targeted_by_actions</code></td>
+<td>Resources affected</td>
+</tr>
+<tr>
+<td><code>emits_events_from_action</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>emitted_by_action</code></td>
+<td>Events emitted</td>
+</tr>
+<tr>
+<td><code>validated_by_action_rules</code></td>
+<td>Rule</td>
+<td>Yes</td>
+<td><code>validates_actions</code></td>
+<td>Validation rules</td>
+</tr>
+<tr>
+<td><code>executes_in_transaction</code></td>
+<td>Transaction</td>
+<td>No</td>
+<td><code>executes_actions</code></td>
+<td>Transaction context</td>
+</tr>
+<tr>
+<td><code>allowed_in_states</code></td>
+<td>State</td>
+<td>Yes</td>
+<td><code>allows_actions_in_state</code></td>
+<td>States where this action is allowed</td>
+</tr>
+<tr>
+<td><code>executed_during_transition</code></td>
+<td>Transition</td>
+<td>Yes</td>
+<td><code>executes_actions_on_transition</code></td>
+<td>Transitions executing this action</td>
+</tr>
+<tr>
+<td><code>executed_by_operation</code></td>
+<td>Operation</td>
+<td>Yes</td>
+<td><code>executes_operation_actions</code></td>
+<td>Operations invoking this action</td>
+</tr>
+<tr>
+<td><code>executed_in_step</code></td>
+<td>Step</td>
+<td>Yes</td>
+<td><code>executes_actions_in_step</code></td>
+<td>Workflow steps</td>
+</tr>
+<tr>
+<td><code>recorded_in_audit</code></td>
+<td>AuditEntry</td>
+<td>Yes</td>
+<td><code>records_action</code></td>
+<td>Audit trail</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ActionCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>query</code></td>
+<td>Read-only, retrieves data</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>Changes system state</td>
+</tr>
+<tr>
+<td><code>mutation</code></td>
+<td>Modifies data</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="17-query">17. Query</h3>
+<p>A read-only action that retrieves data. Inherits all Action attributes and relationships.</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filters</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Query filter expressions</td>
+</tr>
+<tr>
+<td><code>projections</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Fields to return</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="18-command">18. Command</h3>
+<p>An action that changes system state. Inherits all Action attributes and relationships.</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command_type</code></td>
+<td>CommandType</td>
+<td>No</td>
+<td>Kind of command</td>
+</tr>
+<tr>
+<td><code>idempotency_key</code></td>
+<td>string</td>
+<td>No</td>
+<td>Key for idempotent execution</td>
+</tr>
+</tbody>
+</table>
+<p><strong>CommandType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>create</code></td>
+<td>Create a new entity</td>
+</tr>
+<tr>
+<td><code>update</code></td>
+<td>Update existing entity</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Delete an entity</td>
+</tr>
+<tr>
+<td><code>execute</code></td>
+<td>Execute a process</td>
+</tr>
+<tr>
+<td><code>archive</code></td>
+<td>Archive an entity</td>
+</tr>
+<tr>
+<td><code>restore</code></td>
+<td>Restore an archived entity</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="19-rule">19. Rule</h3>
+<p>A declarative constraint or trigger governing behavior. Rules validate attributes, enforce aggregate invariants, guard transitions, and validate actions.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>RuleCategory</td>
+<td>No</td>
+<td>Kind of rule</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Condition expression</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>string</td>
+<td>No</td>
+<td>Action when rule fires</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Evaluation priority</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether currently active</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validates_attributes</code></td>
+<td>Attribute</td>
+<td>Yes</td>
+<td><code>validated_by_rules</code></td>
+<td>Attributes validated</td>
+</tr>
+<tr>
+<td><code>enforces_aggregate_invariants</code></td>
+<td>Aggregate</td>
+<td>Yes</td>
+<td><code>enforced_by_invariant_rules</code></td>
+<td>Aggregates with invariants</td>
+</tr>
+<tr>
+<td><code>governs_domain_entities</code></td>
+<td>DomainEntity</td>
+<td>Yes</td>
+<td><code>governed_by_rules</code></td>
+<td>Entities governed</td>
+</tr>
+<tr>
+<td><code>validates_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>validated_by_action_rules</code></td>
+<td>Actions validated</td>
+</tr>
+<tr>
+<td><code>guards_transitions</code></td>
+<td>Transition</td>
+<td>Yes</td>
+<td><code>guarded_by_rules</code></td>
+<td>Transitions guarded</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RuleCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validation</code></td>
+<td>Data integrity validation</td>
+</tr>
+<tr>
+<td><code>business</code></td>
+<td>Business logic</td>
+</tr>
+<tr>
+<td><code>derivation</code></td>
+<td>Computed/derived values</td>
+</tr>
+<tr>
+<td><code>constraint</code></td>
+<td>Invariant enforcement</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>Event-driven automation</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="20-event">20. Event</h3>
+<p>A notification that something occurred in the system.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>EventCategory</td>
+<td>No</td>
+<td>Kind of event</td>
+</tr>
+<tr>
+<td><code>correlation_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>Correlation ID for tracing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>emitted_by_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>emits_events</code></td>
+<td>Source component</td>
+</tr>
+<tr>
+<td><code>event_structured_by_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>structures_events</code></td>
+<td>Payload schema</td>
+</tr>
+<tr>
+<td><code>emitted_by_action</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>emits_events_from_action</code></td>
+<td>Actions emitting this event</td>
+</tr>
+<tr>
+<td><code>triggers_transitions</code></td>
+<td>Transition</td>
+<td>Yes</td>
+<td><code>triggered_by_events</code></td>
+<td>Transitions triggered</td>
+</tr>
+<tr>
+<td><code>triggers_workflows</code></td>
+<td>Workflow</td>
+<td>Yes</td>
+<td><code>triggered_by_workflow_events</code></td>
+<td>Workflows triggered</td>
+</tr>
+<tr>
+<td><code>subscribed_by_subscriptions</code></td>
+<td>Subscription</td>
+<td>Yes</td>
+<td><code>subscribes_to_event_types</code></td>
+<td>Subscriptions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EventCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>domain_event</code></td>
+<td>Significant domain occurrence (OrderPlaced, UserRegistered)</td>
+</tr>
+<tr>
+<td><code>integration_event</code></td>
+<td>Cross-service communication</td>
+</tr>
+<tr>
+<td><code>system_event</code></td>
+<td>Technical system event (ServiceStarted, CacheCleared)</td>
+</tr>
+<tr>
+<td><code>audit_event</code></td>
+<td>Compliance/audit trail (UserLoggedIn, PermissionChanged)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="21-domainevent">21. DomainEvent</h3>
+<p>An event produced by an aggregate within a bounded context. Inherits all Event attributes and relationships.</p>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>produced_by_aggregate</code></td>
+<td>Aggregate</td>
+<td>No</td>
+<td><code>produces_domain_events</code></td>
+<td>Source aggregate</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-integrationevent">22. IntegrationEvent</h3>
+<p>An event for cross-service communication. Inherits all Event attributes and relationships.</p>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>targeted_at_services</code></td>
+<td>Service</td>
+<td>Yes</td>
+<td><code>receives_integration_events</code></td>
+<td>Target services (Layer 2)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-subscription">23. Subscription</h3>
+<p>A registration to receive events of a certain type.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filter</code></td>
+<td>string</td>
+<td>No</td>
+<td>Filter expression for event selection</td>
+</tr>
+<tr>
+<td><code>delivery_mode</code></td>
+<td>string</td>
+<td>No</td>
+<td>Push or pull delivery</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>subscribes_to_event_types</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>subscribed_by_subscriptions</code></td>
+<td>Event types subscribed to</td>
+</tr>
+<tr>
+<td><code>subscribed_by_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>has_subscriptions</code></td>
+<td>Subscribing actor (Layer 2)</td>
+</tr>
+<tr>
+<td><code>subscribes_to_interface</code></td>
+<td>EventInterface</td>
+<td>No</td>
+<td><code>has_subscriptions</code></td>
+<td>Delivery interface</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="24-workflow">24. Workflow</h3>
+<p>A coordinated sequence of actions achieving a business goal.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>workflow_type</code></td>
+<td>WorkflowType</td>
+<td>No</td>
+<td>Coordination pattern</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>Step[]</td>
+<td>No</td>
+<td>Ordered steps (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>triggered_by_workflow_events</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>triggers_workflows</code></td>
+<td>Events that start this workflow</td>
+</tr>
+</tbody>
+</table>
+<p><strong>WorkflowType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>synchronous</code></td>
+<td>Blocking, immediate response</td>
+</tr>
+<tr>
+<td><code>asynchronous</code></td>
+<td>Background processing</td>
+</tr>
+<tr>
+<td><code>saga</code></td>
+<td>Distributed transaction with compensating actions</td>
+</tr>
+<tr>
+<td><code>choreography</code></td>
+<td>Event-driven, no central orchestrator</td>
+</tr>
+<tr>
+<td><code>orchestration</code></td>
+<td>Centrally coordinated</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="25-step">25. Step</h3>
+<p>A discrete stage within a workflow.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>order</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Execution order</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Condition for execution</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Timeout</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>executes_actions_in_step</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>executed_in_step</code></td>
+<td>Actions executed</td>
+</tr>
+<tr>
+<td><code>followed_by_steps</code></td>
+<td>Step</td>
+<td>Yes</td>
+<td><code>follows_step</code></td>
+<td>Next steps</td>
+</tr>
+<tr>
+<td><code>follows_step</code></td>
+<td>Step</td>
+<td>Yes</td>
+<td><code>followed_by_steps</code></td>
+<td>Previous steps</td>
+</tr>
+<tr>
+<td><code>compensated_by_step</code></td>
+<td>Step</td>
+<td>No</td>
+<td><code>compensates_for_step</code></td>
+<td>Compensating step (saga rollback)</td>
+</tr>
+<tr>
+<td><code>compensates_for_step</code></td>
+<td>Step</td>
+<td>No</td>
+<td><code>compensated_by_step</code></td>
+<td>Step this compensates for</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="26-transaction">26. Transaction</h3>
+<p>A unit of work with ACID or BASE guarantees.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>transaction_type</code></td>
+<td>TransactionType</td>
+<td>No</td>
+<td>Kind of transaction</td>
+</tr>
+<tr>
+<td><code>isolation_level</code></td>
+<td>string</td>
+<td>No</td>
+<td>Isolation level</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Timeout</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>executes_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>executes_in_transaction</code></td>
+<td>Actions in this transaction</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TransactionType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>local</code></td>
+<td>Single-database ACID</td>
+</tr>
+<tr>
+<td><code>distributed</code></td>
+<td>Cross-resource transaction</td>
+</tr>
+<tr>
+<td><code>saga</code></td>
+<td>Long-running with compensating actions</td>
+</tr>
+<tr>
+<td><code>two_phase_commit</code></td>
+<td>2PC protocol</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="authorization-and-policy-5-classes">Authorization and Policy (5 classes)</h2>
+<h3 id="27-role">27. Role</h3>
+<p>A collection of permissions that can be assigned to identities.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_system_role</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is a built-in system role</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grants_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>granted_by_roles</code></td>
+<td>Permissions this role grants</td>
+</tr>
+<tr>
+<td><code>assigned_to_identities</code></td>
+<td>Identity</td>
+<td>Yes</td>
+<td><code>has_roles</code></td>
+<td>Identities with this role (Layer 2)</td>
+</tr>
+<tr>
+<td><code>inherits_from_role</code></td>
+<td>Role</td>
+<td>No</td>
+<td><code>inherited_by_roles</code></td>
+<td>Parent role</td>
+</tr>
+<tr>
+<td><code>inherited_by_roles</code></td>
+<td>Role</td>
+<td>Yes</td>
+<td><code>inherits_from_role</code></td>
+<td>Child roles</td>
+</tr>
+<tr>
+<td><code>can_access_features</code></td>
+<td>Feature</td>
+<td>Yes</td>
+<td><code>accessible_by_roles</code></td>
+<td>Features accessible</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="28-permission">28. Permission</h3>
+<p>An atomic access grant connecting actions to resources, scoped and constrained.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>constraints</code></td>
+<td>Constraint[]</td>
+<td>No</td>
+<td>Contextual constraints (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>allows_actions</code></td>
+<td>Action</td>
+<td>Yes</td>
+<td><code>allowed_by_permissions</code></td>
+<td>Actions this permission enables</td>
+</tr>
+<tr>
+<td><code>granted_by_roles</code></td>
+<td>Role</td>
+<td>Yes</td>
+<td><code>grants_permissions</code></td>
+<td>Roles granting this permission</td>
+</tr>
+<tr>
+<td><code>applies_to_resource_types</code></td>
+<td>ResourceType</td>
+<td>Yes</td>
+<td><code>governed_by_permissions</code></td>
+<td>Resource types governed</td>
+</tr>
+<tr>
+<td><code>limited_by_scope</code></td>
+<td>Scope</td>
+<td>No</td>
+<td><code>limits_permissions</code></td>
+<td>Scope boundary</td>
+</tr>
+<tr>
+<td><code>required_by_capabilities</code></td>
+<td>Capability</td>
+<td>Yes</td>
+<td><code>requires_permissions</code></td>
+<td>Capabilities requiring this</td>
+</tr>
+<tr>
+<td><code>evaluated_by_policies</code></td>
+<td>Policy</td>
+<td>Yes</td>
+<td><code>evaluates_permissions</code></td>
+<td>Policies evaluating this</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="29-policy">29. Policy</h3>
+<p>A rule set for access decisions, supporting multiple authorization models.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>policy_type</code></td>
+<td>PolicyType</td>
+<td>No</td>
+<td>Authorization model</td>
+</tr>
+<tr>
+<td><code>rules</code></td>
+<td>Rule[]</td>
+<td>No</td>
+<td>Policy rules (inline)</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Evaluation priority</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>evaluates_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>evaluated_by_policies</code></td>
+<td>Permissions evaluated</td>
+</tr>
+<tr>
+<td><code>enforced_by_system</code></td>
+<td>System</td>
+<td>No</td>
+<td><code>enforces_policies</code></td>
+<td>System enforcing this policy (Layer 1/2)</td>
+</tr>
+<tr>
+<td><code>guards_routes</code></td>
+<td>Route</td>
+<td>Yes</td>
+<td><code>route_guarded_by</code></td>
+<td>Routes protected</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PolicyType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rbac</code></td>
+<td>Role-Based Access Control</td>
+</tr>
+<tr>
+<td><code>abac</code></td>
+<td>Attribute-Based Access Control</td>
+</tr>
+<tr>
+<td><code>rebac</code></td>
+<td>Relationship-Based Access Control</td>
+</tr>
+<tr>
+<td><code>pbac</code></td>
+<td>Policy-Based Access Control</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="30-scope">30. Scope</h3>
+<p>A permission boundary defining where a permission applies.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scope_type</code></td>
+<td>ScopeType</td>
+<td>No</td>
+<td>Kind of scope</td>
+</tr>
+<tr>
+<td><code>resource_pattern</code></td>
+<td>string</td>
+<td>No</td>
+<td>Resource pattern (e.g., <code>orders/*</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>limits_permissions</code></td>
+<td>Permission</td>
+<td>Yes</td>
+<td><code>limited_by_scope</code></td>
+<td>Permissions bounded by this scope</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ScopeType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>global</code></td>
+<td>Applies system-wide</td>
+</tr>
+<tr>
+<td><code>tenant</code></td>
+<td>Scoped to a tenant</td>
+</tr>
+<tr>
+<td><code>organization</code></td>
+<td>Scoped to an organization</td>
+</tr>
+<tr>
+<td><code>resource</code></td>
+<td>Scoped to a specific resource</td>
+</tr>
+<tr>
+<td><code>field</code></td>
+<td>Scoped to a field within a resource</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="31-constraint">31. Constraint</h3>
+<p>A contextual restriction on a permission -- temporal, spatial, or attribute-based conditions.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>constraint_type</code></td>
+<td>ConstraintType</td>
+<td>No</td>
+<td>Kind of constraint</td>
+</tr>
+<tr>
+<td><code>expression</code></td>
+<td>string</td>
+<td>No</td>
+<td>Constraint expression</td>
+</tr>
+<tr>
+<td><code>parameters</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Parameters for the expression</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ConstraintType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>temporal</code></td>
+<td>Time-based (business hours, expiry)</td>
+</tr>
+<tr>
+<td><code>spatial</code></td>
+<td>Location-based (geo-fence)</td>
+</tr>
+<tr>
+<td><code>attribute</code></td>
+<td>Attribute-based (user.department = resource.department)</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>Context-based (device, IP, session)</td>
+</tr>
+<tr>
+<td><code>rate_limit</code></td>
+<td>Rate limiting</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="supporting-structures-6-classes">Supporting Structures (6 classes)</h2>
+<h3 id="32-schema">32. Schema</h3>
+<p>A versioned data structure definition used by operations, resources, events, and messages.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>schema_type</code></td>
+<td>SchemaType</td>
+<td>No</td>
+<td>Kind of schema</td>
+</tr>
+<tr>
+<td><code>definition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Schema definition content</td>
+</tr>
+<tr>
+<td><code>has_versions</code></td>
+<td>SchemaVersion[]</td>
+<td>No</td>
+<td>Version history (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>structures_resource_types</code></td>
+<td>ResourceType</td>
+<td>Yes</td>
+<td><code>structured_by_schema</code></td>
+<td>Resource types using this schema</td>
+</tr>
+<tr>
+<td><code>structures_collections</code></td>
+<td>Collection</td>
+<td>Yes</td>
+<td><code>collection_structured_by_schema</code></td>
+<td>Database collections (Layer 2)</td>
+</tr>
+<tr>
+<td><code>structures_events</code></td>
+<td>Event</td>
+<td>Yes</td>
+<td><code>event_structured_by_schema</code></td>
+<td>Events using this schema</td>
+</tr>
+<tr>
+<td><code>structures_messages</code></td>
+<td>Message</td>
+<td>Yes</td>
+<td><code>message_structured_by_schema</code></td>
+<td>Messages (Layer 2)</td>
+</tr>
+<tr>
+<td><code>defines_operation_input</code></td>
+<td>Operation</td>
+<td>Yes</td>
+<td><code>accepts_input_schema</code></td>
+<td>Operations accepting this as input</td>
+</tr>
+<tr>
+<td><code>defines_operation_output</code></td>
+<td>Operation</td>
+<td>Yes</td>
+<td><code>produces_output_schema</code></td>
+<td>Operations producing this as output</td>
+</tr>
+<tr>
+<td><code>validates_records</code></td>
+<td>Record</td>
+<td>Yes</td>
+<td><code>conforms_to_schema</code></td>
+<td>Records validated (Layer 2)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SchemaType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>table_schema</code></td>
+<td>Database table schema</td>
+</tr>
+<tr>
+<td><code>document_schema</code></td>
+<td>Document/NoSQL schema</td>
+</tr>
+<tr>
+<td><code>event_schema</code></td>
+<td>Event payload schema</td>
+</tr>
+<tr>
+<td><code>api_schema</code></td>
+<td>API request/response schema</td>
+</tr>
+<tr>
+<td><code>message_schema</code></td>
+<td>Message schema</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="33-schemaversion">33. SchemaVersion</h3>
+<p>A specific version of a schema, with migration support.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>SemanticVersion</td>
+<td>No</td>
+<td>Version number</td>
+</tr>
+<tr>
+<td><code>definition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Schema definition at this version</td>
+</tr>
+<tr>
+<td><code>migration_script</code></td>
+<td>string</td>
+<td>No</td>
+<td>Migration from previous version</td>
+</tr>
+<tr>
+<td><code>is_backward_compatible</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether backward compatible</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version_of_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>has_versions</code></td>
+<td>Parent schema</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="34-testcase">34. TestCase</h3>
+<p>A test case targeting a callable unit or operation.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>status</code></td>
+<td>TestCaseStatus</td>
+<td>No</td>
+<td>Test status</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>string</td>
+<td>No</td>
+<td>Priority level</td>
+</tr>
+<tr>
+<td><code>is_automated</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether automated</td>
+</tr>
+<tr>
+<td><code>setup_fixture</code></td>
+<td>string</td>
+<td>No</td>
+<td>Setup fixture name</td>
+</tr>
+<tr>
+<td><code>teardown_fixture</code></td>
+<td>string</td>
+<td>No</td>
+<td>Teardown fixture name</td>
+</tr>
+<tr>
+<td><code>line_start</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Starting line in source</td>
+</tr>
+<tr>
+<td><code>line_end</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Ending line in source</td>
+</tr>
+<tr>
+<td><code>assertions</code></td>
+<td>TestAssertion[]</td>
+<td>No</td>
+<td>Assertions (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>belongs_to_suite</code></td>
+<td>TestSuite</td>
+<td>No</td>
+<td><code>contains_test_cases</code></td>
+<td>Parent suite</td>
+</tr>
+<tr>
+<td><code>tests_callable</code></td>
+<td>CallableUnit</td>
+<td>No</td>
+<td><code>tested_by_cases</code></td>
+<td>Callable tested (Layer 4)</td>
+</tr>
+<tr>
+<td><code>tests_operation</code></td>
+<td>Operation</td>
+<td>No</td>
+<td><code>operation_tested_by_cases</code></td>
+<td>Operation tested</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="35-annotation">35. Annotation</h3>
+<p>A metadata annotation or decorator attached to code elements.</p>
+<p><strong>Global Slots:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annotates_element</code></td>
+<td>EncapsulationUnit | CallableUnit | DataStructure | DataElement</td>
+<td>Yes</td>
+<td><code>annotated_by</code></td>
+<td>Code elements bearing this annotation (Layer 4)</td>
+</tr>
+<tr>
+<td><code>affects_behavior_of</code></td>
+<td>EncapsulationUnit | CallableUnit</td>
+<td>Yes</td>
+<td>--</td>
+<td>Code elements whose behavior is altered</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>annotation_syntax</code></td>
+<td>string</td>
+<td>No</td>
+<td>Syntax form (e.g., <code>@Override</code>, <code>#[derive(Debug)]</code>)</td>
+</tr>
+<tr>
+<td><code>parameters</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Annotation parameters</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="36-definitionreference">36. DefinitionReference</h3>
+<p>A reference from one code container to shared definitions -- imports, includes, COPY statements, using directives.</p>
+<p><strong>Global Slots:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>imports_symbols</code></td>
+<td>EncapsulationUnit | CallableUnit | DataStructure</td>
+<td>Yes</td>
+<td><code>imported_via</code></td>
+<td>Symbols imported (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>reference_type</code></td>
+<td>ReferenceType</td>
+<td>No</td>
+<td><code>import_module</code>, <code>import_symbol</code>, <code>include_source</code>, <code>inherit</code>, <code>implement</code></td>
+</tr>
+<tr>
+<td><code>reference_path</code></td>
+<td>string</td>
+<td>No</td>
+<td>Path or module name</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>string</td>
+<td>No</td>
+<td>Import alias</td>
+</tr>
+<tr>
+<td><code>is_wildcard</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Wildcard import (e.g., <code>import *</code>)</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>string</td>
+<td>No</td>
+<td>Import scope</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>referencing_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>has_references</code></td>
+<td>Source container (Layer 4)</td>
+</tr>
+<tr>
+<td><code>referenced_container</code></td>
+<td>CodeContainer</td>
+<td>No</td>
+<td><code>referenced_via</code></td>
+<td>Target container (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="37-concurrencyprimitive">37. ConcurrencyPrimitive</h3>
+<p>A synchronization or concurrency primitive used by callables to protect data elements.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primitive_type</code></td>
+<td>ConcurrencyPrimitiveType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of primitive</td>
+</tr>
+<tr>
+<td><code>is_reentrant</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether reentrant</td>
+</tr>
+<tr>
+<td><code>timeout_ms</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Lock timeout</td>
+</tr>
+<tr>
+<td><code>line_number</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Source line</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>used_by_callables</code></td>
+<td>CallableUnit</td>
+<td>Yes</td>
+<td><code>uses_concurrency_primitives</code></td>
+<td>Callables using this (Layer 4)</td>
+</tr>
+<tr>
+<td><code>protects_data_elements</code></td>
+<td>DataElement</td>
+<td>Yes</td>
+<td><code>protected_by_primitive</code></td>
+<td>Data elements guarded (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="relationship-map">Relationship Map</h2>
+<pre><code>                        ┌─────────── Layer 2 (Container) ───────────┐
+                        │  Module, BoundedContext, Service,          │
+                        │  DataStore, Configuration, System          │
+                        └──────────┬───────────┬────────────────────┘
+                                   │           │
+                    contained_in_module    contained_in_bounded_context
+                                   │           │
+              ┌────────────────────▼───────────▼──────────────────────┐
+              │              COMPONENT ARCHITECTURE                    │
+              │                                                       │
+              │  Component ──exposes_operations──► Operation           │
+              │      │                               │    │           │
+              │      ├──emits_events──► Event         │    │           │
+              │      │                   │            │    │           │
+              │  Capability ◄──────► Feature          │    │           │
+              │      │                   │            │    │           │
+              │      └──requires_permissions──┐       │    │           │
+              │                               │       │    │           │
+              │  UIComponent (tree)           │       │    │           │
+              └──────────────────────────────┼───────┼────┼───────────┘
+                                             │       │    │
+              ┌──────────────────────────────┼───────┼────┼───────────┐
+              │              DOMAIN MODEL    │       │    │            │
+              │                              │       │    │            │
+              │  Aggregate ──has_root──► DomainEntity │    │            │
+              │      │                    │  ▲  │    │    │            │
+              │      ├──value_objects──► ValueObject  │    │            │
+              │      │                    │     │    │    │            │
+              │      ├──invariant_rules──►Rule  │    │    │            │
+              │      │                    │     │    │    │            │
+              │      └──produces──► DomainEvent │    │    │            │
+              │                              │  │    │    │            │
+              │  DomainEntity ──attributes──► Attribute   │            │
+              │       │                         │    │    │            │
+              │       ├──lifecycle──► Lifecycle  │    │    │            │
+              │       │    ├──states──► State    │    │    │            │
+              │       │    └──transitions──► Transition   │            │
+              │       │                              │    │            │
+              │       ├──exposes_as──► Resource ──► ResourceType       │
+              │       │                              │    │            │
+              │       └──relationships──► DomainRelationship           │
+              └──────────────────────────────────────┼────┼────────────┘
+                                                     │    │
+              ┌──────────────────────────────────────┼────┼────────────┐
+              │              BEHAVIOR                 │    │            │
+              │                                      │    │            │
+              │  Action (Query, Command) ◄───────────┘    │            │
+              │      │                                    │            │
+              │      ├──targets──► Resource               │            │
+              │      ├──emits──► Event ──► Subscription   │            │
+              │      ├──validated_by──► Rule              │            │
+              │      └──in_transaction──► Transaction     │            │
+              │                                           │            │
+              │  Workflow ──steps──► Step ──actions──► Action           │
+              │      │         └──compensated_by──► Step               │
+              │      └──triggered_by──► Event                          │
+              └───────────────────────────────────────┬────────────────┘
+                                                      │
+              ┌───────────────────────────────────────┼────────────────┐
+              │              AUTHORIZATION            │                │
+              │                                       │                │
+              │  Role ──grants──► Permission ◄──evaluates── Policy     │
+              │    │                  │                                 │
+              │    └──access──► Feature    ├──allows──► Action          │
+              │                           ├──applies_to──► ResourceType │
+              │                           ├──limited_by──► Scope        │
+              │                           └──constraints──► Constraint  │
+              └────────────────────────────────────────────────────────┘
+                                             │
+              ┌──────────────────────────────┼─────────────────────────┐
+              │              SUPPORTING      │                         │
+              │                              │                         │
+              │  Schema ──versions──► SchemaVersion                    │
+              │    │                                                   │
+              │    ├──structures──► ResourceType, Event, Operation     │
+              │                                                       │
+              │  TestCase ──tests──► CallableUnit (L4), Operation      │
+              │  Annotation ──annotates──► code elements (L4)          │
+              │  DefinitionReference ──imports──► code elements (L4)   │
+              │  ConcurrencyPrimitive ──protects──► DataElement (L4)   │
+              └───────────────────────────────────────────────────────┘
+                                   │
+                    implemented_by_code, implemented_by_callables,
+                    mapped_from_structure, mapped_from_element, ...
+                                   │
+                        ┌──────────▼────────────────────────┐
+                        │  Layer 4 (Code)                    │
+                        │  CodeContainer, EncapsulationUnit, │
+                        │  CallableUnit, DataStructure, ...  │
+                        └───────────────────────────────────┘
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

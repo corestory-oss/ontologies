@@ -1,0 +1,16 @@
+# Synthetic RDF example; not a production extraction or executed modernization.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix specsao: <https://ontologies.corestory.ai/specspec/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<urn:specspec:demo:implementation-link> a specsao:RequirementImplementationLink ;
+    spec:id "urn:specspec:demo:implementation-link"^^xsd:anyURI ;
+    specsao:basis_claim <urn:specspec:demo:modern-behavior> ;
+    specsao:callable <urn:specspec:demo:software:withdraw> ;
+    specsao:requirement <urn:specspec:demo:no-overdraft> ;
+    spec:title "Proposed Java grounding"^^xsd:string .
+
+<urn:specspec:demo:software:withdraw> a sao:CallableUnit .

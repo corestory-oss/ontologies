@@ -1,0 +1,319 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:IaCDefinitionShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/description>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/has_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/iac_provisions_infrastructure>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/iac_used_by_pipeline>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/id>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/name>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/provider>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/source_file>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/version> ;
+    sh:targetClass sao:IaCDefinition .
+
+saosh:IaCModuleShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/IaCModule/description>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/has_child_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/id>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/input_variables>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/name>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/output_values>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/source>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCModule/tags> ;
+    sh:targetClass sao:IaCModule .
+
+saosh:IaCResourceShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/IaCResource/depends_on_resources>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/description>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/id>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/is_managed>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/name>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/properties>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/provider_resource_type>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type>,
+        <https://ontologies.corestory.ai/sao/shapes/IaCResource/tags> ;
+    sh:targetClass sao:IaCResource .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/has_resources> a sh:PropertyShape ;
+    sh:class sao:IaCResource ;
+    sh:description "Resources defined." ;
+    sh:path sao:has_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/iac_provisions_infrastructure> a sh:PropertyShape ;
+    sh:class sao:Infrastructure ;
+    sh:description "Infrastructure provisioned." ;
+    sh:path sao:iac_provisions_infrastructure .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/iac_used_by_pipeline> a sh:PropertyShape ;
+    sh:class sao:BuildPipeline ;
+    sh:description "Pipelines using this definition." ;
+    sh:path sao:iac_used_by_pipeline .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/provider> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Cloud provider." ;
+    sh:maxCount 1 ;
+    sh:path sao:provider .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/source_file> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Source file path." ;
+    sh:maxCount 1 ;
+    sh:path sao:source_file .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool> a sh:PropertyShape ;
+    sh:description "IaC tool." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:tool .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values> rdf:first "terraform" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/1> rdf:first "cloudformation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/10> rdf:first "cdk" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/2> rdf:first "pulumi" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/3> rdf:first "ansible" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/4> rdf:first "chef" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/5> rdf:first "puppet" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/6> rdf:first "kubernetes_manifest" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/7> rdf:first "helm" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/8> rdf:first "docker_compose" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/9> rdf:first "bicep" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCDefinition/tool/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCDefinition/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/has_child_resources> a sh:PropertyShape ;
+    sh:class sao:IaCResource ;
+    sh:description "Resources within this module." ;
+    sh:path sao:has_child_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/input_variables> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Input variable names." ;
+    sh:path sao:input_variables .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/output_values> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Output value names." ;
+    sh:path sao:output_values .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/source> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Module source (registry path, git URL, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:source .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCModule/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/depends_on_resources> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Resource dependencies (by name)." ;
+    sh:path sao:depends_on_resources .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/is_managed> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether Terraform/IaC manages lifecycle." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_managed .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/properties> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Resource properties." ;
+    sh:path sao:properties .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/provider_resource_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Provider-specific type (e.g., aws_instance, azurerm_storage_account)." ;
+    sh:maxCount 1 ;
+    sh:path sao:provider_resource_type .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type> a sh:PropertyShape ;
+    sh:description "Kind of resource." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:resource_type .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values> rdf:first "compute" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/1> rdf:first "network" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/2> rdf:first "storage" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/3> rdf:first "database" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/4> rdf:first "messaging" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/5> rdf:first "identity" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/6> rdf:first "monitoring" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/7> rdf:first "dns" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/8> rdf:first "cdn" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/resource_type/values/cell/9> rdf:first "secret" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/IaCResource/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>11. Reference Material · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="11-reference-material">11. Reference Material</h1>
+<blockquote>
+<p>SAO Extraction Playbook -- Appendix</p>
+</blockquote>
+<p>This appendix consolidates the reference tables, decision trees, and taxonomies
+referenced throughout the extraction playbook. Use it as a quick-lookup companion
+during any extraction phase.</p>
+<hr />
+<h2 id="111-extraction-technique-reference">11.1 Extraction Technique Reference</h2>
+<p>Each row maps a concrete technique to the SAO classes it populates. The
+<em>Automation level</em> column indicates how much of the work a tool can do
+without human judgment.</p>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>What it extracts</th>
+<th>SAO classes populated</th>
+<th>Automation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>File system traversal</td>
+<td>Directory structure, file inventory</td>
+<td><strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Dependency manifest parsing</td>
+<td>Package dependencies</td>
+<td><strong>PackageManager</strong>, <strong>PackageDependency</strong>, <strong>KnownVulnerability</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>AST parsing</td>
+<td>Code structure</td>
+<td><strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>DataElement</strong>, <strong>Parameter</strong>, <strong>TypeExpression</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Import/include analysis</td>
+<td>Code references</td>
+<td><strong>DefinitionReference</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Call graph construction</td>
+<td>Invocation relationships</td>
+<td><strong>ControlFlow</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Data flow analysis</td>
+<td>Read/write patterns</td>
+<td><strong>DataFlow</strong></td>
+<td>Medium-High</td>
+</tr>
+<tr>
+<td>Deployment manifest parsing</td>
+<td>Runtime topology</td>
+<td><strong>Service</strong>, <strong>Deployment</strong>, <strong>Environment</strong>, <strong>Infrastructure</strong>, <strong>DeploymentUnit</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>API schema parsing</td>
+<td>Interface contracts</td>
+<td><strong>Interface</strong>, <strong>Endpoint</strong>, <strong>Contract</strong>, <strong>Schema</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Database schema extraction</td>
+<td>Persistence model</td>
+<td><strong>DataStore</strong>, <strong>Collection</strong>, <strong>DatabaseConstraint</strong>, <strong>DatabaseIndex</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Package/directory heuristics</td>
+<td>Architectural grouping</td>
+<td><strong>Module</strong>, <strong>Component</strong></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Naming convention analysis</td>
+<td>Stereotypes, roles</td>
+<td><strong>Component</strong> type classification</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>CI/CD config parsing</td>
+<td>Build/deploy pipelines</td>
+<td><strong>BuildPipeline</strong>, <strong>PipelineStage</strong>, <strong>BuildArtifact</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Test file analysis</td>
+<td>Test inventory</td>
+<td><strong>TestSuite</strong>, <strong>TestCase</strong>, <strong>TestCoverage</strong></td>
+<td>High</td>
+</tr>
+<tr>
+<td>LLM semantic inference (domain)</td>
+<td>Domain model</td>
+<td><strong>DomainEntity</strong>, <strong>ValueObject</strong>, <strong>Aggregate</strong>, <strong>DomainRelationship</strong></td>
+<td>Medium-Low</td>
+</tr>
+<tr>
+<td>LLM semantic inference (business)</td>
+<td>Business intent</td>
+<td><strong>Actor</strong>, <strong>Operation</strong>, <strong>Rule</strong>, <strong>Workflow</strong>, <strong>Capability</strong>, <strong>Feature</strong></td>
+<td>Low</td>
+</tr>
+<tr>
+<td>LLM document analysis</td>
+<td>Documentation content</td>
+<td><strong>KnowledgeArtifact</strong>, <strong>Actor</strong>, <strong>Feature</strong>, <strong>ComplianceRequirement</strong></td>
+<td>Medium-Low</td>
+</tr>
+<tr>
+<td>Runtime analysis (APM/traces)</td>
+<td>Dynamic behavior</td>
+<td><strong>Trace</strong>, <strong>Span</strong>, <strong>Metric</strong></td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Manual expert review</td>
+<td>Business validation</td>
+<td>All higher-layer classes</td>
+<td>Manual</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Reading the table.</strong> A technique tagged <em>High</em> can run unattended and its
+output can be trusted without review. <em>Medium</em> outputs SHOULD be spot-checked.
+<em>Low</em> and <em>Manual</em> outputs MUST be reviewed by a domain expert before they are
+considered authoritative.</p>
+<hr />
+<h2 id="112-sao-class-checklist-by-extraction-phase">11.2 SAO Class Checklist by Extraction Phase</h2>
+<p>The tables below map every one of the 147 SAO classes to its <strong>primary</strong>
+extraction phase. Some classes could reasonably appear in more than one phase;
+the assignment reflects where the class is <em>first</em> created and populated. Later
+phases MAY enrich attributes added in an earlier phase.</p>
+<p>For each class, <strong>required attributes</strong> (those marked <code>required: true</code> in
+<code>legacy/sao/sao.yml</code>) are listed after the arrow. Every class inherits <code>id</code> and <code>name</code>
+from <strong>NamedEntity</strong> (except <strong>Metadata</strong>, <strong>Versionable</strong>, and <strong>Auditable</strong>,
+which are standalone).</p>
+<h3 id="base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</h3>
+<p>These are not extracted directly; they provide inherited structure.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NamedEntity</strong></td>
+<td><code>id</code>, <code>name</code></td>
+<td>Abstract base for all named entities</td>
+</tr>
+<tr>
+<td><strong>Metadata</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Attached automatically to entities</td>
+</tr>
+<tr>
+<td><strong>Versionable</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Mixin for versioned entities</td>
+</tr>
+<tr>
+<td><strong>Auditable</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Mixin for auditable entities</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-1-inventory-6-classes">Phase 1 -- Inventory (6 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>StorageLocation</strong></td>
+<td><code>location_path</code></td>
+<td>Directories, repositories, library members</td>
+</tr>
+<tr>
+<td><strong>CodeContainer</strong></td>
+<td><code>container_path</code></td>
+<td>Source files, COBOL copybooks, includes</td>
+</tr>
+<tr>
+<td><strong>ProgrammingLanguage</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Detected from file extensions / shebang lines</td>
+</tr>
+<tr>
+<td><strong>PackageManager</strong></td>
+<td><code>manager_type</code></td>
+<td>npm, pip, Maven, NuGet, etc.</td>
+</tr>
+<tr>
+<td><strong>PackageDependency</strong></td>
+<td><code>package_name</code></td>
+<td>One entry per declared dependency</td>
+</tr>
+<tr>
+<td><strong>KnownVulnerability</strong></td>
+<td><code>severity</code></td>
+<td>From CVE databases / <code>npm audit</code> / Snyk</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-2-code-structure-27-classes">Phase 2 -- Code Structure (27 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EncapsulationUnit</strong></td>
+<td><code>encapsulation_type</code></td>
+<td>Class, module, program, namespace</td>
+</tr>
+<tr>
+<td><strong>CallableUnit</strong></td>
+<td><code>callable_type</code></td>
+<td>Method, function, paragraph, subroutine</td>
+</tr>
+<tr>
+<td><strong>DataStructure</strong></td>
+<td><code>structure_type</code></td>
+<td>Struct, record, class data, type alias</td>
+</tr>
+<tr>
+<td><strong>DataElement</strong></td>
+<td><code>data_type</code></td>
+<td>Field, variable, column, property</td>
+</tr>
+<tr>
+<td><strong>Parameter</strong></td>
+<td><code>data_type</code></td>
+<td>Inherits from <strong>DataElement</strong></td>
+</tr>
+<tr>
+<td><strong>TypeExpression</strong></td>
+<td><code>type_kind</code></td>
+<td>Generic, union, pointer, function type</td>
+</tr>
+<tr>
+<td><strong>ControlFlow</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Call edges between callable units</td>
+</tr>
+<tr>
+<td><strong>DataFlow</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Read/write edges between elements</td>
+</tr>
+<tr>
+<td><strong>DefinitionReference</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Import, include, COPY, using</td>
+</tr>
+<tr>
+<td><strong>CodeBlock</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Logical groupings within callables</td>
+</tr>
+<tr>
+<td><strong>Statement</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Individual instructions or declarations</td>
+</tr>
+<tr>
+<td><strong>Annotation</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Decorators, attributes, pragmas</td>
+</tr>
+<tr>
+<td><strong>PlatformExtension</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Abstract base for platform-specific classes</td>
+</tr>
+<tr>
+<td><strong>ExecutionEnvironmentDirective</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>JCL, Docker Compose, Makefiles</td>
+</tr>
+<tr>
+<td><strong>FileDefinition</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>COBOL SELECT, C fopen targets</td>
+</tr>
+<tr>
+<td><strong>FileOperation</strong></td>
+<td><code>operation_type</code></td>
+<td>Read, write, rewrite, delete on files</td>
+</tr>
+<tr>
+<td><strong>ScreenDefinition</strong></td>
+<td><code>screen_type</code></td>
+<td>BMS maps, CICS screens, curses forms</td>
+</tr>
+<tr>
+<td><strong>ScreenField</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Individual fields on screen definitions</td>
+</tr>
+<tr>
+<td><strong>JobDefinition</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>JCL JOB, cron entries, scheduler jobs</td>
+</tr>
+<tr>
+<td><strong>JobStep</strong></td>
+<td><code>step_type</code></td>
+<td>EXEC PGM, EXEC PROC, script steps</td>
+</tr>
+<tr>
+<td><strong>DatasetAllocation</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>DD allocations within job steps</td>
+</tr>
+<tr>
+<td><strong>IPCConnection</strong></td>
+<td><code>mechanism</code></td>
+<td>MQ, TCP, pipes, shared memory</td>
+</tr>
+<tr>
+<td><strong>PreprocessorDirective</strong></td>
+<td><code>directive_type</code></td>
+<td>#define, #include, macros, templates</td>
+</tr>
+<tr>
+<td><strong>ErrorModel</strong></td>
+<td><code>strategy</code></td>
+<td>Per-module error handling approach</td>
+</tr>
+<tr>
+<td><strong>ExceptionType</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Declared exception/error types</td>
+</tr>
+<tr>
+<td><strong>MemoryModel</strong></td>
+<td><code>primary_model</code></td>
+<td>GC, manual, ownership, reference-counted</td>
+</tr>
+<tr>
+<td><strong>OwnershipAnnotation</strong></td>
+<td><code>ownership</code></td>
+<td>Rust lifetimes, C++ smart pointers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-3-architecture-and-integration-20-classes">Phase 3 -- Architecture and Integration (20 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Top-level container</td>
+</tr>
+<tr>
+<td><strong>BoundedContext</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>DDD context boundary</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Deployable unit of functionality</td>
+</tr>
+<tr>
+<td><strong>Component</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Logical building block within a module</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Independently deployable runtime unit</td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Abstract: contract-defined boundary</td>
+</tr>
+<tr>
+<td><strong>UserInterface</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>User-facing interface</td>
+</tr>
+<tr>
+<td><strong>ProgrammaticInterface</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Machine-to-machine interface</td>
+</tr>
+<tr>
+<td><strong>EventInterface</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Event-driven interface</td>
+</tr>
+<tr>
+<td><strong>Screen</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Single screen/view in a UI</td>
+</tr>
+<tr>
+<td><strong>Endpoint</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Addressable entry point on a service</td>
+</tr>
+<tr>
+<td><strong>Subscription</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Registration to receive events</td>
+</tr>
+<tr>
+<td><strong>ExternalSystem</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>System outside the boundary</td>
+</tr>
+<tr>
+<td><strong>Integration</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Configured connection to external system</td>
+</tr>
+<tr>
+<td><strong>Contract</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Formal spec of integration behavior</td>
+</tr>
+<tr>
+<td><strong>ContractVersion</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Specific iteration of a contract</td>
+</tr>
+<tr>
+<td><strong>Adapter</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Translates between protocols</td>
+</tr>
+<tr>
+<td><strong>CircuitBreaker</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Resilience pattern for cascading failures</td>
+</tr>
+<tr>
+<td><strong>Dependency</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Lightweight dependency between components</td>
+</tr>
+<tr>
+<td><strong>Message</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Unit of data exchanged in integration</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-4-domain-model-18-classes">Phase 4 -- Domain Model (18 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aggregate</strong></td>
+<td><code>has_root_entity</code></td>
+<td>DDD aggregate; MUST reference a root entity</td>
+</tr>
+<tr>
+<td><strong>DomainEntity</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Uniquely identifiable domain object</td>
+</tr>
+<tr>
+<td><strong>ValueObject</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Immutable, identity-less domain object</td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td><code>data_type</code></td>
+<td>Named property of entity or value object</td>
+</tr>
+<tr>
+<td><strong>DomainRelationship</strong></td>
+<td><code>cardinality</code></td>
+<td>Typed relationship between domain entities</td>
+</tr>
+<tr>
+<td><strong>Lifecycle</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Complete state machine for an entity type</td>
+</tr>
+<tr>
+<td><strong>State</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Discrete condition in an entity lifecycle</td>
+</tr>
+<tr>
+<td><strong>Transition</strong></td>
+<td><code>transitions_from_state</code>, <code>transitions_to_state</code></td>
+<td>Valid movement between states</td>
+</tr>
+<tr>
+<td><strong>DataStore</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Persistence mechanism (RDBMS, NoSQL, etc.)</td>
+</tr>
+<tr>
+<td><strong>Collection</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Table, collection, bucket</td>
+</tr>
+<tr>
+<td><strong>Record</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Single persisted data instance</td>
+</tr>
+<tr>
+<td><strong>Schema</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Structural definition of stored data</td>
+</tr>
+<tr>
+<td><strong>SchemaVersion</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Specific iteration of a schema</td>
+</tr>
+<tr>
+<td><strong>DataClassification</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Sensitivity or handling category</td>
+</tr>
+<tr>
+<td><strong>RetentionPolicy</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Data lifecycle and deletion rules</td>
+</tr>
+<tr>
+<td><strong>DatabaseConstraint</strong></td>
+<td><code>constraint_type</code></td>
+<td>Primary key, foreign key, unique, check</td>
+</tr>
+<tr>
+<td><strong>DatabaseIndex</strong></td>
+<td><code>index_type</code></td>
+<td>B-tree, hash, full-text, spatial</td>
+</tr>
+<tr>
+<td><strong>DataLineage</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Origin and transformation history</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-5-business-intent-18-classes">Phase 5 -- Business Intent (18 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Actor</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Abstract: any entity that initiates actions</td>
+</tr>
+<tr>
+<td><strong>HumanActor</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>A human user of the system</td>
+</tr>
+<tr>
+<td><strong>SystemActor</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>An automated actor</td>
+</tr>
+<tr>
+<td><strong>Operation</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Named unit of behavior on an interface</td>
+</tr>
+<tr>
+<td><strong>Action</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Abstract: atomic operation</td>
+</tr>
+<tr>
+<td><strong>Query</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Read-only action</td>
+</tr>
+<tr>
+<td><strong>Command</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>State-changing action</td>
+</tr>
+<tr>
+<td><strong>Rule</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Declarative constraint or trigger</td>
+</tr>
+<tr>
+<td><strong>AlertRule</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Condition that triggers an alert</td>
+</tr>
+<tr>
+<td><strong>Event</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Notification that something occurred</td>
+</tr>
+<tr>
+<td><strong>DomainEvent</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Significant domain occurrence</td>
+</tr>
+<tr>
+<td><strong>IntegrationEvent</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Cross-service communication event</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Coordinated action sequence</td>
+</tr>
+<tr>
+<td><strong>Step</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Discrete stage within a workflow</td>
+</tr>
+<tr>
+<td><strong>Transaction</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Unit of work with ACID/BASE guarantees</td>
+</tr>
+<tr>
+<td><strong>Resource</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Entity/VO exposed for external interaction</td>
+</tr>
+<tr>
+<td><strong>ResourceType</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Classification of resources</td>
+</tr>
+<tr>
+<td><strong>Capability</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Business or technical ability</td>
+</tr>
+<tr>
+<td><strong>Feature</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>User-facing manifestation of capabilities</td>
+</tr>
+</tbody>
+</table>
+<h3 id="phase-6-cross-cutting-concerns-54-classes">Phase 6 -- Cross-Cutting Concerns (54 classes)</h3>
+<h4 id="security-and-identity-9-classes">Security and identity (9 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Identity</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Verified representation of an actor</td>
+</tr>
+<tr>
+<td><strong>Credential</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Authentication material</td>
+</tr>
+<tr>
+<td><strong>Tenant</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Multi-tenant boundary</td>
+</tr>
+<tr>
+<td><strong>Organization</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Logical grouping of users/resources</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Named collection of permissions</td>
+</tr>
+<tr>
+<td><strong>Permission</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Allowed action on a resource</td>
+</tr>
+<tr>
+<td><strong>Policy</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Rule set governing access decisions</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Boundary limiting permission applicability</td>
+</tr>
+<tr>
+<td><strong>Constraint</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Condition for authorization</td>
+</tr>
+</tbody>
+</table>
+<h4 id="governance-and-compliance-5-classes">Governance and compliance (5 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ComplianceRequirement</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Regulatory or policy obligation</td>
+</tr>
+<tr>
+<td><strong>Control</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Measure implementing a requirement</td>
+</tr>
+<tr>
+<td><strong>Evidence</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Proof of control effectiveness</td>
+</tr>
+<tr>
+<td><strong>RiskAssessment</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Threat/vulnerability evaluation</td>
+</tr>
+<tr>
+<td><strong>KnowledgeArtifact</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Documentation artifact</td>
+</tr>
+</tbody>
+</table>
+<h4 id="audit-2-classes">Audit (2 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AuditLog</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Tamper-evident activity record</td>
+</tr>
+<tr>
+<td><strong>AuditEntry</strong></td>
+<td><code>timestamp</code></td>
+<td>Single record in an audit log</td>
+</tr>
+</tbody>
+</table>
+<h4 id="testing-4-classes">Testing (4 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>TestSuite</strong></td>
+<td><code>suite_type</code></td>
+<td>Collection of related test cases</td>
+</tr>
+<tr>
+<td><strong>TestCase</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Single test validating behavior</td>
+</tr>
+<tr>
+<td><strong>TestAssertion</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Individual assertion in a test</td>
+</tr>
+<tr>
+<td><strong>TestCoverage</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Coverage metrics for a component</td>
+</tr>
+</tbody>
+</table>
+<h4 id="uifrontend-4-classes">UI/Frontend (4 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UIComponent</strong></td>
+<td><code>component_type</code></td>
+<td>Frontend component rendering visuals</td>
+</tr>
+<tr>
+<td><strong>UIProperty</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Prop passed to a UI component</td>
+</tr>
+<tr>
+<td><strong>Route</strong></td>
+<td><code>path_pattern</code></td>
+<td>Navigation route or URL path</td>
+</tr>
+<tr>
+<td><strong>StateStore</strong></td>
+<td><code>management_type</code></td>
+<td>Frontend state management container</td>
+</tr>
+</tbody>
+</table>
+<h4 id="build-cicd-4-classes">Build, CI/CD (4 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BuildPipeline</strong></td>
+<td><code>pipeline_type</code></td>
+<td>CI/CD pipeline definition</td>
+</tr>
+<tr>
+<td><strong>PipelineStage</strong></td>
+<td><code>stage_type</code></td>
+<td>Discrete stage in a pipeline</td>
+</tr>
+<tr>
+<td><strong>BuildArtifact</strong></td>
+<td><code>artifact_type</code></td>
+<td>Artifact produced by a build</td>
+</tr>
+<tr>
+<td><strong>ArtifactRegistry</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Registry for storing artifacts</td>
+</tr>
+</tbody>
+</table>
+<h4 id="deployment-and-operations-7-classes">Deployment and operations (7 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Release</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Versioned deployable package</td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Runtime context with configuration</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Service instance in an environment</td>
+</tr>
+<tr>
+<td><strong>DeploymentUnit</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Packaged artifact being deployed</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Runtime parameters</td>
+</tr>
+<tr>
+<td><strong>Infrastructure</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Compute, storage, and network resources</td>
+</tr>
+<tr>
+<td><strong>HealthCheck</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Probe verifying service availability</td>
+</tr>
+</tbody>
+</table>
+<h4 id="observability-7-classes">Observability (7 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metric</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Quantitative measurement over time</td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Timestamped event record</td>
+</tr>
+<tr>
+<td><strong>LogEntry</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Single record within a log</td>
+</tr>
+<tr>
+<td><strong>Trace</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Causal chain across services</td>
+</tr>
+<tr>
+<td><strong>Span</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Single unit of work in a trace</td>
+</tr>
+<tr>
+<td><strong>Alert</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Notification from metric threshold</td>
+</tr>
+<tr>
+<td><strong>Incident</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Tracked degradation or outage</td>
+</tr>
+</tbody>
+</table>
+<h4 id="concurrency-2-classes">Concurrency (2 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ConcurrencyPrimitive</strong></td>
+<td><code>primitive_type</code></td>
+<td>Mutex, semaphore, lock, barrier</td>
+</tr>
+<tr>
+<td><strong>ConcurrencyPattern</strong></td>
+<td><code>pattern_type</code></td>
+<td>Actor model, CSP, thread pool</td>
+</tr>
+</tbody>
+</table>
+<h4 id="mlai-5-classes">ML/AI (5 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MLModel</strong></td>
+<td><code>model_type</code></td>
+<td>ML model defined/trained/served</td>
+</tr>
+<tr>
+<td><strong>MLModelMetric</strong></td>
+<td><code>metric_name</code></td>
+<td>Performance metric for an ML model</td>
+</tr>
+<tr>
+<td><strong>Dataset</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Training, evaluation, or inference data</td>
+</tr>
+<tr>
+<td><strong>FeatureStore</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Centralized store for ML features</td>
+</tr>
+<tr>
+<td><strong>DataPipeline</strong></td>
+<td><code>pipeline_type</code></td>
+<td>ETL, feature engineering pipeline</td>
+</tr>
+<tr>
+<td><strong>DataPipelineStep</strong></td>
+<td><code>step_type</code></td>
+<td>Discrete step in a data pipeline</td>
+</tr>
+</tbody>
+</table>
+<h4 id="infrastructure-as-code-3-classes">Infrastructure as Code (3 classes)</h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attrs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>IaCDefinition</strong></td>
+<td><code>tool</code></td>
+<td>Terraform, CloudFormation, Pulumi, etc.</td>
+</tr>
+<tr>
+<td><strong>IaCResource</strong></td>
+<td><code>resource_type</code></td>
+<td>Single infrastructure resource in code</td>
+</tr>
+<tr>
+<td><strong>IaCModule</strong></td>
+<td><em>(none beyond inherited)</em></td>
+<td>Reusable module of IaC definitions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 4 base + 6 + 27 + 20 + 18 + 18 + 54 = 147 classes.</strong></p>
+<hr />
+<h2 id="113-decision-trees">11.3 Decision Trees</h2>
+<h3 id="decision-tree-1-datastructure-classification">Decision Tree 1: DataStructure Classification</h3>
+<p>Use this tree after Phase 2 (code structure extraction) to decide whether a
+<strong>DataStructure</strong> should also be promoted to a Phase 4 domain entity.</p>
+<pre><code>Does this DataStructure have a unique identifier field?
+├── YES: Does it have CRUD operations performed on it?
+│   ├── YES: Is it persisted to storage?
+│   │   ├── YES --&gt; DomainEntity (high confidence)
+│   │   └── NO  --&gt; DomainEntity candidate (verify with domain expert)
+│   └── NO: Is it immutable with no identity?
+│       ├── YES --&gt; ValueObject
+│       └── NO  --&gt; Likely just a DataStructure (no domain mapping)
+└── NO: Is it immutable and used as a property of another structure?
+    ├── YES --&gt; ValueObject
+    └── NO  --&gt; Utility/transport structure (no domain mapping)
+</code></pre>
+<p><strong>Guidance.</strong> When the answer is "DomainEntity candidate," create a
+<strong>DomainEntity</strong> with <code>confidence: medium</code> and flag it for expert review in
+Phase 5. Do NOT discard potential domain entities silently.</p>
+<h3 id="decision-tree-2-boundedcontext-boundary-identification">Decision Tree 2: BoundedContext Boundary Identification</h3>
+<p>Use this tree in Phase 3 to decide how many <strong>BoundedContext</strong> instances to
+create and where their boundaries lie.</p>
+<pre><code>Are there explicit context boundaries?
+├── Separate databases
+│   └── Each database boundary = one BoundedContext
+├── Separate deployment units
+│   └── Each deployment unit = one BoundedContext
+├── DDD annotations present (@BoundedContext, module-info, etc.)
+│   └── Follow annotated boundaries
+├── Separate teams (CODEOWNERS, repo-per-team)
+│   └── Each team's code = candidate BoundedContext
+└── NO explicit boundaries:
+    Look at top-level package/directory structure
+    ├── Clear domain-oriented packages? (orders/, inventory/, users/)
+    │   └── YES --&gt; Each domain package = candidate BoundedContext
+    └── NO  --&gt; Start with one BoundedContext, refine later
+</code></pre>
+<p><strong>Guidance.</strong> When multiple signals conflict (e.g., one database but separate
+deploy units), prefer the boundary that yields the <strong>most cohesive</strong> domain
+model. Document the reasoning in the <strong>BoundedContext</strong> <code>description</code> attribute.</p>
+<h3 id="decision-tree-3-platform-extension-applicability">Decision Tree 3: Platform Extension Applicability</h3>
+<p>Use this tree at the start of Phase 2 to decide which platform-specific SAO
+classes are relevant to the codebase.</p>
+<pre><code>What language/platform is the codebase?
+├── COBOL / PL/I / RPG / Assembler (Mainframe):
+│   └── Extract: FileDefinition, ScreenDefinition, ScreenField,
+│       JobDefinition, JobStep, DatasetAllocation, IPCConnection
+├── C / C++:
+│   └── Extract: PreprocessorDirective, MemoryModel,
+│       OwnershipAnnotation (C++ smart pointers)
+├── Rust:
+│   └── Extract: MemoryModel, OwnershipAnnotation
+│       (ownership semantics, lifetimes)
+├── Any language with macros / metaprogramming:
+│   └── Extract: PreprocessorDirective
+│       (set metaprogramming_type accordingly)
+└── All languages:
+    └── Extract: ErrorModel (per-module error handling strategy),
+        ExceptionType (declared error/exception types)
+</code></pre>
+<p><strong>Guidance.</strong> If the codebase uses multiple languages, apply the relevant
+branches for each language. A polyglot system MAY have <strong>MemoryModel</strong> entries
+for Rust components alongside <strong>PreprocessorDirective</strong> entries for C
+components.</p>
+<h3 id="decision-tree-4-rule-vs-workflow-vs-implementation-detail">Decision Tree 4: Rule vs. Workflow vs. Implementation Detail</h3>
+<p>Use this tree in Phase 5 when deciding whether a piece of logic deserves a
+business-intent entity or should remain as code structure only.</p>
+<pre><code>Does this code enforce a business constraint or validate business data?
+├── YES --&gt; Rule
+│   (set rule_category: validation, business, constraint, etc.)
+│
+Does this code coordinate multiple steps toward a business goal?
+├── YES --&gt; Workflow with Steps
+│
+Does this code simply implement a technical mechanism
+with no business meaning?
+├── YES --&gt; Implementation detail
+│   (leave in code structure; no Phase 5 entity)
+│
+Is this code a guard condition on a state transition?
+├── YES --&gt; Rule that guards a Transition
+│   (link via the Transition's guard_conditions attribute)
+</code></pre>
+<p><strong>Guidance.</strong> When in doubt, ask: "Would a business analyst recognize this
+logic as meaningful?" If yes, it SHOULD be a <strong>Rule</strong> or <strong>Workflow</strong>. If only
+a developer would care, it is an implementation detail.</p>
+<hr />
+<h2 id="114-confidence-taxonomy">11.4 Confidence Taxonomy</h2>
+<p>Every extracted entity SHOULD be mentally tagged with one of the following
+confidence levels. This drives review prioritization: higher-layer entities
+(inferential, manual) get reviewed first.</p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Definition</th>
+<th>Typical phases</th>
+<th>Review needed?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deterministic</strong></td>
+<td>Extracted directly from AST, file system, or structured config; no interpretation involved</td>
+<td>Phase 1, Phase 2</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>Heuristic</strong></td>
+<td>Inferred from structural patterns -- naming conventions, package layout, stereotyped annotations -- with high but not absolute confidence</td>
+<td>Phase 3 (Module, Component grouping)</td>
+<td>Spot-check</td>
+</tr>
+<tr>
+<td><strong>Inferential</strong></td>
+<td>Requires semantic reasoning; an LLM or human applied business understanding to classify or name the entity</td>
+<td>Phase 4, Phase 5 (DomainEntity, Rule, Capability)</td>
+<td>Yes -- human review</td>
+</tr>
+<tr>
+<td><strong>Manual</strong></td>
+<td>Requires a human domain expert with business context; cannot be reliably automated</td>
+<td>Business rules, compliance, capability definitions</td>
+<td>Mandatory</td>
+</tr>
+</tbody>
+</table>
+<h3 id="applying-the-taxonomy">Applying the taxonomy</h3>
+<ol>
+<li><strong>During extraction:</strong> tag each entity with its confidence level as you
+   create it. Use a <code>confidence</code> attribute or extraction-log annotation.</li>
+<li><strong>During review:</strong> sort entities by confidence level, lowest first.
+   Inferential and manual entities MUST be reviewed before the extraction is
+   considered complete.</li>
+<li><strong>During maintenance:</strong> if an entity's confidence was originally
+   <em>inferential</em> and a domain expert has validated it, promote it to
+   <em>heuristic</em> or <em>deterministic</em> as appropriate.</li>
+</ol>
+<h3 id="confidence-by-extraction-technique">Confidence by extraction technique</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>Typical confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>File system traversal</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>AST parsing</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Dependency manifest parsing</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Database schema extraction</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>API schema parsing</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>CI/CD config parsing</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Test file analysis</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Import/include analysis</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Call graph construction</td>
+<td>Deterministic</td>
+</tr>
+<tr>
+<td>Data flow analysis</td>
+<td>Heuristic</td>
+</tr>
+<tr>
+<td>Package/directory heuristics</td>
+<td>Heuristic</td>
+</tr>
+<tr>
+<td>Naming convention analysis</td>
+<td>Heuristic</td>
+</tr>
+<tr>
+<td>Deployment manifest parsing</td>
+<td>Heuristic</td>
+</tr>
+<tr>
+<td>LLM semantic inference (domain)</td>
+<td>Inferential</td>
+</tr>
+<tr>
+<td>LLM semantic inference (business)</td>
+<td>Inferential</td>
+</tr>
+<tr>
+<td>LLM document analysis</td>
+<td>Inferential</td>
+</tr>
+<tr>
+<td>Runtime analysis (APM/traces)</td>
+<td>Heuristic</td>
+</tr>
+<tr>
+<td>Manual expert review</td>
+<td>Manual</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="115-quick-reference-required-attributes-summary">11.5 Quick-Reference: Required Attributes Summary</h2>
+<p>The following classes have attributes marked <code>required: true</code> beyond the
+universal <code>id</code> and <code>name</code> inherited from <strong>NamedEntity</strong>. If a class is not
+listed here, only <code>id</code> and <code>name</code> are mandatory.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Required attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Aggregate</strong></td>
+<td><code>has_root_entity</code></td>
+</tr>
+<tr>
+<td><strong>Attribute</strong></td>
+<td><code>data_type</code></td>
+</tr>
+<tr>
+<td><strong>AuditEntry</strong></td>
+<td><code>timestamp</code></td>
+</tr>
+<tr>
+<td><strong>BuildArtifact</strong></td>
+<td><code>artifact_type</code></td>
+</tr>
+<tr>
+<td><strong>BuildPipeline</strong></td>
+<td><code>pipeline_type</code></td>
+</tr>
+<tr>
+<td><strong>CallableUnit</strong></td>
+<td><code>callable_type</code></td>
+</tr>
+<tr>
+<td><strong>CodeContainer</strong></td>
+<td><code>container_path</code></td>
+</tr>
+<tr>
+<td><strong>ConcurrencyPattern</strong></td>
+<td><code>pattern_type</code></td>
+</tr>
+<tr>
+<td><strong>ConcurrencyPrimitive</strong></td>
+<td><code>primitive_type</code></td>
+</tr>
+<tr>
+<td><strong>DataElement</strong></td>
+<td><code>data_type</code></td>
+</tr>
+<tr>
+<td><strong>DataPipeline</strong></td>
+<td><code>pipeline_type</code></td>
+</tr>
+<tr>
+<td><strong>DataPipelineStep</strong></td>
+<td><code>step_type</code></td>
+</tr>
+<tr>
+<td><strong>DataStructure</strong></td>
+<td><code>structure_type</code></td>
+</tr>
+<tr>
+<td><strong>DatabaseConstraint</strong></td>
+<td><code>constraint_type</code></td>
+</tr>
+<tr>
+<td><strong>DatabaseIndex</strong></td>
+<td><code>index_type</code></td>
+</tr>
+<tr>
+<td><strong>DomainRelationship</strong></td>
+<td><code>cardinality</code></td>
+</tr>
+<tr>
+<td><strong>EncapsulationUnit</strong></td>
+<td><code>encapsulation_type</code></td>
+</tr>
+<tr>
+<td><strong>ErrorModel</strong></td>
+<td><code>strategy</code></td>
+</tr>
+<tr>
+<td><strong>FileOperation</strong></td>
+<td><code>operation_type</code></td>
+</tr>
+<tr>
+<td><strong>IaCDefinition</strong></td>
+<td><code>tool</code></td>
+</tr>
+<tr>
+<td><strong>IaCResource</strong></td>
+<td><code>resource_type</code></td>
+</tr>
+<tr>
+<td><strong>IPCConnection</strong></td>
+<td><code>mechanism</code></td>
+</tr>
+<tr>
+<td><strong>JobStep</strong></td>
+<td><code>step_type</code></td>
+</tr>
+<tr>
+<td><strong>KnownVulnerability</strong></td>
+<td><code>severity</code></td>
+</tr>
+<tr>
+<td><strong>MemoryModel</strong></td>
+<td><code>primary_model</code></td>
+</tr>
+<tr>
+<td><strong>MLModel</strong></td>
+<td><code>model_type</code></td>
+</tr>
+<tr>
+<td><strong>MLModelMetric</strong></td>
+<td><code>metric_name</code></td>
+</tr>
+<tr>
+<td><strong>OwnershipAnnotation</strong></td>
+<td><code>ownership</code></td>
+</tr>
+<tr>
+<td><strong>PackageDependency</strong></td>
+<td><code>package_name</code></td>
+</tr>
+<tr>
+<td><strong>PackageManager</strong></td>
+<td><code>manager_type</code></td>
+</tr>
+<tr>
+<td><strong>Parameter</strong></td>
+<td><code>data_type</code></td>
+</tr>
+<tr>
+<td><strong>PipelineStage</strong></td>
+<td><code>stage_type</code></td>
+</tr>
+<tr>
+<td><strong>PreprocessorDirective</strong></td>
+<td><code>directive_type</code></td>
+</tr>
+<tr>
+<td><strong>Route</strong></td>
+<td><code>path_pattern</code></td>
+</tr>
+<tr>
+<td><strong>ScreenDefinition</strong></td>
+<td><code>screen_type</code></td>
+</tr>
+<tr>
+<td><strong>StateStore</strong></td>
+<td><code>management_type</code></td>
+</tr>
+<tr>
+<td><strong>StorageLocation</strong></td>
+<td><code>location_path</code></td>
+</tr>
+<tr>
+<td><strong>TestSuite</strong></td>
+<td><code>suite_type</code></td>
+</tr>
+<tr>
+<td><strong>Transition</strong></td>
+<td><code>transitions_from_state</code>, <code>transitions_to_state</code></td>
+</tr>
+<tr>
+<td><strong>TypeExpression</strong></td>
+<td><code>type_kind</code></td>
+</tr>
+<tr>
+<td><strong>UIComponent</strong></td>
+<td><code>component_type</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>End of reference appendix. Return to <a href="00-overview.html">00-overview.md</a> for the
+playbook table of contents.</em></p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

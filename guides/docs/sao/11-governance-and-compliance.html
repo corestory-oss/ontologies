@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 10: Governance and Compliance · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-10-governance-and-compliance">Section 10: Governance and Compliance</h1>
+<p>This section defines compliance requirements, controls, evidence, and risk assessments.</p>
+<h2 id="overview">Overview</h2>
+<p>The Governance and Compliance section provides frameworks for ensuring the system meets regulatory requirements, implements appropriate controls, and manages risks.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="compliancerequirement">ComplianceRequirement</h3>
+<p><strong>Definition</strong>: A regulatory or policy obligation.</p>
+<p><strong>Purpose</strong>: Documents requirements from compliance frameworks that the system must satisfy.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>framework</strong>: Compliance framework (GDPR, HIPAA, SOC2, PCI_DSS, ISO27001, SOX, CCPA, FEDRAMP)
+- <strong>controls</strong>: List of <code>Control</code> entities implementing this requirement
+- <strong>effective_date</strong>: When requirement became effective</p>
+<p><strong>Relationships</strong>:
+- <strong>applies_to_systems</strong>: <code>System</code> entities that must comply</p>
+<p><strong>Compliance Frameworks</strong>:</p>
+<h4 id="gdpr-general-data-protection-regulation">GDPR (General Data Protection Regulation)</h4>
+<p>European Union data protection and privacy regulation.
+- <strong>Key Requirements</strong>:
+  - Lawful basis for processing
+  - Data subject rights (access, erasure, portability)
+  - Data minimization
+  - Privacy by design
+  - Breach notification (72 hours)</p>
+<h4 id="hipaa-health-insurance-portability-and-accountability-act">HIPAA (Health Insurance Portability and Accountability Act)</h4>
+<p>US healthcare data privacy and security regulation.
+- <strong>Key Requirements</strong>:
+  - Protected Health Information (PHI) safeguards
+  - Access controls and audit trails
+  - Encryption of PHI
+  - Business associate agreements
+  - Breach notification</p>
+<h4 id="soc-2-service-organization-control-2">SOC 2 (Service Organization Control 2)</h4>
+<p>Security, availability, and confidentiality framework.
+- <strong>Trust Service Criteria</strong>:
+  - Security
+  - Availability
+  - Processing Integrity
+  - Confidentiality
+  - Privacy</p>
+<h4 id="pci-dss-payment-card-industry-data-security-standard">PCI-DSS (Payment Card Industry Data Security Standard)</h4>
+<p>Credit card data security standard.
+- <strong>Key Requirements</strong>:
+  - Secure network and systems
+  - Protect cardholder data
+  - Access control measures
+  - Network monitoring
+  - Security policy</p>
+<h4 id="iso-27001">ISO 27001</h4>
+<p>Information security management system standard.
+- <strong>Key Requirements</strong>:
+  - Risk assessment
+  - Security controls (Annex A)
+  - Management review
+  - Continuous improvement
+  - Documentation</p>
+<h4 id="sox-sarbanes-oxley-act">SOX (Sarbanes-Oxley Act)</h4>
+<p>US financial reporting and corporate governance regulation.
+- <strong>Key Requirements</strong>:
+  - Internal controls for financial reporting
+  - Audit trails
+  - Segregation of duties
+  - Change management</p>
+<h4 id="ccpa-california-consumer-privacy-act">CCPA (California Consumer Privacy Act)</h4>
+<p>California consumer privacy regulation.
+- <strong>Key Requirements</strong>:
+  - Right to know what data is collected
+  - Right to delete personal information
+  - Right to opt-out of data sale
+  - Non-discrimination</p>
+<h4 id="fedramp-federal-risk-and-authorization-management-program">FedRAMP (Federal Risk and Authorization Management Program)</h4>
+<p>US federal cloud security program.
+- <strong>Key Requirements</strong>:
+  - Security controls (based on NIST 800-53)
+  - Continuous monitoring
+  - Annual assessment
+  - Incident response</p>
+<hr />
+<h3 id="control">Control</h3>
+<p><strong>Definition</strong>: A measure implementing a compliance requirement.</p>
+<p><strong>Purpose</strong>: Specific security or compliance controls implemented to satisfy requirements.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>control_id</strong>: Identifier (e.g., SOC2-CC6.1, ISO27001-A.9.2.1)
+- <strong>implementation</strong>: How control is implemented
+- <strong>evidence</strong>: List of <code>Evidence</code> entities demonstrating effectiveness
+- <strong>frequency</strong>: Assessment frequency (daily, monthly, quarterly, annual)</p>
+<p><strong>Relationships</strong>:
+- <strong>owned_by_actor</strong>: <code>Actor</code> responsible for this control
+- <strong>mitigates_risks</strong>: <code>RiskAssessment</code> entities mitigated</p>
+<p><strong>Control Types</strong>:</p>
+<h4 id="preventive-controls">Preventive Controls</h4>
+<p>Prevent security incidents from occurring.
+- Examples: Access controls, encryption, firewalls, input validation</p>
+<h4 id="detective-controls">Detective Controls</h4>
+<p>Detect security incidents after they occur.
+- Examples: Logging, monitoring, intrusion detection, audits</p>
+<h4 id="corrective-controls">Corrective Controls</h4>
+<p>Correct issues after detection.
+- Examples: Incident response, patching, backups, recovery procedures</p>
+<h4 id="administrative-controls">Administrative Controls</h4>
+<p>Policies, procedures, and training.
+- Examples: Security policies, training programs, background checks</p>
+<h4 id="technical-controls">Technical Controls</h4>
+<p>Technology-based controls.
+- Examples: Encryption, authentication, firewalls, antivirus</p>
+<h4 id="physical-controls">Physical Controls</h4>
+<p>Physical security measures.
+- Examples: Locks, badges, surveillance, environmental controls</p>
+<p><strong>Example Controls</strong>:</p>
+<p><strong>SOC2 CC6.1 - Logical Access</strong>:
+- Control: Multi-factor authentication required for all administrative access
+- Implementation: Enforce MFA via identity provider for admin roles
+- Evidence: MFA enrollment reports, access logs showing MFA verification
+- Frequency: Quarterly review</p>
+<p><strong>PCI-DSS 3.4 - Encryption of Cardholder Data</strong>:
+- Control: Encrypt cardholder data at rest using AES-256
+- Implementation: Database-level encryption for payment_methods table
+- Evidence: Encryption configuration, key management logs
+- Frequency: Annual audit</p>
+<p><strong>GDPR Article 32 - Security of Processing</strong>:
+- Control: Encryption of personal data in transit
+- Implementation: TLS 1.3 for all API endpoints
+- Evidence: SSL/TLS scan reports, certificate management logs
+- Frequency: Monthly scans</p>
+<hr />
+<h3 id="evidence">Evidence</h3>
+<p><strong>Definition</strong>: Proof that a control is operating effectively.</p>
+<p><strong>Purpose</strong>: Demonstrates to auditors that controls are implemented and effective.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>evidence_type</strong>: Type of evidence (screenshot, log export, test result, policy document)
+- <strong>collected_at</strong>: Collection timestamp
+- <strong>artifact_uri</strong>: Location of evidence artifact</p>
+<p><strong>Relationships</strong>:
+- <strong>verified_by_actor</strong>: <code>Actor</code> who verified the evidence</p>
+<p><strong>Types of Evidence</strong>:</p>
+<h4 id="screenshots">Screenshots</h4>
+<p>Visual proof of configurations or settings.
+- Examples: Security group rules, MFA settings, encryption enabled</p>
+<h4 id="log-exports">Log Exports</h4>
+<p>Extracted log files demonstrating control operation.
+- Examples: Access logs, authentication logs, change logs</p>
+<h4 id="test-results">Test Results</h4>
+<p>Results from automated or manual testing.
+- Examples: Vulnerability scans, penetration tests, security assessments</p>
+<h4 id="policy-documents">Policy Documents</h4>
+<p>Written policies and procedures.
+- Examples: Security policy, incident response plan, acceptable use policy</p>
+<h4 id="attestations">Attestations</h4>
+<p>Signed statements from responsible parties.
+- Examples: Background check confirmations, training completion certificates</p>
+<h4 id="automated-reports">Automated Reports</h4>
+<p>Reports from security tools and systems.
+- Examples: SIEM reports, compliance dashboards, configuration baselines</p>
+<p><strong>Evidence Best Practices</strong>:
+1. <strong>Automated Collection</strong>: Automate evidence collection when possible
+2. <strong>Timestamping</strong>: Timestamp all evidence
+3. <strong>Integrity</strong>: Protect evidence from tampering
+4. <strong>Retention</strong>: Retain evidence per compliance requirements
+5. <strong>Accessibility</strong>: Make evidence accessible for audits</p>
+<hr />
+<h3 id="riskassessment">RiskAssessment</h3>
+<p><strong>Definition</strong>: An evaluation of threats and vulnerabilities.</p>
+<p><strong>Purpose</strong>: Identify, analyze, and prioritize risks to the system.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>assessed_at</strong>: Assessment date
+- <strong>risk_level</strong>: Overall risk level (Low, Medium, High, Critical)
+- <strong>threats</strong>: List of identified threats
+- <strong>vulnerabilities</strong>: List of identified vulnerabilities
+- <strong>residual_risk</strong>: Remaining risk after mitigations</p>
+<p><strong>Relationships</strong>:
+- <strong>mitigated_by_controls</strong>: <code>Control</code> entities mitigating risks
+- <strong>assesses_system</strong>: <code>System</code> being assessed</p>
+<p><strong>Risk Assessment Process</strong>:</p>
+<ol>
+<li>
+<p><strong>Asset Identification</strong>
+   Identify assets to protect (data, systems, services)</p>
+</li>
+<li>
+<p><strong>Threat Identification</strong>
+   Identify potential threats</p>
+</li>
+<li>Internal threats (malicious insiders, human error)</li>
+<li>External threats (hackers, malware, DDoS)</li>
+<li>
+<p>Environmental threats (natural disasters, power outages)</p>
+</li>
+<li>
+<p><strong>Vulnerability Identification</strong>
+   Identify weaknesses that threats could exploit</p>
+</li>
+<li>Software vulnerabilities</li>
+<li>Misconfigurations</li>
+<li>Weak access controls</li>
+<li>
+<p>Social engineering susceptibility</p>
+</li>
+<li>
+<p><strong>Risk Analysis</strong>
+   Assess likelihood and impact of each risk</p>
+</li>
+<li><strong>Likelihood</strong>: Probability of occurrence (Rare, Unlikely, Possible, Likely, Almost Certain)</li>
+<li><strong>Impact</strong>: Consequences if realized (Insignificant, Minor, Moderate, Major, Catastrophic)</li>
+<li>
+<p><strong>Risk Level</strong>: Likelihood × Impact</p>
+</li>
+<li>
+<p><strong>Risk Evaluation</strong>
+   Determine which risks require treatment</p>
+</li>
+<li><strong>Accept</strong>: Accept low risks</li>
+<li><strong>Mitigate</strong>: Implement controls to reduce risk</li>
+<li><strong>Transfer</strong>: Transfer risk (insurance, outsourcing)</li>
+<li>
+<p><strong>Avoid</strong>: Eliminate risk-causing activities</p>
+</li>
+<li>
+<p><strong>Control Implementation</strong>
+   Implement controls to mitigate risks</p>
+</li>
+<li>
+<p><strong>Residual Risk Assessment</strong>
+   Assess remaining risk after controls</p>
+</li>
+<li>
+<p><strong>Documentation</strong>
+   Document assessment, decisions, and controls</p>
+</li>
+</ol>
+<p><strong>Risk Matrix Example</strong>:</p>
+<pre><code>Impact →
+  Catastrophic: L, M, H, C, C
+  Major:        L, M, H, H, C
+  Moderate:     L, M, M, H, H
+  Minor:        L, L, M, M, H
+  Insignificant:L, L, L, M, M
+
+                ↑ Likelihood
+                Rare, Unlikely, Possible, Likely, Almost Certain
+
+L = Low risk
+M = Medium risk
+H = High risk
+C = Critical risk
+</code></pre>
+<p><strong>Example Risk Assessment</strong>:</p>
+<p><strong>Risk</strong>: Unauthorized access to customer PII
+- <strong>Threat</strong>: External attacker exploiting weak authentication
+- <strong>Vulnerability</strong>: Single-factor authentication for user accounts
+- <strong>Likelihood</strong>: Likely (attacks are common)
+- <strong>Impact</strong>: Major (data breach, regulatory fines, reputation damage)
+- <strong>Risk Level</strong>: HIGH
+- <strong>Controls</strong>:
+  - Implement multi-factor authentication
+  - Enforce strong password policy
+  - Monitor for suspicious login attempts
+  - Encrypt PII at rest and in transit
+- <strong>Residual Risk</strong>: MEDIUM (controls reduce but don't eliminate risk)</p>
+<hr />
+<h2 id="governance-framework">Governance Framework</h2>
+<h3 id="policy-hierarchy">Policy Hierarchy</h3>
+<ol>
+<li><strong>Policies</strong>: High-level statements (Security Policy, Privacy Policy)</li>
+<li><strong>Standards</strong>: Specific requirements (Password Standard, Encryption Standard)</li>
+<li><strong>Procedures</strong>: Step-by-step instructions (Incident Response Procedure)</li>
+<li><strong>Guidelines</strong>: Recommendations and best practices</li>
+</ol>
+<h3 id="roles-and-responsibilities">Roles and Responsibilities</h3>
+<ul>
+<li><strong>Chief Information Security Officer (CISO)</strong>: Overall security responsibility</li>
+<li><strong>Data Protection Officer (DPO)</strong>: Privacy and data protection</li>
+<li><strong>Compliance Officer</strong>: Regulatory compliance</li>
+<li><strong>Control Owners</strong>: Responsible for specific controls</li>
+<li><strong>Auditors</strong>: Independent verification</li>
+</ul>
+<h3 id="governance-processes">Governance Processes</h3>
+<ul>
+<li><strong>Risk Management</strong>: Ongoing risk assessment and treatment</li>
+<li><strong>Compliance Management</strong>: Track and demonstrate compliance</li>
+<li><strong>Audit Management</strong>: Coordinate and respond to audits</li>
+<li><strong>Incident Management</strong>: Handle security incidents</li>
+<li><strong>Change Management</strong>: Control changes to systems and controls</li>
+</ul>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="compliance">Compliance</h3>
+<ol>
+<li><strong>Framework Mapping</strong>: Map requirements to controls</li>
+<li><strong>Continuous Monitoring</strong>: Monitor controls continuously</li>
+<li><strong>Regular Audits</strong>: Conduct internal audits</li>
+<li><strong>Evidence Collection</strong>: Automate evidence collection</li>
+<li><strong>Gap Analysis</strong>: Identify and address gaps</li>
+</ol>
+<h3 id="control-implementation">Control Implementation</h3>
+<ol>
+<li><strong>Defense in Depth</strong>: Layer multiple controls</li>
+<li><strong>Automation</strong>: Automate controls when possible</li>
+<li><strong>Testing</strong>: Regularly test control effectiveness</li>
+<li><strong>Documentation</strong>: Document all controls</li>
+<li><strong>Ownership</strong>: Assign clear ownership</li>
+</ol>
+<h3 id="risk-management">Risk Management</h3>
+<ol>
+<li><strong>Regular Assessments</strong>: Conduct risk assessments regularly</li>
+<li><strong>Threat Intelligence</strong>: Monitor emerging threats</li>
+<li><strong>Vulnerability Management</strong>: Scan and remediate vulnerabilities</li>
+<li><strong>Risk Register</strong>: Maintain centralized risk register</li>
+<li><strong>Treatment Plans</strong>: Document risk treatment decisions</li>
+</ol>
+<h3 id="audit-readiness">Audit Readiness</h3>
+<ol>
+<li><strong>Continuous Evidence</strong>: Collect evidence continuously</li>
+<li><strong>Documentation</strong>: Maintain complete documentation</li>
+<li><strong>Mock Audits</strong>: Conduct internal mock audits</li>
+<li><strong>Remediation</strong>: Address findings promptly</li>
+<li><strong>Collaboration</strong>: Work cooperatively with auditors</li>
+</ol>
+<hr />
+<h2 id="sao-v20-changes">SAO v2.0 Changes</h2>
+<p>In SAO v2.0, relationship attributes that were previously modeled as standalone linkML relationship classes have been inlined directly into the domain classes. For example, <code>ComplianceRequirement</code> now carries <code>applies_to_systems</code> as a direct attribute, <code>Control</code> carries <code>mitigates_risks</code>, and <code>RiskAssessment</code> carries <code>assesses_system</code>. This simplifies navigation and reduces the number of intermediate relationship entities.</p>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Systems must comply with requirements</li>
+<li><strong>Section 2 (Actors and Identity)</strong>: Controls owned by actors</li>
+<li><strong>Section 3 (Authorization)</strong>: Access controls implement security requirements</li>
+<li><strong>Section 6 (Data Management)</strong>: Data classification and retention for compliance</li>
+<li><strong>Section 9 (Observability)</strong>: Audit logs provide evidence</li>
+</ul>
+<hr />
+<h2 id="example-gdpr-compliance">Example: GDPR Compliance</h2>
+<pre><code>ComplianceRequirement: GDPR Article 32 - Security of Processing
+  Framework: GDPR
+  Effective Date: 2018-05-25
+
+  Controls:
+    Control: Encryption of Personal Data
+      ID: GDPR-32-ENC
+      Implementation: AES-256 encryption for PII at rest, TLS 1.3 in transit
+      Owner: CISO
+      Evidence:
+        - Database encryption configuration screenshot
+        - SSL/TLS scan report (monthly)
+        - Key management audit log
+      Frequency: Monthly
+
+    Control: Access Control to Personal Data
+      ID: GDPR-32-AC
+      Implementation: RBAC with least privilege, MFA for admin access
+      Owner: Identity Team Lead
+      Evidence:
+        - Role definitions and assignments
+        - MFA enforcement report
+        - Access review logs (quarterly)
+      Frequency: Quarterly
+
+    Control: Regular Security Testing
+      ID: GDPR-32-TEST
+      Implementation: Quarterly penetration testing, monthly vulnerability scans
+      Owner: Security Team Lead
+      Evidence:
+        - Penetration test reports
+        - Vulnerability scan results
+        - Remediation tracking
+      Frequency: Quarterly (pen test), Monthly (vuln scan)
+
+RiskAssessment: GDPR Data Breach Risk
+  Assessed At: 2024-01-15
+  Risk Level: MEDIUM
+
+  Threats:
+    - External attacker targeting customer PII
+    - Insider threat (malicious employee)
+    - Accidental data exposure (misconfiguration)
+
+  Vulnerabilities:
+    - Public S3 buckets (historical issue)
+    - Insufficient logging of PII access
+
+  Controls:
+    - GDPR-32-ENC (Encryption)
+    - GDPR-32-AC (Access Control)
+    - GDPR-32-TEST (Security Testing)
+    - Automated S3 bucket policy enforcement
+    - SIEM monitoring for PII access
+
+  Residual Risk: LOW
+
+  Risk Treatment:
+    - Accept residual risk
+    - Review quarterly
+    - Cyber insurance policy covers data breach costs
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

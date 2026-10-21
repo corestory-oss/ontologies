@@ -1,0 +1,1106 @@
+{
+  "baseline_version": "2.1.0",
+  "counts": {
+    "contextual_declarations": 536,
+    "properties_with_inverse_claims": 435,
+    "accepted_pairs": 208,
+    "unresolved_groups": 7,
+    "excluded_properties": 19
+  },
+  "accepted_pairs": [
+    [
+      "https://ontologies.corestory.ai/sao/accepts_input_schema",
+      "https://ontologies.corestory.ai/sao/defines_operation_input"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/accessible_by_roles",
+      "https://ontologies.corestory.ai/sao/can_access_features"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/affected_by_directives",
+      "https://ontologies.corestory.ai/sao/directive_affects_encapsulation_units"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/affected_by_incidents",
+      "https://ontologies.corestory.ai/sao/affects_services"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/affected_in_audit",
+      "https://ontologies.corestory.ai/sao/affects_resource"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/aggregate_documented_by_artifacts",
+      "https://ontologies.corestory.ai/sao/documents_aggregate"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/aggregated_by",
+      "https://ontologies.corestory.ai/sao/aggregates_entities"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/allocated_in_step",
+      "https://ontologies.corestory.ai/sao/allocates_datasets"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/allowed_by_permissions",
+      "https://ontologies.corestory.ai/sao/allows_actions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/allowed_in_states",
+      "https://ontologies.corestory.ai/sao/allows_actions_in_state"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/annotated_by",
+      "https://ontologies.corestory.ai/sao/annotates_element"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/annotates_data_element",
+      "https://ontologies.corestory.ai/sao/has_ownership_annotations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/applies_to_resource_types",
+      "https://ontologies.corestory.ai/sao/governed_by_permissions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/applies_to_systems",
+      "https://ontologies.corestory.ai/sao/must_comply_with"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/artifact_produced_by_pipeline",
+      "https://ontologies.corestory.ai/sao/pipeline_produces_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/artifact_stored_in_registry",
+      "https://ontologies.corestory.ai/sao/stores_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/assessed_by",
+      "https://ontologies.corestory.ai/sao/assesses_system"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/assigned_to_identities",
+      "https://ontologies.corestory.ai/sao/has_roles"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/audit_actions_performed",
+      "https://ontologies.corestory.ai/sao/audit_performed_by_actor"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/auditlog_governed_by_retention",
+      "https://ontologies.corestory.ai/sao/governs_audit_logs"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_aggregate",
+      "https://ontologies.corestory.ai/sao/has_value_objects"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_interface",
+      "https://ontologies.corestory.ai/sao/has_endpoints"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_suite",
+      "https://ontologies.corestory.ai/sao/contains_test_cases"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_system",
+      "https://ontologies.corestory.ai/sao/has_integrations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_tenant",
+      "https://ontologies.corestory.ai/sao/contains_identities"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/belongs_to_trace",
+      "https://ontologies.corestory.ai/sao/contains_spans"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/callable_affected_by_directives",
+      "https://ontologies.corestory.ai/sao/directive_affects_callables"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/child_of_span",
+      "https://ontologies.corestory.ai/sao/parent_of_spans"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/classified_as_type",
+      "https://ontologies.corestory.ai/sao/classifies_resources"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/collection_structured_by_schema",
+      "https://ontologies.corestory.ai/sao/structures_collections"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/compensated_by_step",
+      "https://ontologies.corestory.ai/sao/compensates_for_step"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/component_documented_by_artifacts",
+      "https://ontologies.corestory.ai/sao/documents_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/component_serves_model",
+      "https://ontologies.corestory.ai/sao/model_served_by_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/component_uses_concurrency_pattern",
+      "https://ontologies.corestory.ai/sao/pattern_used_by_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/configures_deployments",
+      "https://ontologies.corestory.ai/sao/deployment_configured_by"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/configures_environments",
+      "https://ontologies.corestory.ai/sao/env_configured_by"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/conforms_to_schema",
+      "https://ontologies.corestory.ai/sao/validates_records"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_block",
+      "https://ontologies.corestory.ai/sao/contains_statements"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_bounded_context",
+      "https://ontologies.corestory.ai/sao/contains_aggregates"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_callable",
+      "https://ontologies.corestory.ai/sao/contains_blocks"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_context",
+      "https://ontologies.corestory.ai/sao/contains_modules"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_module",
+      "https://ontologies.corestory.ai/sao/contains_components"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_storage_location",
+      "https://ontologies.corestory.ai/sao/contains_containers"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_structure",
+      "https://ontologies.corestory.ai/sao/structure_contains_elements"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contained_in_system",
+      "https://ontologies.corestory.ai/sao/contains_bounded_contexts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_code_elements",
+      "https://ontologies.corestory.ai/sao/defined_in_container"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_job_steps",
+      "https://ontologies.corestory.ai/sao/step_in_job"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_knowledge_artifacts",
+      "https://ontologies.corestory.ai/sao/stored_in_container"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_locations",
+      "https://ontologies.corestory.ai/sao/has_parent_location"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_screen_fields",
+      "https://ontologies.corestory.ai/sao/field_on_screen"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/contains_screens",
+      "https://ontologies.corestory.ai/sao/part_of_ui"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/context_documented_by_artifacts",
+      "https://ontologies.corestory.ai/sao/documents_bounded_context"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/controlled_by_configs",
+      "https://ontologies.corestory.ai/sao/controls_features"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/coverage_for_component",
+      "https://ontologies.corestory.ai/sao/has_coverage"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/coverage_for_module",
+      "https://ontologies.corestory.ai/sao/module_has_coverage"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/credential_for_identity",
+      "https://ontologies.corestory.ai/sao/has_credentials"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/current_for_entities",
+      "https://ontologies.corestory.ai/sao/in_state"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/dataset_used_by_pipeline",
+      "https://ontologies.corestory.ai/sao/pipeline_uses_dataset"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/declared_type",
+      "https://ontologies.corestory.ai/sao/type_of_data_elements"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/defined_by_contract",
+      "https://ontologies.corestory.ai/sao/defines_interfaces"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/defines_operation_output",
+      "https://ontologies.corestory.ai/sao/produces_output_schema"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/depended_on_by_jobs",
+      "https://ontologies.corestory.ai/sao/depends_on_jobs"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/depended_on_by_module",
+      "https://ontologies.corestory.ai/sao/depends_on_module"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/depended_on_by_service",
+      "https://ontologies.corestory.ai/sao/depends_on_service"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/dependency_of_module",
+      "https://ontologies.corestory.ai/sao/module_has_dependencies"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/deployed_as",
+      "https://ontologies.corestory.ai/sao/deploys_service"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/deployed_by_pipelines",
+      "https://ontologies.corestory.ai/sao/pipeline_deploys_to_environments"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/deployed_in_deployments",
+      "https://ontologies.corestory.ai/sao/deploys_unit"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/deployed_in_deployments_as_release",
+      "https://ontologies.corestory.ai/sao/deploys_release"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/deployed_in_environment",
+      "https://ontologies.corestory.ai/sao/hosts_deployments"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/derived_from_records",
+      "https://ontologies.corestory.ai/sao/source_of_lineage"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/directive_defined_in_container",
+      "https://ontologies.corestory.ai/sao/has_preprocessor_directives"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/documents_domain_entity",
+      "https://ontologies.corestory.ai/sao/entity_documented_by_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/documents_integration",
+      "https://ontologies.corestory.ai/sao/integration_documented_by_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/documents_module",
+      "https://ontologies.corestory.ai/sao/module_documented_by_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/documents_service",
+      "https://ontologies.corestory.ai/sao/service_documented_by_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/documents_system",
+      "https://ontologies.corestory.ai/sao/system_documented_by_artifacts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/downstream_from",
+      "https://ontologies.corestory.ai/sao/upstream_from"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/emits_events",
+      "https://ontologies.corestory.ai/sao/emitted_by_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/emits_events_from_action",
+      "https://ontologies.corestory.ai/sao/emitted_by_action"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/emits_metric",
+      "https://ontologies.corestory.ai/sao/metric_emitted_by_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/enabled_by_capabilities",
+      "https://ontologies.corestory.ai/sao/enables_features"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/encapsulation_unit_renders_ui",
+      "https://ontologies.corestory.ai/sao/ui_implements_encapsulation_unit"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/enforced_by_invariant_rules",
+      "https://ontologies.corestory.ai/sao/enforces_aggregate_invariants"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/enforced_by_system",
+      "https://ontologies.corestory.ai/sao/enforces_policies"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/error_model_for_languages",
+      "https://ontologies.corestory.ai/sao/has_default_error_model"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/error_model_for_module",
+      "https://ontologies.corestory.ai/sao/modules_using_error_model"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/escalated_from_alerts",
+      "https://ontologies.corestory.ai/sao/escalates_to_incident"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/evaluated_by_policies",
+      "https://ontologies.corestory.ai/sao/evaluates_permissions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/event_structured_by_schema",
+      "https://ontologies.corestory.ai/sao/structures_events"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/executed_by_job_steps",
+      "https://ontologies.corestory.ai/sao/step_executes_program"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/executed_by_operation",
+      "https://ontologies.corestory.ai/sao/executes_operation_actions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/executed_during_transition",
+      "https://ontologies.corestory.ai/sao/executes_actions_on_transition"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/executed_in_step",
+      "https://ontologies.corestory.ai/sao/executes_actions_in_step"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/executes_actions",
+      "https://ontologies.corestory.ai/sao/executes_in_transaction"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/exposed_by_component",
+      "https://ontologies.corestory.ai/sao/exposes_operations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/exposed_by_service",
+      "https://ontologies.corestory.ai/sao/exposes_endpoints"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/exposed_by_system",
+      "https://ontologies.corestory.ai/sao/exposes_interfaces"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/exposes_as_resource",
+      "https://ontologies.corestory.ai/sao/represents_entity"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/extended_by_units",
+      "https://ontologies.corestory.ai/sao/extends_units"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/file_defined_in_container",
+      "https://ontologies.corestory.ai/sao/has_file_definitions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/followed_by_steps",
+      "https://ontologies.corestory.ai/sao/follows_step"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/governed_by_lifecycle",
+      "https://ontologies.corestory.ai/sao/governs_entities"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/governed_by_retention_policy",
+      "https://ontologies.corestory.ai/sao/governs_collections"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/governed_by_rules",
+      "https://ontologies.corestory.ai/sao/governs_domain_entities"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/governs_integrations",
+      "https://ontologies.corestory.ai/sao/integration_governed_by_contract"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/governs_logs",
+      "https://ontologies.corestory.ai/sao/log_governed_by_retention"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/granted_by_roles",
+      "https://ontologies.corestory.ai/sao/grants_permissions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/guarded_by_rules",
+      "https://ontologies.corestory.ai/sao/guards_transitions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/guards_routes",
+      "https://ontologies.corestory.ai/sao/route_guarded_by"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/handled_by_callables",
+      "https://ontologies.corestory.ai/sao/handles_exception_types"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_blocks",
+      "https://ontologies.corestory.ai/sao/has_parent_block"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_elements",
+      "https://ontologies.corestory.ai/sao/has_parent_element"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_exceptions",
+      "https://ontologies.corestory.ai/sao/has_parent_exception"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_routes",
+      "https://ontologies.corestory.ai/sao/has_parent_route"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_structures",
+      "https://ontologies.corestory.ai/sao/has_parent_structure"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_child_ui_components",
+      "https://ontologies.corestory.ai/sao/has_parent_ui_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_children",
+      "https://ontologies.corestory.ai/sao/has_parent"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_default_memory_model",
+      "https://ontologies.corestory.ai/sao/memory_model_for_languages"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_identities",
+      "https://ontologies.corestory.ai/sao/represents_actor"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_identity_members",
+      "https://ontologies.corestory.ai/sao/member_of_organizations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_incoming_ipc_connections",
+      "https://ontologies.corestory.ai/sao/has_target_program"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_incoming_relationships",
+      "https://ontologies.corestory.ai/sao/has_target_entity"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_indexes",
+      "https://ontologies.corestory.ai/sao/index_on_collection"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_lineage",
+      "https://ontologies.corestory.ai/sao/tracks_record"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_organizations",
+      "https://ontologies.corestory.ai/sao/organization_in_tenant"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_outgoing_ipc_connections",
+      "https://ontologies.corestory.ai/sao/has_source_program"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_outgoing_relationships",
+      "https://ontologies.corestory.ai/sao/has_source_entity"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_parameters",
+      "https://ontologies.corestory.ai/sao/parameter_of"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_references",
+      "https://ontologies.corestory.ai/sao/referencing_container"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_return_type",
+      "https://ontologies.corestory.ai/sao/return_type_of_callables"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_root_entity",
+      "https://ontologies.corestory.ai/sao/is_root_of_aggregate"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_screen_definitions",
+      "https://ontologies.corestory.ai/sao/screen_defined_in_container"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_settings",
+      "https://ontologies.corestory.ai/sao/setting_for_tenant"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_transitive_dependencies",
+      "https://ontologies.corestory.ai/sao/transitive_dependency_of"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/has_type",
+      "https://ontologies.corestory.ai/sao/type_of_parameters"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/hosted_on_infrastructure",
+      "https://ontologies.corestory.ai/sao/hosts_datastores"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/iac_provisions_infrastructure",
+      "https://ontologies.corestory.ai/sao/infrastructure_provisioned_by_iac"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/iac_used_by_pipeline",
+      "https://ontologies.corestory.ai/sao/pipeline_uses_iac"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/implemented_by_callables",
+      "https://ontologies.corestory.ai/sao/implements_operation"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/implemented_by_code",
+      "https://ontologies.corestory.ai/sao/implements_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/implemented_by_units",
+      "https://ontologies.corestory.ai/sao/implements_contracts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/imported_via",
+      "https://ontologies.corestory.ai/sao/imports_symbols"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/included_in_containers",
+      "https://ontologies.corestory.ai/sao/includes_definitions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/inherited_by_roles",
+      "https://ontologies.corestory.ai/sao/inherits_from_role"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/initial_for_lifecycle",
+      "https://ontologies.corestory.ai/sao/starts_with_state"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/integrated_via",
+      "https://ontologies.corestory.ai/sao/integrates_with_system"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/invoked_by_callables",
+      "https://ontologies.corestory.ai/sao/invokes_callables"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/ipc_passes_data",
+      "https://ontologies.corestory.ai/sao/passed_via_ipc"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/language_used_by_containers",
+      "https://ontologies.corestory.ai/sao/written_in_language"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/limited_by_scope",
+      "https://ontologies.corestory.ai/sao/limits_permissions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/managed_by_state",
+      "https://ontologies.corestory.ai/sao/manages_ui_components"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/manages_dependencies_for_module",
+      "https://ontologies.corestory.ai/sao/module_managed_by_package_manager"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_dataset_allocations",
+      "https://ontologies.corestory.ai/sao/maps_to_file_definition"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_directory",
+      "https://ontologies.corestory.ai/sao/maps_to_module"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_element",
+      "https://ontologies.corestory.ai/sao/maps_to_attribute"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_screen_fields",
+      "https://ontologies.corestory.ai/sao/maps_to_data_element"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_structure",
+      "https://ontologies.corestory.ai/sao/maps_to_domain_entity"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mapped_from_structure_vo",
+      "https://ontologies.corestory.ai/sao/maps_to_value_object"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/memory_model_for_module",
+      "https://ontologies.corestory.ai/sao/modules_using_memory_model"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/message_structured_by_schema",
+      "https://ontologies.corestory.ai/sao/structures_messages"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/mitigated_by_controls",
+      "https://ontologies.corestory.ai/sao/mitigates_risks"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/model_trained_by_pipeline",
+      "https://ontologies.corestory.ai/sao/pipeline_trains_model"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/model_uses_feature_store",
+      "https://ontologies.corestory.ai/sao/provides_features_to_models"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/module_tested_by_suites",
+      "https://ontologies.corestory.ai/sao/tests_module"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/monitored_by_alert_rules",
+      "https://ontologies.corestory.ai/sao/monitors_metrics"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/offered_on_screens",
+      "https://ontologies.corestory.ai/sao/offers_operations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/operation_tested_by_cases",
+      "https://ontologies.corestory.ai/sao/tests_operation"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/overridden_by_callables",
+      "https://ontologies.corestory.ai/sao/overrides_callable"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/owned_by_actor",
+      "https://ontologies.corestory.ai/sao/owns_controls"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/performed_by_actor",
+      "https://ontologies.corestory.ai/sao/performs_actions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/persisted_in_collection",
+      "https://ontologies.corestory.ai/sao/persists_structures"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/persisted_in_store",
+      "https://ontologies.corestory.ai/sao/store_file_definitions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/persisted_in_stores",
+      "https://ontologies.corestory.ai/sao/persists_aggregates"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/pipeline_reads_from_stores",
+      "https://ontologies.corestory.ai/sao/store_read_by_pipelines"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/pipeline_writes_to_stores",
+      "https://ontologies.corestory.ai/sao/store_written_by_pipelines"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/produced_by_aggregate",
+      "https://ontologies.corestory.ai/sao/produces_domain_events"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/program_uses_screens",
+      "https://ontologies.corestory.ai/sao/screen_used_by_programs"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/protected_by_breaker",
+      "https://ontologies.corestory.ai/sao/protects_integrations"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/protected_by_primitive",
+      "https://ontologies.corestory.ai/sao/protects_data_elements"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/provided_by_modules",
+      "https://ontologies.corestory.ai/sao/provides_capabilities"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/raised_by_callables",
+      "https://ontologies.corestory.ai/sao/raises_exception_types"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/realized_by_capabilities",
+      "https://ontologies.corestory.ai/sao/realizes_features"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/receives_integration_events",
+      "https://ontologies.corestory.ai/sao/targeted_at_services"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/recorded_in_audit",
+      "https://ontologies.corestory.ai/sao/records_action"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/referenced_by_containers",
+      "https://ontologies.corestory.ai/sao/references_containers"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/referenced_container",
+      "https://ontologies.corestory.ai/sao/referenced_via"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/renders_on_route",
+      "https://ontologies.corestory.ai/sao/route_renders_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/required_by_capabilities",
+      "https://ontologies.corestory.ai/sao/requires_permissions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/root_of_trace",
+      "https://ontologies.corestory.ai/sao/starts_with_span"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/runs_as_services",
+      "https://ontologies.corestory.ai/sao/runs_module"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/source_of_transitions",
+      "https://ontologies.corestory.ai/sao/transitions_from_state"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/stored_in_collection",
+      "https://ontologies.corestory.ai/sao/stores_records"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/structured_by_schema",
+      "https://ontologies.corestory.ai/sao/structures_resource_types"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/subscribed_by_subscriptions",
+      "https://ontologies.corestory.ai/sao/subscribes_to_event_types"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/target_of_transitions",
+      "https://ontologies.corestory.ai/sao/transitions_to_state"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/targeted_by_actions",
+      "https://ontologies.corestory.ai/sao/targets_resources"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/tested_by_cases",
+      "https://ontologies.corestory.ai/sao/tests_callable"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/tested_by_suites",
+      "https://ontologies.corestory.ai/sao/tests_component"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/triggered_by_events",
+      "https://ontologies.corestory.ai/sao/triggers_transitions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/triggered_by_rule",
+      "https://ontologies.corestory.ai/sao/triggers_alerts"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/triggered_by_workflow_events",
+      "https://ontologies.corestory.ai/sao/triggers_workflows"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/used_by_environments",
+      "https://ontologies.corestory.ai/sao/uses_infrastructure"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/used_by_integrations",
+      "https://ontologies.corestory.ai/sao/uses_adapter"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/validated_by_action_rules",
+      "https://ontologies.corestory.ai/sao/validates_actions"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/validated_by_contract",
+      "https://ontologies.corestory.ai/sao/validates_messages"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/validated_by_rules",
+      "https://ontologies.corestory.ai/sao/validates_attributes"
+    ],
+    [
+      "https://ontologies.corestory.ai/sao/verified_by_actor",
+      "https://ontologies.corestory.ai/sao/verifies_evidence"
+    ]
+  ],
+  "unresolved_groups": [
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/constraint_on_collection",
+        "https://ontologies.corestory.ai/sao/has_constraints"
+      ],
+      "reasons": [
+        "Global inverse would apply to Permission.has_constraints, but Constraint has no inverse property https://ontologies.corestory.ai/sao/constraint_on_collection"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/constraint_on_collection",
+          "inverse": "https://ontologies.corestory.ai/sao/has_constraints",
+          "declared_on": [
+            "DatabaseConstraint"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_constraints",
+          "inverse": "https://ontologies.corestory.ai/sao/constraint_on_collection",
+          "declared_on": [
+            "Collection",
+            "Permission (implied globally; no local inverse declaration)"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/contained_in_unit",
+        "https://ontologies.corestory.ai/sao/contains_callable_units"
+      ],
+      "reasons": [
+        "DataElement.contained_in_unit: EncapsulationUnit.contains_callable_units cannot point back to DataElement; range=['CallableUnit']",
+        "DataStructure.contained_in_unit: EncapsulationUnit.contains_callable_units cannot point back to DataStructure; range=['CallableUnit']",
+        "Parameter.contained_in_unit: EncapsulationUnit.contains_callable_units cannot point back to Parameter; range=['CallableUnit']"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/contained_in_unit",
+          "inverse": "https://ontologies.corestory.ai/sao/contains_callable_units",
+          "declared_on": [
+            "CallableUnit",
+            "DataElement",
+            "DataStructure",
+            "Parameter",
+            "global"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/contains_callable_units",
+          "inverse": "https://ontologies.corestory.ai/sao/contained_in_unit",
+          "declared_on": [
+            "EncapsulationUnit"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/contains_entries",
+        "https://ontologies.corestory.ai/sao/entry_in_audit_log",
+        "https://ontologies.corestory.ai/sao/entry_in_log"
+      ],
+      "reasons": [
+        "multiple inverse partners would equate distinct property IRIs"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/contains_entries",
+          "inverse": "https://ontologies.corestory.ai/sao/entry_in_audit_log",
+          "declared_on": [
+            "AuditLog"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/contains_entries",
+          "inverse": "https://ontologies.corestory.ai/sao/entry_in_log",
+          "declared_on": [
+            "Log"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/entry_in_audit_log",
+          "inverse": "https://ontologies.corestory.ai/sao/contains_entries",
+          "declared_on": [
+            "AuditEntry"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/entry_in_log",
+          "inverse": "https://ontologies.corestory.ai/sao/contains_entries",
+          "declared_on": [
+            "LogEntry"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/has_file_operations",
+        "https://ontologies.corestory.ai/sao/operates_on_file",
+        "https://ontologies.corestory.ai/sao/performed_in_callable"
+      ],
+      "reasons": [
+        "multiple inverse partners would equate distinct property IRIs"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_file_operations",
+          "inverse": "https://ontologies.corestory.ai/sao/operates_on_file",
+          "declared_on": [
+            "FileDefinition"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_file_operations",
+          "inverse": "https://ontologies.corestory.ai/sao/performed_in_callable",
+          "declared_on": [
+            "CallableUnit"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/operates_on_file",
+          "inverse": "https://ontologies.corestory.ai/sao/has_file_operations",
+          "declared_on": [
+            "FileOperation"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/performed_in_callable",
+          "inverse": "https://ontologies.corestory.ai/sao/has_file_operations",
+          "declared_on": [
+            "FileOperation"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/has_subscriptions",
+        "https://ontologies.corestory.ai/sao/subscribed_by_actor",
+        "https://ontologies.corestory.ai/sao/subscribes_to_interface"
+      ],
+      "reasons": [
+        "multiple inverse partners would equate distinct property IRIs"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_subscriptions",
+          "inverse": "https://ontologies.corestory.ai/sao/subscribed_by_actor",
+          "declared_on": [
+            "Actor",
+            "HumanActor",
+            "SystemActor"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_subscriptions",
+          "inverse": "https://ontologies.corestory.ai/sao/subscribes_to_interface",
+          "declared_on": [
+            "EventInterface"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/subscribed_by_actor",
+          "inverse": "https://ontologies.corestory.ai/sao/has_subscriptions",
+          "declared_on": [
+            "Subscription"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/subscribes_to_interface",
+          "inverse": "https://ontologies.corestory.ai/sao/has_subscriptions",
+          "declared_on": [
+            "Subscription"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/has_versions",
+        "https://ontologies.corestory.ai/sao/version_of_contract",
+        "https://ontologies.corestory.ai/sao/version_of_schema"
+      ],
+      "reasons": [
+        "multiple inverse partners would equate distinct property IRIs"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_versions",
+          "inverse": "https://ontologies.corestory.ai/sao/version_of_contract",
+          "declared_on": [
+            "Contract"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/has_versions",
+          "inverse": "https://ontologies.corestory.ai/sao/version_of_schema",
+          "declared_on": [
+            "Schema"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/version_of_contract",
+          "inverse": "https://ontologies.corestory.ai/sao/has_versions",
+          "declared_on": [
+            "ContractVersion"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/version_of_schema",
+          "inverse": "https://ontologies.corestory.ai/sao/has_versions",
+          "declared_on": [
+            "SchemaVersion"
+          ]
+        }
+      ]
+    },
+    {
+      "properties": [
+        "https://ontologies.corestory.ai/sao/used_by_callables",
+        "https://ontologies.corestory.ai/sao/uses_concurrency_primitives",
+        "https://ontologies.corestory.ai/sao/uses_file_definitions"
+      ],
+      "reasons": [
+        "multiple inverse partners would equate distinct property IRIs"
+      ],
+      "declarations": [
+        {
+          "property": "https://ontologies.corestory.ai/sao/used_by_callables",
+          "inverse": "https://ontologies.corestory.ai/sao/uses_concurrency_primitives",
+          "declared_on": [
+            "ConcurrencyPrimitive"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/used_by_callables",
+          "inverse": "https://ontologies.corestory.ai/sao/uses_file_definitions",
+          "declared_on": [
+            "FileDefinition"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/uses_concurrency_primitives",
+          "inverse": "https://ontologies.corestory.ai/sao/used_by_callables",
+          "declared_on": [
+            "CallableUnit"
+          ]
+        },
+        {
+          "property": "https://ontologies.corestory.ai/sao/uses_file_definitions",
+          "inverse": "https://ontologies.corestory.ai/sao/used_by_callables",
+          "declared_on": [
+            "CallableUnit"
+          ]
+        }
+      ]
+    }
+  ],
+  "note": "Historical declaration audit. Accepted means uniquely reciprocal names and resource-valued endpoints, also checked class-local ranges against named class ancestry. This is a declaration-consistency check, not a proof of arbitrary instance conformance."
+}

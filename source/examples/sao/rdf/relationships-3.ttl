@@ -1,0 +1,18 @@
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix ex: <https://example.org/saov3/> .
+
+# One generic predicate, distinct class pairings.
+ex:contract a sao:Contract ; sao:id "contract" ; sao:name "Contract" ; sao:has_versions ex:cv .
+ex:cv a sao:ContractVersion ; sao:id "cv" ; sao:name "Contract version" .
+ex:schema a sao:Schema ; sao:id "schema" ; sao:name "Schema" ; sao:has_versions ex:sv .
+ex:sv a sao:SchemaVersion ; sao:id "sv" ; sao:name "Schema version" .
+
+# One subscription has two different roles.
+ex:actor a sao:Actor ; sao:id "actor" ; sao:name "Actor" ; sao:owns_subscriptions ex:subscription .
+ex:interface a sao:EventInterface ; sao:id "interface" ; sao:name "Interface" ; sao:subscriptions_to_interface ex:subscription .
+ex:subscription a sao:Subscription ; sao:id "subscription" ; sao:name "Subscription" .
+
+# A callable uses multiple kinds of resources.
+ex:call a sao:CallableUnit ; sao:id "call" ; sao:name "Call" ; sao:callable_type "method" ; sao:uses ex:file, ex:lock .
+ex:file a sao:FileDefinition ; sao:id "file" ; sao:name "File" .
+ex:lock a sao:ConcurrencyPrimitive ; sao:id "lock" ; sao:name "Lock" ; sao:primitive_type "mutex" .

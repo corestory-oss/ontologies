@@ -1,0 +1,7 @@
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix ex: <https://example.org/sao/> .
+
+# The legacy id field remains a literal until its RDF-subject mapping is agreed.
+ex:system a sao:System ;
+    sao:id "example-system" ;
+    sao:name "Example system" .

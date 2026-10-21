@@ -1,0 +1,196 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/build
+name: sao-build
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  PipelineType:
+    description: Types of CI/CD pipelines
+    permissible_values:
+      build: {}
+      test: {}
+      deploy: {}
+      release: {}
+      integration: {}
+      delivery: {}
+      validation: {}
+
+  PipelineStageType:
+    description: Types of pipeline stages
+    permissible_values:
+      checkout: {}
+      build: {}
+      test: {}
+      lint: {}
+      security_scan: {}
+      package: {}
+      publish: {}
+      deploy: {}
+      approval: {}
+      rollback: {}
+      notify: {}
+
+  ArtifactType:
+    description: Types of build artifacts
+    permissible_values:
+      container_image: {}
+      binary: {}
+      archive: {}
+      package: {}
+      library: {}
+      documentation: {}
+      report: {}
+      load_module:
+        description: Mainframe load module
+
+
+classes:
+  BuildPipeline:
+    is_a: NamedEntity
+    description: >-
+      A CI/CD pipeline that automates build, test, and deployment processes.
+    attributes:
+      pipeline_type:
+        description: "Kind of pipeline."
+        range: PipelineType
+        required: true
+      platform:
+        description: "CI/CD platform (GitHub Actions, Jenkins, etc.)."
+        range: string
+      trigger:
+        description: "Trigger events."
+        range: string
+        multivalued: true
+      trigger_branches:
+        description: "Branches that trigger this pipeline."
+        range: string
+        multivalued: true
+      source_file:
+        description: "Pipeline definition file path."
+        range: string
+      has_stages:
+        description: "Pipeline stages."
+        range: PipelineStage
+        multivalued: true
+      timeout_minutes:
+        description: "Pipeline timeout."
+        range: integer
+      is_parallelizable:
+        description: "Whether stages can run in parallel."
+        range: boolean
+      pipeline_deploys_to_environments:
+        description: "Target environments."
+        range: Environment
+        multivalued: true
+        inverse: deployed_by_pipelines
+      pipeline_produces_artifacts:
+        description: "Artifacts produced."
+        range: BuildArtifact
+        multivalued: true
+        inverse: artifact_produced_by_pipeline
+      pipeline_uses_iac:
+        description: "IaC definitions used."
+        range: IaCDefinition
+        multivalued: true
+        inverse: iac_used_by_pipeline
+
+  PipelineStage:
+    is_a: NamedEntity
+    description: >-
+      A discrete stage within a CI/CD pipeline
+    attributes:
+      stage_type:
+        description: "Kind of stage."
+        range: PipelineStageType
+        required: true
+      order:
+        description: "Execution order."
+        range: integer
+      depends_on_stages:
+        description: "Stage dependencies (by name)."
+        range: string
+        multivalued: true
+      condition:
+        description: "Execution condition."
+        range: string
+      runner:
+        description: "Runner/agent label."
+        range: string
+      timeout_minutes:
+        description: "Stage timeout."
+        range: integer
+      environment_variables:
+        description: "Environment variables."
+        range: string
+        multivalued: true
+      is_manual:
+        description: "Whether manual approval is required."
+        range: boolean
+
+  BuildArtifact:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      An artifact produced by a build pipeline
+    attributes:
+      artifact_type:
+        description: "Kind of artifact."
+        range: ArtifactType
+        required: true
+      artifact_uri:
+        description: "Artifact location."
+        range: URI
+      size_bytes:
+        description: "Size in bytes."
+        range: integer
+      checksum:
+        description: "Integrity checksum."
+        range: string
+      build_number:
+        description: "Build number or identifier."
+        range: string
+      artifact_produced_by_pipeline:
+        description: "Pipeline that produced this artifact."
+        range: BuildPipeline
+        inverse: pipeline_produces_artifacts
+      artifact_stored_in_registry:
+        description: "Registry storing this artifact."
+        range: ArtifactRegistry
+        inverse: stores_artifacts
+
+  ArtifactRegistry:
+    is_a: NamedEntity
+    description: >-
+      A registry or repository for storing build artifacts.
+    attributes:
+      registry_type:
+        description: "Kind of registry (Docker Hub, Nexus, ECR, etc.)."
+        range: string
+      base_url:
+        description: "Registry base URL."
+        range: URI
+      is_private:
+        description: "Whether the registry is private."
+        range: boolean
+      stores_artifacts:
+        description: "Artifacts stored."
+        range: BuildArtifact
+        multivalued: true
+        inverse: artifact_stored_in_registry
+

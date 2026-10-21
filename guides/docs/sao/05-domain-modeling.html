@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 4: Domain Modeling · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-4-domain-modeling">Section 4: Domain Modeling</h1>
+<p>This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles.</p>
+<blockquote>
+<p><strong>v2.0 Note — Inlining Change</strong>: In SAO v2.0, many previously string-based cross-references have been replaced with direct object references (inlined relationships). Classes in this section now carry explicit back-reference attributes that make the bidirectional links between ontology concepts navigable from either side.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Domain Modeling section provides a comprehensive framework for modeling business domains using Domain-Driven Design (DDD) principles. It supports defining domain entities, aggregates, value objects, and their lifecycle management.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="aggregate">Aggregate</h3>
+<p><strong>Definition</strong>: A cluster of domain entities treated as a single transactional unit. Corresponds to DDD aggregate concept.</p>
+<p><strong>Purpose</strong>: Enforces consistency boundaries and transactional integrity within the domain model.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>value_objects</strong>: List of value objects within the aggregate</p>
+<p><strong>Relationships</strong>:
+- <strong>aggregates_entities</strong>: <code>DomainEntity</code> instances within this aggregate
+- <strong>has_root_entity</strong>: The root <code>DomainEntity</code> (required, single)
+- <strong>enforced_by_invariant_rules</strong>: <code>Rule</code> entities that enforce aggregate invariants
+- <strong>persisted_in_stores</strong>: <code>DataStore</code> entities where this aggregate is persisted
+- <strong>produces_domain_events</strong>: <code>DomainEvent</code> entities produced
+- <strong>contained_in_bounded_context</strong>: Parent <code>BoundedContext</code></p>
+<p><strong>Aggregate Design Principles</strong>:
+1. <strong>Small Aggregates</strong>: Keep aggregates as small as possible
+2. <strong>Consistency Boundaries</strong>: Enforce invariants within aggregate boundaries
+3. <strong>Reference by ID</strong>: Reference other aggregates by ID only
+4. <strong>Single Transaction</strong>: Changes to aggregate should be in single transaction
+5. <strong>Eventual Consistency</strong>: Use domain events for cross-aggregate consistency</p>
+<p><strong>Example Aggregates</strong>:
+- <strong>Order Aggregate</strong>: Root = Order, Entities = OrderLineItems
+- <strong>User Account Aggregate</strong>: Root = User, Entities = UserProfile, Preferences
+- <strong>Shopping Cart Aggregate</strong>: Root = Cart, Entities = CartItems
+- <strong>Reservation Aggregate</strong>: Root = Reservation, Entities = ReservationItems</p>
+<hr />
+<h3 id="domainentity">DomainEntity</h3>
+<p><strong>Definition</strong>: A uniquely identifiable object within the domain.</p>
+<p><strong>Purpose</strong>: Represents business objects with distinct identity that persists over time.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- Implements <code>Auditable</code> mixin
+- <strong>attributes</strong>: List of <code>Attribute</code> entities
+- <strong>classifications</strong>: Data classification types applied</p>
+<p><strong>Relationships</strong>:
+- <strong>aggregated_by</strong>: Parent <code>Aggregate</code>
+- <strong>exposes_as_resource</strong>: <code>Resource</code> entities that expose this entity externally
+- <strong>governed_by_lifecycle</strong>: <code>Lifecycle</code> defining valid states and transitions
+- <strong>in_state</strong>: Current <code>State</code> in the lifecycle
+- <strong>governed_by_rules</strong>: <code>Rule</code> entities governing this entity
+- <strong>is_root_of_aggregate</strong>: Aggregate for which this is the root entity
+- <strong>outgoing_relationships</strong> <em>(v2.0)</em>: <code>DomainRelationship</code> entities where this entity is the source
+- <strong>incoming_relationships</strong> <em>(v2.0)</em>: <code>DomainRelationship</code> entities where this entity is the target</p>
+<p><strong>Entity vs Value Object</strong>:
+- <strong>Entity</strong>: Has identity, mutable, compared by ID
+- <strong>Value Object</strong>: No identity, immutable, compared by attributes</p>
+<p><strong>Example Entities</strong>:
+- Customer (ID, name, email, created_at)
+- Order (ID, order_number, customer_id, status)
+- Product (ID, SKU, name, price)
+- Invoice (ID, invoice_number, amount, due_date)</p>
+<hr />
+<h3 id="domainrelationship-v20">DomainRelationship <em>(v2.0)</em></h3>
+<p><strong>Definition</strong>: A named, typed relationship between two domain entities (e.g., "Order has many OrderLines", "User belongs to Organization"). Wires the previously orphaned <code>Cardinality</code> enum into the domain model.</p>
+<p><strong>Purpose</strong>: Explicitly captures how domain entities relate to each other, including cardinality, navigability, and composition semantics. This is a major addition in SAO v2.0 (Section 26).</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>cardinality</strong> (range: <code>Cardinality</code>, required): The multiplicity of the relationship (e.g., <code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_many</code>) — wires the previously orphaned <code>Cardinality</code> enum
+- <strong>is_navigable</strong> (boolean): Whether the relationship is traversable from source to target
+- <strong>is_bidirectional</strong> (boolean): Whether the relationship can be navigated in both directions
+- <strong>is_composition</strong> (boolean): Whether this represents UML composition (strong ownership) vs aggregation (weak ownership)
+- <strong>foreign_key_field</strong> (string): The implementing field in the data layer
+- <strong>join_entity</strong> (string): For many-to-many relationships, the join table or entity</p>
+<p><strong>Relationships</strong>:
+- <strong>source_entity</strong>: The <code>DomainEntity</code> that owns or originates the relationship (inverse: <code>has_outgoing_relationships</code> on DomainEntity)
+- <strong>target_entity</strong>: The <code>DomainEntity</code> that is referenced by the relationship (inverse: <code>has_incoming_relationships</code> on DomainEntity)</p>
+<p><strong>Example Domain Relationships</strong>:</p>
+<pre><code>DomainRelationship: OrderHasLineItems
+  source_entity: Order
+  target_entity: OrderLineItem
+  cardinality: one_to_many
+  is_composition: true
+  is_navigable: true
+  is_bidirectional: true
+  foreign_key_field: order_id
+
+DomainRelationship: UserBelongsToOrganization
+  source_entity: User
+  target_entity: Organization
+  cardinality: many_to_one
+  is_composition: false
+  is_navigable: true
+  is_bidirectional: true
+  foreign_key_field: organization_id
+
+DomainRelationship: StudentEnrolledInCourses
+  source_entity: Student
+  target_entity: Course
+  cardinality: many_to_many
+  is_composition: false
+  is_navigable: true
+  is_bidirectional: true
+  join_entity: Enrollment
+</code></pre>
+<hr />
+<h3 id="valueobject">ValueObject</h3>
+<p><strong>Definition</strong>: An immutable domain object defined by its attributes.</p>
+<p><strong>Purpose</strong>: Represents descriptive aspects of the domain with no conceptual identity.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>attributes</strong>: List of <code>Attribute</code> entities defining the value object
+- <strong>mapped_from_structure_vo</strong> <em>(v2.0)</em>: Back-reference to the <code>DataStructure</code> that maps to this value object</p>
+<p><strong>Value Object Characteristics</strong>:
+1. <strong>Immutable</strong>: Cannot be modified after creation
+2. <strong>No Identity</strong>: Compared by attribute values
+3. <strong>Replaceable</strong>: Entire value object is replaced for updates
+4. <strong>Shareable</strong>: Can be shared between entities safely</p>
+<p><strong>Example Value Objects</strong>:
+- <strong>Address</strong>: street, city, state, postal_code, country
+- <strong>Money</strong>: amount, currency
+- <strong>DateRange</strong>: start_date, end_date
+- <strong>EmailAddress</strong>: local_part, domain
+- <strong>PhoneNumber</strong>: country_code, area_code, number
+- <strong>Coordinates</strong>: latitude, longitude</p>
+<hr />
+<h3 id="attribute">Attribute</h3>
+<p><strong>Definition</strong>: A named property of an entity or value object.</p>
+<p><strong>Purpose</strong>: Defines the data fields and their characteristics within domain objects.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>category</strong>: <code>required</code>, <code>optional</code>, <code>computed</code>, <code>derived</code>, <code>transient</code>
+- <strong>data_type</strong>: Data type (string, integer, boolean, date, etc.)
+- <strong>is_identifier</strong>: Whether this is an identifier attribute
+- <strong>is_indexed</strong>: Whether this attribute should be indexed
+- <strong>default_value</strong>: Default value if not specified
+- <strong>classification</strong>: Data classification (<code>public</code>, <code>internal</code>, <code>confidential</code>, <code>pii</code>, etc.)</p>
+<p><strong>Relationships</strong>:
+- <strong>validated_by_rules</strong>: <code>Rule</code> entities that validate this attribute
+- <strong>mapped_from_element</strong> <em>(v2.0)</em>: Back-reference to the <code>DataElement</code> that maps to this attribute</p>
+<p><strong>Attribute Categories</strong>:
+- <code>required</code>: Must have a value
+- <code>optional</code>: May be null
+- <code>computed</code>: Calculated from other attributes
+- <code>derived</code>: Derived from other entities or data
+- <code>transient</code>: Not persisted in storage</p>
+<p><strong>Data Classifications</strong>:
+- <code>public</code>: Publicly accessible
+- <code>internal</code>: Internal use only
+- <code>confidential</code>: Sensitive information
+- <code>restricted</code>: Highly restricted
+- <code>pii</code>: Personally Identifiable Information
+- <code>phi</code>: Protected Health Information
+- <code>pci</code>: Payment Card Industry data</p>
+<p><strong>Example Attributes</strong>:</p>
+<pre><code>Entity: Customer
+Attributes:
+  - id (required, string, is_identifier=true)
+  - email (required, string, classification=pii)
+  - name (required, string, classification=pii)
+  - phone (optional, string, classification=pii)
+  - loyalty_points (computed, integer)
+  - created_at (required, timestamp)
+</code></pre>
+<hr />
+<h3 id="resource">Resource</h3>
+<p><strong>Definition</strong>: A domain entity or value object exposed for external interaction.</p>
+<p><strong>Purpose</strong>: Represents the external API representation of domain objects.</p>
+<p><strong>Relationships</strong>:
+- <strong>represents_entity</strong>: The <code>DomainEntity</code> this resource represents
+- <strong>classified_as_type</strong>: <code>ResourceType</code> classification
+- <strong>targeted_by_actions</strong>: <code>Action</code> entities that can target this resource</p>
+<p><strong>Resource Design</strong>:
+- DTOs (Data Transfer Objects) for external representation
+- May hide sensitive attributes
+- May aggregate multiple entities
+- May include computed fields for convenience</p>
+<p><strong>Example Resources</strong>:
+- API representation of Customer entity
+- GraphQL type for Product
+- REST resource for Order
+- Message payload for OrderCreated event</p>
+<hr />
+<h3 id="resourcetype">ResourceType</h3>
+<p><strong>Definition</strong>: A classification of resources sharing common structure and behavior.</p>
+<p><strong>Purpose</strong>: Groups similar resources and defines their schema.</p>
+<p><strong>Relationships</strong>:
+- <strong>structured_by_schema</strong>: <code>Schema</code> defining the structure
+- <strong>governed_by_permissions</strong>: <code>Permission</code> entities that apply
+- <strong>classifies_resources</strong>: <code>Resource</code> instances of this type</p>
+<p><strong>Example Resource Types</strong>:
+- CustomerResource
+- OrderResource
+- ProductResource
+- InvoiceResource</p>
+<hr />
+<h3 id="state">State</h3>
+<p><strong>Definition</strong>: A discrete condition in an entity's lifecycle.</p>
+<p><strong>Purpose</strong>: Represents a specific stage in an entity's lifecycle with allowed actions.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>is_initial</strong>: Whether this is the initial state
+- <strong>is_terminal</strong>: Whether this is a final/terminal state</p>
+<p><strong>Relationships</strong>:
+- <strong>allows_actions_in_state</strong>: <code>Action</code> entities allowed in this state
+- <strong>current_for_entities</strong>: <code>DomainEntity</code> instances currently in this state
+- <strong>source_of_transitions</strong>: <code>Transition</code> entities starting from this state
+- <strong>target_of_transitions</strong>: <code>Transition</code> entities ending in this state
+- <strong>initial_for_lifecycle</strong> <em>(v2.0)</em>: Back-reference to the <code>Lifecycle</code> for which this is the initial state</p>
+<p><strong>Example States</strong>:
+- <strong>Order States</strong>: Draft, Submitted, Confirmed, Shipped, Delivered, Cancelled
+- <strong>User Account States</strong>: Pending, Active, Suspended, Deactivated
+- <strong>Payment States</strong>: Pending, Authorized, Captured, Refunded, Failed
+- <strong>Document States</strong>: Draft, Review, Approved, Published, Archived</p>
+<hr />
+<h3 id="transition">Transition</h3>
+<p><strong>Definition</strong>: A valid movement between states.</p>
+<p><strong>Purpose</strong>: Defines allowed state changes and their conditions.</p>
+<p><strong>Relationships</strong>:
+- <strong>transitions_from_state</strong>: Source <code>State</code> (required)
+- <strong>transitions_to_state</strong>: Target <code>State</code> (required)
+- <strong>triggered_by_events</strong>: <code>Event</code> entities that trigger this transition
+- <strong>guarded_by_rules</strong>: <code>Rule</code> entities that must be satisfied
+- <strong>executes_actions_on_transition</strong>: <code>Action</code> entities executed during transition</p>
+<p><strong>Transition Guards</strong>:
+Rules that must evaluate to true for the transition to be allowed.</p>
+<p><strong>Transition Actions</strong>:
+Side effects that occur during the transition (e.g., send email, update inventory).</p>
+<p><strong>Example Transitions</strong>:</p>
+<pre><code>Order State Machine:
+  Draft -&gt; Submitted (event: SubmitOrder, guard: HasItems, action: NotifyWarehouse)
+  Submitted -&gt; Confirmed (event: ConfirmOrder, guard: PaymentAuthorized)
+  Confirmed -&gt; Shipped (event: ShipOrder, action: CreateShipment)
+  Shipped -&gt; Delivered (event: DeliverOrder, action: NotifyCustomer)
+  Any -&gt; Cancelled (event: CancelOrder, action: RefundPayment)
+</code></pre>
+<hr />
+<h3 id="lifecycle">Lifecycle</h3>
+<p><strong>Definition</strong>: The complete set of states and transitions for an entity type.</p>
+<p><strong>Purpose</strong>: Defines the full state machine governing entity lifecycle.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>states</strong>: List of all <code>State</code> entities in the lifecycle
+- <strong>transitions</strong>: List of all <code>Transition</code> entities</p>
+<p><strong>Relationships</strong>:
+- <strong>starts_with_state</strong>: Initial <code>State</code>
+- <strong>governs_entities</strong>: <code>DomainEntity</code> instances following this lifecycle</p>
+<p><strong>Lifecycle Patterns</strong>:
+- <strong>Linear</strong>: States progress in a single direction (e.g., onboarding flow)
+- <strong>Cyclic</strong>: States can return to previous states (e.g., draft -&gt; review -&gt; draft)
+- <strong>Branching</strong>: Multiple paths depending on conditions (e.g., approved/rejected)
+- <strong>Parallel</strong>: Multiple independent state dimensions</p>
+<p><strong>Example Lifecycles</strong>:
+- Order fulfillment lifecycle
+- User registration lifecycle
+- Content approval lifecycle
+- Subscription lifecycle</p>
+<hr />
+<h2 id="domain-driven-design-patterns">Domain-Driven Design Patterns</h2>
+<h3 id="aggregates">Aggregates</h3>
+<ul>
+<li><strong>Purpose</strong>: Enforce consistency boundaries</li>
+<li><strong>Pattern</strong>: Small aggregates with clear root entity</li>
+<li><strong>Communication</strong>: Aggregates communicate via domain events</li>
+</ul>
+<h3 id="entities-vs-value-objects">Entities vs Value Objects</h3>
+<ul>
+<li><strong>Entity</strong>: Identified by ID, mutable, has lifecycle</li>
+<li><strong>Value Object</strong>: Identified by attributes, immutable, replaceable</li>
+</ul>
+<h3 id="domain-events">Domain Events</h3>
+<ul>
+<li><strong>Purpose</strong>: Communicate changes between aggregates</li>
+<li><strong>Pattern</strong>: Past-tense naming (OrderPlaced, PaymentProcessed)</li>
+<li><strong>Content</strong>: Minimal data needed for consumers</li>
+</ul>
+<h3 id="repositories">Repositories</h3>
+<ul>
+<li><strong>Purpose</strong>: Persist and retrieve aggregates</li>
+<li><strong>Pattern</strong>: One repository per aggregate root</li>
+<li><strong>Interface</strong>: Collection-like interface (add, remove, find)</li>
+</ul>
+<h3 id="domain-services">Domain Services</h3>
+<ul>
+<li><strong>Purpose</strong>: Operations that don't belong to a single entity</li>
+<li><strong>Pattern</strong>: Stateless services operating on domain objects</li>
+<li><strong>Examples</strong>: PricingService, InventoryService</li>
+</ul>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="aggregate-design">Aggregate Design</h3>
+<ol>
+<li><strong>Small Aggregates</strong>: Limit to what must be consistent</li>
+<li><strong>Reference by ID</strong>: Don't embed other aggregates</li>
+<li><strong>Eventual Consistency</strong>: Accept eventual consistency between aggregates</li>
+<li><strong>Transactional Boundary</strong>: One aggregate per transaction</li>
+</ol>
+<h3 id="entity-design">Entity Design</h3>
+<ol>
+<li><strong>Rich Domain Model</strong>: Put behavior in entities, not services</li>
+<li><strong>Encapsulation</strong>: Protect invariants through methods</li>
+<li><strong>Identity</strong>: Use globally unique identifiers</li>
+<li><strong>Lifecycle Management</strong>: Define clear state machines</li>
+</ol>
+<h3 id="value-object-design">Value Object Design</h3>
+<ol>
+<li><strong>Immutability</strong>: Make value objects immutable</li>
+<li><strong>Validation</strong>: Validate in constructor</li>
+<li><strong>Semantics</strong>: Use value objects for domain concepts (Money, not decimal)</li>
+<li><strong>Reuse</strong>: Share value objects across entities</li>
+</ol>
+<h3 id="state-machine-design">State Machine Design</h3>
+<ol>
+<li><strong>Explicit States</strong>: Make all states explicit</li>
+<li><strong>Valid Transitions</strong>: Define only valid transitions</li>
+<li><strong>Guards</strong>: Use guards for conditional transitions</li>
+<li><strong>Actions</strong>: Execute side effects in transition actions</li>
+<li><strong>Testing</strong>: Test all state transitions</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Aggregates contained in bounded contexts</li>
+<li><strong>Section 3 (Authorization)</strong>: Resources are subject to permissions</li>
+<li><strong>Section 5 (Behavior)</strong>: Actions operate on entities and trigger transitions</li>
+<li><strong>Section 6 (Data Management)</strong>: Aggregates persisted in data stores</li>
+<li><strong>Section 9 (Observability)</strong>: Entities tracked for changes in audit logs</li>
+</ul>
+<hr />
+<h2 id="example-e-commerce-order-aggregate">Example: E-Commerce Order Aggregate</h2>
+<pre><code>Aggregate: Order
+  Root Entity: Order
+    Attributes:
+      - order_id (required, UUID, identifier)
+      - customer_id (required, UUID)
+      - order_date (required, timestamp)
+      - status (required, string)
+      - total_amount (computed, Money)
+
+  Entities:
+    - OrderLineItem
+      Attributes:
+        - line_item_id (required, UUID, identifier)
+        - product_id (required, UUID)
+        - quantity (required, integer)
+        - unit_price (required, Money)
+        - subtotal (computed, Money)
+
+  Value Objects:
+    - Money (amount, currency)
+    - Address (street, city, state, postal_code)
+
+  Lifecycle:
+    States: Draft -&gt; Submitted -&gt; Confirmed -&gt; Shipped -&gt; Delivered
+    Transitions:
+      Draft -&gt; Submitted: SubmitOrder event, HasItems guard
+      Submitted -&gt; Confirmed: ConfirmOrder event, PaymentAuthorized guard
+      Confirmed -&gt; Shipped: ShipOrder event
+      Shipped -&gt; Delivered: DeliverOrder event
+      Any -&gt; Cancelled: CancelOrder event
+
+  Invariants:
+    - Order must have at least one line item
+    - Total must equal sum of line item subtotals
+    - Cannot modify order after confirmation
+
+  Domain Events:
+    - OrderPlaced
+    - OrderConfirmed
+    - OrderShipped
+    - OrderDelivered
+    - OrderCancelled
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/database
+name: sao-database
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  DatabaseConstraintType:
+    description: Types of database constraints
+    permissible_values:
+      primary_key:
+        description: "Primary key constraint."
+      foreign_key:
+        description: "Foreign key constraint."
+      unique:
+        description: "Unique constraint."
+      check:
+        description: "Check constraint."
+      not_null:
+        description: "NOT NULL constraint."
+
+  IndexType:
+    description: Types of database indexes
+    permissible_values:
+      btree:
+        description: "B-tree index."
+      hash:
+        description: "Hash index."
+      gin:
+        description: Generalized Inverted Index (PostgreSQL)
+      fulltext:
+        description: "Full-text index."
+
+
+classes:
+  DatabaseConstraint:
+    comments:
+      - "Captures primary keys, foreign keys, unique constraints, and check constraints for schema analysis, migration planning, and impact assessment."
+    is_a: NamedEntity
+    description: >-
+      A constraint on a database table/collection
+    attributes:
+      constraint_type:
+        description: "The type of constraint."
+        range: DatabaseConstraintType
+        required: true
+      columns:
+        description: "Columns involved in the constraint."
+        range: string
+        multivalued: true
+      reference_table:
+        range: string
+        description: Referenced table for foreign keys
+      reference_columns:
+        range: string
+        multivalued: true
+        description: Referenced columns for foreign keys
+      expression:
+        range: string
+        description: Expression for CHECK constraints
+      constraint_on_collection:
+        description: "The collection this constraint belongs to."
+        range: Collection
+        inverse: has_constraints
+
+  DatabaseIndex:
+    comments:
+      - "Captures index definitions for performance analysis and schema management."
+    is_a: NamedEntity
+    description: >-
+      An index on a database table/collection
+    attributes:
+      index_type:
+        description: "The type of index."
+        range: IndexType
+        required: true
+      columns:
+        description: "Columns included in the index."
+        range: string
+        multivalued: true
+      is_unique:
+        description: "Whether the index enforces uniqueness."
+        range: boolean
+      is_partial:
+        description: "Whether the index is partial/filtered."
+        range: boolean
+      filter_expression:
+        range: string
+        description: Filter for partial indexes
+      index_on_collection:
+        description: "The collection this index belongs to."
+        range: Collection
+        inverse: has_indexes
+

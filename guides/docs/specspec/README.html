@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>SpecSpec · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="specspec">SpecSpec</h1>
+<p><strong>Specification &amp; Evidence Ontology</strong></p>
+<p>Part of the <a href="../../README.html">CoreStory Ontologies repository</a>. Run commands from the repository root.</p>
+<p>SpecSpec is an RDF vocabulary for requirements, scenarios, decisions, descriptive claims, and the evidence supporting them. Its namespace is <code>https://ontologies.corestory.ai/specspec/</code> (<code>spec:</code>).</p>
+<p>The goal is to read existing software, lift grounded knowledge into rich specifications, and use those specifications to guide replacement implementations while retaining the evidence chain. The ontology also represents supplied intent and proposed changes. Observed behavior, intended behavior, and verification outcomes remain distinct.</p>
+<p>This is a <strong>0.1.0 modeling draft</strong>. It does not yet implement document importers, renderers, or a modernization engine. The namespace is a proposed identifier space; this checkout does not configure hosting or CDN publication.</p>
+<h2 id="authoritative-sources">Authoritative sources</h2>
+<p>Edit the modular Turtle files under <code>ontologies/specspec/</code>. The layout follows SAO: RDFS vocabulary, SHACL validation, and an optional OWL supplement are separate layers. LinkML is no longer required.</p>
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ontologies/specspec/vocabulary/</code></td>
+<td>Classes, predicates, descriptions, inheritance and enum annotations</td>
+</tr>
+<tr>
+<td><code>ontologies/specspec/shapes/</code></td>
+<td>Class/property constraints and graph rules in SHACL and SHACL-SPARQL</td>
+</tr>
+<tr>
+<td><code>ontologies/specspec/axioms/</code></td>
+<td>Optional OWL object/datatype property declarations</td>
+</tr>
+<tr>
+<td><code>ontologies/specspec/bridges/sao/</code></td>
+<td>Optional vocabulary, shapes and OWL declarations connecting SpecSpec to SAO</td>
+</tr>
+<tr>
+<td><code>ontologies/specspec/manifests/</code></td>
+<td>Explicit source lists used to assemble each distribution</td>
+</tr>
+<tr>
+<td><code>examples/specspec/modernization/</code></td>
+<td>Synthetic Turtle instance graph and supporting source fixtures</td>
+</tr>
+<tr>
+<td><code>scripts/</code></td>
+<td>RDF assembly, validation and fixture integrity checks</td>
+</tr>
+<tr>
+<td><code>tests/</code></td>
+<td>Migration preservation and validation regression tests</td>
+</tr>
+</tbody>
+</table>
+<p>Vocabulary and shape modules cover common identity/provenance, specifications, decisions, evidence, representations and the graph envelope. Graph rules live in <code>ontologies/specspec/shapes/rules.ttl</code>.</p>
+<p>The assembled core products are <code>dist/specspec.ttl</code>, <code>dist/specspec.shacl.ttl</code> and <code>dist/specspec.owl.ttl</code>. They are build outputs; edit their sources and rebuild. The three corresponding <code>specspec-sao.*ttl</code> products contain <strong>only the optional bridge layer</strong> and are loaded alongside the core. Core SpecSpec has no SAO dependency, and the bridge does not copy or modify SAO definitions.</p>
+<h2 id="important-distinctions">Important distinctions</h2>
+<ul>
+<li>A document can describe many knowledge items and software entities. Its identity is not the identity of any one of them.</li>
+<li><code>Claim.origin</code> records observed, inferred, or supplied origin. It does not establish truth. Review status and optional confidence are separate fields.</li>
+<li>Descriptive claims state existing behavior. Requirements and acceptance criteria state obligations. An observation can motivate a requirement without automatically becoming one.</li>
+<li>Evidence points into an identified source state, not a moving branch. A supporting link records support offered, not proof.</li>
+<li>Verification results refer to a specific check and snapshot. A passing result is scoped to that check.</li>
+<li>Regeneration should retain supplied intent and record contradictions for review. The ontology represents these distinctions; it does not implement a regeneration policy.</li>
+</ul>
+<p>See <a href="model.html">model notes</a>, <a href="format-mappings.html">format mappings</a>, <a href="rdf-migration.html">RDF migration details</a>, and <a href="../../examples/specspec/modernization/README.html">the modernization example</a>.</p>
+<h2 id="build-and-validate">Build and validate</h2>
+<p>Python 3.13+, uv, RDFLib, pySHACL and owlrl provide the shared ecosystem tooling. The lockfile pins the environment.</p>
+<pre><code class="language-sh">uv sync --locked
+uv run python scripts/build_rdf.py
+uv run python scripts/build_rdf.py --check
+uv run python scripts/validate_rdf.py
+uv run python scripts/validate_axioms.py
+uv run python -m unittest discover -s tests
+</code></pre>
+<p>Assembly checks each manifest against its source directory and verifies that distributions round-trip as equivalent RDF graphs. <code>--check</code> detects stale distributions regardless of Turtle formatting or triple order. Validation reads the editable sources, checks the shapes against SHACL's own shapes, then checks instance conformance and local fixture integrity. It does not prove claims or execute the sample programs.</p>
+<p>To validate your own Turtle graph:</p>
+<pre><code class="language-sh">uv run python scripts/validate_rdf.py --ontology specspec path/to/graph.ttl
+</code></pre>
+<p>The validator requires explicitly typed SpecSpec instance nodes. RDFS class hierarchies are supplied to SHACL; optional OWL declarations are not needed for validation. The profile includes SHACL-SPARQL, so a SHACL Core-only processor cannot run every check.</p>
+<p>To check bridge endpoint types against the co-located SAO vocabulary:</p>
+<pre><code class="language-sh">uv run python scripts/validate_rdf.py --ontology specspec \
+  --sao-vocabulary dist/sao.ttl \
+  --bridge-data examples/specspec/modernization/sao-links.ttl
+</code></pre>
+<p>This loads the core, bridge and supplied SAO vocabulary explicitly. It checks the link endpoints against their declared types; it does not apply SAO's full instance shapes to the example's small external identity/type manifest. There are no network imports. Core validation is independent of SAO; the ecosystem profile checks the full composition. CI also exercises the narrower bridge check against a synthetic vocabulary fixture.</p>
+<h2 id="scope-and-next-decisions">Scope and next decisions</h2>
+<p>This conversion retains the existing 21 core classes, eight enums and three bridge classes. It changes representation and tooling, with <a href="rdf-migration.html">documented RDF representation differences</a>. The proposed model expansions remain separate work.</p>
+<p>The old SpecSpec document convention is a reference for stable IDs and evidence chains, not a required output format. Existing formats can be views of this graph. Initial mappings are illustrative, not certified adapters.</p>
+<p>KnowledgeArtifact and governance classes have not been removed from SAO or migrated wholesale. <code>SpecificationArtifact</code> remains a distinct draft term for document representations; its eventual relationship to SAO's <code>KnowledgeArtifact</code> needs agreement. Compliance-specific requirements, controls, and risk assessments need a separate modeling pass.</p>
+<p>Before stabilizing: review class boundaries, decide bridge coverage and release pinning, choose representation adapters, and define provenance/review policies. Specifications and sources have their own revisions; the ontology version describes the vocabulary. SAO and SpecSpec are intended for open-source release; hosting and release hardening remain separate work.</p>
+<p>Copyright © 2026 CoreStory, Inc. Licensed under <a href="../../../source/LICENSE">Apache License 2.0</a>.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

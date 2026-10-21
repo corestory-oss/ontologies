@@ -1,0 +1,192 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/testing
+name: sao-testing
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  TestSuiteType:
+    description: Types of test suites
+    permissible_values:
+      unit: {}
+      integration: {}
+      functional: {}
+      end_to_end: {}
+      performance: {}
+      security: {}
+      regression: {}
+      smoke: {}
+      contract: {}
+
+  TestCaseStatus:
+    description: Execution status of a test case
+    permissible_values:
+      passing: {}
+      failing: {}
+      skipped: {}
+      flaky: {}
+      pending: {}
+
+  AssertionType:
+    description: Types of test assertions
+    permissible_values:
+      equality: {}
+      truthiness: {}
+      exception: {}
+      type_check: {}
+      containment: {}
+      mock_verification: {}
+      snapshot: {}
+      custom: {}
+
+
+classes:
+  TestSuite:
+    is_a: NamedEntity
+    description: >-
+      A collection of related test cases
+    attributes:
+      suite_type:
+        description: "Kind of test suite."
+        range: TestSuiteType
+        required: true
+      framework:
+        description: "Testing framework."
+        range: string
+      source_location:
+        description: "Source file path."
+        range: string
+      total_cases:
+        description: "Total test cases."
+        range: integer
+      passing_cases:
+        description: "Passing test cases."
+        range: integer
+      failing_cases:
+        description: "Failing test cases."
+        range: integer
+      skipped_cases:
+        description: "Skipped test cases."
+        range: integer
+      execution_time_ms:
+        description: "Total execution time in milliseconds."
+        range: integer
+      contains_test_cases:
+        description: "Test cases in this suite."
+        range: TestCase
+        multivalued: true
+        inverse: belongs_to_suite
+      tests_component:
+        description: "Component tested."
+        range: Component
+        inverse: tested_by_suites
+      tests_module:
+        description: "Module tested."
+        range: Module
+        inverse: module_tested_by_suites
+
+  TestCase:
+    is_a: NamedEntity
+    description: >-
+      A single test case that validates specific behavior
+    attributes:
+      status:
+        description: "Test status."
+        range: TestCaseStatus
+      priority:
+        description: "Priority level."
+        range: string
+      is_automated:
+        description: "Whether automated."
+        range: boolean
+      setup_fixture:
+        description: "Setup fixture name."
+        range: string
+      teardown_fixture:
+        description: "Teardown fixture name."
+        range: string
+      line_start:
+        description: "Starting line in source."
+        range: integer
+      line_end:
+        description: "Ending line in source."
+        range: integer
+      has_assertions:
+        description: "Assertions."
+        range: TestAssertion
+        multivalued: true
+      belongs_to_suite:
+        description: "Parent suite."
+        range: TestSuite
+        inverse: contains_test_cases
+      tests_callable:
+        description: "Callable tested."
+        range: CallableUnit
+        inverse: tested_by_cases
+      tests_operation:
+        description: "Operation tested."
+        range: Operation
+        inverse: operation_tested_by_cases
+
+  TestAssertion:
+    is_a: NamedEntity
+    description: >-
+      An individual assertion within a test case
+    attributes:
+      assertion_type:
+        description: "Kind of assertion."
+        range: AssertionType
+      expected_value:
+        description: "Expected value."
+        range: string
+      line_number:
+        description: "Source line number."
+        range: integer
+
+  TestCoverage:
+    is_a: NamedEntity
+    description: >-
+      Code coverage metrics for a component or module
+    attributes:
+      line_coverage_percent:
+        description: "Line coverage percentage."
+        range: float
+      branch_coverage_percent:
+        description: "Branch coverage percentage."
+        range: float
+      function_coverage_percent:
+        description: "Function coverage percentage."
+        range: float
+      statement_coverage_percent:
+        description: "Statement coverage percentage."
+        range: float
+      uncovered_lines:
+        description: "Uncovered line numbers."
+        range: integer
+        multivalued: true
+      coverage_tool:
+        description: "Coverage tool (Istanbul, JaCoCo, etc.)."
+        range: string
+      coverage_for_component:
+        description: "Component measured."
+        range: Component
+        inverse: has_coverage
+      coverage_for_module:
+        description: "Module measured."
+        range: Module
+        inverse: module_has_coverage
+

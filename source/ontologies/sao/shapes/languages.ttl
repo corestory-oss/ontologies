@@ -1,0 +1,123 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ProgrammingLanguageShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_default_error_model>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_default_memory_model>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_gc>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_preprocessor>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/language_used_by_containers>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/type_discipline>,
+        <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/year_introduced> ;
+    sh:targetClass sao:ProgrammingLanguage .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_default_error_model> a sh:PropertyShape ;
+    sh:class sao:ErrorModel ;
+    sh:description "The default error handling model for this language." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_default_error_model .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_default_memory_model> a sh:PropertyShape ;
+    sh:class sao:MemoryModel ;
+    sh:description "The default memory management model for this language." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_default_memory_model .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_gc> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the language has garbage collection." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_gc .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/has_preprocessor> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the language has a preprocessor." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_preprocessor .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/language_used_by_containers> a sh:PropertyShape ;
+    sh:class sao:CodeContainer ;
+    sh:description "Code containers written in this language." ;
+    sh:path sao:language_used_by_containers .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms> a sh:PropertyShape ;
+    sh:description "Programming paradigms supported." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values> ;
+    sh:path sao:paradigms .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values> rdf:first "object_oriented" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/1> rdf:first "procedural" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/2> rdf:first "functional" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/3> rdf:first "logic" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/4> rdf:first "concatenative" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/5> rdf:first "data_driven" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/paradigms/values/cell/6> rdf:first "multi_paradigm" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/type_discipline> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Type system characterization (e.g., \"static_strong\", \"dynamic_strong\")" ;
+    sh:maxCount 1 ;
+    sh:path sao:type_discipline .
+
+<https://ontologies.corestory.ai/sao/shapes/ProgrammingLanguage/year_introduced> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Year the language was first released." ;
+    sh:maxCount 1 ;
+    sh:path sao:year_introduced .

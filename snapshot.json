@@ -1,0 +1,452 @@
+{
+  "garden_version": "2.0.56",
+  "ontologies": {
+    "sao": {
+      "namespace": "https://ontologies.corestory.ai/sao/",
+      "version": "3.0.0"
+    },
+    "specspec": {
+      "namespace": "https://ontologies.corestory.ai/specspec/",
+      "version": "0.1.0"
+    }
+  },
+  "classes": 171,
+  "local_datatypes": 113,
+  "properties": 989,
+  "class_property_uses": 2150,
+  "inputs": [
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/axioms/relationships.ttl",
+      "sha256": "d712968478f66d097eebb6e5687ac062d68c740f098e13ff5f5328dc5af390d1"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/authorization.ttl",
+      "sha256": "6220de0b24a710a811466d7d55d7f5cb981e8731c961819457c1d26cea8e19b6"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/behavior.ttl",
+      "sha256": "27db97190f4b5c7a8ee1ff6b03e8e70bb4cf2594d68c974c0f9a873a22b67d71"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/build.ttl",
+      "sha256": "bc8387c9105b8cda128273a8b17e648c363b1faa05fe28e0d520535b37530725"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/code-containers.ttl",
+      "sha256": "223ae8368b0fab90ac466ba0720481ccc080efafd82f03394dd5d9eeef7b9c6d"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/code-semantics.ttl",
+      "sha256": "0e41fce0719fa1346adfcb5efb1b79baf8bde0e88b804464097a21ae1b60c1a5"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/code-units.ttl",
+      "sha256": "e9e9f820efa74f24e168a51eaa27f66a4e5332eed662bc08956e019351b08f93"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/common.ttl",
+      "sha256": "0320f6df63eabae0503c9307dc4fdd3bd7c8d087f937a1ff58d9dcdb9393ffb1"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/concurrency.ttl",
+      "sha256": "d2d6035e357d64df4e82d6c3306b64214063125f0ea8f34ab4bdca9ec670cd10"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/data.ttl",
+      "sha256": "b6173e7b5d71c35c2c318322dc6cada9d8c8e40aff48849c63cd7ad63757a752"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/database.ttl",
+      "sha256": "395b8fc0f6dbbe95355b6f2b0a6e0f7e0976824e6a9045336cd90ff06a614e5d"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/dependencies.ttl",
+      "sha256": "ba75facc96abd2bde8b32babca677fe0edcddae799e58ab0ef53ceaf56f8dbb0"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/domain.ttl",
+      "sha256": "54d5d4d5fa2b4fc9f0947185be87457710884cd83e7c2c0a1ce54f89ab5c9f40"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/error-handling.ttl",
+      "sha256": "fb553c80a61a994ff36615bcc81dd7cc4766e77f14887187b94252c4df729fa5"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/file-io.ttl",
+      "sha256": "37eb841184be81c20fdde53b5e12c521f0aeb4405dc9d07ad02469392ad5fa08"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/governance.ttl",
+      "sha256": "3ceeb9baf28f525d1ff59d92515f582307bae8d8d241c07e6324f4c92d1d0647"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/identity.ttl",
+      "sha256": "8c3fdbb963f2ccbfc761246d14991b0f8275c92924219554bf8cad0ac0f1998e"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/infrastructure.ttl",
+      "sha256": "74355ff2782067ec4ca52cccba09fcbde066f09063fb027a29b876a46df7119e"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/integration.ttl",
+      "sha256": "c4e0809c6abc85e15827788dad4938324175a0c0227142b25e6e05e697b9ea1e"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/ipc.ttl",
+      "sha256": "fabfcde51370799b35bb5af8c77725dc25d873040a1fe7a50e1d227e25896b24"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/jobs.ttl",
+      "sha256": "3528740acb1d008ca4f249d3dfd5c7da42932f4ac80fb712878ddf24e973ccde"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/knowledge.ttl",
+      "sha256": "4d9eeccd25e6c3d6dfc910bd2f8e0e7da6d24d9fe165e22203019032e39c3bc7"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/languages.ttl",
+      "sha256": "08aa8fd7d4e6962f580914a9d09e7c03d5b54db6bf9a44dcd8e1e63f015782e8"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/memory.ttl",
+      "sha256": "d51e8408c87997aacc8d97deb020fab3750db66ecb9fcd3bbfa1b61606232fed"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/ml.ttl",
+      "sha256": "95f6abc3356b0841c2e226cddd82c2160f86f757b3eb228f6cbfcb6c6dfb53d5"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/observability.ttl",
+      "sha256": "1541fcc77fefac30cac5e2f357ba6e8c0d7dfb04b0359a9780ebd62e8cd6b410"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/operations.ttl",
+      "sha256": "ec414aede6be690c7be5318cf5d9cc14878a348b75a3a882ff7115dc828867d5"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/preprocessor.ttl",
+      "sha256": "c2926387cc0787ed6248d0ad9122e46e71145661b854142294c0dc473004e5bf"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/retired.ttl",
+      "sha256": "fef0a44a6462b6d00e92fbb261f29b4279d6b39cf59a01b1868a18394c3d44e9"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/screens.ttl",
+      "sha256": "6ec690545ce7869ee5bb337a6677797e442362e052589632d2521f7a1a0e339a"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/structure.ttl",
+      "sha256": "8db97b64022ee0b7afaad8953b293daea4174615c1d0ae11fc31cd93d00e0c89"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/testing.ttl",
+      "sha256": "4d4a61ed3f4636231b5012403a845273cebe88359397a05c66105314e94c28ea"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/type-system.ttl",
+      "sha256": "9cd0a486941bb900a341a7203dbeeb99bd5e4b069a6809e4de48c615f3547de4"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/shapes/ui.ttl",
+      "sha256": "476891e5da711a167c690570215832e81cdcf752210357923c92eb90b37f4e93"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/authorization.ttl",
+      "sha256": "b7bf5d2a953a73a8af2bab73cc3e14aea629a52f35f2d5e27f739851f8f83a84"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/behavior.ttl",
+      "sha256": "f4f3d435aea9c4609c427b5edc9988129df8b58a2286d901c550f8849804c716"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/build.ttl",
+      "sha256": "0d81b4229512a5a139bd47d061591ae48f20ebc73e83fae788e355ea344d52a1"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/code-containers.ttl",
+      "sha256": "13322feeaf09b484ca2662c81d442d961330289d429cf386378425049fb1fa39"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/code-semantics.ttl",
+      "sha256": "9172f98142dd3da8361551cb8c192fa5bf9651eca3d9073fd0cc55bb3d7e570c"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/code-units.ttl",
+      "sha256": "97f83695bd23d5b63a974c42e4ece5eabd572d373a738fa5aa9e52eb920e4396"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/common.ttl",
+      "sha256": "368bf50a33af8c3c8a7299e794b029d8aee56dd9d4e2114a9c28680618a6998e"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/concurrency.ttl",
+      "sha256": "4d9cc47b7dab7fc63c859db54238b07f95f64d0c5793a090a1f00c61c3937663"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/data.ttl",
+      "sha256": "e1c1dde30099434e70f2ce2f840316e499cdeb00452845fd2d87b2bc9dfd2115"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/database.ttl",
+      "sha256": "e8f59e38fdd0e7620f0e75d88eca0e5292926f6ad52d1e7576f577dfec1ee94f"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/dependencies.ttl",
+      "sha256": "139325e65a3f401d01928a95e77b896673e164fca2936336ec6eb44759e61df6"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/domain.ttl",
+      "sha256": "94656db72842f517ff0a86f7eb7180b115a8bd5ba3e00c08b95189450ce41f06"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/error-handling.ttl",
+      "sha256": "2156c623b536f2ba33cc09169cba3e852c4640ad81e4a4cf8dca1693ceed8950"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/file-io.ttl",
+      "sha256": "edac3489c04b304e9a60c41890039970b5c707cea63851f642d11d020cc9d386"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/governance.ttl",
+      "sha256": "5480e3cf3459d591d634d83aacaacbe2bc8845cd9823e11aba73c719faa82bb1"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/identity.ttl",
+      "sha256": "38b4574f6424de02ce7d829c7b6c604607fd44aba392e8faffab62794a25843a"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/infrastructure.ttl",
+      "sha256": "a9fad0b26e60d81200081d7212edd605722a1403d14dac46345ed1e39e75c269"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/integration.ttl",
+      "sha256": "80fada8f2908c3ab2740ae0fdef5cad161a85ebf85d1d217ba3905fdb56c3341"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/ipc.ttl",
+      "sha256": "21d030a7ee4395f5cec1dff5da4dd89d04194a5d9944587efce066d5ad4de50f"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/jobs.ttl",
+      "sha256": "2b4803965317a281f454ae81788a5587859a39c31c78c8cbea2960601f6791d6"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/knowledge.ttl",
+      "sha256": "7d781eb6a30faae5f5f5547513ec98212133bf1eeee41c17402853670bd0b1a4"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/languages.ttl",
+      "sha256": "7b87f096d6a4bc5f12c6ae3b688911b3894f5ae65b2e4f55c56b200c6ec18e74"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/memory.ttl",
+      "sha256": "4ea6351a8fc77fc9cdb83ce8f91857e689bba1d686bc2355d98a7591018778c3"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/ml.ttl",
+      "sha256": "79dbf4f5f117bd0022354f674b01c65b57aae7bd77b2c49c0b30916b83441153"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/observability.ttl",
+      "sha256": "8c771970b4a043f3cbb390d11d2476d3e4b3ee548c47fea4c11fd3aa62880113"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/ontology.ttl",
+      "sha256": "5efd6a4d57e4a2c347190f6d68c7af1e1da6e984b01503c4089cb2c22d2f9038"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/operations.ttl",
+      "sha256": "036bea48431e03a64a678df46c04d6cda2048a30caa0de3af1b0cf99fd7feb63"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/preprocessor.ttl",
+      "sha256": "89c3dee4d0880bb54f6eae5273722cb29d31e342308470bc7e5f68f6ae953086"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/screens.ttl",
+      "sha256": "24c4f17f329068dbad049abf3eedadb7915c1d15eac17aaff56c899e603f4a89"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/structure.ttl",
+      "sha256": "fd7bdb6a73f9c4dfe7c716f4e78245efe4f4f594543ed18f8365cad429845370"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/testing.ttl",
+      "sha256": "f99c81a8abc43c2c77db01302775ac2dc19fa0cfdfe409240c793c5bd1433181"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/type-system.ttl",
+      "sha256": "d340b1c728b93cf3ce0cb8c4b9e57a6034c6e236a8e77eb201d3477ce6c33e55"
+    },
+    {
+      "ontology": "sao",
+      "path": "ontologies/sao/vocabulary/ui.ttl",
+      "sha256": "cb373eb6c76a02ccc66069811960c64792f71813415ce01fa96dac5a60f34b58"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/axioms/properties.ttl",
+      "sha256": "7077b1d937abcfd9279118f19b78eb72bfa79cded8860d8a6ed8fc68e64dece9"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/bridges/sao/axioms.ttl",
+      "sha256": "041dbd89c5d0697a03ccf19c47b784cee6461536a2c5c494db6b10592c238b19"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/bridges/sao/shapes.ttl",
+      "sha256": "976c503d0300cf8feb7fa30ee7c8f41af7e0b1eb18a27b989897a07154234d98"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/bridges/sao/vocabulary.ttl",
+      "sha256": "0ca23809a0a4ba708a3b26f6c996a907700cd6fe12b634e11915337a6421ba23"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/common.ttl",
+      "sha256": "97745de586ca9558b843ee0699b10fb3cffc719d8a13f9ccb3cb41d50b8c3bb3"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/decisions.ttl",
+      "sha256": "eb9e219a80e7f7b779b0eb37f26562e699129e29bb0e2a4fecda1b1a4b2fc534"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/evidence.ttl",
+      "sha256": "cdb1b3260284fd5e51ea2da68645b9956f9a4026db37c5318886fe2a48001dec"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/graph.ttl",
+      "sha256": "73c4438499a12ba6de490aeed746767cc9447961a7eb180b2b841105435d5ec0"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/representations.ttl",
+      "sha256": "7856f81f1546d26af8a5cefc099a67f2d801d6bfb33d013f34270d1841ab1131"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/rules.ttl",
+      "sha256": "d2fef9f7a8fcaf662a7df762ce534d41233ff7cde8aa96b6076d1ff7bbe1360e"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/shapes/specifications.ttl",
+      "sha256": "e4af39fbb533f8be3583ca4393114c0041f5f229e68d8ee1eead9282f6178eab"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/common.ttl",
+      "sha256": "b287df686928754653161ada45e2df8e17b24e0d57867df68caa77b8617c54b6"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/decisions.ttl",
+      "sha256": "25b9745eb2c4a1773971d51c9a5673b724e2c2087ac04b6404290e9db2747f0c"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/evidence.ttl",
+      "sha256": "6acce2abaf46323a83e74fb34b4c78374a9b16c75d13c9d56ae20e2d7013e8f8"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/graph.ttl",
+      "sha256": "0c93c9588bbb1c054dbdd802e97f1572c2b182e210f4b8839654275877968650"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/ontology.ttl",
+      "sha256": "a413a46c87e30870aa0fd664d1c9484058afeaf45484f3ef338543909b1a28fc"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/representations.ttl",
+      "sha256": "3a458dbde20f2eb6e20dedd48112e3ada54a386b99eaa5ae80be7deda54a5903"
+    },
+    {
+      "ontology": "specspec",
+      "path": "ontologies/specspec/vocabulary/specifications.ttl",
+      "sha256": "f3288a3d3931e275eb6ce49a0b0e68edb07a5cfb6bf88acbdf913ebba6562fc2"
+    }
+  ],
+  "limitations": [
+    "Display projection only; the browser does not run validation or inference.",
+    "SHACL ranges, cardinalities and enums use Garden definitions.",
+    "Additional constraints and graph-rule descriptions appear in remarks.",
+    "RDFS datatypes appear in the class browser with their actual kind noted.",
+    "Garden JSON is not a lossless RDF serialization; original Turtle is supplied."
+  ],
+  "guide_pages": 52
+}

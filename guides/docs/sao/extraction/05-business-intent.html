@@ -1,0 +1,803 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 5: Business Intent · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-5-business-intent">Phase 5: Business Intent</h1>
+<p><strong>Input:</strong> All prior phase outputs (Phases 1--4) + documentation + domain knowledge
+<strong>Output:</strong> <strong>HumanActor</strong>, <strong>SystemActor</strong>, <strong>Operation</strong>, <strong>Query</strong>, <strong>Command</strong>, <strong>Rule</strong>, <strong>DomainEvent</strong>, <strong>IntegrationEvent</strong>, <strong>Subscription</strong>, <strong>Workflow</strong>, <strong>Step</strong>, <strong>Transaction</strong>, <strong>Capability</strong>, <strong>Feature</strong>, <strong>Message</strong></p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Phase 5 is the highest-abstraction layer in the SAO extraction process. Where earlier phases answer "what is the code?" and "how is it structured?", this phase answers <strong>"what does the system do, and for whom?"</strong></p>
+<p>This is the most inferential phase in the playbook. Most entities here cannot be parsed mechanically from source code -- they MUST be inferred from documentation, naming conventions, interaction patterns, and domain knowledge. Estimated automation: 20--30%. The remaining 70--80% requires LLM inference combined with human validation.</p>
+<p>Key characteristics of Phase 5 extraction:</p>
+<ul>
+<li><strong>Documentation is a critical input.</strong> User stories, API docs, product specs, and README files are often the primary source for actors, capabilities, and features.</li>
+<li><strong>Every entity produced in this phase SHOULD be flagged for human review.</strong> Even when an LLM can plausibly infer a business intent, a domain expert MUST validate the result before it is considered authoritative.</li>
+<li><strong>Prior phase outputs are prerequisites.</strong> Phase 5 builds on the <strong>CallableUnit</strong>, <strong>Component</strong>, <strong>Module</strong>, <strong>DomainEntity</strong>, <strong>Aggregate</strong>, and <strong>Schema</strong> instances produced in Phases 2--4. Without them, the bridge from code to intent cannot be established.</li>
+</ul>
+<hr />
+<h2 id="2-step-1-identify-actors">2. Step 1: Identify Actors</h2>
+<p><strong>Actor</strong> is an abstract class representing any entity that can initiate actions. The extraction agent MUST NOT instantiate <strong>Actor</strong> directly; instead, use its concrete subtypes <strong>HumanActor</strong> and <strong>SystemActor</strong>.</p>
+<h3 id="humanactor">HumanActor</h3>
+<p>Set <code>actor_type</code> to one of:</p>
+<ul>
+<li><code>end_user</code> -- regular end user of the system</li>
+<li><code>administrator</code> -- system administrator with elevated privileges</li>
+<li><code>operator</code> -- operations personnel managing system runtime</li>
+<li><code>developer</code> -- software developer or engineer</li>
+<li><code>auditor</code> -- compliance or security auditor</li>
+</ul>
+<p>Set <code>name</code>, <code>description</code>, and <code>email</code> where known.</p>
+<p><strong>Sources:</strong> authentication/authorization code (role definitions, user role enums), user-facing documentation, API consumer descriptions.</p>
+<pre><code class="language-yaml">- HumanActor:
+    name: CustomerUser
+    description: End user who browses products and places orders
+    category: human
+    actor_type: end_user
+    has_identities:
+      - CustomerIdentity
+</code></pre>
+<h3 id="systemactor">SystemActor</h3>
+<p>Set <code>actor_type</code> to one of:</p>
+<ul>
+<li><code>internal_service</code> -- internal service within the system</li>
+<li><code>external_system</code> -- external third-party system</li>
+<li><code>scheduled_process</code> -- scheduled or cron-based process</li>
+<li><code>ai_agent</code> -- artificial intelligence agent or bot</li>
+<li><code>message_trigger</code> -- message or event-triggered automation</li>
+</ul>
+<p>Set <code>name</code>, <code>description</code>, and <code>service_account</code> where known.</p>
+<p><strong>Sources:</strong> scheduled jobs (cron, Quartz, CICS START), message consumers (Kafka listeners, RabbitMQ handlers), external API clients, service-to-service authentication configs.</p>
+<pre><code class="language-yaml">- SystemActor:
+    name: PaymentGateway
+    description: External payment processing system (Stripe)
+    category: system
+    actor_type: external_system
+    service_account: stripe-webhook-svc
+
+- SystemActor:
+    name: NightlyReportGenerator
+    description: Scheduled process that generates daily sales reports
+    category: system
+    actor_type: scheduled_process
+    service_account: report-gen-cron
+</code></pre>
+<h3 id="linking-actors-to-identities">Linking Actors to Identities</h3>
+<p>The extraction agent SHOULD link <code>Actor.has_identities</code> to <strong>Identity</strong> instances. Identity extraction is detailed in Phase 6 (Cross-Cutting Concerns); in Phase 5, the agent SHOULD create placeholder references that Phase 6 will resolve.</p>
+<hr />
+<h2 id="3-step-2-extract-operations">3. Step 2: Extract Operations</h2>
+<p>Create an <strong>Operation</strong> for each named, invocable business action exposed via an interface. An <strong>Operation</strong> bridges the gap between a user-visible action and the code that implements it.</p>
+<h3 id="required-attributes">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Operation name (e.g., <code>PlaceOrder</code>, <code>AuthenticateUser</code>)</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>What the operation does in business terms</td>
+</tr>
+<tr>
+<td><code>accepts_input_schema</code></td>
+<td>Reference to the input <strong>Schema</strong></td>
+</tr>
+<tr>
+<td><code>produces_output_schema</code></td>
+<td>Reference to the output <strong>Schema</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-relationships">Key relationships</h3>
+<ul>
+<li><code>Operation.implemented_by_callables</code> -- MUST link to one or more <strong>CallableUnit</strong> instances from Phase 2. This is the essential bridge from business intent to code.</li>
+<li><code>Operation.exposed_by_component</code> -- SHOULD link to the <strong>Component</strong> that exposes this operation.</li>
+<li><code>Operation.executes_operation_actions</code> -- links to the <strong>Action</strong> instances (Queries and Commands) the operation performs.</li>
+<li><code>Operation.offered_on_screens</code> -- links to <strong>Screen</strong> instances where the operation appears in a UI.</li>
+</ul>
+<p><strong>Sources:</strong> API endpoint handlers (REST controllers, gRPC service methods), service facade methods, CICS transaction handlers, GraphQL resolvers.</p>
+<pre><code class="language-yaml">- Operation:
+    name: PlaceOrder
+    description: Accepts a cart and creates a confirmed order
+    errors:
+      - InsufficientInventoryError
+      - PaymentDeclinedError
+    exposed_by_component: OrderService
+    accepts_input_schema: PlaceOrderRequest
+    produces_output_schema: OrderConfirmation
+    implemented_by_callables:
+      - OrderController.placeOrder
+      - OrderService.processOrder
+    executes_operation_actions:
+      - CreateOrderCommand
+</code></pre>
+<hr />
+<h2 id="4-step-3-classify-actions-as-queries-or-commands">4. Step 3: Classify Actions as Queries or Commands</h2>
+<p><strong>Action</strong> is an abstract class with two concrete subtypes: <strong>Query</strong> (read-only) and <strong>Command</strong> (state-changing). The extraction agent MUST classify every business action into one of these subtypes.</p>
+<h3 id="common-attributes-inherited-from-action">Common attributes (inherited from Action)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td><code>query</code>, <code>command</code>, or <code>mutation</code></td>
+</tr>
+<tr>
+<td><code>performed_by_actor</code></td>
+<td>The <strong>Actor</strong> who performs this action</td>
+</tr>
+<tr>
+<td><code>targets_resources</code></td>
+<td><strong>Resource</strong> instances affected</td>
+</tr>
+<tr>
+<td><code>validated_by_action_rules</code></td>
+<td><strong>Rule</strong> instances that validate this action</td>
+</tr>
+<tr>
+<td><code>emits_events_from_action</code></td>
+<td><strong>Event</strong> instances emitted by this action</td>
+</tr>
+<tr>
+<td><code>executes_in_transaction</code></td>
+<td><strong>Transaction</strong> context for this action</td>
+</tr>
+</tbody>
+</table>
+<h3 id="query">Query</h3>
+<p>A read-only action that retrieves data without side effects.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>filters</code></td>
+<td>Query filter expressions</td>
+</tr>
+<tr>
+<td><code>projections</code></td>
+<td>Fields to return</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">- Query:
+    name: SearchProducts
+    description: Search product catalog by keyword and category
+    category: query
+    performed_by_actor: CustomerUser
+    filters:
+      - &quot;keyword LIKE '%term%'&quot;
+      - &quot;category = :category&quot;
+    projections:
+      - id
+      - name
+      - price
+      - thumbnail_url
+    targets_resources:
+      - ProductCatalog
+</code></pre>
+<h3 id="command">Command</h3>
+<p>An action that changes system state.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command_type</code></td>
+<td><code>create</code>, <code>update</code>, <code>delete</code>, <code>execute</code>, <code>archive</code>, <code>restore</code></td>
+</tr>
+<tr>
+<td><code>idempotency_key</code></td>
+<td>Key for idempotent execution</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">- Command:
+    name: CreateOrder
+    description: Creates a new order from the customer's cart
+    category: command
+    command_type: create
+    performed_by_actor: CustomerUser
+    idempotency_key: cart_id
+    targets_resources:
+      - OrderAggregate
+    validated_by_action_rules:
+      - InventoryAvailabilityRule
+      - MinimumOrderAmountRule
+    emits_events_from_action:
+      - OrderCreated
+</code></pre>
+<h3 id="classification-heuristic">Classification heuristic</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HTTP GET, GraphQL query, SQL SELECT</td>
+<td><strong>Query</strong></td>
+</tr>
+<tr>
+<td>HTTP POST/PUT/DELETE, SQL INSERT/UPDATE/DELETE</td>
+<td><strong>Command</strong></td>
+</tr>
+<tr>
+<td>Method name starts with <code>get</code>, <code>find</code>, <code>list</code>, <code>search</code>, <code>fetch</code></td>
+<td><strong>Query</strong></td>
+</tr>
+<tr>
+<td>Method name starts with <code>create</code>, <code>update</code>, <code>delete</code>, <code>process</code>, <code>submit</code></td>
+<td><strong>Command</strong></td>
+</tr>
+<tr>
+<td>Returns data without persistence writes</td>
+<td><strong>Query</strong></td>
+</tr>
+<tr>
+<td>Triggers events, writes to a data store, or changes entity state</td>
+<td><strong>Command</strong></td>
+</tr>
+<tr>
+<td>CICS RECEIVE MAP followed by SEND MAP only</td>
+<td><strong>Query</strong></td>
+</tr>
+<tr>
+<td>CICS WRITE / REWRITE / DELETE on VSAM/DB2</td>
+<td><strong>Command</strong></td>
+</tr>
+</tbody>
+</table>
+<p>When a method both reads and writes (e.g., <code>transferFunds</code>), classify it as a <strong>Command</strong> with <code>category</code> set to <code>mutation</code>.</p>
+<hr />
+<h2 id="5-step-4-extract-rules">5. Step 4: Extract Rules</h2>
+<p>Create a <strong>Rule</strong> for each validation constraint, business policy, guard clause, or derivation logic.</p>
+<h3 id="required-attributes_1">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Descriptive rule name</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>validation</code>, <code>business</code>, <code>derivation</code>, <code>constraint</code>, <code>trigger</code></td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>The rule predicate (the "if" part)</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>What happens when the rule fires (the "then" part)</td>
+</tr>
+<tr>
+<td><code>priority</code></td>
+<td>Evaluation order (lower = higher priority)</td>
+</tr>
+<tr>
+<td><code>is_active</code></td>
+<td>Whether the rule is currently active</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-relationships_1">Key relationships</h3>
+<ul>
+<li><code>Rule.validates_actions</code> -- which <strong>Action</strong> instances this rule validates</li>
+<li><code>Rule.validates_attributes</code> -- which <strong>Attribute</strong> instances this rule constrains</li>
+<li><code>Rule.governs_domain_entities</code> -- which <strong>DomainEntity</strong> instances this rule governs</li>
+<li><code>Rule.guards_transitions</code> -- which <strong>Transition</strong> instances this rule guards (for state machines)</li>
+<li><code>Rule.enforces_aggregate_invariants</code> -- which <strong>Aggregate</strong> instances this rule protects</li>
+</ul>
+<h3 id="rule-categories-explained">Rule categories explained</h3>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Purpose</th>
+<th>Typical source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>validation</code></td>
+<td>Data integrity checks</td>
+<td><code>@NotNull</code>, <code>@Size</code>, <code>@Pattern</code>, input validators</td>
+</tr>
+<tr>
+<td><code>business</code></td>
+<td>Business logic constraints</td>
+<td>Policy checks, eligibility rules, discount logic</td>
+</tr>
+<tr>
+<td><code>derivation</code></td>
+<td>Computed/derived values</td>
+<td><code>total = sum(lineItems)</code>, <code>tax = subtotal * rate</code></td>
+</tr>
+<tr>
+<td><code>constraint</code></td>
+<td>Domain invariants</td>
+<td>Balance &gt;= 0, stock &gt;= 0, unique email</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>Event-driven automation</td>
+<td>"When order ships, send email", "When inventory low, alert"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> validation annotations (<code>@NotNull</code>, <code>@Size</code>, <code>@Valid</code>), if/throw patterns, guard clauses, policy service methods, COBOL paragraph-level condition checks (IF/EVALUATE), database constraints.</p>
+<pre><code class="language-yaml">- Rule:
+    name: MinimumOrderAmountRule
+    category: business
+    condition: &quot;order.total &gt;= 10.00&quot;
+    action: &quot;Allow order to proceed&quot;
+    priority: 1
+    is_active: true
+    validates_actions:
+      - CreateOrder
+    governs_domain_entities:
+      - Order
+
+- Rule:
+    name: EmailFormatValidation
+    category: validation
+    condition: &quot;email matches RFC 5322 pattern&quot;
+    action: &quot;Reject with INVALID_EMAIL error&quot;
+    priority: 1
+    is_active: true
+    validates_attributes:
+      - User.email
+</code></pre>
+<hr />
+<h2 id="6-step-5-extract-events">6. Step 5: Extract Events</h2>
+<p><strong>Event</strong> is the base class for notifications that something occurred. The extraction agent MUST use its concrete subtypes: <strong>DomainEvent</strong> and <strong>IntegrationEvent</strong>.</p>
+<h3 id="common-attributes-inherited-from-event">Common attributes (inherited from Event)</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Event name, past tense by convention (e.g., <code>OrderPlaced</code>)</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>domain_event</code>, <code>integration_event</code>, <code>system_event</code>, <code>audit_event</code></td>
+</tr>
+<tr>
+<td><code>correlation_id</code></td>
+<td>For tracing related events</td>
+</tr>
+<tr>
+<td><code>event_structured_by_schema</code></td>
+<td><strong>Schema</strong> defining the event payload</td>
+</tr>
+<tr>
+<td><code>emitted_by_component</code></td>
+<td><strong>Component</strong> that produces the event</td>
+</tr>
+</tbody>
+</table>
+<h3 id="domainevent">DomainEvent</h3>
+<p>A significant occurrence within a bounded context, produced by an <strong>Aggregate</strong>.</p>
+<ul>
+<li>Set <code>produced_by_aggregate</code> to reference the originating <strong>Aggregate</strong>.</li>
+<li>Set <code>category</code> to <code>domain_event</code>.</li>
+</ul>
+<pre><code class="language-yaml">- DomainEvent:
+    name: OrderPlaced
+    description: Emitted when a customer successfully places an order
+    category: domain_event
+    produced_by_aggregate: OrderAggregate
+    event_structured_by_schema: OrderPlacedPayload
+    emitted_by_component: OrderService
+</code></pre>
+<h3 id="integrationevent">IntegrationEvent</h3>
+<p>A cross-service communication event that bridges bounded contexts or external systems.</p>
+<ul>
+<li>Set <code>targeted_at_services</code> to reference the <strong>Service</strong> instances that consume the event.</li>
+<li>Set <code>category</code> to <code>integration_event</code>.</li>
+</ul>
+<pre><code class="language-yaml">- IntegrationEvent:
+    name: OrderShippedNotification
+    description: Published to notify billing and notification services
+    category: integration_event
+    targeted_at_services:
+      - BillingService
+      - NotificationService
+    event_structured_by_schema: OrderShippedPayload
+</code></pre>
+<h3 id="subscription">Subscription</h3>
+<p>Create a <strong>Subscription</strong> for each event consumer registration.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Subscription name</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>Filter expression for event selection</td>
+</tr>
+<tr>
+<td><code>delivery_mode</code></td>
+<td>Push or pull delivery</td>
+</tr>
+<tr>
+<td><code>subscribes_to_event_types</code></td>
+<td><strong>Event</strong> instances subscribed to</td>
+</tr>
+<tr>
+<td><code>subscribed_by_actor</code></td>
+<td><strong>Actor</strong> that owns the subscription</td>
+</tr>
+<tr>
+<td><code>subscribes_to_interface</code></td>
+<td><strong>EventInterface</strong> for delivery</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-yaml">- Subscription:
+    name: BillingOrderShippedSubscription
+    filter: &quot;event.type = 'OrderShippedNotification'&quot;
+    delivery_mode: push
+    subscribes_to_event_types:
+      - OrderShippedNotification
+    subscribed_by_actor: BillingService
+</code></pre>
+<h3 id="message">Message</h3>
+<p>Create a <strong>Message</strong> when the integration involves explicit message payloads (e.g., message queues, topic-based messaging).</p>
+<pre><code class="language-yaml">- Message:
+    name: OrderShippedMessage
+    message_type: event
+    message_structured_by_schema: OrderShippedPayload
+</code></pre>
+<p><strong>Sources:</strong> event publishing code (<code>EventBus.publish()</code>, Kafka <code>ProducerRecord</code>, RabbitMQ <code>basicPublish</code>), event handler annotations (<code>@EventHandler</code>, <code>@KafkaListener</code>), CICS START commands, domain event classes, message broker configurations.</p>
+<hr />
+<h2 id="7-step-6-extract-workflows">7. Step 6: Extract Workflows</h2>
+<p>Create a <strong>Workflow</strong> for each multi-step business process that coordinates multiple actions toward a business goal.</p>
+<h3 id="workflow-attributes">Workflow attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Workflow name</td>
+</tr>
+<tr>
+<td><code>workflow_type</code></td>
+<td><code>synchronous</code>, <code>asynchronous</code>, <code>saga</code>, <code>choreography</code>, <code>orchestration</code></td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>Ordered list of <strong>Step</strong> instances</td>
+</tr>
+<tr>
+<td><code>triggered_by_workflow_events</code></td>
+<td><strong>Event</strong> instances that start the workflow</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-attributes">Step attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Step name</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Execution order (integer)</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>Condition for execution</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td>Step timeout in seconds</td>
+</tr>
+<tr>
+<td><code>executes_actions_in_step</code></td>
+<td><strong>Action</strong> instances executed during this step</td>
+</tr>
+<tr>
+<td><code>followed_by_steps</code></td>
+<td>Next <strong>Step</strong> instances in the sequence</td>
+</tr>
+<tr>
+<td><code>compensated_by_step</code></td>
+<td>Compensating <strong>Step</strong> for saga rollback</td>
+</tr>
+</tbody>
+</table>
+<h3 id="transaction">Transaction</h3>
+<p>Create a <strong>Transaction</strong> for each transaction boundary encountered.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Transaction name</td>
+</tr>
+<tr>
+<td><code>transaction_type</code></td>
+<td><code>local</code>, <code>distributed</code>, <code>saga</code>, <code>two_phase_commit</code></td>
+</tr>
+<tr>
+<td><code>isolation_level</code></td>
+<td>Transaction isolation level (e.g., <code>read_committed</code>)</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td>Transaction timeout in seconds</td>
+</tr>
+<tr>
+<td><code>executes_actions</code></td>
+<td><strong>Action</strong> instances within this transaction</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> saga implementations, orchestration engines (Temporal, Camunda, Step Functions), multi-step handler methods, COBOL paragraph sequences with EXEC CICS SYNCPOINT, Spring <code>@Transactional</code> boundaries, database transaction blocks.</p>
+<pre><code class="language-yaml">- Workflow:
+    name: OrderFulfillmentSaga
+    workflow_type: saga
+    triggered_by_workflow_events:
+      - OrderPlaced
+    steps:
+      - Step:
+          name: ReserveInventory
+          order: 1
+          timeout_seconds: 5
+          executes_actions_in_step:
+            - ReserveInventoryCommand
+          compensated_by_step: ReleaseInventory
+          followed_by_steps:
+            - AuthorizePayment
+      - Step:
+          name: AuthorizePayment
+          order: 2
+          timeout_seconds: 10
+          executes_actions_in_step:
+            - AuthorizePaymentCommand
+          compensated_by_step: CancelAuthorization
+          followed_by_steps:
+            - CreateShipment
+      - Step:
+          name: CreateShipment
+          order: 3
+          timeout_seconds: 5
+          executes_actions_in_step:
+            - CreateShipmentCommand
+          compensated_by_step: CancelShipment
+          followed_by_steps:
+            - ConfirmOrder
+      - Step:
+          name: ConfirmOrder
+          order: 4
+          executes_actions_in_step:
+            - ConfirmOrderCommand
+
+- Transaction:
+    name: OrderCreationTransaction
+    transaction_type: local
+    isolation_level: read_committed
+    timeout_seconds: 30
+    executes_actions:
+      - CreateOrder
+      - DeductInventory
+</code></pre>
+<h3 id="compensation-steps-for-sagas">Compensation steps for sagas</h3>
+<p>For each forward step in a saga workflow, the extraction agent SHOULD create a corresponding compensation step and link it via <code>compensated_by_step</code>. Compensation steps are themselves <strong>Step</strong> instances:</p>
+<pre><code class="language-yaml">- Step:
+    name: ReleaseInventory
+    order: 1
+    executes_actions_in_step:
+      - ReleaseInventoryCommand
+</code></pre>
+<hr />
+<h2 id="8-step-7-synthesize-capabilities-and-features">8. Step 7: Synthesize Capabilities and Features</h2>
+<p><strong>Capability</strong> and <strong>Feature</strong> represent the highest level of abstraction in SAO. They describe what the system can do and how users experience it.</p>
+<h3 id="capability">Capability</h3>
+<p>A discrete business or technical ability the system provides.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Capability name</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>What this capability provides</td>
+</tr>
+<tr>
+<td><code>provided_by_modules</code></td>
+<td><strong>Module</strong> instances that implement this capability</td>
+</tr>
+<tr>
+<td><code>requires_permissions</code></td>
+<td><strong>Permission</strong> instances needed (from Phase 6)</td>
+</tr>
+<tr>
+<td><code>realizes_features</code></td>
+<td><strong>Feature</strong> instances this capability realizes</td>
+</tr>
+<tr>
+<td><code>enables_features</code></td>
+<td><strong>Feature</strong> instances this capability enables</td>
+</tr>
+</tbody>
+</table>
+<h3 id="feature">Feature</h3>
+<p>A user-facing manifestation of one or more capabilities.</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Feature name</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code></td>
+</tr>
+<tr>
+<td><code>enabled_by_capabilities</code></td>
+<td><strong>Capability</strong> instances that enable this feature</td>
+</tr>
+<tr>
+<td><code>realized_by_capabilities</code></td>
+<td><strong>Capability</strong> instances that realize this feature</td>
+</tr>
+<tr>
+<td><code>controlled_by_configs</code></td>
+<td><strong>Configuration</strong> instances (for feature flags)</td>
+</tr>
+<tr>
+<td><code>accessible_by_roles</code></td>
+<td><strong>Role</strong> instances that can access this feature</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sources:</strong> product documentation, feature flag configurations (LaunchDarkly, Unleash, <code>@FeatureToggle</code>), capability-oriented package structure, marketing materials, user stories.</p>
+<pre><code class="language-yaml">- Capability:
+    name: OrderManagement
+    description: Ability to create, track, modify, and cancel customer orders
+    provided_by_modules:
+      - OrderModule
+      - InventoryModule
+    requires_permissions:
+      - orders.create
+      - orders.read
+      - orders.update
+      - orders.cancel
+    realizes_features:
+      - OnlineOrdering
+    enables_features:
+      - OrderTracking
+      - OrderHistory
+
+- Feature:
+    name: OnlineOrdering
+    description: Allows customers to place orders through the web storefront
+    category: core
+    enabled_by_capabilities:
+      - OrderManagement
+      - PaymentProcessing
+      - InventoryManagement
+    realized_by_capabilities:
+      - OrderManagement
+    controlled_by_configs:
+      - OnlineOrderingFeatureFlag
+    accessible_by_roles:
+      - Customer
+      - Administrator
+
+- Feature:
+    name: BetaRecommendationEngine
+    description: AI-powered product recommendations on product pages
+    category: experimental
+    enabled_by_capabilities:
+      - RecommendationEngine
+    controlled_by_configs:
+      - RecommendationEngineToggle
+    accessible_by_roles:
+      - BetaCustomer
+</code></pre>
+<hr />
+<h2 id="9-phase-5-checklist">9. Phase 5 Checklist</h2>
+<p>Before proceeding to Phase 6, verify the following:</p>
+<ul>
+<li>[ ] <strong>Actors identified.</strong> Both <strong>HumanActor</strong> and <strong>SystemActor</strong> instances created with correct <code>actor_type</code> values. Every actor has a <code>name</code> and <code>description</code>.</li>
+<li>[ ] <strong>Operations extracted.</strong> Each named business action has an <strong>Operation</strong> instance. Every <strong>Operation</strong> MUST link to at least one <strong>CallableUnit</strong> via <code>implemented_by_callables</code>.</li>
+<li>[ ] <strong>Actions classified.</strong> Every business action is classified as a <strong>Query</strong> or <strong>Command</strong> with correct <code>category</code> and (for commands) <code>command_type</code>.</li>
+<li>[ ] <strong>Rules extracted.</strong> Validation constraints, business policies, and guard clauses captured as <strong>Rule</strong> instances with <code>category</code>, <code>condition</code>, and <code>action</code> set.</li>
+<li>[ ] <strong>Events identified.</strong> Significant domain occurrences captured as <strong>DomainEvent</strong> instances; cross-service events captured as <strong>IntegrationEvent</strong> instances. Each event has a <code>category</code> and links to its producing <strong>Aggregate</strong> or target services.</li>
+<li>[ ] <strong>Subscriptions created.</strong> Event consumers registered as <strong>Subscription</strong> instances linking events to actors.</li>
+<li>[ ] <strong>Workflows extracted.</strong> Multi-step business processes captured as <strong>Workflow</strong> instances with ordered <strong>Step</strong> sequences. Saga workflows include compensation steps.</li>
+<li>[ ] <strong>Transactions defined.</strong> Transaction boundaries captured as <strong>Transaction</strong> instances with <code>transaction_type</code> and <code>isolation_level</code>.</li>
+<li>[ ] <strong>Capabilities and Features synthesized.</strong> System abilities captured as <strong>Capability</strong> instances; user-facing features captured as <strong>Feature</strong> instances with appropriate <code>category</code>.</li>
+<li>[ ] <strong>Human review flagged.</strong> All entities produced in this phase are marked for domain expert validation.</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

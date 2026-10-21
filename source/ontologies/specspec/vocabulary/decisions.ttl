@@ -1,0 +1,143 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:ChangeProposal a rdfs:Class ;
+    rdfs:label "ChangeProposal" ;
+    rdfs:comment "A proposed change to a specification baseline. It can represent a feature change or modernization while keeping current behavior separate from intent." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:Decision a rdfs:Class ;
+    rdfs:label "Decision" ;
+    rdfs:comment "A recorded choice, including context, alternatives, rationale, and consequences. A decision record is a representation of this item." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:DecisionOption a rdfs:Class ;
+    rdfs:label "DecisionOption" ;
+    rdfs:comment "An alternative considered in a decision." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:RequirementReplacement a rdfs:Class ;
+    rdfs:label "RequirementReplacement" ;
+    rdfs:comment "A proposed replacement of one requirement with another; neither version is silently overwritten." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:addresses_requirements a rdf:Property ;
+    rdfs:label "addresses_requirements" ;
+    rdfs:comment "[Decision] Requirements that influenced the decision." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:adds_requirements a rdf:Property ;
+    rdfs:label "adds_requirements" ;
+    rdfs:comment "[ChangeProposal] New requirements proposed for the next baseline." ;
+    rdfs:domain spec:ChangeProposal ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:assessment_claims a rdf:Property ;
+    rdfs:label "assessment_claims" ;
+    rdfs:comment "[DecisionOption] Statements assessing this alternative, including tradeoffs." ;
+    rdfs:domain spec:DecisionOption ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:baseline a rdf:Property ;
+    rdfs:label "baseline" ;
+    rdfs:comment "[ChangeProposal] Specification whose current state is being considered." ;
+    rdfs:domain spec:ChangeProposal ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Specification .
+
+spec:chosen_option a rdf:Property ;
+    rdfs:label "chosen_option" ;
+    rdfs:comment "[Decision] Selected alternative, if a choice has been made." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:DecisionOption .
+
+spec:consequence_claims a rdf:Property ;
+    rdfs:label "consequence_claims" ;
+    rdfs:comment "[Decision] Expected or observed consequences, with statement mode and origin made explicit." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:context a rdf:Property ;
+    rdfs:label "context" ;
+    rdfs:comment "[Decision] Problem and circumstances in which the choice was made." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:decided_by a rdf:Property ;
+    rdfs:label "decided_by" ;
+    rdfs:comment "[Decision] Agents responsible for the decision." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecAgent .
+
+spec:justification_claims a rdf:Property ;
+    rdfs:label "justification_claims" ;
+    rdfs:comment "[RequirementReplacement] Reasons for replacing the requirement." ;
+    rdfs:domain spec:RequirementReplacement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:options a rdf:Property ;
+    rdfs:label "options" ;
+    rdfs:comment "[Decision] Alternatives considered." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:DecisionOption .
+
+spec:previous_requirement a rdf:Property ;
+    rdfs:label "previous_requirement" ;
+    rdfs:comment "[RequirementReplacement] Requirement in the prior baseline." ;
+    rdfs:domain spec:RequirementReplacement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:proposal a rdf:Property ;
+    rdfs:label "proposal" ;
+    rdfs:comment "[DecisionOption] The alternative being considered." ;
+    rdfs:domain spec:DecisionOption ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:rationale_claims a rdf:Property ;
+    rdfs:label "rationale_claims" ;
+    rdfs:comment "[Decision] Traceable statements explaining the choice." ;
+    rdfs:domain spec:Decision ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:removes_requirements a rdf:Property ;
+    rdfs:label "removes_requirements" ;
+    rdfs:comment "[ChangeProposal] Baseline requirements proposed for removal." ;
+    rdfs:domain spec:ChangeProposal ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:replacement_requirement a rdf:Property ;
+    rdfs:label "replacement_requirement" ;
+    rdfs:comment "[RequirementReplacement] Proposed successor requirement." ;
+    rdfs:domain spec:RequirementReplacement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:replacements a rdf:Property ;
+    rdfs:label "replacements" ;
+    rdfs:comment "[ChangeProposal] Explicit before/after requirement pairs." ;
+    rdfs:domain spec:ChangeProposal ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:RequirementReplacement .

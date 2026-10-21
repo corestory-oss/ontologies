@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Turtle authority migration · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="turtle-authority-migration">Turtle authority migration</h1>
+<h2 id="what-is-authoritative-now">What is authoritative now</h2>
+<p><code>ontologies/sao/vocabulary/*.ttl</code> are the editable RDFS vocabulary sources. They are no longer regenerated from LinkML. <code>ontologies/sao/shapes/*.ttl</code> are the editable initial validation profile. <code>scripts/build_rdf.py</code> reads their manifests, assembles <code>dist/sao.ttl</code>, <code>dist/sao.shacl.ttl</code>, and the optional <code>dist/sao.owl.ttl</code> supplement, and checks freshness. It imports RDFLib, not LinkML. RDF validation uses pySHACL and these Turtle sources.</p>
+<p>The first Turtle-authority step preserved the 2.1.0 vocabulary graph. The <a href="migration-3.0.html">3.0.0 candidate</a> now deliberately changes relationship predicates and their validation. Class IRIs and the ontology namespace remain stable. Editing Turtle changes the next distribution without editing YAML.</p>
+<h2 id="initial-shacl-coverage">Initial SHACL coverage</h2>
+<p>The initial shapes were bootstrapped once from the resolved SAO 2.1.0 LinkML model, using a small migration translator because the standard generator stopped on <code>contained_in_unit.inverse</code> referring to a class-local slot. No inverse declaration was corrected or silently reinterpreted.</p>
+<p>All 147 classes have named node shapes. The initial layer contains 1,866 property shapes after inheritance, including required fields, single-value cardinality, class ranges, scalar datatypes, enum membership, inherited datatype patterns, and seven <code>any_of</code> constraints. Shape and property-shape IRIs are separate from domain terms. The historical counts are recorded in <a href="../../../source/docs/sao/shacl-bootstrap-report.json">the bootstrap report</a>; they do not freeze future Turtle editing.</p>
+<p>Shapes are open: extra predicates are allowed. Vocabulary hierarchy is supplied during validation, so inherited base-class targets and <code>sh:class</code> constraints can recognize subclasses. We do not materialize OWL inferences. Validation uses SHACL Core and performs meta-validation of the shapes themselves.</p>
+<p>Required LinkML <code>id</code> fields remain literal properties alongside RDF subjects. That preserves the initial constraints while their future mapping is decided. The bootstrap is not a proof that the RDF validation profile equals LinkML instance validation.</p>
+<h2 id="what-is-still-pending">What is still pending</h2>
+<ul>
+<li>Complete internal producer/query/data migration to the proposed 3.0.0 relationship contract. The seven audited groups have candidate resolutions and the supplement now carries 217 inverse pairs; SHACL validation still does not materialize OWL inferences.</li>
+<li>Decide the closed-world validation policy and treatment of abstract classes.</li>
+<li>Define how identifier fields map to RDF subjects and how JSON/YAML inlining and mixin conventions are preserved, retired, or represented in a serialization profile.</li>
+<li>Establish validation coverage with richer positive and negative graphs, including relationship references, enum lists, alternative ranges, and subclass overrides.</li>
+<li>Decide whether documentation and downstream JSON/type generation should be driven from RDF, retained as compatibility exports, or discontinued.</li>
+<li>Add consistency checks between descriptive enum annotations and class-specific SHACL allowed-value lists.</li>
+</ul>
+<p>Legacy YAML and its tooling remain available as a historical comparison baseline. CI still checks that baseline on its own; it does not require authored Turtle to equal a new LinkML export. Do not remove it until the above decisions and coverage justify doing so.</p>
+<h2 id="commands">Commands</h2>
+<pre><code class="language-sh">uv run python scripts/build_rdf.py
+uv run python scripts/build_rdf.py --check
+uv run python scripts/validate_rdf.py --ontology sao examples/sao/rdf/system.ttl
+uv run python -m unittest discover -s tests
+</code></pre>
+<p>Historical tools under <code>scripts/migration/sao/</code> require explicit output locations. <code>bootstrap_shapes.py</code> refuses to write into an already populated directory. These are migration tools, not authoring or build commands.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

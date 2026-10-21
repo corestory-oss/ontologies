@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Model notes and boundaries · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="model-notes-and-boundaries">Model notes and boundaries</h1>
+<h2 id="statements-and-software">Statements and software</h2>
+<p>SAO describes software structure and behavior. SpecSpec describes statements, obligations, decisions, and evidence about software. A normative requirement and a descriptive statement that the software implements it are separate nodes.</p>
+<p>A requirement inherits Claim so it carries statement-level provenance, review, and support. It restricts <code>statement_mode</code> to <code>normative</code>. A general Claim may be descriptive, normative, or hypothetical. AcceptanceCriterion has the same normative restriction.</p>
+<p>UseCase expresses a goal and participants; Scenario contains ordered steps and claims describing conditions and outcomes. Their prose is contextual. Assertions needing separate provenance should be Claim nodes, not buried in a document description.</p>
+<h2 id="evidence-and-identity">Evidence and identity</h2>
+<p>A SourceSnapshot identifies a captured source state using an immutable revision. EvidenceAnchor locates a region within it. A filename alone is insufficient grounding. Line coordinates are one-based and inclusive. A selector can locate a non-line-oriented region.</p>
+<p>A source anchor supports or contradicts a claim. Derived claims also reference their premise claims. This provides a traversable evidence chain, but neither a link nor an origin tag establishes truth. Runtime observations can be captured as snapshots just as code can.</p>
+<p>SpecActivity records responsible agents, inputs and optional tool/model versions. Claim links back to the producing activity. Authorship and review responsibility are distinct. The current model records a review disposition, not a full append-only review history.</p>
+<h2 id="document-representations">Document representations</h2>
+<p>SpecificationArtifact identifies a document. ArtifactFragment maps a section to one or more knowledge nodes. RepresentationProfile identifies an external convention. A document is not given an SAO class merely because it mentions a software component.</p>
+<p>The initial draft preserves context, rationale and consequences through dedicated fields and claim relationships. It does not attempt lossless round trips through every external format. Native text should be retained when an adapter would otherwise discard meaning.</p>
+<h2 id="optional-bridge">Optional bridge</h2>
+<p><code>ontologies/specspec/bridges/sao/</code> owns three initial link classes: SoftwareSubjectLink, RequirementImplementationLink and VerificationTestLink. Their subject and target properties have explicit class ranges in SHACL. Both endpoints are identified references; records do not need to be nested inside one another.</p>
+<p>The software-target ranges deliberately differ: a subject link may mention any SAO NamedEntity; an implementation link currently targets CallableUnit; a verification link targets TestCase. Further link classes should state their intended range rather than weakening all links to arbitrary URIs. These link nodes preserve the draft exchange design and its qualified relationships.</p>
+<p>Core SpecSpec class names avoid colliding with SAO’s existing NamedEntity, Evidence and KnowledgeArtifact. Core manifests do not include the bridge. Optional integration explicitly loads both vocabularies and the bridge, without network imports.</p>
+<h2 id="draft-constraints-and-limits">Draft constraints and limits</h2>
+<p>SHACL checks required properties, scalar cardinality, enum values, numeric bounds, normative statement mode, and typed references. SHACL-SPARQL checks canonical identity, source anchor coordinates, claim premise cycles, observed/inferred support, confidence basis, review responsibility, scenario positions, chosen decision membership, and baseline membership for proposed requirement removals/replacements.</p>
+<p>Every knowledge node uses its identifier as its RDF subject IRI. The existing <code>spec:id</code> URI literal is retained and must match that IRI. Scenario step order comes from <code>ScenarioStep.position</code>, starting at one; Turtle triple order is irrelevant. See <a href="rdf-migration.html">RDF migration details</a> for the representation differences from the earlier record format.</p>
+<p>The fixture manifest enables content-digest and line-bound checks for local example sources. General validation cannot determine from a revision string whether an external source is truly immutable or whether an assertion is faithful to it. Evidence adequacy, confidence calibration, claim scope, semantic contradictions and behavioral equivalence require tooling and human review beyond these checks.</p>
+<p>Stabilization questions include evidence-link qualification, review history, inference activities with multiple conclusions, versioned knowledge identities, transformation plans, governance-specific classes, and external graph validation. No current field implies universal behavioral equivalence or automatic acceptance.</p>
+<h2 id="rdfs-shacl-and-owl-layers">RDFS, SHACL and OWL layers</h2>
+<p><code>ontologies/specspec/vocabulary/</code> defines the vocabulary in RDFS. Reused predicates have class-specific usage constraints in SHACL. A property with several intended domains or ranges uses <code>schema:domainIncludes</code> or <code>schema:rangeIncludes</code> annotations; multiple <code>rdfs:domain</code> statements would infer membership in every domain. An annotation does not enforce a constraint. SHACL is the validation contract.</p>
+<p><code>ontologies/specspec/axioms/</code> supplies optional OWL object/datatype property declarations. This draft has no declared inverses, transitivity or disjointness. The conversion does not invent them. Loading the OWL supplement does not replace SHACL validation or establish that claims are true.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

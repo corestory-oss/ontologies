@@ -1,0 +1,368 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/data
+name: sao-data
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  DataStoreType:
+    description: Types of data stores
+    permissible_values:
+      relational_db:
+        description: "Relational database (SQL)."
+      document_db:
+        description: "Document-oriented database (NoSQL)."
+      key_value_store:
+        description: "Key-value store (Redis, DynamoDB)."
+      graph_db:
+        description: "Graph database (Neo4j)."
+      time_series_db:
+        description: "Time-series database."
+      object_storage:
+        description: "Object storage (S3, blob storage)."
+      search_index:
+        description: "Search index (Elasticsearch, Solr)."
+      cache:
+        description: "In-memory cache."
+      message_broker:
+        description: "Message broker or queue."
+      data_lake:
+        description: "Data lake for analytics."
+      vsam:
+        description: IBM VSAM dataset
+      flat_file:
+        description: Sequential or flat file
+      isam:
+        description: Indexed Sequential Access Method file
+      dead_letter_queue:
+        description: "Dead letter queue."
+
+  SchemaType:
+    description: Types of data schemas
+    permissible_values:
+      table_schema:
+        description: "Relational database table schema."
+      document_schema:
+        description: "Document or JSON schema."
+      event_schema:
+        description: "Event payload schema."
+      api_schema:
+        description: "API request/response schema."
+      message_schema:
+        description: "Message format schema."
+
+
+classes:
+  DataStore:
+    is_a: NamedEntity
+    description: >-
+      A persistence mechanism
+    attributes:
+      store_type:
+        description: "Kind of data store."
+        range: DataStoreType
+      connection_string:
+        description: "Connection configuration."
+        range: string
+      has_collections:
+        description: "List of collections/tables."
+        range: Collection
+        multivalued: true
+      hosted_on_infrastructure:
+        description: "`Infrastructure` hosting the data store."
+        range: Infrastructure
+        inverse: hosts_datastores
+      persists_aggregates:
+        description: "`Aggregate` entities stored."
+        range: Aggregate
+        multivalued: true
+        inverse: persisted_in_stores
+      store_read_by_pipelines:
+        description: "`DataPipeline` entities that read from this store."
+        range: DataPipeline
+        multivalued: true
+        inverse: pipeline_reads_from_stores
+      store_written_by_pipelines:
+        description: "`DataPipeline` entities that write to this store."
+        range: DataPipeline
+        multivalued: true
+        inverse: pipeline_writes_to_stores
+      store_file_definitions:
+        description: "`FileDefinition` entities associated with this store."
+        range: FileDefinition
+        multivalued: true
+        inverse: persisted_in_store
+
+  Collection:
+    is_a: NamedEntity
+    description: >-
+      A logical grouping of records (table, collection, bucket)
+    attributes:
+      indexes:
+        range: string
+        multivalued: true
+        description: >-
+          Index definitions as strings (DEPRECATED -- use has_indexes)
+      collection_structured_by_schema:
+        description: "`Schema` defining structure."
+        range: Schema
+        inverse: structures_collections
+      governed_by_retention_policy:
+        description: "`RetentionPolicy` for data lifecycle."
+        range: RetentionPolicy
+        inverse: governs_collections
+      stores_records:
+        description: "`Record` instances."
+        range: Record
+        multivalued: true
+        inverse: stored_in_collection
+      persists_structures:
+        description: "Code-level data structures persisted."
+        range: DataStructure
+        multivalued: true
+        inverse: persisted_in_collection
+      has_constraints:
+        description: "`DatabaseConstraint[]` (inlined) -- constraint definitions for this collection (see Section 27)."
+        range: DatabaseConstraint
+        multivalued: true
+        inlined_as_list: true
+        inverse: constraint_on_collection
+      has_indexes:
+        description: "`DatabaseIndex[]` (inlined) -- index definitions for this collection (see Section 27)."
+        range: DatabaseIndex
+        multivalued: true
+        inlined_as_list: true
+        inverse: index_on_collection
+
+  Record:
+    is_a: NamedEntity
+    description: >-
+      A single persisted instance of data
+    attributes:
+      classifications:
+        description: "Data sensitivity classifications."
+        range: DataClassificationType
+        multivalued: true
+      stored_in_collection:
+        description: "Parent `Collection`."
+        range: Collection
+        inverse: stores_records
+      conforms_to_schema:
+        description: "`Schema` for validation."
+        range: Schema
+        inverse: validates_records
+      has_lineage:
+        description: "`DataLineage` tracking origin and transformations."
+        range: DataLineage
+        inverse: tracks_record
+      source_of_lineage:
+        description: "Lineage entries where this record is a source."
+        range: DataLineage
+        multivalued: true
+        inverse: derived_from_records
+
+  Schema:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      The structural definition of stored data
+    attributes:
+      schema_type:
+        description: "Kind of schema."
+        range: SchemaType
+      definition:
+        description: "Schema definition (JSON Schema, DDL, etc.)."
+        range: string
+      has_versions:
+        description: "List of `SchemaVersion` entities."
+        range: SchemaVersion
+        multivalued: true
+        inverse: version_of_schema
+      structures_resource_types:
+        description: "`ResourceType` entities structured by this schema."
+        range: ResourceType
+        multivalued: true
+        inverse: structured_by_schema
+      structures_collections:
+        description: "`Collection` entities structured by this schema."
+        range: Collection
+        multivalued: true
+        inverse: collection_structured_by_schema
+      structures_events:
+        description: "`Event` entities structured by this schema."
+        range: Event
+        multivalued: true
+        inverse: event_structured_by_schema
+      structures_messages:
+        description: "`Message` entities structured by this schema."
+        range: Message
+        multivalued: true
+        inverse: message_structured_by_schema
+      defines_operation_input:
+        description: "`Operation` entities using this schema as input."
+        range: Operation
+        multivalued: true
+        inverse: accepts_input_schema
+      defines_operation_output:
+        description: "`Operation` entities using this schema as output."
+        range: Operation
+        multivalued: true
+        inverse: produces_output_schema
+      validates_records:
+        description: "`Record` entities validated by this schema."
+        range: Record
+        multivalued: true
+        inverse: conforms_to_schema
+
+  SchemaVersion:
+    is_a: NamedEntity
+    description: >-
+      A specific iteration of a schema
+    attributes:
+      version:
+        description: "Semantic version number."
+        range: SemanticVersion
+      definition:
+        description: "Schema at this version."
+        range: string
+      migration_script:
+        description: "Migration from previous version."
+        range: string
+      is_backward_compatible:
+        description: "Compatibility flag."
+        range: boolean
+      version_of_schema:
+        description: "`Schema` that this version belongs to."
+        range: Schema
+        inverse: has_versions
+
+  DataClassification:
+    is_a: NamedEntity
+    description: >-
+      A sensitivity or handling category
+    attributes:
+      classification_type:
+        description: "Classification level."
+        range: DataClassificationType
+      handling_requirements:
+        description: "Required procedures."
+        range: string
+        multivalued: true
+      encryption_required:
+        description: "Encryption flag."
+        range: boolean
+
+  RetentionPolicy:
+    is_a: NamedEntity
+    description: >-
+      Rules governing data lifecycle and deletion
+    attributes:
+      retention_days:
+        description: "Days to retain data."
+        range: integer
+      archive_after_days:
+        description: "Days before archiving."
+        range: integer
+      deletion_strategy:
+        description: "How data is deleted (soft delete, hard delete, anonymize)."
+        range: string
+      governs_collections:
+        description: "`Collection` entities governed by this policy."
+        range: Collection
+        multivalued: true
+        inverse: governed_by_retention_policy
+      governs_logs:
+        description: "`Log` entities governed by this policy."
+        range: Log
+        multivalued: true
+        inverse: log_governed_by_retention
+      governs_audit_logs:
+        description: "`AuditLog` entities governed by this policy."
+        range: AuditLog
+        multivalued: true
+        inverse: auditlog_governed_by_retention
+
+  DataLineage:
+    is_a: NamedEntity
+    description: >-
+      The origin, transformation history, and movement of data
+    attributes:
+      source:
+        description: "Original data source."
+        range: string
+      transformations:
+        description: "List of transformations applied."
+        range: string
+        multivalued: true
+      derived_from_records:
+        description: "Source `Record` entities."
+        range: Record
+        multivalued: true
+        inverse: source_of_lineage
+      tracks_record:
+        description: "Target `Record` being tracked."
+        range: Record
+        inverse: has_lineage
+
+  AuditLog:
+    is_a: NamedEntity
+    description: >-
+      A tamper-evident record of system activities
+    attributes:
+      auditlog_governed_by_retention:
+        description: "`RetentionPolicy` for log retention."
+        range: RetentionPolicy
+        inverse: governs_audit_logs
+      contains_entries:
+        description: "`AuditEntry[]` (v2.0 back-reference from `AuditEntry.entry_in_audit_log`)."
+        range: AuditEntry
+        multivalued: true
+        inverse: entry_in_audit_log
+
+  AuditEntry:
+    is_a: NamedEntity
+    description: >-
+      A single record within an audit log
+    attributes:
+      timestamp:
+        description: "When the event occurred (required)."
+        range: Timestamp
+        required: true
+      outcome:
+        description: "Result of the action (success, failure, error)."
+        range: string
+      details:
+        description: "Additional context."
+        range: string
+      entry_in_audit_log:
+        description: "`AuditLog` that this entry belongs to."
+        range: AuditLog
+        inverse: contains_entries
+      audit_performed_by_actor:
+        description: "`Actor` who performed action."
+        range: Actor
+        inverse: audit_actions_performed
+      records_action:
+        description: "`Action` that was performed."
+        range: Action
+        inverse: recorded_in_audit
+      affects_resource:
+        description: "`Resource` affected."
+        range: Resource
+        inverse: affected_in_audit
+

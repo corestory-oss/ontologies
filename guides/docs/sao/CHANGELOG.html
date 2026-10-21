@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Changelog · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="changelog">Changelog</h1>
+<h2 id="300-unreleased-candidate">[3.0.0] - Unreleased candidate</h2>
+<h3 id="breaking-relationship-changes">Breaking relationship changes</h3>
+<ul>
+<li>Introduce generic <code>version_of</code>, <code>entry_in</code>, <code>uses</code>, <code>constrains</code>, and <code>contains_unit_members</code> relationships with class-specific SHACL pairings.</li>
+<li>Separate subscriber/interface and file/callable participant roles using explicit predicates.</li>
+<li>Retire nine replaced predicates with explicit SHACL rejection; add no compatibility aliases.</li>
+<li>Add typed unit-data membership and subproperty entailments without treating data structures as encapsulation units.</li>
+<li>Tentatively bump RDF/project metadata to 3.0.0 while retaining the unchanged LinkML 2.1.0 baseline. See <a href="migration-3.0.html">migration guidance</a>.</li>
+</ul>
+<h3 id="earlier-migration-milestones">Earlier migration milestones</h3>
+<ul>
+<li>
+<p>Add an optional editable OWL supplement for 208 inverse pairs and document seven unresolved inverse groups without changing their vocabulary definitions.</p>
+</li>
+<li>
+<p>Promote Turtle vocabulary and initial SHACL shapes to editable source, with Turtle-only assembly and validation. Retain the legacy LinkML baseline.</p>
+</li>
+</ul>
+<p>All notable changes to the Systems Abstraction Ontology (SAO) are documented here.</p>
+<p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>,
+and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h3 id="earlier-release-preparation">Earlier release preparation</h3>
+<ul>
+<li>Rename SAO to Systems Abstraction Ontology to make its scope explicit across
+  libraries, services, batch programs, and applications. Update the LinkML schema
+  name and project metadata to <code>systems-abstraction-ontology</code>; the SAO acronym,
+  term namespace, and model definitions are unchanged.</li>
+<li>Split the LinkML schema into topic modules under <code>legacy/sao/schema/</code>, preserving <code>legacy/sao/sao.yml</code>
+  as the entry point and keeping definitions, constraints, and term IRIs unchanged.
+  Module schema IDs now identify definition provenance.</li>
+<li>Enrich LinkML attribute, shared-slot, and enum value descriptions from the
+  existing documentation, and add class-purpose comments without changing the model.</li>
+<li>Replace the placeholder schema ID and term prefix with
+  <code>https://ontologies.corestory.ai/sao/</code>, using the shared CoreStory ontology host.
+  Update all module schema IDs to the same URI space. Consumers using
+  <code>ontology.example.org</code> or <code>https://sao.corestory.ai/</code> must update schema references
+  and term IRIs.</li>
+<li>Prepare the repository for Apache License 2.0 distribution: replace the
+  proprietary license, add attribution, and align project metadata.</li>
+<li>Refresh the README for schema version 2.1.0 and add validated instance examples.</li>
+<li>Add contribution guidance and CI checks for schema and example validation.</li>
+</ul>
+<h2 id="210-2026-04-18">[2.1.0] - 2026-04-18</h2>
+<p>This release standardizes the naming convention for relationship attributes. Every plain-noun relationship attribute has been renamed to a verb-prefixed form so the ontology reads uniformly across all layers.</p>
+<h3 id="rename-rule">Rename rule</h3>
+<ul>
+<li><code>contains_*</code> when the inverse is <code>part_of_*</code> or <code>contained_in_*</code> (composition).</li>
+<li><code>has_*</code> otherwise (association).</li>
+</ul>
+<h3 id="removed">Removed</h3>
+<p>Four v2.0-migration-leftover attributes that duplicated newer relationships:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Removed attribute</th>
+<th>Use instead</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UserInterface</code></td>
+<td><code>screens</code></td>
+<td><code>contains_screens</code> (renamed from <code>ui_screens</code>)</td>
+</tr>
+<tr>
+<td><code>AuditLog</code></td>
+<td><code>entries</code></td>
+<td><code>contains_entries</code> (renamed from <code>audit_log_entries</code>)</td>
+</tr>
+<tr>
+<td><code>Log</code></td>
+<td><code>entries</code></td>
+<td><code>contains_entries</code> (renamed from <code>log_entries</code>)</td>
+</tr>
+<tr>
+<td><code>Trace</code></td>
+<td><code>spans</code></td>
+<td><code>contains_spans</code> (renamed from <code>trace_spans</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="changed-forward-attribute-renames">Changed — forward attribute renames</h3>
+<p>Simple-collection attributes (renamed to <code>has_*</code> or <code>contains_*</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Actor</code></td>
+<td><code>actor_subscriptions</code></td>
+<td><code>has_subscriptions</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>value_objects</code></td>
+<td><code>has_value_objects</code></td>
+</tr>
+<tr>
+<td><code>AuditLog</code></td>
+<td><code>audit_log_entries</code></td>
+<td><code>contains_entries</code></td>
+</tr>
+<tr>
+<td><code>BuildPipeline</code></td>
+<td><code>stages</code></td>
+<td><code>has_stages</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>callable_file_operations</code></td>
+<td><code>has_file_operations</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>return_type_expression</code></td>
+<td><code>has_return_type</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>container_file_definitions</code></td>
+<td><code>has_file_definitions</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>container_preprocessor_directives</code></td>
+<td><code>has_preprocessor_directives</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>container_screen_definitions</code></td>
+<td><code>has_screen_definitions</code></td>
+</tr>
+<tr>
+<td><code>ComplianceRequirement</code></td>
+<td><code>controls</code></td>
+<td><code>has_controls</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>dependencies</code></td>
+<td><code>has_dependencies</code></td>
+</tr>
+<tr>
+<td><code>Contract</code></td>
+<td><code>contract_versions</code></td>
+<td><code>has_versions</code></td>
+</tr>
+<tr>
+<td><code>Control</code></td>
+<td><code>evidence</code></td>
+<td><code>has_evidence</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>ownership_annotations</code></td>
+<td><code>has_ownership_annotations</code></td>
+</tr>
+<tr>
+<td><code>DataPipeline</code></td>
+<td><code>steps</code></td>
+<td><code>has_steps</code></td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td><code>collections</code></td>
+<td><code>has_collections</code></td>
+</tr>
+<tr>
+<td><code>Dataset</code></td>
+<td><code>schema</code></td>
+<td><code>has_schema</code></td>
+</tr>
+<tr>
+<td><code>Dependency</code></td>
+<td><code>target</code></td>
+<td><code>has_target</code></td>
+</tr>
+<tr>
+<td><code>Endpoint</code></td>
+<td><code>operations</code></td>
+<td><code>has_operations</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>file_operations</code></td>
+<td><code>has_file_operations</code></td>
+</tr>
+<tr>
+<td><code>IaCDefinition</code></td>
+<td><code>resources</code></td>
+<td><code>has_resources</code></td>
+</tr>
+<tr>
+<td><code>Identity</code></td>
+<td><code>credentials</code></td>
+<td><code>has_credentials</code></td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td><code>messages</code></td>
+<td><code>has_messages</code></td>
+</tr>
+<tr>
+<td><code>Lifecycle</code></td>
+<td><code>states</code></td>
+<td><code>has_states</code></td>
+</tr>
+<tr>
+<td><code>Lifecycle</code></td>
+<td><code>transitions</code></td>
+<td><code>has_transitions</code></td>
+</tr>
+<tr>
+<td><code>Log</code></td>
+<td><code>log_entries</code></td>
+<td><code>contains_entries</code></td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td><code>input_schema</code></td>
+<td><code>has_input_schema</code></td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td><code>metrics</code></td>
+<td><code>has_metrics</code></td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td><code>output_schema</code></td>
+<td><code>has_output_schema</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>dependencies</code></td>
+<td><code>has_dependencies</code></td>
+</tr>
+<tr>
+<td><code>PackageDependency</code></td>
+<td><code>known_vulnerabilities</code></td>
+<td><code>has_known_vulnerabilities</code></td>
+</tr>
+<tr>
+<td><code>Parameter</code></td>
+<td><code>parameter_type</code></td>
+<td><code>has_type</code></td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td><code>constraints</code></td>
+<td><code>has_constraints</code></td>
+</tr>
+<tr>
+<td><code>Policy</code></td>
+<td><code>rules</code></td>
+<td><code>has_rules</code></td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>default_error_model</code></td>
+<td><code>has_default_error_model</code></td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>default_memory_model</code></td>
+<td><code>has_default_memory_model</code></td>
+</tr>
+<tr>
+<td><code>Release</code></td>
+<td><code>artifacts</code></td>
+<td><code>has_artifacts</code></td>
+</tr>
+<tr>
+<td><code>Schema</code></td>
+<td><code>schema_versions</code></td>
+<td><code>has_versions</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>health_checks</code></td>
+<td><code>has_health_checks</code></td>
+</tr>
+<tr>
+<td><code>StateStore</code></td>
+<td><code>state_shape</code></td>
+<td><code>has_state_shape</code></td>
+</tr>
+<tr>
+<td><code>Tenant</code></td>
+<td><code>organizations</code></td>
+<td><code>has_organizations</code></td>
+</tr>
+<tr>
+<td><code>Tenant</code></td>
+<td><code>settings</code></td>
+<td><code>has_settings</code></td>
+</tr>
+<tr>
+<td><code>TestCase</code></td>
+<td><code>assertions</code></td>
+<td><code>has_assertions</code></td>
+</tr>
+<tr>
+<td><code>Trace</code></td>
+<td><code>trace_spans</code></td>
+<td><code>contains_spans</code></td>
+</tr>
+<tr>
+<td><code>TypeExpression</code></td>
+<td><code>type_parameters</code></td>
+<td><code>has_type_parameters</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>props</code></td>
+<td><code>has_props</code></td>
+</tr>
+<tr>
+<td><code>UserInterface</code></td>
+<td><code>ui_screens</code></td>
+<td><code>contains_screens</code></td>
+</tr>
+<tr>
+<td><code>ValueObject</code></td>
+<td><code>attributes</code></td>
+<td><code>has_attributes</code></td>
+</tr>
+<tr>
+<td><code>Workflow</code></td>
+<td><code>steps</code></td>
+<td><code>has_steps</code></td>
+</tr>
+</tbody>
+</table>
+<p>Tree/role/directional attributes (renamed to <code>has_*</code> for uniformity):</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Old name</th>
+<th>New name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeBlock</code></td>
+<td><code>parent_block</code></td>
+<td><code>has_parent_block</code></td>
+</tr>
+<tr>
+<td><code>CodeBlock</code></td>
+<td><code>child_blocks</code></td>
+<td><code>has_child_blocks</code></td>
+</tr>
+<tr>
+<td><code>ControlFlow</code></td>
+<td><code>source_callable</code></td>
+<td><code>has_source_callable</code></td>
+</tr>
+<tr>
+<td><code>ControlFlow</code></td>
+<td><code>target_callable</code></td>
+<td><code>has_target_callable</code></td>
+</tr>
+<tr>
+<td><code>ControlFlow</code></td>
+<td><code>source_statement</code></td>
+<td><code>has_source_statement</code></td>
+</tr>
+<tr>
+<td><code>ControlFlow</code></td>
+<td><code>target_statement</code></td>
+<td><code>has_target_statement</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>parent_element</code></td>
+<td><code>has_parent_element</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>child_elements</code></td>
+<td><code>has_child_elements</code></td>
+</tr>
+<tr>
+<td><code>DataFlow</code></td>
+<td><code>source_element</code></td>
+<td><code>has_source_element</code></td>
+</tr>
+<tr>
+<td><code>DataFlow</code></td>
+<td><code>target_element</code></td>
+<td><code>has_target_element</code></td>
+</tr>
+<tr>
+<td><code>DataFlow</code></td>
+<td><code>through_callable</code></td>
+<td><code>has_through_callable</code></td>
+</tr>
+<tr>
+<td><code>DataFlow</code></td>
+<td><code>through_statement</code></td>
+<td><code>has_through_statement</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>parent_structure</code></td>
+<td><code>has_parent_structure</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>child_structures</code></td>
+<td><code>has_child_structures</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>incoming_relationships</code></td>
+<td><code>has_incoming_relationships</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>outgoing_relationships</code></td>
+<td><code>has_outgoing_relationships</code></td>
+</tr>
+<tr>
+<td><code>DomainRelationship</code></td>
+<td><code>source_entity</code></td>
+<td><code>has_source_entity</code></td>
+</tr>
+<tr>
+<td><code>DomainRelationship</code></td>
+<td><code>target_entity</code></td>
+<td><code>has_target_entity</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>incoming_ipc_connections</code></td>
+<td><code>has_incoming_ipc_connections</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>outgoing_ipc_connections</code></td>
+<td><code>has_outgoing_ipc_connections</code></td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td><code>parent_exception</code></td>
+<td><code>has_parent_exception</code></td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td><code>child_exceptions</code></td>
+<td><code>has_child_exceptions</code></td>
+</tr>
+<tr>
+<td><code>IaCModule</code></td>
+<td><code>child_resources</code></td>
+<td><code>has_child_resources</code></td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td><code>ipc_source_program</code></td>
+<td><code>has_source_program</code></td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td><code>ipc_target_program</code></td>
+<td><code>has_target_program</code></td>
+</tr>
+<tr>
+<td><code>Organization</code></td>
+<td><code>parent</code></td>
+<td><code>has_parent</code></td>
+</tr>
+<tr>
+<td><code>Organization</code></td>
+<td><code>children</code></td>
+<td><code>has_children</code></td>
+</tr>
+<tr>
+<td><code>Route</code></td>
+<td><code>parent_route</code></td>
+<td><code>has_parent_route</code></td>
+</tr>
+<tr>
+<td><code>Route</code></td>
+<td><code>child_routes</code></td>
+<td><code>has_child_routes</code></td>
+</tr>
+<tr>
+<td><code>StorageLocation</code></td>
+<td><code>parent_location</code></td>
+<td><code>has_parent_location</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>parent_ui_component</code></td>
+<td><code>has_parent_ui_component</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>child_ui_components</code></td>
+<td><code>has_child_ui_components</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="added">Added</h3>
+<ul>
+<li>New inverse relationships on target classes for a subset of the renamed
+  attributes that previously lacked an inverse (e.g., <code>ValueObject.belongs_to_aggregate</code>,
+  <code>Credential.credential_for_identity</code>, <code>Configuration.setting_for_tenant</code>,
+  <code>Organization.organization_in_tenant</code>). The remaining forward-only relationships
+  retain single-direction traversal semantics as before; a follow-up pass may
+  add inverses across the board if bidirectional traversal is needed.</li>
+<li><code>DataPipeline.pipeline_trains_model</code> (the inverse of <code>MLModel.model_trained_by_pipeline</code>).
+  The inverse was previously declared on <code>BuildPipeline</code> by mistake, leaving
+  the <code>MLModel → DataPipeline</code> side dangling. Moved to the correct class.</li>
+</ul>
+<h3 id="fixed">Fixed</h3>
+<ul>
+<li><code>BuildPipeline.pipeline_trains_model</code> removed; ML model training is a
+  <code>DataPipeline</code> concern, not a CI/CD concern. The attribute now lives on
+  <code>DataPipeline</code>.</li>
+</ul>
+<h3 id="migration-guide">Migration guide</h3>
+<p>Consumers of the ontology should update queries and tooling as follows:</p>
+<ol>
+<li>Replace every old attribute name with its new name per the tables above.</li>
+<li>Any code that relied on the removed duplicate attributes (<code>UserInterface.screens</code>,
+   <code>AuditLog.entries</code>, <code>Log.entries</code>, <code>Trace.spans</code>) must switch to the
+   canonical <code>contains_*</code> replacement.</li>
+</ol>
+<h3 id="documentation">Documentation</h3>
+<p>The authoritative reference for v2.1 is <code>legacy/sao/sao.yml</code> itself. The <code>docs/</code> tree has
+been updated for the most-distinctive renames (e.g., <code>ui_screens</code> → <code>contains_screens</code>,
+<code>default_error_model</code> → <code>has_default_error_model</code>) but some ambiguous names that
+also appear as prose in the docs (e.g., "entries," "steps," "rules") may still
+reference the old attribute names in explanatory text. A full documentation
+sweep is tracked as a follow-up.</p>
+<h2 id="200">[2.0.0]</h2>
+<ul>
+<li>See git history for v2.0 changes; prior to this release the repository did
+  not maintain a changelog. Key v2.0 work: inlining single-use relationship
+  slots as class attributes, code-structure layer expansion, and introduction
+  of the bidirectional-relationship pattern that v2.1 generalizes.</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 9: Observability · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-9-observability">Section 9: Observability</h1>
+<p>This section defines metrics, logs, traces, spans, alerts, alert rules, incidents, and health checks.</p>
+<h2 id="overview">Overview</h2>
+<p>The Observability section provides comprehensive monitoring, logging, tracing, and alerting capabilities to understand system behavior and health.</p>
+<h2 id="the-three-pillars-of-observability">The Three Pillars of Observability</h2>
+<h3 id="1-metrics">1. Metrics</h3>
+<p>Numerical measurements over time</p>
+<h3 id="2-logs">2. Logs</h3>
+<p>Discrete events with timestamp and context</p>
+<h3 id="3-traces">3. Traces</h3>
+<p>Request flows through distributed systems</p>
+<hr />
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="metric">Metric</h3>
+<p><strong>Definition</strong>: A quantitative measurement over time.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>metric_type</strong>: COUNTER, GAUGE, HISTOGRAM, SUMMARY
+- <strong>unit</strong>: Unit of measurement (seconds, bytes, requests, etc.)
+- <strong>labels</strong>: Metric labels for dimensionality</p>
+<p><strong>Relationships</strong>:
+- <strong>metric_emitted_by_component</strong>: <code>Component</code> emitting this metric
+- <strong>monitored_by_alert_rules</strong>: <code>AlertRule</code> entities monitoring this metric</p>
+<p><strong>Metric Types</strong>:</p>
+<h4 id="counter">COUNTER</h4>
+<p>Monotonically increasing value (only goes up).
+- <strong>Examples</strong>: total_requests, errors_total, bytes_sent
+- <strong>Use Case</strong>: Cumulative counts, rates can be calculated</p>
+<h4 id="gauge">GAUGE</h4>
+<p>Value that can increase or decrease.
+- <strong>Examples</strong>: cpu_usage, memory_usage, queue_depth, active_connections
+- <strong>Use Case</strong>: Current state, resource utilization</p>
+<h4 id="histogram">HISTOGRAM</h4>
+<p>Distribution of values in buckets.
+- <strong>Examples</strong>: request_duration_seconds, response_size_bytes
+- <strong>Use Case</strong>: Percentiles, distributions
+- <strong>Buckets</strong>: Pre-defined ranges (0-10ms, 10-50ms, 50-100ms, etc.)</p>
+<h4 id="summary">SUMMARY</h4>
+<p>Summary statistics (quantiles).
+- <strong>Examples</strong>: request_duration_seconds (with p50, p95, p99)
+- <strong>Use Case</strong>: Percentiles without pre-defined buckets
+- <strong>Trade-off</strong>: More accurate percentiles, higher overhead</p>
+<p><strong>Metric Naming Conventions</strong>:
+- Use descriptive names: <code>http_requests_total</code>, not <code>requests</code>
+- Include unit in name: <code>request_duration_seconds</code>, <code>memory_bytes</code>
+- Use labels for dimensions: <code>{method="GET", status="200"}</code></p>
+<p><strong>Key Metrics to Track</strong>:
+- <strong>RED Metrics</strong> (Requests, Errors, Duration):
+  - Request rate
+  - Error rate
+  - Duration (latency)
+- <strong>USE Metrics</strong> (Utilization, Saturation, Errors):
+  - Resource utilization (CPU, memory, disk)
+  - Saturation (queue depth, load)
+  - Error counts
+- <strong>Golden Signals</strong>:
+  - Latency
+  - Traffic
+  - Errors
+  - Saturation</p>
+<hr />
+<h3 id="log">Log</h3>
+<p><strong>Definition</strong>: A timestamped record of discrete events.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>log_type</strong>: APPLICATION, ACCESS, ERROR, SECURITY, AUDIT, DEBUG
+- <strong>log_entries</strong>: List of <code>LogEntry</code> records (inverse: <code>entry_in_log</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>log_governed_by_retention</strong>: <code>RetentionPolicy</code> for log retention</p>
+<p><strong>Log Types</strong>:
+- <strong>APPLICATION</strong>: Application-level logs (info, warnings)
+- <strong>ACCESS</strong>: HTTP access logs, API requests
+- <strong>ERROR</strong>: Errors and exceptions
+- <strong>SECURITY</strong>: Security-related events (auth, access control)
+- <strong>AUDIT</strong>: Compliance and audit trail (see Section 6)
+- <strong>DEBUG</strong>: Detailed debugging information</p>
+<p><strong>Structured Logging</strong>:
+Use structured formats (JSON) instead of plain text:</p>
+<pre><code class="language-json">{
+  &quot;timestamp&quot;: &quot;2024-01-15T10:30:45Z&quot;,
+  &quot;level&quot;: &quot;ERROR&quot;,
+  &quot;service&quot;: &quot;order-service&quot;,
+  &quot;trace_id&quot;: &quot;abc123&quot;,
+  &quot;user_id&quot;: &quot;user_456&quot;,
+  &quot;message&quot;: &quot;Payment processing failed&quot;,
+  &quot;error&quot;: &quot;InsufficientFunds&quot;,
+  &quot;amount&quot;: 99.99
+}
+</code></pre>
+<p><strong>Log Levels</strong>:
+- <strong>TRACE</strong>: Very detailed, typically disabled
+- <strong>DEBUG</strong>: Detailed information for debugging
+- <strong>INFO</strong>: General informational messages
+- <strong>WARN</strong>: Warning messages, potential issues
+- <strong>ERROR</strong>: Error messages, failures
+- <strong>FATAL</strong>: Critical errors causing shutdown</p>
+<hr />
+<h3 id="logentry">LogEntry</h3>
+<p><strong>Definition</strong>: A single record within a log.</p>
+<p><strong>Class</strong>: <code>is_a: NamedEntity</code> (not <code>Log</code>). In SAO v2.0, LogEntry was changed from a subclass of Log to a subclass of NamedEntity, with an explicit relationship back to its parent Log.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>timestamp</strong>: When the event occurred
+- <strong>level</strong>: Log level (DEBUG, INFO, WARN, ERROR)
+- <strong>message</strong>: Log message
+- <strong>context</strong>: Additional context (trace ID, user ID, etc.)
+- <strong>entry_in_log</strong>: The <code>Log</code> this entry belongs to (range: Log, inverse: <code>contains_entries</code>)</p>
+<p><strong>Best Practices</strong>:
+1. <strong>Correlation IDs</strong>: Include trace/request ID in all logs
+2. <strong>Structured Data</strong>: Use structured logging (JSON)
+3. <strong>Contextual Information</strong>: Include relevant context
+4. <strong>Avoid PII</strong>: Don't log sensitive personal information
+5. <strong>Appropriate Levels</strong>: Use correct log levels</p>
+<hr />
+<h3 id="trace">Trace</h3>
+<p><strong>Definition</strong>: A causal chain of operations across services.</p>
+<p><strong>Purpose</strong>: Track requests as they flow through distributed systems.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>trace_id</strong>: Unique identifier for the entire trace
+- <strong>trace_spans</strong>: List of <code>Span</code> entities representing operations (inverse: <code>belongs_to_trace</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>starts_with_span</strong>: Root <code>Span</code> of the trace</p>
+<p><strong>Distributed Tracing</strong>:
+- Track requests across multiple services
+- Identify bottlenecks and latency sources
+- Understand service dependencies
+- Debug distributed systems</p>
+<p><strong>Trace Context Propagation</strong>:
+- W3C Trace Context standard
+- Propagate trace_id and span_id in headers
+- Maintain parent-child relationships</p>
+<hr />
+<h3 id="span">Span</h3>
+<p><strong>Definition</strong>: A single unit of work within a trace.</p>
+<p><strong>Class</strong>: <code>is_a: NamedEntity</code> (not <code>Trace</code>). In SAO v2.0, Span was changed from a subclass of Trace to a subclass of NamedEntity, with an explicit relationship back to its parent Trace.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>span_id</strong>: Unique identifier for this span
+- <strong>operation_name</strong>: Name of the operation
+- <strong>start_time</strong>: Operation start timestamp
+- <strong>end_time</strong>: Operation end timestamp
+- <strong>status</strong>: Span status (OK, ERROR, etc.)
+- <strong>attributes</strong>: Key-value pairs with additional context
+- <strong>belongs_to_trace</strong>: The <code>Trace</code> this span belongs to (range: Trace, inverse: <code>contains_spans</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>child_of_span</strong>: Parent span (for nested operations)
+- <strong>parent_of_spans</strong>: Child spans
+- <strong>root_of_trace</strong>: Trace this is the root span of</p>
+<p><strong>Span Attributes</strong>:
+- HTTP method, URL, status code
+- Database query, table name
+- Error messages
+- Custom business context</p>
+<p><strong>Example Trace Structure</strong>:</p>
+<pre><code>Trace: Process Order
+  Span 1: HTTP POST /orders (200ms)
+    Span 2: Validate Order (10ms)
+    Span 3: Reserve Inventory (50ms)
+      Span 4: Database Query (30ms)
+    Span 5: Process Payment (100ms)
+      Span 6: External API Call to Stripe (90ms)
+    Span 7: Create Shipment (40ms)
+</code></pre>
+<hr />
+<h3 id="alert">Alert</h3>
+<p><strong>Definition</strong>: A notification triggered by metric thresholds or anomalies.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>severity</strong>: Alert severity (critical, warning, info)
+- <strong>triggered_at</strong>: When alert was triggered
+- <strong>acknowledged_at</strong>: When alert was acknowledged
+- <strong>resolved_at</strong>: When issue was resolved</p>
+<p><strong>Relationships</strong>:
+- <strong>triggered_by_rule</strong>: <code>AlertRule</code> that triggered this alert
+- <strong>escalates_to_incident</strong>: <code>Incident</code> if escalated</p>
+<p><strong>Alert Severity Levels</strong>:
+- <strong>CRITICAL</strong>: Immediate action required, service down
+- <strong>WARNING</strong>: Requires attention, potential issues
+- <strong>INFO</strong>: Informational, awareness only</p>
+<p><strong>Alert Best Practices</strong>:
+1. <strong>Actionable</strong>: Alert only on actionable conditions
+2. <strong>Context</strong>: Include enough context to diagnose
+3. <strong>Deduplication</strong>: Deduplicate similar alerts
+4. <strong>Routing</strong>: Route to appropriate team
+5. <strong>Escalation</strong>: Escalate if not acknowledged</p>
+<hr />
+<h3 id="alertrule">AlertRule</h3>
+<p><strong>Definition</strong>: The condition that triggers an alert.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>condition</strong>: Alert condition expression (e.g., "error_rate &gt; 5%")
+- <strong>threshold</strong>: Threshold value
+- <strong>duration_seconds</strong>: Duration before alerting (avoid flapping)
+- <strong>notification_channels</strong>: Where to send alerts (email, Slack, PagerDuty)</p>
+<p><strong>Relationships</strong>:
+- <strong>monitors_metrics</strong>: <code>Metric</code> entities being monitored
+- <strong>triggers_alerts</strong>: <code>Alert</code> entities triggered</p>
+<p><strong>Common Alert Rules</strong>:
+- <strong>High Error Rate</strong>: <code>error_rate &gt; 1% for 5 minutes</code>
+- <strong>High Latency</strong>: <code>p99_latency &gt; 1s for 3 minutes</code>
+- <strong>Low Availability</strong>: <code>availability &lt; 99.9% for 15 minutes</code>
+- <strong>Resource Exhaustion</strong>: <code>memory_usage &gt; 90% for 10 minutes</code>
+- <strong>Disk Space</strong>: <code>disk_usage &gt; 85%</code></p>
+<p><strong>Alert Fatigue Prevention</strong>:
+- Set appropriate thresholds
+- Use duration to avoid flapping
+- Deduplicate similar alerts
+- Regular review and tuning
+- Auto-resolve when condition clears</p>
+<hr />
+<h3 id="incident">Incident</h3>
+<p><strong>Definition</strong>: A tracked degradation or outage event.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>severity</strong>: Incident severity (P1-P5 or SEV1-SEV5)
+- <strong>status</strong>: Current status (investigating, identified, monitoring, resolved)
+- <strong>started_at</strong>: Incident start time
+- <strong>resolved_at</strong>: Resolution time
+- <strong>root_cause</strong>: Root cause analysis
+- <strong>postmortem_url</strong>: Link to incident postmortem</p>
+<p><strong>Relationships</strong>:
+- <strong>escalated_from_alerts</strong>: <code>Alert</code> entities that led to incident
+- <strong>affects_services</strong>: <code>Service</code> entities impacted</p>
+<p><strong>Incident Severity Levels</strong>:
+- <strong>P1/SEV1</strong>: Critical - Complete outage, all users affected
+- <strong>P2/SEV2</strong>: High - Major functionality impaired
+- <strong>P3/SEV3</strong>: Medium - Partial degradation
+- <strong>P4/SEV4</strong>: Low - Minor issues
+- <strong>P5/SEV5</strong>: Minimal - Cosmetic issues</p>
+<p><strong>Incident Response Process</strong>:
+1. <strong>Detection</strong>: Alert triggers or user report
+2. <strong>Triage</strong>: Assess severity and impact
+3. <strong>Investigation</strong>: Identify root cause
+4. <strong>Mitigation</strong>: Implement fix or workaround
+5. <strong>Resolution</strong>: Verify issue resolved
+6. <strong>Postmortem</strong>: Document incident and learnings</p>
+<hr />
+<h3 id="healthcheck">HealthCheck</h3>
+<p><strong>Definition</strong>: A probe verifying service availability.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>check_type</strong>: LIVENESS, READINESS, DEPENDENCY, STARTUP
+- <strong>endpoint</strong>: Health check endpoint URL
+- <strong>interval_seconds</strong>: Check frequency
+- <strong>timeout_seconds</strong>: Check timeout
+- <strong>success_threshold</strong>: Successes before marking healthy
+- <strong>failure_threshold</strong>: Failures before marking unhealthy</p>
+<p><strong>Health Check Types</strong>:</p>
+<h4 id="liveness">LIVENESS</h4>
+<p>Determines if service is alive (should be restarted if failing).
+- <strong>Check</strong>: Basic process health
+- <strong>Example</strong>: <code>/health/live</code> returns 200 if process is running</p>
+<h4 id="readiness">READINESS</h4>
+<p>Determines if service can accept traffic.
+- <strong>Check</strong>: Dependencies available, ready to serve
+- <strong>Example</strong>: <code>/health/ready</code> returns 200 if DB is connected</p>
+<h4 id="dependency">DEPENDENCY</h4>
+<p>Check health of dependencies.
+- <strong>Check</strong>: Database, cache, external APIs
+- <strong>Example</strong>: Verify can connect to database</p>
+<h4 id="startup">STARTUP</h4>
+<p>Probe during service initialization.
+- <strong>Check</strong>: Slow-starting containers
+- <strong>Example</strong>: Wait for warmup before liveness checks</p>
+<p><strong>Health Check Implementation</strong>:</p>
+<pre><code>GET /health/live
+Response: 200 OK
+{
+  &quot;status&quot;: &quot;UP&quot;,
+  &quot;timestamp&quot;: &quot;2024-01-15T10:30:45Z&quot;
+}
+
+GET /health/ready
+Response: 200 OK
+{
+  &quot;status&quot;: &quot;UP&quot;,
+  &quot;checks&quot;: {
+    &quot;database&quot;: &quot;UP&quot;,
+    &quot;cache&quot;: &quot;UP&quot;,
+    &quot;external_api&quot;: &quot;UP&quot;
+  }
+}
+</code></pre>
+<hr />
+<h2 id="observability-patterns">Observability Patterns</h2>
+<h3 id="correlation">Correlation</h3>
+<ul>
+<li>Use correlation IDs (trace IDs) across logs, metrics, and traces</li>
+<li>Link related events together</li>
+<li>Enable end-to-end request tracking</li>
+</ul>
+<h3 id="dashboards">Dashboards</h3>
+<ul>
+<li>Real-time system health visibility</li>
+<li>Service-level indicators (SLIs)</li>
+<li>Business metrics</li>
+<li>Custom views for different teams</li>
+</ul>
+<h3 id="service-level-objectives-slos">Service Level Objectives (SLOs)</h3>
+<ul>
+<li>Define target reliability levels</li>
+<li><strong>SLI</strong> (Service Level Indicator): Measurement (e.g., latency)</li>
+<li><strong>SLO</strong> (Service Level Objective): Target (e.g., p99 &lt; 200ms)</li>
+<li><strong>SLA</strong> (Service Level Agreement): Contract (e.g., 99.9% uptime)</li>
+<li><strong>Error Budget</strong>: Allowed failures to meet SLO</li>
+</ul>
+<h3 id="synthetic-monitoring">Synthetic Monitoring</h3>
+<ul>
+<li>Proactive monitoring with synthetic transactions</li>
+<li>Simulate user workflows</li>
+<li>Detect issues before users</li>
+</ul>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="metrics">Metrics</h3>
+<ol>
+<li><strong>RED/USE/Golden Signals</strong>: Track key metrics</li>
+<li><strong>Cardinality</strong>: Avoid high-cardinality labels</li>
+<li><strong>Retention</strong>: Balance retention with storage costs</li>
+<li><strong>Aggregation</strong>: Pre-aggregate when possible</li>
+<li><strong>Consistency</strong>: Use consistent naming and labels</li>
+</ol>
+<h3 id="logs">Logs</h3>
+<ol>
+<li><strong>Structured Logging</strong>: Use JSON or structured format</li>
+<li><strong>Correlation IDs</strong>: Include trace IDs</li>
+<li><strong>Log Levels</strong>: Use appropriate levels</li>
+<li><strong>Sensitive Data</strong>: Don't log PII, credentials</li>
+<li><strong>Sampling</strong>: Sample high-volume logs</li>
+</ol>
+<h3 id="traces">Traces</h3>
+<ol>
+<li><strong>Sampling</strong>: Sample traces in high-traffic systems</li>
+<li><strong>Span Names</strong>: Use meaningful operation names</li>
+<li><strong>Attributes</strong>: Include relevant context</li>
+<li><strong>Propagation</strong>: Propagate trace context across services</li>
+<li><strong>Performance</strong>: Minimize tracing overhead</li>
+</ol>
+<h3 id="alerts">Alerts</h3>
+<ol>
+<li><strong>Actionable</strong>: Only alert on actionable conditions</li>
+<li><strong>Severity</strong>: Use appropriate severity levels</li>
+<li><strong>Runbooks</strong>: Link to runbooks for resolution</li>
+<li><strong>On-Call</strong>: Route to appropriate on-call team</li>
+<li><strong>Retrospective</strong>: Review and tune alert rules</li>
+</ol>
+<hr />
+<h2 id="sao-v20-changes">SAO v2.0 Changes</h2>
+<p>In SAO v2.0, relationship attributes that were previously modeled as standalone linkML relationship classes have been inlined directly into the domain classes. For example, <code>Incident</code> now carries <code>escalated_from_alerts</code> and <code>affects_services</code> as direct attributes, <code>Alert</code> carries <code>escalates_to_incident</code>, and <code>AlertRule</code> carries <code>triggers_alerts</code>. Additionally, <code>LogEntry</code> and <code>Span</code> were changed from subclasses of <code>Log</code> and <code>Trace</code> respectively to subclasses of <code>NamedEntity</code>, with explicit back-reference attributes (<code>entry_in_log</code>, <code>belongs_to_trace</code>) linking them to their parent entities.</p>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Components emit metrics and logs</li>
+<li><strong>Section 5 (Behavior)</strong>: Events generate logs</li>
+<li><strong>Section 6 (Data Management)</strong>: Logs subject to retention policies</li>
+<li><strong>Section 7 (Integration)</strong>: Integration metrics and traces</li>
+<li><strong>Section 8 (Deployment)</strong>: Deployment health checks</li>
+</ul>
+<hr />
+<h2 id="example-observability-for-order-service">Example: Observability for Order Service</h2>
+<pre><code>Metrics:
+  - order_requests_total (COUNTER)
+    Labels: method, status
+  - order_processing_duration_seconds (HISTOGRAM)
+    Buckets: 0.1, 0.5, 1.0, 2.0, 5.0
+  - active_orders (GAUGE)
+  - payment_failures_total (COUNTER)
+
+Logs:
+  - Application Log (JSON structured)
+    Level: INFO
+    Message: &quot;Order created&quot;
+    Trace ID: &quot;abc123&quot;
+    Order ID: &quot;order_456&quot;
+    Customer ID: &quot;cust_789&quot;
+
+  - Error Log
+    Level: ERROR
+    Message: &quot;Payment processing failed&quot;
+    Error: &quot;InsufficientFunds&quot;
+    Stack Trace: ...
+
+Traces:
+  Trace: Create Order
+    Span: POST /api/orders (250ms)
+      Span: Validate order (15ms)
+      Span: Check inventory (40ms)
+      Span: Process payment (150ms)
+        Span: Stripe API call (130ms)
+      Span: Create order record (30ms)
+      Span: Emit OrderCreated event (15ms)
+
+Alerts:
+  - High Error Rate
+    Condition: order_error_rate &gt; 5% for 5 minutes
+    Severity: CRITICAL
+    Notification: PagerDuty, Slack #alerts
+    Runbook: https://wiki/runbooks/order-service-errors
+
+  - High Latency
+    Condition: order_p99_latency &gt; 2s for 3 minutes
+    Severity: WARNING
+    Notification: Slack #alerts
+
+Health Checks:
+  - Liveness: GET /health/live
+    Interval: 10s
+    Timeout: 1s
+    Failure Threshold: 3
+
+  - Readiness: GET /health/ready
+    Checks: Database, Cache, Payment Gateway
+    Interval: 5s
+    Timeout: 2s
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

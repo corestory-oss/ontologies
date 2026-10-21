@@ -1,0 +1,127 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:DatabaseConstraint a rdfs:Class ;
+    rdfs:label "DatabaseConstraint" ;
+    rdfs:comment "A constraint on a database table/collection" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures primary keys, foreign keys, unique constraints, and check constraints for schema analysis, migration planning, and impact assessment." .
+
+sao:DatabaseIndex a rdfs:Class ;
+    rdfs:label "DatabaseIndex" ;
+    rdfs:comment "An index on a database table/collection" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures index definitions for performance analysis and schema management." .
+
+sao:DatabaseConstraintType a rdfs:Datatype ;
+    rdfs:label "DatabaseConstraintType" ;
+    rdfs:comment "Types of database constraints" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/check>,
+        <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/foreign_key>,
+        <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/not_null>,
+        <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/primary_key>,
+        <https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/unique> .
+
+sao:filter_expression a rdf:Property ;
+    rdfs:label "filter_expression" ;
+    rdfs:comment "Filter for partial indexes",
+        "[DatabaseIndex] Filter for partial indexes" ;
+    rdfs:domain sao:DatabaseIndex ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:index_on_collection a rdf:Property ;
+    rdfs:label "index_on_collection" ;
+    rdfs:comment "The collection this index belongs to.",
+        "[DatabaseIndex] The collection this index belongs to." ;
+    rdfs:domain sao:DatabaseIndex ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Collection .
+
+sao:index_type a rdf:Property ;
+    rdfs:label "index_type" ;
+    rdfs:comment "The type of index.",
+        "[DatabaseIndex] The type of index." ;
+    rdfs:domain sao:DatabaseIndex ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:IndexType .
+
+sao:is_partial a rdf:Property ;
+    rdfs:label "is_partial" ;
+    rdfs:comment "Whether the index is partial/filtered.",
+        "[DatabaseIndex] Whether the index is partial/filtered." ;
+    rdfs:domain sao:DatabaseIndex ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:is_unique a rdf:Property ;
+    rdfs:label "is_unique" ;
+    rdfs:comment "Whether the index enforces uniqueness.",
+        "[DatabaseIndex] Whether the index enforces uniqueness." ;
+    rdfs:domain sao:DatabaseIndex ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:boolean .
+
+sao:reference_columns a rdf:Property ;
+    rdfs:label "reference_columns" ;
+    rdfs:comment "Referenced columns for foreign keys",
+        "[DatabaseConstraint] Referenced columns for foreign keys" ;
+    rdfs:domain sao:DatabaseConstraint ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:reference_table a rdf:Property ;
+    rdfs:label "reference_table" ;
+    rdfs:comment "Referenced table for foreign keys",
+        "[DatabaseConstraint] Referenced table for foreign keys" ;
+    rdfs:domain sao:DatabaseConstraint ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:IndexType a rdfs:Datatype ;
+    rdfs:label "IndexType" ;
+    rdfs:comment "Types of database indexes" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/IndexType/btree>,
+        <https://ontologies.corestory.ai/sao/export/values/IndexType/fulltext>,
+        <https://ontologies.corestory.ai/sao/export/values/IndexType/gin>,
+        <https://ontologies.corestory.ai/sao/export/values/IndexType/hash> .
+
+<https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/check> rdf:value "check" ;
+    rdfs:comment "Check constraint." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/foreign_key> rdf:value "foreign_key" ;
+    rdfs:comment "Foreign key constraint." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/not_null> rdf:value "not_null" ;
+    rdfs:comment "NOT NULL constraint." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/primary_key> rdf:value "primary_key" ;
+    rdfs:comment "Primary key constraint." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatabaseConstraintType/unique> rdf:value "unique" ;
+    rdfs:comment "Unique constraint." .
+
+<https://ontologies.corestory.ai/sao/export/values/IndexType/btree> rdf:value "btree" ;
+    rdfs:comment "B-tree index." .
+
+<https://ontologies.corestory.ai/sao/export/values/IndexType/fulltext> rdf:value "fulltext" ;
+    rdfs:comment "Full-text index." .
+
+<https://ontologies.corestory.ai/sao/export/values/IndexType/gin> rdf:value "gin" ;
+    rdfs:comment "Generalized Inverted Index (PostgreSQL)" .
+
+<https://ontologies.corestory.ai/sao/export/values/IndexType/hash> rdf:value "hash" ;
+    rdfs:comment "Hash index." .

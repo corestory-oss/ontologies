@@ -1,0 +1,565 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ConfigurationShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/configures_deployments>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/configures_environments>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/controls_features>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/is_secret>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/setting_for_tenant>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/source>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Configuration/value> ;
+    sh:targetClass sao:Configuration .
+
+saosh:DeploymentShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Deployment/deployed_in_environment>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/deployment_configured_by>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_release>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_service>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_unit>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/replicas>,
+        <https://ontologies.corestory.ai/sao/shapes/Deployment/tags> ;
+    sh:targetClass sao:Deployment .
+
+saosh:DeploymentUnitShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/artifact_uri>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/checksum>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/deployed_in_deployments>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/description>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/id>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/name>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type> ;
+    sh:targetClass sao:DeploymentUnit .
+
+saosh:EnvironmentShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Environment/deployed_by_pipelines>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/env_configured_by>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/hosts_deployments>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Environment/uses_infrastructure> ;
+    sh:targetClass sao:Environment .
+
+saosh:InfrastructureShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Infrastructure/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/hosts_datastores>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infrastructure_provisioned_by_iac>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/provider>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/region>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/specifications>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Infrastructure/used_by_environments> ;
+    sh:targetClass sao:Infrastructure .
+
+saosh:ReleaseShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Release/changelog>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/deployed_in_deployments_as_release>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/effective_from>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/effective_to>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/has_artifacts>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/is_current>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/Release/version> ;
+    sh:targetClass sao:Release .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type> a sh:PropertyShape ;
+    sh:description "Kind of configuration." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:config_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values> rdf:first "environment_variable" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/1> rdf:first "config_file" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/2> rdf:first "secret" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/3> rdf:first "feature_flag" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/config_type/values/cell/4> rdf:first "remote_config" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/configures_deployments> a sh:PropertyShape ;
+    sh:class sao:Deployment ;
+    sh:description "`Deployment` entities configured." ;
+    sh:path sao:configures_deployments .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/configures_environments> a sh:PropertyShape ;
+    sh:class sao:Environment ;
+    sh:description "`Environment` entities configured." ;
+    sh:path sao:configures_environments .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/controls_features> a sh:PropertyShape ;
+    sh:class sao:Feature ;
+    sh:description "Features controlled." ;
+    sh:path sao:controls_features .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/is_secret> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is sensitive data." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_secret .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/setting_for_tenant> a sh:PropertyShape ;
+    sh:class sao:Tenant ;
+    sh:maxCount 1 ;
+    sh:path sao:setting_for_tenant .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/source> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Configuration source (vault, config service, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:source .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Configuration/value> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Configuration value." ;
+    sh:maxCount 1 ;
+    sh:path sao:value .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/deployed_in_environment> a sh:PropertyShape ;
+    sh:class sao:Environment ;
+    sh:description "Target `Environment`." ;
+    sh:maxCount 1 ;
+    sh:path sao:deployed_in_environment .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/deployment_configured_by> a sh:PropertyShape ;
+    sh:class sao:Configuration ;
+    sh:description "`Configuration` entities." ;
+    sh:path sao:deployment_configured_by .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_release> a sh:PropertyShape ;
+    sh:class sao:Release ;
+    sh:description "`Release` version being deployed." ;
+    sh:maxCount 1 ;
+    sh:path sao:deploys_release .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_service> a sh:PropertyShape ;
+    sh:class sao:Service ;
+    sh:description "The `Service` being deployed." ;
+    sh:maxCount 1 ;
+    sh:path sao:deploys_service .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/deploys_unit> a sh:PropertyShape ;
+    sh:class sao:DeploymentUnit ;
+    sh:description "`DeploymentUnit` being deployed." ;
+    sh:maxCount 1 ;
+    sh:path sao:deploys_unit .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/replicas> a sh:PropertyShape ;
+    sh:datatype xsd:integer ;
+    sh:description "Number of instances/replicas running." ;
+    sh:maxCount 1 ;
+    sh:path sao:replicas .
+
+<https://ontologies.corestory.ai/sao/shapes/Deployment/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/artifact_uri> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Location of the deployment artifact." ;
+    sh:maxCount 1 ;
+    sh:path sao:artifact_uri .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/checksum> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Artifact integrity checksum." ;
+    sh:maxCount 1 ;
+    sh:path sao:checksum .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/deployed_in_deployments> a sh:PropertyShape ;
+    sh:class sao:Deployment ;
+    sh:description "`Deployment` entities that deploy this unit." ;
+    sh:path sao:deployed_in_deployments .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type> a sh:PropertyShape ;
+    sh:description "Kind of deployment unit." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:unit_type .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values> rdf:first "container" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/1> rdf:first "vm" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/2> rdf:first "serverless_function" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/3> rdf:first "binary" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/DeploymentUnit/unit_type/values/cell/4> rdf:first "package" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/deployed_by_pipelines> a sh:PropertyShape ;
+    sh:class sao:BuildPipeline ;
+    sh:description "`BuildPipeline` entities that deploy to this environment." ;
+    sh:path sao:deployed_by_pipelines .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/env_configured_by> a sh:PropertyShape ;
+    sh:class sao:Configuration ;
+    sh:description "`Configuration` entities for this environment." ;
+    sh:path sao:env_configured_by .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type> a sh:PropertyShape ;
+    sh:description "Kind of environment." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:environment_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values> rdf:first "development" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/1> rdf:first "testing" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/2> rdf:first "staging" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/3> rdf:first "production" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/environment_type/values/cell/4> rdf:first "dr" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/hosts_deployments> a sh:PropertyShape ;
+    sh:class sao:Deployment ;
+    sh:description "`Deployment` instances running in this environment." ;
+    sh:path sao:hosts_deployments .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Environment/uses_infrastructure> a sh:PropertyShape ;
+    sh:class sao:Infrastructure ;
+    sh:description "`Infrastructure` resources used." ;
+    sh:path sao:uses_infrastructure .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/hosts_datastores> a sh:PropertyShape ;
+    sh:class sao:DataStore ;
+    sh:description "`DataStore` entities hosted." ;
+    sh:path sao:hosts_datastores .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type> a sh:PropertyShape ;
+    sh:description "Kind of infrastructure." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:infra_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values> rdf:first "compute" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/1> rdf:first "storage" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/2> rdf:first "network" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/3> rdf:first "load_balancer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/4> rdf:first "dns" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/5> rdf:first "cdn" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/6> rdf:first "firewall" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/7> rdf:first "api_gateway" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infra_type/values/cell/8> rdf:first "service_mesh" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/infrastructure_provisioned_by_iac> a sh:PropertyShape ;
+    sh:class sao:IaCDefinition ;
+    sh:description "`IaCDefinition` entities provisioning this infrastructure." ;
+    sh:path sao:infrastructure_provisioned_by_iac .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/provider> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Cloud or infrastructure provider (AWS, Azure, GCP, on-premise)." ;
+    sh:maxCount 1 ;
+    sh:path sao:provider .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/region> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Geographic region." ;
+    sh:maxCount 1 ;
+    sh:path sao:region .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/specifications> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Resource specifications (instance type, size, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:specifications .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Infrastructure/used_by_environments> a sh:PropertyShape ;
+    sh:class sao:Environment ;
+    sh:description "`Environment` entities using this infrastructure." ;
+    sh:path sao:used_by_environments .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/changelog> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Release notes describing changes." ;
+    sh:maxCount 1 ;
+    sh:path sao:changelog .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/deployed_in_deployments_as_release> a sh:PropertyShape ;
+    sh:class sao:Deployment ;
+    sh:description "`Deployment` entities that deploy this release." ;
+    sh:path sao:deployed_in_deployments_as_release .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/effective_from> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version start date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_from .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/effective_to> a sh:PropertyShape ;
+    sh:datatype xsd:dateTime ;
+    sh:description "Version end date." ;
+    sh:maxCount 1 ;
+    sh:path sao:effective_to .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/has_artifacts> a sh:PropertyShape ;
+    sh:class sao:DeploymentUnit ;
+    sh:description "List of `DeploymentUnit` entities." ;
+    sh:path sao:has_artifacts .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/is_current> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is the current version." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_current .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/Release/version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Semantic version number." ;
+    sh:maxCount 1 ;
+    sh:path sao:version ;
+    sh:pattern "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$" .

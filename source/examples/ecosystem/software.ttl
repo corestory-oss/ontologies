@@ -1,0 +1,8 @@
+# Synthetic software identity completing the existing SpecSpec bridge fixture.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+
+<urn:specspec:demo:software:withdraw> a sao:CallableUnit ;
+    sao:id "urn:specspec:demo:software:withdraw" ;
+    sao:name "Account.withdraw" ;
+    sao:callable_type "method" .

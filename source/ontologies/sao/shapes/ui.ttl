@@ -1,0 +1,450 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:RouteShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Route/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/has_child_routes>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/has_parent_route>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/http_methods>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/is_authenticated>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/is_dynamic>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/path_pattern>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/route_guarded_by>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/route_renders_component>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/route_type>,
+        <https://ontologies.corestory.ai/sao/shapes/Route/tags> ;
+    sh:targetClass sao:Route .
+
+saosh:StateStoreShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/StateStore/actions>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/description>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/framework>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/has_state_shape>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/id>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/manages_ui_components>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/name>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/selectors>,
+        <https://ontologies.corestory.ai/sao/shapes/StateStore/tags> ;
+    sh:targetClass sao:StateStore .
+
+saosh:UIComponentShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/UIComponent/accessibility_role>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/description>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/emitted_events>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/framework>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/has_child_ui_components>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/has_parent_ui_component>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/has_props>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/id>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/is_lazy_loaded>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/is_server_rendered>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/managed_by_state>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/name>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/renders_on_route>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/source_location>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/UIComponent/ui_implements_encapsulation_unit> ;
+    sh:targetClass sao:UIComponent .
+
+saosh:UIPropertyShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/UIProperty/data_type>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/default_value>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/description>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/id>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/is_reactive>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/is_required>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/name>,
+        <https://ontologies.corestory.ai/sao/shapes/UIProperty/tags> ;
+    sh:targetClass sao:UIProperty .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/has_child_routes> a sh:PropertyShape ;
+    sh:class sao:Route ;
+    sh:description "Child routes." ;
+    sh:path sao:has_child_routes .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/has_parent_route> a sh:PropertyShape ;
+    sh:class sao:Route ;
+    sh:description "Parent route." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent_route .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/http_methods> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Allowed HTTP methods." ;
+    sh:path sao:http_methods .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/is_authenticated> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether authentication is required." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_authenticated .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/is_dynamic> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the route has dynamic segments." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_dynamic .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/path_pattern> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "URL path pattern." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:path_pattern .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_guarded_by> a sh:PropertyShape ;
+    sh:class sao:Policy ;
+    sh:description "Policies guarding this route." ;
+    sh:path sao:route_guarded_by .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_renders_component> a sh:PropertyShape ;
+    sh:class sao:UIComponent ;
+    sh:description "UI component rendered." ;
+    sh:maxCount 1 ;
+    sh:path sao:route_renders_component .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type> a sh:PropertyShape ;
+    sh:description "Kind of route." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:route_type .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values> rdf:first "page_route" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/1> rdf:first "api_route" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/2> rdf:first "layout_route" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/3> rdf:first "redirect" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/4> rdf:first "catch_all" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/route_type/values/cell/5> rdf:first "guarded" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/Route/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/actions> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Action names." ;
+    sh:path sao:actions .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/framework> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "State management framework (Redux, Vuex, Zustand, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:framework .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/has_state_shape> a sh:PropertyShape ;
+    sh:class sao:DataStructure ;
+    sh:description "Shape of the state tree." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_state_shape .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type> a sh:PropertyShape ;
+    sh:description "Kind of state management." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:management_type .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values> rdf:first "local_state" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/1> rdf:first "global_store" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/2> rdf:first "context" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/3> rdf:first "url_state" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/4> rdf:first "server_state" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/management_type/values/cell/5> rdf:first "form_state" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/manages_ui_components> a sh:PropertyShape ;
+    sh:class sao:UIComponent ;
+    sh:description "UI components managed." ;
+    sh:path sao:manages_ui_components .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/selectors> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Selector names." ;
+    sh:path sao:selectors .
+
+<https://ontologies.corestory.ai/sao/shapes/StateStore/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/accessibility_role> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "ARIA role." ;
+    sh:maxCount 1 ;
+    sh:path sao:accessibility_role .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type> a sh:PropertyShape ;
+    sh:description "Kind of UI component." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:component_type .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values> rdf:first "page" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/1> rdf:first "layout" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/2> rdf:first "form" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/3> rdf:first "widget" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/4> rdf:first "modal" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/5> rdf:first "navigation" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/6> rdf:first "data_display" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/7> rdf:first "composite" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/8> rdf:first "higher_order" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/component_type/values/cell/9> rdf:first "provider" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/emitted_events> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Events this component emits." ;
+    sh:path sao:emitted_events .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/framework> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Framework (React, Angular, Vue, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:framework .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/has_child_ui_components> a sh:PropertyShape ;
+    sh:class sao:UIComponent ;
+    sh:description "Children in component tree." ;
+    sh:path sao:has_child_ui_components .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/has_parent_ui_component> a sh:PropertyShape ;
+    sh:class sao:UIComponent ;
+    sh:description "Parent in component tree." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent_ui_component .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/has_props> a sh:PropertyShape ;
+    sh:class sao:UIProperty ;
+    sh:description "Component properties." ;
+    sh:path sao:has_props .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/is_lazy_loaded> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether lazily loaded." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_lazy_loaded .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/is_server_rendered> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether server-side rendered." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_server_rendered .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/managed_by_state> a sh:PropertyShape ;
+    sh:class sao:StateStore ;
+    sh:description "State stores managing this component." ;
+    sh:path sao:managed_by_state .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/renders_on_route> a sh:PropertyShape ;
+    sh:class sao:Route ;
+    sh:description "Routes rendering this component." ;
+    sh:path sao:renders_on_route .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/source_location> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Source path." ;
+    sh:maxCount 1 ;
+    sh:path sao:source_location .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/UIComponent/ui_implements_encapsulation_unit> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Code implementation." ;
+    sh:maxCount 1 ;
+    sh:path sao:ui_implements_encapsulation_unit .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/data_type> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Property data type." ;
+    sh:maxCount 1 ;
+    sh:path sao:data_type .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/default_value> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Default value." ;
+    sh:maxCount 1 ;
+    sh:path sao:default_value .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/is_reactive> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the prop is reactive." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_reactive .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/is_required> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether the prop is required." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_required .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/UIProperty/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

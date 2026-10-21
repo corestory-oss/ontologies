@@ -1,0 +1,181 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:ErrorModelShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/error_model_for_languages>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/modules_using_error_model>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy>,
+        <https://ontologies.corestory.ai/sao/shapes/ErrorModel/tags> ;
+    sh:targetClass sao:ErrorModel .
+
+saosh:ExceptionTypeShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/ExceptionType/description>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/handled_by_callables>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/has_child_exceptions>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/has_parent_exception>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/id>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/is_checked>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/name>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/qualified_name>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/raised_by_callables>,
+        <https://ontologies.corestory.ai/sao/shapes/ExceptionType/tags> ;
+    sh:targetClass sao:ExceptionType .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness> a sh:PropertyShape ;
+    sh:description "Whether exceptions are checked or unchecked." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:checkedness .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values> rdf:first "checked" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values/cell/1> rdf:first "unchecked" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/checkedness/values/cell/2> rdf:first "not_applicable" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/error_model_for_languages> a sh:PropertyShape ;
+    sh:class sao:ProgrammingLanguage ;
+    sh:description "Languages that use this as their default error model." ;
+    sh:path sao:error_model_for_languages .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/modules_using_error_model> a sh:PropertyShape ;
+    sh:class sao:EncapsulationUnit ;
+    sh:description "Modules that use this error model." ;
+    sh:path sao:modules_using_error_model .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy> a sh:PropertyShape ;
+    sh:description "The error handling paradigm used." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:strategy .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values> rdf:first "exception_based" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/1> rdf:first "return_value_based" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/2> rdf:first "condition_based" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/3> rdf:first "error_code_based" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/4> rdf:first "panic_recover" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/strategy/values/cell/5> rdf:first "monadic" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/ErrorModel/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/handled_by_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables that handle this exception." ;
+    sh:path sao:handled_by_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/has_child_exceptions> a sh:PropertyShape ;
+    sh:class sao:ExceptionType ;
+    sh:description "Children in the exception hierarchy." ;
+    sh:path sao:has_child_exceptions .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/has_parent_exception> a sh:PropertyShape ;
+    sh:class sao:ExceptionType ;
+    sh:description "Parent in the exception hierarchy." ;
+    sh:maxCount 1 ;
+    sh:path sao:has_parent_exception .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/is_checked> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is a checked exception." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_checked .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/qualified_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Fully qualified type name" ;
+    sh:maxCount 1 ;
+    sh:path sao:qualified_name .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/raised_by_callables> a sh:PropertyShape ;
+    sh:class sao:CallableUnit ;
+    sh:description "Callables that may raise this exception." ;
+    sh:path sao:raised_by_callables .
+
+<https://ontologies.corestory.ai/sao/shapes/ExceptionType/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

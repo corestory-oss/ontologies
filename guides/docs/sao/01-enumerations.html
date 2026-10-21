@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Enumerations · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="enumerations">Enumerations</h1>
+<p>This document describes all enumeration types defined in the Systems Abstraction Ontology (SAO).</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#cardinality">Cardinality</a></li>
+<li><a href="#interface-types">Interface Types</a></li>
+<li><a href="#service-and-dependency-types">Service and Dependency Types</a></li>
+<li><a href="#actor-types">Actor Types</a></li>
+<li><a href="#security-and-authorization">Security and Authorization</a></li>
+<li><a href="#domain-modeling">Domain Modeling</a></li>
+<li><a href="#behavior-and-workflow">Behavior and Workflow</a></li>
+<li><a href="#data-management">Data Management</a></li>
+<li><a href="#integration">Integration</a></li>
+<li><a href="#deployment-and-operations">Deployment and Operations</a></li>
+<li><a href="#observability">Observability</a></li>
+<li><a href="#compliance">Compliance</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#code-structure">Code Structure</a></li>
+<li><a href="#type-system">Type System</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#file-operations">File Operations</a></li>
+<li><a href="#screen-and-terminal">Screen and Terminal</a></li>
+<li><a href="#batch-processing">Batch Processing</a></li>
+<li><a href="#inter-process-communication">Inter-Process Communication</a></li>
+<li><a href="#metaprogramming">Metaprogramming</a></li>
+<li><a href="#memory-and-ownership">Memory and Ownership</a></li>
+<li><a href="#database-constraints-and-indexes">Database Constraints and Indexes</a></li>
+<li><a href="#programming-paradigms">Programming Paradigms</a></li>
+</ul>
+<h2 id="cardinality">Cardinality</h2>
+<p>Defines relationship cardinality options between entities.</p>
+<ul>
+<li><code>one_to_one</code>: One-to-one relationship</li>
+<li><code>one_to_many</code>: One-to-many relationship</li>
+<li><code>many_to_one</code>: Many-to-one relationship</li>
+<li><code>many_to_many</code>: Many-to-many relationship</li>
+</ul>
+<h2 id="interface-types">Interface Types</h2>
+<h3 id="interface-categories">Interface Categories</h3>
+<ul>
+<li><code>user_interface</code>: Human-facing interface for user interaction</li>
+<li><code>programmatic_interface</code>: Machine-to-machine API interface</li>
+<li><code>event_interface</code>: Event-driven asynchronous interface</li>
+</ul>
+<h3 id="user-interface-types">User Interface Types</h3>
+<ul>
+<li><code>web_ui</code>: Web browser-based user interface</li>
+<li><code>mobile_ui</code>: Mobile device (iOS/Android) user interface</li>
+<li><code>desktop_ui</code>: Desktop application user interface</li>
+<li><code>cli</code>: Command-line interface</li>
+</ul>
+<h3 id="api-types">API Types</h3>
+<ul>
+<li><code>rest_api</code>: RESTful HTTP-based API</li>
+<li><code>graphql_api</code>: GraphQL query language API</li>
+<li><code>grpc_api</code>: gRPC remote procedure call API</li>
+<li><code>sdk</code>: Software development kit for programmatic access</li>
+<li><code>soap_api</code>: SOAP protocol-based web service API</li>
+</ul>
+<h3 id="event-interface-types">Event Interface Types</h3>
+<ul>
+<li><code>webhook</code>: HTTP callback for event notifications</li>
+<li><code>message_queue</code>: Queue-based asynchronous messaging</li>
+<li><code>event_stream</code>: Continuous stream of events</li>
+<li><code>pub_sub</code>: Publish-subscribe messaging pattern</li>
+</ul>
+<h2 id="service-and-dependency-types">Service and Dependency Types</h2>
+<h3 id="service-types">Service Types</h3>
+<ul>
+<li><code>microservice</code>: Small, independently deployable service</li>
+<li><code>monolith</code>: Single-tier monolithic application</li>
+<li><code>function</code>: Serverless function or lambda</li>
+<li><code>job</code>: Batch processing job</li>
+<li><code>daemon</code>: Background service or daemon process</li>
+<li><code>cics_transaction</code>: CICS online transaction</li>
+<li><code>ims_transaction</code>: IMS online transaction</li>
+<li><code>batch_program</code>: Mainframe batch program</li>
+<li><code>stored_proc_service</code>: Stored procedure exposed as service</li>
+</ul>
+<h3 id="dependency-types">Dependency Types</h3>
+<ul>
+<li><code>runtime</code>: Required at runtime for execution</li>
+<li><code>build</code>: Required at build/compile time</li>
+<li><code>optional</code>: Optional dependency for additional features</li>
+<li><code>dev</code>: Required only for development/testing</li>
+</ul>
+<h2 id="actor-types">Actor Types</h2>
+<h3 id="actor-categories">Actor Categories</h3>
+<ul>
+<li><code>human</code>: Human user or operator</li>
+<li><code>system</code>: Automated system or service</li>
+</ul>
+<h3 id="human-actor-types">Human Actor Types</h3>
+<ul>
+<li><code>end_user</code>: Regular end user of the system</li>
+<li><code>administrator</code>: System administrator with elevated privileges</li>
+<li><code>operator</code>: Operations personnel managing system runtime</li>
+<li><code>developer</code>: Software developer or engineer</li>
+<li><code>auditor</code>: Compliance or security auditor</li>
+</ul>
+<h3 id="system-actor-types">System Actor Types</h3>
+<ul>
+<li><code>internal_service</code>: Internal service within the system</li>
+<li><code>external_system</code>: External third-party system</li>
+<li><code>scheduled_process</code>: Scheduled or cron-based process</li>
+<li><code>ai_agent</code>: Artificial intelligence agent or bot</li>
+<li><code>message_trigger</code>: Message or event-triggered automation</li>
+</ul>
+<h2 id="security-and-authorization">Security and Authorization</h2>
+<h3 id="credential-types">Credential Types</h3>
+<ul>
+<li><code>password</code>: Username and password credentials</li>
+<li><code>token</code>: Token-based authentication (JWT, bearer token)</li>
+<li><code>certificate</code>: Digital certificate or X.509 certificate</li>
+<li><code>api_key</code>: API key for service authentication</li>
+<li><code>biometric</code>: Biometric authentication (fingerprint, face recognition)</li>
+<li><code>mfa</code>: Multi-factor authentication</li>
+<li><code>oauth</code>: OAuth 2.0 authentication flow</li>
+</ul>
+<h3 id="policy-types">Policy Types</h3>
+<ul>
+<li><code>rbac</code>: Role-Based Access Control</li>
+<li><code>abac</code>: Attribute-Based Access Control</li>
+<li><code>rebac</code>: Relationship-Based Access Control</li>
+<li><code>pbac</code>: Policy-Based Access Control</li>
+</ul>
+<h3 id="scope-types">Scope Types</h3>
+<ul>
+<li><code>global</code>: System-wide global scope</li>
+<li><code>tenant</code>: Limited to a specific tenant</li>
+<li><code>organization</code>: Limited to an organization within a tenant</li>
+<li><code>resource</code>: Limited to a specific resource or resource type</li>
+<li><code>field</code>: Limited to specific fields within a resource</li>
+</ul>
+<h3 id="constraint-types">Constraint Types</h3>
+<ul>
+<li><code>temporal</code>: Time-based constraint (date/time ranges)</li>
+<li><code>spatial</code>: Location or geography-based constraint</li>
+<li><code>attribute</code>: Attribute or property-based constraint</li>
+<li><code>context</code>: Context-dependent constraint (device, IP, etc.)</li>
+<li><code>rate_limit</code>: Rate limiting or quota-based constraint</li>
+</ul>
+<h2 id="domain-modeling">Domain Modeling</h2>
+<h3 id="attribute-categories">Attribute Categories</h3>
+<ul>
+<li><code>required</code>: Required attribute that must have a value</li>
+<li><code>optional</code>: Optional attribute that may be null</li>
+<li><code>computed</code>: Computed or calculated attribute</li>
+<li><code>derived</code>: Derived from other attributes</li>
+<li><code>transient</code>: Transient attribute not persisted</li>
+</ul>
+<h3 id="action-categories">Action Categories</h3>
+<ul>
+<li><code>query</code>: Read-only query action</li>
+<li><code>command</code>: State-changing command action</li>
+<li><code>mutation</code>: Data mutation or modification action</li>
+</ul>
+<h3 id="command-types">Command Types</h3>
+<ul>
+<li><code>create</code>: Create a new entity</li>
+<li><code>update</code>: Update an existing entity</li>
+<li><code>delete</code>: Delete an entity</li>
+<li><code>execute</code>: Execute an operation or process</li>
+<li><code>archive</code>: Archive an entity for retention</li>
+<li><code>restore</code>: Restore an archived entity</li>
+</ul>
+<h2 id="behavior-and-workflow">Behavior and Workflow</h2>
+<h3 id="workflow-types">Workflow Types</h3>
+<ul>
+<li><code>synchronous</code>: Synchronous blocking workflow</li>
+<li><code>asynchronous</code>: Asynchronous non-blocking workflow</li>
+<li><code>saga</code>: Saga pattern for distributed transactions</li>
+<li><code>choreography</code>: Event-driven choreography workflow</li>
+<li><code>orchestration</code>: Centrally orchestrated workflow</li>
+</ul>
+<h3 id="rule-categories">Rule Categories</h3>
+<ul>
+<li><code>validation</code>: Validation rule for data integrity</li>
+<li><code>business</code>: Business logic or domain rule</li>
+<li><code>derivation</code>: Derivation rule for computed values</li>
+<li><code>constraint</code>: Constraint or invariant rule</li>
+<li><code>trigger</code>: Event trigger or automation rule</li>
+</ul>
+<h3 id="event-categories">Event Categories</h3>
+<ul>
+<li><code>domain_event</code>: Domain-specific business event</li>
+<li><code>integration_event</code>: Integration or cross-service event</li>
+<li><code>system_event</code>: System-level technical event</li>
+<li><code>audit_event</code>: Audit trail or compliance event</li>
+</ul>
+<h3 id="transaction-types">Transaction Types</h3>
+<ul>
+<li><code>local</code>: Local transaction within a single database</li>
+<li><code>distributed</code>: Distributed transaction across multiple resources</li>
+<li><code>saga</code>: Saga pattern with compensating transactions</li>
+<li><code>two_phase_commit</code>: Two-phase commit protocol</li>
+</ul>
+<h2 id="data-management">Data Management</h2>
+<h3 id="data-store-types">Data Store Types</h3>
+<ul>
+<li><code>relational_db</code>: Relational database (SQL)</li>
+<li><code>document_db</code>: Document-oriented database (NoSQL)</li>
+<li><code>key_value_store</code>: Key-value store (Redis, DynamoDB)</li>
+<li><code>graph_db</code>: Graph database (Neo4j)</li>
+<li><code>time_series_db</code>: Time-series database</li>
+<li><code>object_storage</code>: Object storage (S3, blob storage)</li>
+<li><code>search_index</code>: Search index (Elasticsearch, Solr)</li>
+<li><code>cache</code>: In-memory cache</li>
+<li><code>message_broker</code>: Message broker or queue</li>
+<li><code>data_lake</code>: Data lake for analytics</li>
+<li><code>vsam</code>: IBM VSAM dataset</li>
+<li><code>flat_file</code>: Sequential or flat file</li>
+<li><code>isam</code>: Indexed Sequential Access Method file</li>
+<li><code>dead_letter_queue</code>: Dead letter queue</li>
+</ul>
+<h3 id="schema-types">Schema Types</h3>
+<ul>
+<li><code>table_schema</code>: Relational database table schema</li>
+<li><code>document_schema</code>: Document or JSON schema</li>
+<li><code>event_schema</code>: Event payload schema</li>
+<li><code>api_schema</code>: API request/response schema</li>
+<li><code>message_schema</code>: Message format schema</li>
+</ul>
+<h3 id="data-classification-types">Data Classification Types</h3>
+<ul>
+<li><code>public</code>: Publicly accessible information</li>
+<li><code>internal</code>: Internal use only information</li>
+<li><code>confidential</code>: Confidential sensitive information</li>
+<li><code>restricted</code>: Highly restricted information</li>
+<li><code>pii</code>: Personally Identifiable Information</li>
+<li><code>phi</code>: Protected Health Information</li>
+<li><code>pci</code>: Payment Card Industry data</li>
+</ul>
+<h2 id="integration">Integration</h2>
+<h3 id="integration-types">Integration Types</h3>
+<ul>
+<li><code>inbound</code>: Inbound integration receiving data</li>
+<li><code>outbound</code>: Outbound integration sending data</li>
+<li><code>bidirectional</code>: Bidirectional two-way integration</li>
+</ul>
+<h3 id="external-system-types">External System Types</h3>
+<ul>
+<li><code>third_party_service</code>: Third-party external service</li>
+<li><code>partner_system</code>: Partner or vendor system</li>
+<li><code>legacy_system</code>: Legacy system being integrated</li>
+<li><code>saas_application</code>: Software-as-a-Service application</li>
+</ul>
+<h3 id="protocol-types">Protocol Types</h3>
+<ul>
+<li><code>http</code>: Hypertext Transfer Protocol</li>
+<li><code>https</code>: HTTP Secure (TLS/SSL)</li>
+<li><code>websocket</code>: WebSocket protocol for bidirectional communication</li>
+<li><code>grpc</code>: gRPC protocol</li>
+<li><code>amqp</code>: Advanced Message Queuing Protocol</li>
+<li><code>mqtt</code>: Message Queuing Telemetry Transport</li>
+<li><code>kafka</code>: Apache Kafka protocol</li>
+<li><code>sftp</code>: Secure File Transfer Protocol</li>
+<li><code>tcp</code>: Transmission Control Protocol</li>
+<li><code>udp</code>: User Datagram Protocol</li>
+<li><code>corba</code>: Common Object Request Broker Architecture</li>
+<li><code>dcom</code>: Distributed Component Object Model</li>
+<li><code>rmi</code>: Java Remote Method Invocation</li>
+<li><code>named_pipe</code>: Named pipe protocol</li>
+<li><code>shared_memory</code>: Shared memory protocol</li>
+</ul>
+<h3 id="message-types">Message Types</h3>
+<ul>
+<li><code>request</code>: Request message expecting a response</li>
+<li><code>response</code>: Response message to a request</li>
+<li><code>notification</code>: One-way notification message</li>
+<li><code>command</code>: Command message for action execution</li>
+<li><code>event</code>: Event notification message</li>
+<li><code>query</code>: Query message for data retrieval</li>
+</ul>
+<h3 id="contract-types">Contract Types</h3>
+<ul>
+<li><code>openapi</code>: OpenAPI (Swagger) specification</li>
+<li><code>asyncapi</code>: AsyncAPI specification for async APIs</li>
+<li><code>json_schema</code>: JSON Schema specification</li>
+<li><code>protobuf</code>: Protocol Buffers schema</li>
+<li><code>avro</code>: Apache Avro schema</li>
+<li><code>graphql_schema</code>: GraphQL schema definition</li>
+<li><code>wsdl</code>: Web Services Description Language</li>
+</ul>
+<h2 id="deployment-and-operations">Deployment and Operations</h2>
+<h3 id="environment-types">Environment Types</h3>
+<ul>
+<li><code>development</code>: Development environment for active development</li>
+<li><code>testing</code>: Testing environment for QA and integration testing</li>
+<li><code>staging</code>: Pre-production staging environment</li>
+<li><code>production</code>: Live production environment</li>
+<li><code>dr</code>: Disaster Recovery</li>
+</ul>
+<h3 id="deployment-unit-types">Deployment Unit Types</h3>
+<ul>
+<li><code>container</code>: Container image (Docker, etc.)</li>
+<li><code>vm</code>: Virtual machine image</li>
+<li><code>serverless_function</code>: Serverless function deployment package</li>
+<li><code>binary</code>: Compiled binary executable</li>
+<li><code>package</code>: Application package (JAR, WAR, etc.)</li>
+</ul>
+<h3 id="configuration-types">Configuration Types</h3>
+<ul>
+<li><code>environment_variable</code>: Environment variable configuration</li>
+<li><code>config_file</code>: Configuration file (YAML, JSON, properties)</li>
+<li><code>secret</code>: Secret or sensitive configuration value</li>
+<li><code>feature_flag</code>: Feature flag or toggle</li>
+<li><code>remote_config</code>: Remote configuration service</li>
+</ul>
+<h3 id="infrastructure-types">Infrastructure Types</h3>
+<ul>
+<li><code>compute</code>: Compute resources (VMs, containers)</li>
+<li><code>storage</code>: Storage resources (disks, volumes)</li>
+<li><code>network</code>: Network infrastructure</li>
+<li><code>load_balancer</code>: Load balancer</li>
+<li><code>dns</code>: DNS service</li>
+<li><code>cdn</code>: Content Delivery Network</li>
+<li><code>firewall</code>: Firewall or security group</li>
+<li><code>api_gateway</code>: API gateway or ingress controller</li>
+<li><code>service_mesh</code>: Service mesh control plane (Istio, Linkerd, etc.)</li>
+</ul>
+<h2 id="observability">Observability</h2>
+<h3 id="metric-types">Metric Types</h3>
+<ul>
+<li><code>counter</code>: Monotonically increasing counter</li>
+<li><code>gauge</code>: Value that can increase or decrease</li>
+<li><code>histogram</code>: Distribution of values in buckets</li>
+<li><code>summary</code>: Summary statistics (quantiles, etc.)</li>
+</ul>
+<h3 id="log-types">Log Types</h3>
+<ul>
+<li><code>application</code>: Application-level logs</li>
+<li><code>access</code>: Access and request logs</li>
+<li><code>error</code>: Error and exception logs</li>
+<li><code>security</code>: Security event logs</li>
+<li><code>audit</code>: Audit trail logs</li>
+<li><code>debug</code>: Debug and diagnostic logs</li>
+</ul>
+<h3 id="health-check-types">Health Check Types</h3>
+<ul>
+<li><code>liveness</code>: Liveness probe for service health</li>
+<li><code>readiness</code>: Readiness probe for traffic acceptance</li>
+<li><code>dependency</code>: Health check for dependencies</li>
+<li><code>startup</code>: Startup probe during initialization</li>
+</ul>
+<h2 id="compliance">Compliance</h2>
+<h3 id="compliance-frameworks">Compliance Frameworks</h3>
+<ul>
+<li><code>gdpr</code>: General Data Protection Regulation (EU)</li>
+<li><code>hipaa</code>: Health Insurance Portability and Accountability Act</li>
+<li><code>soc2</code>: Service Organization Control 2</li>
+<li><code>pci_dss</code>: Payment Card Industry Data Security Standard</li>
+<li><code>iso27001</code>: ISO 27001 Information Security Management</li>
+<li><code>sox</code>: Sarbanes-Oxley Act</li>
+<li><code>ccpa</code>: California Consumer Privacy Act</li>
+<li><code>fedramp</code>: Federal Risk and Authorization Management Program</li>
+</ul>
+<h2 id="features">Features</h2>
+<h3 id="feature-categories">Feature Categories</h3>
+<ul>
+<li><code>core</code>: Core essential feature</li>
+<li><code>optional</code>: Optional add-on feature</li>
+<li><code>experimental</code>: Experimental or beta feature</li>
+<li><code>deprecated</code>: Deprecated feature scheduled for removal</li>
+</ul>
+<h2 id="code-structure">Code Structure</h2>
+<h3 id="code-container-types">Code Container Types</h3>
+<p>Types of physical code storage units.</p>
+<ul>
+<li><code>source_file</code>: Standard source code file</li>
+<li><code>library_member</code>: Member of a partitioned dataset or library (mainframe)</li>
+<li><code>include_file</code>: Header or include file</li>
+<li><code>script</code>: Executable script</li>
+<li><code>configuration</code>: Configuration file</li>
+<li><code>schema_definition</code>: Database or API schema definition</li>
+<li><code>notebook_cell</code>: Jupyter/computational notebook cell</li>
+<li><code>inline_code</code>: Embedded code (e.g., JavaScript in HTML, SQL in code)</li>
+<li><code>jcl_member</code>: JCL member in a PDS</li>
+<li><code>rpg_source</code>: RPG source</li>
+<li><code>pli_source</code>: PL/I source</li>
+<li><code>assembler_source</code>: Assembler source</li>
+<li><code>cl_source</code>: IBM CL source</li>
+</ul>
+<h3 id="storage-location-types">Storage Location Types</h3>
+<p>Types of storage locations for code containers.</p>
+<ul>
+<li><code>directory</code>: Filesystem directory</li>
+<li><code>library</code>: Partitioned dataset (mainframe) or static library</li>
+<li><code>package</code>: Language package or module</li>
+<li><code>namespace</code>: Logical namespace grouping</li>
+<li><code>module_path</code>: Module search path</li>
+</ul>
+<h3 id="encapsulation-types">Encapsulation Types</h3>
+<p>Types of encapsulation units across different programming paradigms.</p>
+<p><strong>Object-Oriented:</strong>
+- <code>class</code>: Object-oriented class
+- <code>interface</code>: Interface or contract definition
+- <code>abstract_class</code>: Abstract base class
+- <code>trait</code>: Trait (Rust, Scala) or mixin
+- <code>enum_class</code>: Enumeration class
+- <code>record_class</code>: Record or data class (Java records, Python dataclass)
+- <code>singleton</code>: Singleton pattern implementation</p>
+<p><strong>Procedural:</strong>
+- <code>program</code>: Standalone program (COBOL, Fortran)
+- <code>subprogram</code>: Callable subprogram or subroutine library
+- <code>unit</code>: Pascal/Delphi unit</p>
+<p><strong>Functional:</strong>
+- <code>module</code>: Functional module (Haskell, OCaml, F#)
+- <code>namespace</code>: Namespace grouping
+- <code>package</code>: Package grouping
+- <code>library</code>: Library module</p>
+<p><strong>Mainframe:</strong>
+- <code>batch_program</code>: Batch processing program
+- <code>online_program</code>: Online transaction program (CICS, IMS)
+- <code>copybook</code>: COBOL copybook</p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code>: Database stored procedure package
+- <code>function_package</code>: Function package (Oracle, PostgreSQL)
+- <code>trigger</code>: Database trigger
+- <code>view</code>: Database view</p>
+<p><strong>Other:</strong>
+- <code>object</code>: JavaScript/prototype-based object
+- <code>component</code>: Component (React, Angular, Vue)
+- <code>service</code>: Service class
+- <code>controller</code>: Controller (MVC pattern)
+- <code>script</code>: Script module
+- <code>composite</code>: Composite structure
+- <code>other</code>: Other encapsulation types
+- <code>rpg_module</code>: RPG module
+- <code>rpg_service_program</code>: RPG service program
+- <code>pli_procedure</code>: PL/I procedure
+- <code>pli_package</code>: PL/I package
+- <code>assembler_csect</code>: Assembler control section</p>
+<h3 id="callable-types">Callable Types</h3>
+<p>Types of callable/invocable code units across different paradigms.</p>
+<p><strong>Object-Oriented Methods:</strong>
+- <code>method</code>: Instance method in OOP
+- <code>static_method</code>: Static/class method
+- <code>constructor</code>: Object constructor
+- <code>destructor</code>: Object destructor/finalizer
+- <code>property_getter</code>: Property getter method
+- <code>property_setter</code>: Property setter method
+- <code>operator_overload</code>: Operator overloading method
+- <code>conversion_operator</code>: Type conversion operator
+- <code>indexer</code>: Indexer/subscript operator
+- <code>abstract_method</code>: Abstract method declaration
+- <code>virtual_method</code>: Virtual/overridable method</p>
+<p><strong>Procedural:</strong>
+- <code>function</code>: Function (procedural or functional programming)
+- <code>procedure</code>: Procedure/subroutine
+- <code>subroutine</code>: Subroutine
+- <code>paragraph</code>: COBOL paragraph
+- <code>section</code>: COBOL section</p>
+<p><strong>Functional:</strong>
+- <code>lambda</code>: Anonymous lambda function
+- <code>closure</code>: Closure
+- <code>higher_order_function</code>: Higher-order function
+- <code>curried_function</code>: Curried function
+- <code>functor</code>: Functor</p>
+<p><strong>Event Handling:</strong>
+- <code>event_handler</code>: Event handler
+- <code>callback</code>: Callback function
+- <code>delegate</code>: Delegate
+- <code>signal_handler</code>: Signal handler</p>
+<p><strong>Database:</strong>
+- <code>stored_procedure</code>: Database stored procedure
+- <code>stored_function</code>: Database function
+- <code>trigger_body</code>: Trigger implementation
+- <code>cursor</code>: Database cursor</p>
+<p><strong>Concurrency:</strong>
+- <code>coroutine</code>: Coroutine
+- <code>generator</code>: Generator function
+- <code>async_function</code>: Async/await function
+- <code>thread_entry</code>: Thread entry point
+- <code>task</code>: Task/future/promise</p>
+<p><strong>Testing:</strong>
+- <code>test_case</code>: Unit test case
+- <code>test_fixture</code>: Test fixture/setup method
+- <code>mock</code>: Mock function</p>
+<p><strong>Other:</strong>
+- <code>macro</code>: Preprocessor macro
+- <code>template</code>: Template/generic function
+- <code>generic_method</code>: Generic method
+- <code>main_entry</code>: Main entry point
+- <code>interrupt_handler</code>: Interrupt service routine
+- <code>exception_handler</code>: Exception handler
+- <code>finalizer</code>: Finalizer/cleanup method
+- <code>factory_method</code>: Factory method
+- <code>extension_method</code>: Extension method
+- <code>script_function</code>: Script function
+- <code>command</code>: Command/action function
+- <code>other</code>: Other callable types
+- <code>rpg_subprocedure</code>: RPG subprocedure
+- <code>pli_entry</code>: PL/I ENTRY point
+- <code>assembler_entry</code>: Assembler entry point
+- <code>rpg_subroutine</code>: RPG subroutine</p>
+<h3 id="data-structure-types">Data Structure Types</h3>
+<p>Types of data structures across different paradigms.</p>
+<p><strong>Object-Oriented:</strong>
+- <code>class_data</code>: Data members of a class
+- <code>inner_class</code>: Inner/nested class
+- <code>anonymous_class</code>: Anonymous class</p>
+<p><strong>Procedural:</strong>
+- <code>struct</code>: C/C++ struct
+- <code>record</code>: Pascal/Ada record or COBOL record
+- <code>union</code>: C union</p>
+<p><strong>COBOL/Mainframe:</strong>
+- <code>group_item</code>: COBOL group item (composite data)
+- <code>copybook_structure</code>: COBOL copybook structure
+- <code>commarea</code>: CICS communication area</p>
+<p><strong>Functional:</strong>
+- <code>algebraic_data_type</code>: Algebraic data type (Haskell, ML)
+- <code>type_class</code>: Type class
+- <code>product_type</code>: Product type (tuple-like)
+- <code>sum_type</code>: Sum/variant type</p>
+<p><strong>Collections:</strong>
+- <code>array</code>: Fixed-size array
+- <code>dynamic_array</code>: Dynamic/resizable array
+- <code>list</code>: List structure
+- <code>dictionary</code>: Dictionary/map/hash table
+- <code>set</code>: Set structure
+- <code>queue</code>: Queue structure
+- <code>stack</code>: Stack structure
+- <code>tree</code>: Tree structure
+- <code>graph</code>: Graph structure</p>
+<p><strong>Database:</strong>
+- <code>table_structure</code>: Database table structure
+- <code>view_structure</code>: Database view structure
+- <code>cursor_structure</code>: Cursor structure
+- <code>rowtype</code>: Database row type</p>
+<p><strong>Domain-Driven Design:</strong>
+- <code>value_object</code>: DDD value object
+- <code>dto</code>: Data Transfer Object</p>
+<p><strong>Other:</strong>
+- <code>tuple</code>: Tuple
+- <code>pair</code>: Key-value pair
+- <code>enum</code>: Enumeration
+- <code>flags</code>: Bit flags
+- <code>configuration_object</code>: Configuration data
+- <code>message</code>: Message structure
+- <code>event</code>: Event data
+- <code>command</code>: Command data
+- <code>json_schema</code>: JSON schema structure
+- <code>xml_schema</code>: XML schema structure
+- <code>protobuf_message</code>: Protocol Buffers message
+- <code>avro_record</code>: Avro record
+- <code>smart_pointer</code>: Smart pointer wrapper
+- <code>reference_wrapper</code>: Reference wrapper
+- <code>rpg_data_structure</code>: RPG data structure
+- <code>pli_structure</code>: PL/I structure
+- <code>assembler_dsect</code>: Assembler dummy section
+- <code>cobol_file_descriptor</code>: COBOL FD entry
+- <code>linkage_section</code>: COBOL linkage section structure
+- <code>opaque_type</code>: Opaque type
+- <code>variant</code>: Variant type
+- <code>other</code>: Other data structure types</p>
+<h3 id="visibility-types">Visibility Types</h3>
+<p>Visibility/access levels for code elements.</p>
+<ul>
+<li><code>public</code>: Publicly accessible</li>
+<li><code>private</code>: Private to containing unit</li>
+<li><code>protected</code>: Protected (accessible to subclasses)</li>
+<li><code>internal</code>: Internal to assembly/package</li>
+<li><code>package</code>: Package-level visibility</li>
+</ul>
+<h3 id="callable-categories">Callable Categories</h3>
+<p>Behavioral-role categories of callable units.</p>
+<ul>
+<li><code>normal</code>: Normal callable</li>
+<li><code>operator</code>: Operator overload</li>
+<li><code>main_entry</code>: Main entry point</li>
+</ul>
+<h3 id="entry-point-types">Entry Point Types</h3>
+<p>Types of entry points for callables.</p>
+<ul>
+<li><code>main_program</code>: Main program entry point</li>
+<li><code>transaction_entry</code>: Transaction entry point</li>
+<li><code>event_handler</code>: Event handler entry</li>
+<li><code>scheduled_entry</code>: Scheduled entry point</li>
+<li><code>api_endpoint</code>: API endpoint entry</li>
+</ul>
+<h3 id="data-structure-categories">Data Structure Categories</h3>
+<p>Categories of data structures.</p>
+<ul>
+<li><code>composite</code>: Composite/aggregate data</li>
+<li><code>collection</code>: Collection of items</li>
+<li><code>hierarchical</code>: Hierarchical data</li>
+<li><code>value_type</code>: Value type</li>
+<li><code>reference_type</code>: Reference type</li>
+<li><code>union</code>: Union type</li>
+</ul>
+<h3 id="data-element-categories">Data Element Categories</h3>
+<p>Categories of data elements.</p>
+<ul>
+<li><code>field</code>: Class/struct field</li>
+<li><code>static_field</code>: Static field</li>
+<li><code>local_variable</code>: Local variable</li>
+<li><code>parameter</code>: Function/method parameter</li>
+<li><code>constant</code>: Constant value</li>
+<li><code>global_variable</code>: Global variable</li>
+<li><code>computed</code>: Computed data element</li>
+<li><code>temporary</code>: Temporary data element</li>
+</ul>
+<h3 id="parameter-directions">Parameter Directions</h3>
+<p>Direction of parameter data flow.</p>
+<ul>
+<li><code>input</code>: Input parameter (read-only)</li>
+<li><code>output</code>: Output parameter (write-only)</li>
+<li><code>input_output</code>: Input/output parameter (read-write)</li>
+<li><code>return</code>: Return value</li>
+</ul>
+<h3 id="passing-mechanisms">Passing Mechanisms</h3>
+<p>Mechanisms for passing parameters.</p>
+<ul>
+<li><code>by_value</code>: Pass by value (copy)</li>
+<li><code>by_reference</code>: Pass by reference</li>
+<li><code>by_name</code>: Pass by name (lazy evaluation)</li>
+<li><code>by_result</code>: Pass by result (copy-out)</li>
+</ul>
+<h3 id="code-block-types">Code Block Types</h3>
+<p>Types of code blocks.</p>
+<ul>
+<li><code>sequential</code>: Sequential block</li>
+<li><code>conditional</code>: Conditional block (if/else)</li>
+<li><code>loop</code>: Loop block (for/while)</li>
+<li><code>try_catch</code>: Exception handling block</li>
+<li><code>transaction</code>: Transaction block</li>
+<li><code>critical_section</code>: Critical section (synchronized/locked block)</li>
+<li><code>scope</code>: Scoping block</li>
+</ul>
+<h3 id="statement-categories">Statement Categories</h3>
+<p>Categories of code statements.</p>
+<ul>
+<li><code>declaration</code>: Variable/constant declaration</li>
+<li><code>assignment</code>: Assignment statement</li>
+<li><code>invocation</code>: Method/function call</li>
+<li><code>control_transfer</code>: Control transfer statement</li>
+<li><code>io_operation</code>: I/O operation statement</li>
+<li><code>data_manipulation</code>: Data manipulation statement</li>
+<li><code>transaction_control</code>: Transaction control statement</li>
+<li><code>exception_handling</code>: Exception handling statement</li>
+</ul>
+<h3 id="reference-types">Reference Types</h3>
+<p>Types of code references (imports/includes).</p>
+<ul>
+<li><code>import_module</code>: Import module reference</li>
+<li><code>import_symbol</code>: Import symbol reference</li>
+<li><code>include_source</code>: Include source reference</li>
+<li><code>inherit</code>: Inheritance reference</li>
+<li><code>implement</code>: Implementation reference</li>
+</ul>
+<h3 id="control-flow-types">Control Flow Types</h3>
+<p>Types of control flow between code elements.</p>
+<ul>
+<li><code>call</code>: Function/method call</li>
+<li><code>async_call</code>: Asynchronous call</li>
+<li><code>branch</code>: Conditional branch</li>
+<li><code>jump</code>: Unconditional jump</li>
+<li><code>return</code>: Return from callable</li>
+<li><code>throw</code>: Exception throw</li>
+<li><code>yield</code>: Yield control</li>
+</ul>
+<h3 id="data-flow-types">Data Flow Types</h3>
+<p>Types of data flow between elements.</p>
+<ul>
+<li><code>read</code>: Read data</li>
+<li><code>write</code>: Write data</li>
+<li><code>modify</code>: Modify data</li>
+<li><code>define</code>: Define data</li>
+<li><code>use</code>: Use data</li>
+</ul>
+<h3 id="storage-classes">Storage Classes</h3>
+<p>Storage classes for data elements.</p>
+<ul>
+<li><code>automatic</code>: Automatic/stack storage</li>
+<li><code>static</code>: Static storage</li>
+<li><code>heap</code>: Heap-allocated storage</li>
+<li><code>register</code>: Register storage</li>
+<li><code>thread_local</code>: Thread-local storage</li>
+<li><code>external</code>: External storage</li>
+</ul>
+<h3 id="persistence-types">Persistence Types</h3>
+<p>How data structures are persisted.</p>
+<ul>
+<li><code>transient</code>: Not persisted</li>
+<li><code>database_table</code>: Persisted in database table</li>
+<li><code>database_view</code>: Persisted as database view</li>
+<li><code>file_record</code>: Persisted as file record</li>
+<li><code>serialized</code>: Serialized persistence</li>
+<li><code>cached</code>: Cached storage</li>
+<li><code>distributed_cache</code>: Distributed cache</li>
+<li><code>message_queue</code>: Message queue persistence</li>
+<li><code>object_store</code>: Object store persistence</li>
+<li><code>document_store</code>: Document store persistence</li>
+<li><code>key_value_store</code>: Key-value store persistence</li>
+<li><code>graph_database</code>: Graph database persistence</li>
+</ul>
+<h3 id="database-types">Database Types</h3>
+<p>Database system types.</p>
+<ul>
+<li><code>oracle</code>: Oracle database</li>
+<li><code>postgresql</code>: PostgreSQL database</li>
+<li><code>sql_server</code>: SQL Server database</li>
+<li><code>mysql</code>: MySQL database</li>
+<li><code>db2</code>: IBM DB2 database</li>
+<li><code>teradata</code>: Teradata database</li>
+<li><code>sybase</code>: Sybase database</li>
+<li><code>informix</code>: Informix database</li>
+<li><code>mongodb</code>: MongoDB database</li>
+<li><code>cassandra</code>: Cassandra database</li>
+<li><code>sqlite</code>: SQLite database</li>
+<li><code>ims_db</code>: IBM IMS hierarchical database</li>
+<li><code>adabas</code>: Software AG Adabas</li>
+<li><code>idms</code>: CA IDMS network database</li>
+</ul>
+<h3 id="linkage-types">Linkage Types</h3>
+<p>Linkage types for code units.</p>
+<ul>
+<li><code>static</code>: Static linkage</li>
+<li><code>dynamic</code>: Dynamic linkage</li>
+<li><code>inline</code>: Inline linkage</li>
+<li><code>late_binding</code>: Late binding linkage</li>
+</ul>
+<h3 id="security-types">Security Types</h3>
+<p>Database security context types.</p>
+<ul>
+<li><code>definer</code>: Executes with definer's privileges</li>
+<li><code>invoker</code>: Executes with invoker's privileges</li>
+</ul>
+<h3 id="structure-layouts">Structure Layouts</h3>
+<p>Memory layout for structures.</p>
+<ul>
+<li><code>sequential</code>: Sequential layout</li>
+<li><code>explicit</code>: Explicit layout with offsets</li>
+<li><code>auto</code>: Automatic layout</li>
+<li><code>packed</code>: Packed layout (no padding)</li>
+</ul>
+<h3 id="equality-semantics">Equality Semantics</h3>
+<p>How equality is determined.</p>
+<ul>
+<li><code>by_value</code>: Value/structural equality</li>
+<li><code>by_reference</code>: Reference equality</li>
+<li><code>by_identity</code>: Identity equality</li>
+<li><code>custom</code>: Custom equality logic</li>
+</ul>
+<h3 id="message-formats">Message Formats</h3>
+<p>Message/data formats.</p>
+<ul>
+<li><code>json</code>: JSON format</li>
+<li><code>xml</code>: XML format</li>
+<li><code>protobuf</code>: Protocol Buffers</li>
+<li><code>avro</code>: Apache Avro</li>
+<li><code>thrift</code>: Apache Thrift</li>
+<li><code>msgpack</code>: MessagePack</li>
+<li><code>custom_binary</code>: Custom binary format</li>
+</ul>
+<h2 id="type-system">Type System</h2>
+<h3 id="type-kinds">Type Kinds</h3>
+<p>Classification of type expressions.</p>
+<ul>
+<li><code>primitive</code>: Primitive type</li>
+<li><code>generic</code>: Generic/parameterized type</li>
+<li><code>union</code>: Union type</li>
+<li><code>intersection</code>: Intersection type</li>
+<li><code>alias</code>: Type alias</li>
+<li><code>pointer</code>: Pointer type</li>
+<li><code>reference</code>: Reference type</li>
+<li><code>array_of</code>: Array type</li>
+<li><code>function_type</code>: Function type</li>
+<li><code>tuple_type</code>: Tuple type</li>
+<li><code>optional_type</code>: Optional/nullable type</li>
+<li><code>constrained</code>: Constrained type</li>
+<li><code>opaque</code>: Opaque type</li>
+</ul>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="error-handling-strategies">Error Handling Strategies</h3>
+<p>Language-level error handling paradigms.</p>
+<ul>
+<li><code>exception_based</code>: Exception-based error handling</li>
+<li><code>return_value_based</code>: Return value-based error handling (Go, Rust Result)</li>
+<li><code>condition_based</code>: Condition-based error handling (Common Lisp)</li>
+<li><code>error_code_based</code>: Error code-based error handling (C, COBOL)</li>
+<li><code>panic_recover</code>: Panic and recover error handling (Go)</li>
+<li><code>monadic</code>: Monadic error handling (Haskell Either/Maybe)</li>
+</ul>
+<h3 id="exception-checkedness">Exception Checkedness</h3>
+<p>Whether exceptions must be declared/caught.</p>
+<ul>
+<li><code>checked</code>: Checked exception (Java checked)</li>
+<li><code>unchecked</code>: Unchecked exception</li>
+<li><code>not_applicable</code>: Not applicable</li>
+</ul>
+<h2 id="file-operations">File Operations</h2>
+<h3 id="file-organization">File Organization</h3>
+<p>How records are organized.</p>
+<ul>
+<li><code>sequential</code>: Sequential organization</li>
+<li><code>indexed</code>: Indexed organization</li>
+<li><code>relative</code>: Relative organization</li>
+<li><code>vsam_ksds</code>: VSAM Key-Sequenced Data Set</li>
+<li><code>vsam_esds</code>: VSAM Entry-Sequenced Data Set</li>
+<li><code>vsam_rrds</code>: VSAM Relative Record Data Set</li>
+<li><code>partitioned_dataset</code>: Partitioned dataset (PDS/PDSE)</li>
+<li><code>generation_data_group</code>: Generation data group (GDG)</li>
+<li><code>line_sequential</code>: Line-sequential organization</li>
+<li><code>heap</code>: Heap organization</li>
+</ul>
+<h3 id="file-access-modes">File Access Modes</h3>
+<p>How records are accessed.</p>
+<ul>
+<li><code>sequential_access</code>: Sequential access</li>
+<li><code>random_access</code>: Random access</li>
+<li><code>dynamic_access</code>: Dynamic access</li>
+</ul>
+<h3 id="record-formats">Record Formats</h3>
+<p>Physical record format.</p>
+<ul>
+<li><code>fixed</code>: Fixed-length records</li>
+<li><code>variable</code>: Variable-length records</li>
+<li><code>undefined</code>: Undefined-length records</li>
+<li><code>spanned</code>: Spanned records</li>
+<li><code>stream</code>: Stream format</li>
+</ul>
+<h3 id="file-operation-types">File Operation Types</h3>
+<p>File I/O operations.</p>
+<ul>
+<li><code>read</code>: Read operation</li>
+<li><code>write</code>: Write operation</li>
+<li><code>rewrite</code>: Rewrite/update operation</li>
+<li><code>delete</code>: Delete operation</li>
+<li><code>start</code>: Start/position operation</li>
+<li><code>open</code>: Open operation</li>
+<li><code>close</code>: Close operation</li>
+<li><code>sort</code>: Sort operation</li>
+<li><code>merge</code>: Merge operation</li>
+</ul>
+<h2 id="screen-and-terminal">Screen and Terminal</h2>
+<h3 id="screen-types">Screen Types</h3>
+<p>Terminal/screen types.</p>
+<ul>
+<li><code>bms_map</code>: CICS BMS map</li>
+<li><code>rpg_display_file</code>: RPG display file</li>
+<li><code>character_terminal</code>: Character-mode terminal</li>
+<li><code>tui</code>: Text-based user interface</li>
+<li><code>form_based</code>: Form-based screen</li>
+</ul>
+<h2 id="batch-processing">Batch Processing</h2>
+<h3 id="job-step-types">Job Step Types</h3>
+<p>Batch job step types.</p>
+<ul>
+<li><code>exec_program</code>: Execute program step</li>
+<li><code>exec_proc</code>: Execute procedure step</li>
+<li><code>utility</code>: Utility step</li>
+<li><code>sort</code>: Sort step</li>
+<li><code>file_transfer</code>: File transfer step</li>
+<li><code>conditional</code>: Conditional step</li>
+</ul>
+<h3 id="dataset-dispositions">Dataset Dispositions</h3>
+<p>JCL dataset dispositions.</p>
+<ul>
+<li><code>new_dataset</code>: New dataset</li>
+<li><code>old_dataset</code>: Old dataset (exclusive)</li>
+<li><code>shared</code>: Shared dataset</li>
+<li><code>modify</code>: Modify existing dataset</li>
+<li><code>catalog</code>: Catalog dataset</li>
+<li><code>delete_disp</code>: Delete dataset</li>
+<li><code>pass</code>: Pass dataset to next step</li>
+</ul>
+<h2 id="inter-process-communication">Inter-Process Communication</h2>
+<h3 id="ipc-mechanisms">IPC Mechanisms</h3>
+<p>IPC mechanisms.</p>
+<ul>
+<li><code>cics_link</code>: CICS LINK command</li>
+<li><code>cics_xctl</code>: CICS XCTL (transfer control)</li>
+<li><code>ims_schedule</code>: IMS schedule call</li>
+<li><code>shared_memory</code>: Shared memory</li>
+<li><code>pipe</code>: Pipe</li>
+<li><code>rmi</code>: Java Remote Method Invocation</li>
+<li><code>corba</code>: CORBA invocation</li>
+<li><code>database_mediated</code>: Database-mediated communication</li>
+<li><code>message_queue</code>: Message queue</li>
+<li><code>socket</code>: Socket communication</li>
+<li><code>named_pipe</code>: Named pipe</li>
+<li><code>signal</code>: Signal</li>
+<li><code>semaphore</code>: Semaphore</li>
+<li><code>dcom</code>: Distributed COM</li>
+<li><code>rest_call</code>: REST API call</li>
+<li><code>grpc_call</code>: gRPC inter-process call</li>
+<li><code>event_bus</code>: Event bus communication</li>
+</ul>
+<h2 id="metaprogramming">Metaprogramming</h2>
+<h3 id="metaprogramming-types">Metaprogramming Types</h3>
+<p>Preprocessor/metaprogramming mechanisms.</p>
+<ul>
+<li><code>c_preprocessor</code>: C preprocessor macros</li>
+<li><code>rust_macro_declarative</code>: Rust declarative macros</li>
+<li><code>rust_macro_procedural</code>: Rust procedural macros</li>
+<li><code>cobol_copy_replacing</code>: COBOL COPY REPLACING</li>
+<li><code>template_metaprogramming</code>: Template metaprogramming (C++)</li>
+<li><code>python_metaclass</code>: Python metaclass</li>
+<li><code>lisp_macro</code>: Lisp macro</li>
+<li><code>java_annotation_processor</code>: Java annotation processor</li>
+<li><code>code_generator</code>: Code generator</li>
+</ul>
+<h2 id="memory-and-ownership">Memory and Ownership</h2>
+<h3 id="ownership-models">Ownership Models</h3>
+<p>Memory ownership models.</p>
+<ul>
+<li><code>owned</code>: Owned value</li>
+<li><code>borrowed_shared</code>: Shared/immutable borrow</li>
+<li><code>borrowed_mutable</code>: Mutable borrow</li>
+<li><code>moved</code>: Moved value</li>
+<li><code>copied</code>: Copied value</li>
+<li><code>reference_counted</code>: Reference-counted</li>
+<li><code>garbage_collected</code>: Garbage-collected</li>
+<li><code>manual</code>: Manual memory management</li>
+<li><code>stack_allocated</code>: Stack-allocated</li>
+</ul>
+<h3 id="lifetime-scopes">Lifetime Scopes</h3>
+<p>Value lifetime scopes.</p>
+<ul>
+<li><code>static_lifetime</code>: Static lifetime</li>
+<li><code>function_scope</code>: Function scope</li>
+<li><code>block_scope</code>: Block scope</li>
+<li><code>named_lifetime</code>: Named lifetime (Rust 'a)</li>
+<li><code>heap_lifetime</code>: Heap lifetime</li>
+</ul>
+<h2 id="database-constraints-and-indexes">Database Constraints and Indexes</h2>
+<h3 id="database-constraint-types">Database Constraint Types</h3>
+<p>Database constraints.</p>
+<ul>
+<li><code>primary_key</code>: Primary key constraint</li>
+<li><code>foreign_key</code>: Foreign key constraint</li>
+<li><code>unique</code>: Unique constraint</li>
+<li><code>check</code>: Check constraint</li>
+<li><code>not_null</code>: NOT NULL constraint</li>
+</ul>
+<h3 id="index-types">Index Types</h3>
+<p>Database index types.</p>
+<ul>
+<li><code>btree</code>: B-tree index</li>
+<li><code>hash</code>: Hash index</li>
+<li><code>gin</code>: PostgreSQL GIN index</li>
+<li><code>fulltext</code>: Full-text index</li>
+</ul>
+<h2 id="programming-paradigms">Programming Paradigms</h2>
+<h3 id="programming-paradigm-types">Programming Paradigm Types</h3>
+<p>Programming paradigms.</p>
+<ul>
+<li><code>object_oriented</code>: Object-oriented programming</li>
+<li><code>procedural</code>: Procedural programming</li>
+<li><code>functional</code>: Functional programming</li>
+<li><code>logic</code>: Logic programming</li>
+<li><code>concatenative</code>: Concatenative programming</li>
+<li><code>data_driven</code>: Data-driven programming</li>
+<li><code>multi_paradigm</code>: Multi-paradigm programming</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

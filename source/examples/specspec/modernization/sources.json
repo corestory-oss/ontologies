@@ -1,0 +1,5 @@
+{
+  "urn:specspec:demo:legacy-snapshot": "source/withdraw.cbl",
+  "urn:specspec:demo:modern-snapshot": "source/Account.java",
+  "urn:specspec:demo:report-snapshot": "source/check-report.txt"
+}

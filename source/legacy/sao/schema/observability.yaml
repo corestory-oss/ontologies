@@ -1,0 +1,304 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/observability
+name: sao-observability
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  MetricType:
+    description: Types of metrics
+    permissible_values:
+      counter:
+        description: "Monotonically increasing counter."
+      gauge:
+        description: "Value that can increase or decrease."
+      histogram:
+        description: "Distribution of values in buckets."
+      summary:
+        description: "Summary statistics (quantiles, etc.)."
+
+  LogType:
+    description: Types of logs
+    permissible_values:
+      application:
+        description: "Application-level logs."
+      access:
+        description: "Access and request logs."
+      error:
+        description: "Error and exception logs."
+      security:
+        description: "Security event logs."
+      audit:
+        description: "Audit trail logs."
+      debug:
+        description: "Debug and diagnostic logs."
+
+  HealthCheckType:
+    description: Types of health checks
+    permissible_values:
+      liveness:
+        description: "Liveness probe for service health."
+      readiness:
+        description: "Readiness probe for traffic acceptance."
+      dependency:
+        description: "Health check for dependencies."
+      startup:
+        description: "Startup probe during initialization."
+
+
+classes:
+  Metric:
+    is_a: NamedEntity
+    description: >-
+      A quantitative measurement over time
+    attributes:
+      metric_type:
+        description: "Kind of metric."
+        range: MetricType
+      unit:
+        description: "Unit of measurement (seconds, bytes, requests, etc.)."
+        range: string
+      labels:
+        description: "Metric labels for dimensionality."
+        range: string
+        multivalued: true
+      metric_emitted_by_component:
+        description: "`Component` emitting this metric."
+        range: Component
+        inverse: emits_metric
+      monitored_by_alert_rules:
+        description: "`AlertRule` entities monitoring this metric."
+        range: AlertRule
+        multivalued: true
+        inverse: monitors_metrics
+
+  Log:
+    is_a: NamedEntity
+    description: >-
+      A timestamped record of discrete events
+    attributes:
+      log_type:
+        description: "Kind of log."
+        range: LogType
+      log_governed_by_retention:
+        description: "`RetentionPolicy` for log retention."
+        range: RetentionPolicy
+        inverse: governs_logs
+      contains_entries:
+        description: "List of `LogEntry` records (inverse: `entry_in_log`)."
+        range: LogEntry
+        multivalued: true
+        inverse: entry_in_log
+
+  LogEntry:
+    is_a: NamedEntity
+    description: >-
+      A single record within a log
+    attributes:
+      timestamp:
+        description: "When the event occurred."
+        range: Timestamp
+      level:
+        description: "Log level (DEBUG, INFO, WARN, ERROR)."
+        range: string
+      message:
+        description: "Log message."
+        range: string
+      context:
+        description: "Additional context (trace ID, user ID, etc.)."
+        range: string
+      entry_in_log:
+        description: "Parent log."
+        range: Log
+        inverse: contains_entries
+
+  Trace:
+    comments:
+      - "Track requests as they flow through distributed systems."
+    is_a: NamedEntity
+    description: >-
+      A causal chain of operations across services
+    attributes:
+      trace_id:
+        description: "Unique identifier for the entire trace."
+        range: string
+      starts_with_span:
+        description: "Root `Span` of the trace."
+        range: Span
+        inverse: root_of_trace
+      contains_spans:
+        description: "List of `Span` entities representing operations (inverse: `belongs_to_trace`)."
+        range: Span
+        multivalued: true
+        inverse: belongs_to_trace
+
+  Span:
+    is_a: NamedEntity
+    description: >-
+      A single unit of work within a trace
+    attributes:
+      span_id:
+        description: "Unique identifier for this span."
+        range: string
+      operation_name:
+        description: "Name of the operation."
+        range: string
+      start_time:
+        description: "Operation start timestamp."
+        range: Timestamp
+      end_time:
+        description: "Operation end timestamp."
+        range: Timestamp
+      status:
+        description: "Span status."
+        range: string
+      attributes:
+        description: "Key-value pairs with additional context."
+        range: string
+        multivalued: true
+      belongs_to_trace:
+        description: "Parent trace."
+        range: Trace
+        inverse: contains_spans
+      child_of_span:
+        description: "Parent span (for nested operations)."
+        range: Span
+        inverse: parent_of_spans
+      parent_of_spans:
+        description: "Child spans."
+        range: Span
+        multivalued: true
+        inverse: child_of_span
+      root_of_trace:
+        description: "Trace this is the root span of."
+        range: Trace
+        inverse: starts_with_span
+
+  Alert:
+    is_a: NamedEntity
+    description: >-
+      A notification triggered by metric thresholds or anomalies
+    attributes:
+      severity:
+        description: "Alert severity (critical, warning, info)."
+        range: string
+      triggered_at:
+        description: "When alert was triggered."
+        range: Timestamp
+      acknowledged_at:
+        description: "When alert was acknowledged."
+        range: Timestamp
+      resolved_at:
+        description: "When issue was resolved."
+        range: Timestamp
+      triggered_by_rule:
+        description: "`AlertRule` that triggered this alert."
+        range: AlertRule
+        inverse: triggers_alerts
+      escalates_to_incident:
+        description: "`Incident` if escalated."
+        range: Incident
+        multivalued: true
+        inverse: escalated_from_alerts
+
+  AlertRule:
+    is_a: Rule
+    description: >-
+      The condition that triggers an alert
+    attributes:
+      condition:
+        description: "Alert condition expression (e.g., \"error_rate > 5%\")."
+        range: string
+      threshold:
+        description: "Threshold value."
+        range: float
+      duration_seconds:
+        description: "Duration before alerting (avoid flapping)."
+        range: integer
+      notification_channels:
+        description: "Where to send alerts (email, Slack, PagerDuty)."
+        range: string
+        multivalued: true
+      monitors_metrics:
+        description: "`Metric` entities being monitored."
+        range: Metric
+        multivalued: true
+        inverse: monitored_by_alert_rules
+      triggers_alerts:
+        description: "`Alert` entities triggered."
+        range: Alert
+        multivalued: true
+        inverse: triggered_by_rule
+
+  Incident:
+    is_a: NamedEntity
+    description: >-
+      A tracked degradation or outage event
+    attributes:
+      severity:
+        description: "Incident severity (P1-P5 or SEV1-SEV5)."
+        range: string
+      status:
+        description: "Current status (investigating, identified, monitoring, resolved)."
+        range: string
+      started_at:
+        description: "Incident start time."
+        range: Timestamp
+      resolved_at:
+        description: "Resolution time."
+        range: Timestamp
+      root_cause:
+        description: "Root cause analysis."
+        range: string
+      postmortem_url:
+        description: "Link to incident postmortem."
+        range: URI
+      escalated_from_alerts:
+        description: "`Alert` entities that led to incident."
+        range: Alert
+        multivalued: true
+        inverse: escalates_to_incident
+      affects_services:
+        description: "`Service` entities impacted."
+        range: Service
+        multivalued: true
+        inverse: affected_by_incidents
+
+  HealthCheck:
+    is_a: NamedEntity
+    description: >-
+      A probe verifying service availability
+    attributes:
+      check_type:
+        description: "Kind of health check."
+        range: HealthCheckType
+      endpoint:
+        description: "Health check endpoint URL."
+        range: string
+      interval_seconds:
+        description: "Check frequency."
+        range: integer
+      timeout_seconds:
+        description: "Check timeout."
+        range: integer
+      success_threshold:
+        description: "Successes before marking healthy."
+        range: integer
+      failure_threshold:
+        description: "Failures before marking unhealthy."
+        range: integer
+

@@ -1,0 +1,1757 @@
+{
+  "source_version": "0.1.0",
+  "core_classes": {
+    "SpecElement": "https://ontologies.corestory.ai/specspec/SpecElement",
+    "SpecAgent": "https://ontologies.corestory.ai/specspec/SpecAgent",
+    "Claim": "https://ontologies.corestory.ai/specspec/Claim",
+    "Requirement": "https://ontologies.corestory.ai/specspec/Requirement",
+    "AcceptanceCriterion": "https://ontologies.corestory.ai/specspec/AcceptanceCriterion",
+    "Specification": "https://ontologies.corestory.ai/specspec/Specification",
+    "UseCase": "https://ontologies.corestory.ai/specspec/UseCase",
+    "Scenario": "https://ontologies.corestory.ai/specspec/Scenario",
+    "ScenarioStep": "https://ontologies.corestory.ai/specspec/ScenarioStep",
+    "Decision": "https://ontologies.corestory.ai/specspec/Decision",
+    "DecisionOption": "https://ontologies.corestory.ai/specspec/DecisionOption",
+    "ChangeProposal": "https://ontologies.corestory.ai/specspec/ChangeProposal",
+    "RequirementReplacement": "https://ontologies.corestory.ai/specspec/RequirementReplacement",
+    "SourceSnapshot": "https://ontologies.corestory.ai/specspec/SourceSnapshot",
+    "EvidenceAnchor": "https://ontologies.corestory.ai/specspec/EvidenceAnchor",
+    "SpecActivity": "https://ontologies.corestory.ai/specspec/SpecActivity",
+    "VerificationResult": "https://ontologies.corestory.ai/specspec/VerificationResult",
+    "SpecificationArtifact": "https://ontologies.corestory.ai/specspec/SpecificationArtifact",
+    "ArtifactFragment": "https://ontologies.corestory.ai/specspec/ArtifactFragment",
+    "RepresentationProfile": "https://ontologies.corestory.ai/specspec/RepresentationProfile",
+    "SpecificationGraph": "https://ontologies.corestory.ai/specspec/SpecificationGraph"
+  },
+  "enums": {
+    "AgentKind": {
+      "iri": "https://ontologies.corestory.ai/specspec/AgentKind",
+      "values": [
+        "person",
+        "organization",
+        "tool"
+      ]
+    },
+    "OriginMode": {
+      "iri": "https://ontologies.corestory.ai/specspec/OriginMode",
+      "values": [
+        "observed",
+        "inferred",
+        "supplied"
+      ]
+    },
+    "ReviewStatus": {
+      "iri": "https://ontologies.corestory.ai/specspec/ReviewStatus",
+      "values": [
+        "unreviewed",
+        "needs_confirmation",
+        "accepted",
+        "rejected",
+        "superseded"
+      ]
+    },
+    "LifecycleStatus": {
+      "iri": "https://ontologies.corestory.ai/specspec/LifecycleStatus",
+      "values": [
+        "draft",
+        "proposed",
+        "accepted",
+        "superseded",
+        "retired"
+      ]
+    },
+    "StatementMode": {
+      "iri": "https://ontologies.corestory.ai/specspec/StatementMode",
+      "values": [
+        "descriptive",
+        "normative",
+        "hypothetical"
+      ]
+    },
+    "RequirementKind": {
+      "iri": "https://ontologies.corestory.ai/specspec/RequirementKind",
+      "values": [
+        "functional",
+        "quality",
+        "constraint",
+        "compliance"
+      ]
+    },
+    "ActivityKind": {
+      "iri": "https://ontologies.corestory.ai/specspec/ActivityKind",
+      "values": [
+        "extraction",
+        "inference",
+        "authoring",
+        "review",
+        "verification",
+        "rendering"
+      ]
+    },
+    "VerificationOutcome": {
+      "iri": "https://ontologies.corestory.ai/specspec/VerificationOutcome",
+      "values": [
+        "passed",
+        "failed",
+        "inconclusive",
+        "not_run"
+      ]
+    }
+  },
+  "bridge_classes": {
+    "SoftwareSubjectLink": "https://ontologies.corestory.ai/specspec/sao/SoftwareSubjectLink",
+    "RequirementImplementationLink": "https://ontologies.corestory.ai/specspec/sao/RequirementImplementationLink",
+    "VerificationTestLink": "https://ontologies.corestory.ai/specspec/sao/VerificationTestLink"
+  },
+  "induced_property_shapes": 257,
+  "example_records": 29,
+  "example_triples": 232,
+  "bridge_example_triples": 7,
+  "representation_notes": [
+    "RDF node IRIs preserve record IDs; the id literal is retained and checked against the subject.",
+    "Scenario order is represented by ScenarioStep.position, not Turtle triple order.",
+    "Leaf record shapes are closed; superclass shapes are open to permit RDF subclass properties.",
+    "Graph envelopes reference nodes; JSON/YAML inlining is no longer an authoring convention."
+  ],
+  "core_property_contracts": {
+    "SpecElement": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "SpecAgent": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/uri",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/agent_kind",
+        "required": true,
+        "multivalued": false,
+        "enum": "AgentKind"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "Claim": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/generated_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/origin",
+        "required": true,
+        "multivalued": false,
+        "enum": "OriginMode"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement_mode",
+        "required": true,
+        "multivalued": false,
+        "enum": "StatementMode"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/review_status",
+        "required": false,
+        "multivalued": false,
+        "enum": "ReviewStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#float",
+        "minimum_value": 0,
+        "maximum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence_basis",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supporting_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/counterevidence_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/derived_from_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/applies_to_snapshots",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "Requirement": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/acceptance_criteria",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/AcceptanceCriterion"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/requirement_kind",
+        "required": true,
+        "multivalued": false,
+        "enum": "RequirementKind"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/priority",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/refines_requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/generated_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/origin",
+        "required": true,
+        "multivalued": false,
+        "enum": "OriginMode"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement_mode",
+        "required": true,
+        "multivalued": false,
+        "enum": "StatementMode",
+        "equals_string": "normative"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/review_status",
+        "required": false,
+        "multivalued": false,
+        "enum": "ReviewStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#float",
+        "minimum_value": 0,
+        "maximum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence_basis",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supporting_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/counterevidence_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/derived_from_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/applies_to_snapshots",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "AcceptanceCriterion": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/verification_method",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/generated_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/origin",
+        "required": true,
+        "multivalued": false,
+        "enum": "OriginMode"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/statement_mode",
+        "required": true,
+        "multivalued": false,
+        "enum": "StatementMode",
+        "equals_string": "normative"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/review_status",
+        "required": false,
+        "multivalued": false,
+        "enum": "ReviewStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#float",
+        "minimum_value": 0,
+        "maximum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/confidence_basis",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supporting_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/counterevidence_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/derived_from_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/reviewed_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/applies_to_snapshots",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "Specification": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/status",
+        "required": true,
+        "multivalued": false,
+        "enum": "LifecycleStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/use_cases",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/UseCase"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/decisions",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Decision"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/artifacts",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecificationArtifact"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/version",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "UseCase": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/scenarios",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Scenario"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/goal",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/participants",
+        "required": false,
+        "multivalued": true,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "Scenario": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/preconditions",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/steps",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/ScenarioStep"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/outcomes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/illustrates_requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "ScenarioStep": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/position",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "minimum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/participant",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/action",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "Decision": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/status",
+        "required": true,
+        "multivalued": false,
+        "enum": "LifecycleStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/context",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/options",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/DecisionOption"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/chosen_option",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/DecisionOption"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/rationale_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/consequence_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/addresses_requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/decided_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "DecisionOption": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/proposal",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/assessment_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "ChangeProposal": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/status",
+        "required": true,
+        "multivalued": false,
+        "enum": "LifecycleStatus"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/decisions",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Decision"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/baseline",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/Specification"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/adds_requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/removes_requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/replacements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/RequirementReplacement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "RequirementReplacement": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/previous_requirement",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/replacement_requirement",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/justification_claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "SourceSnapshot": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/source_uri",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/revision",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/media_type",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/captured_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "EvidenceAnchor": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/snapshot",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/selector",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/path",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/line_start",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "minimum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/line_end",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "minimum_value": 1
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/excerpt",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "SpecActivity": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/activity_kind",
+        "required": true,
+        "multivalued": false,
+        "enum": "ActivityKind"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/performed_by",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/started_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/ended_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/input_snapshots",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/input_elements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/tool_version",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/model_identifier",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/parameters",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "VerificationResult": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/checks_claim",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/outcome",
+        "required": true,
+        "multivalued": false,
+        "enum": "VerificationOutcome"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/activity",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/checked_snapshot",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/result_anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "SpecificationArtifact": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/uri",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/snapshot",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/represents",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/generated_by",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/profile",
+        "required": false,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/RepresentationProfile"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "ArtifactFragment": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/selector",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/represents",
+        "required": true,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/artifact",
+        "required": true,
+        "multivalued": false,
+        "class": "https://ontologies.corestory.ai/specspec/SpecificationArtifact"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "RepresentationProfile": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/profile_uri",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/profile_version",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/id",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/title",
+        "required": true,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/description",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/authored_by",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/created_at",
+        "required": false,
+        "multivalued": false,
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/supersedes",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecElement"
+      }
+    ],
+    "SpecificationGraph": [
+      {
+        "path": "https://ontologies.corestory.ai/specspec/claims",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Claim"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/requirements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Requirement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/acceptance_criteria",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/AcceptanceCriterion"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/use_cases",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/UseCase"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/scenarios",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Scenario"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/decisions",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Decision"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/artifacts",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecificationArtifact"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/agents",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecAgent"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/specifications",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/Specification"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/scenario_steps",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/ScenarioStep"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/decision_options",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/DecisionOption"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/change_proposals",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/ChangeProposal"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/requirement_replacements",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/RequirementReplacement"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/snapshots",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SourceSnapshot"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/anchors",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/EvidenceAnchor"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/activities",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/SpecActivity"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/verification_results",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/VerificationResult"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/fragments",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/ArtifactFragment"
+      },
+      {
+        "path": "https://ontologies.corestory.ai/specspec/profiles",
+        "required": false,
+        "multivalued": true,
+        "class": "https://ontologies.corestory.ai/specspec/RepresentationProfile"
+      }
+    ]
+  },
+  "class_descriptions": {
+    "SpecElement": "An independently identified item of specification knowledge. Its identifier denotes this knowledge item, not the software entity it describes.",
+    "SpecAgent": "A person, organization, or tool responsible for authoring, producing, or reviewing knowledge.",
+    "Claim": "An individually traceable statement. Origin, review, and confidence describe different aspects of the statement and must not substitute for each other.",
+    "Requirement": "A normative obligation or intended behavior. Evidence that an implementation exhibits it is recorded separately as a descriptive claim or verification result.",
+    "AcceptanceCriterion": "A normative, checkable condition used to decide whether a requirement is satisfied.",
+    "Specification": "A versioned collection of requirements, descriptive claims, scenarios, and decisions. It is distinct from the documents used to render it.",
+    "UseCase": "A goal-directed interaction described from a participant\u2019s perspective. Participants are roles in the narrative, not a replacement for software identity classes.",
+    "Scenario": "An example of behavior under stated conditions. It can describe existing behavior or desired behavior; provenance is carried by its linked claims.",
+    "ScenarioStep": "An ordered interaction in a scenario, connected to individually traceable statements.",
+    "Decision": "A recorded choice, including context, alternatives, rationale, and consequences. A decision record is a representation of this item.",
+    "DecisionOption": "An alternative considered in a decision.",
+    "ChangeProposal": "A proposed change to a specification baseline. It can represent a feature change or modernization while keeping current behavior separate from intent.",
+    "RequirementReplacement": "A proposed replacement of one requirement with another; neither version is silently overwritten.",
+    "SourceSnapshot": "An identified state of a source repository, document, dataset, or execution capture. Revision must identify the captured state, not a moving branch name.",
+    "EvidenceAnchor": "A location within an immutable source snapshot. It is evidence offered for a statement, not proof of correctness or a confidence score.",
+    "SpecActivity": "A recorded extraction, authoring, review, generation, or verification activity with identified inputs and tool versions.",
+    "VerificationResult": "An observed outcome of checking a claim against a particular source state. Passing is scoped to this check and snapshot, not a universal assertion of equivalence.",
+    "SpecificationArtifact": "A document or other presentation of specification knowledge. Its identity is distinct from the requirements, decisions, and software entities it discusses.",
+    "ArtifactFragment": "A section or fragment of a document that represents specific knowledge items.",
+    "RepresentationProfile": "An identified external document convention, such as OpenSpec, arc42, MADR, or an organization\u2019s PRD template. Declaring a profile does not implement an adapter or certify conformance.",
+    "SpecificationGraph": "An exchange envelope containing identified knowledge items and their references. Sources and software graphs may be stored separately."
+  },
+  "class_parents": {
+    "SpecAgent": "SpecElement",
+    "Claim": "SpecElement",
+    "Requirement": "Claim",
+    "AcceptanceCriterion": "Claim",
+    "Specification": "SpecElement",
+    "UseCase": "SpecElement",
+    "Scenario": "SpecElement",
+    "ScenarioStep": "SpecElement",
+    "Decision": "SpecElement",
+    "DecisionOption": "SpecElement",
+    "ChangeProposal": "SpecElement",
+    "RequirementReplacement": "SpecElement",
+    "SourceSnapshot": "SpecElement",
+    "EvidenceAnchor": "SpecElement",
+    "SpecActivity": "SpecElement",
+    "VerificationResult": "SpecElement",
+    "SpecificationArtifact": "SpecElement",
+    "ArtifactFragment": "SpecElement",
+    "RepresentationProfile": "SpecElement"
+  }
+}

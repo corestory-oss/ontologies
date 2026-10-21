@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 7: Bridge Relationships and Graph Stitching · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-7-bridge-relationships-and-graph-stitching">Phase 7: Bridge Relationships and Graph Stitching</h1>
+<p><strong>Input:</strong> All outputs from Phases 1-6 (complete entity instances across all SAO layers)
+<strong>Output:</strong> Verified and completed cross-layer relationships; orphan report; symmetry verification results</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>The SAO's power lies in its cross-layer bridges. They connect code to architecture, architecture to domain, and domain to business intent. Without them, each layer is an isolated catalog; with them, the SAO becomes a navigable graph where any question — "what code implements this business capability?" or "what business purpose does this function serve?" — is answerable by traversal.</p>
+<p>After independent extraction in Phases 1-6, bridges are often incomplete or inconsistent. Each phase focuses on its own layer and creates entities with forward references that may not yet have targets, or creates targets without backlinks. This is expected and by design: each phase is self-contained so it can be executed and validated independently.</p>
+<p>Phase 7 is a systematic verification and gap-filling pass. It does not create new entities. It examines the relationships between existing entities, identifies missing or asymmetric links, and completes them. The SAO documents 214 bidirectional relationship pairs; the most critical are the eight cross-layer bridges described in this document.</p>
+<p>This phase is not about discovery. If an entity is missing, the extraction agent SHOULD return to the appropriate earlier phase to create it. Phase 7 only stitches together what already exists.</p>
+<hr />
+<h2 id="2-the-eight-critical-bridges">2. The Eight Critical Bridges</h2>
+<p>The SAO guide identifies eight cross-layer bridges that form the connective tissue of the ontology. Each bridge is a bidirectional relationship pair connecting entities in different conceptual layers. The extraction agent MUST verify all eight bridges and fill any gaps.</p>
+<h3 id="bridge-1-module-to-storagelocation">Bridge 1: Module to StorageLocation</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Module.mapped_from_directory</code> --&gt; <strong>StorageLocation</strong></td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>StorageLocation.maps_to_module</code> --&gt; <strong>Module</strong></td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 4 (Architecture) &lt;-&gt; Layer 3 (Code Structure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links the logical module structure (how architects think about the system) to the physical directory tree (how the file system organizes the code). It is typically the first bridge established, since <strong>Modules</strong> are created directly from <strong>StorageLocations</strong> in Phase 3.</p>
+<p><strong>Verification.</strong> Every <strong>Module</strong> SHOULD have at least one <code>mapped_from_directory</code> reference to a <strong>StorageLocation</strong>. Every top-level <strong>StorageLocation</strong> (one that represents a cohesive package or directory tree) SHOULD have a <code>maps_to_module</code> reference back to a <strong>Module</strong>.</p>
+<p><strong>Common gap.</strong> Modules created in Phase 3 sometimes lack backlinks to the <strong>StorageLocations</strong> identified in Phase 1. This happens when Phase 3 creates Modules from build manifests rather than from the directory walk, or when a Module spans multiple directories and only one is linked. The extraction agent MUST walk the Module list and verify each has a <code>mapped_from_directory</code> value. If a Module has no mapped directory, check Phase 1 outputs for the matching <strong>StorageLocation</strong> and add the link in both directions.</p>
+<h3 id="bridge-2-component-to-encapsulationunit">Bridge 2: Component to EncapsulationUnit</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Component.implemented_by_code</code> --&gt; <strong>EncapsulationUnit</strong> (list)</td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>EncapsulationUnit.implements_component</code> --&gt; <strong>Component</strong></td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 4 (Architecture) &lt;-&gt; Layer 3 (Code Structure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links architectural components (logical groupings of functionality) to the code units that implement them. A single <strong>Component</strong> may be implemented by many <strong>EncapsulationUnits</strong>, but each <strong>EncapsulationUnit</strong> with an architectural role SHOULD link to exactly one <strong>Component</strong>.</p>
+<p><strong>Verification.</strong> Every <strong>Component</strong> MUST have at least one <code>implemented_by_code</code> reference. Every <strong>EncapsulationUnit</strong> that plays a clear architectural role (controllers, services, repositories, domain models) SHOULD have an <code>implements_component</code> reference.</p>
+<p><strong>Common gap.</strong> Utility and helper classes often remain unlinked. This is acceptable -- not every <strong>EncapsulationUnit</strong> has a meaningful architectural role. However, the extraction agent SHOULD verify that the unlinked units are genuinely utilities rather than overlooked implementation classes. A quick check: if an <strong>EncapsulationUnit</strong> is referenced by a <strong>CallableUnit</strong> that implements an <strong>Operation</strong>, it likely belongs to a <strong>Component</strong>.</p>
+<h3 id="bridge-3-domainentity-to-datastructure">Bridge 3: DomainEntity to DataStructure</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>DomainEntity.mapped_from_structure</code> --&gt; <strong>DataStructure</strong></td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>DataStructure.maps_to_domain_entity</code> --&gt; <strong>DomainEntity</strong></td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 5 (Domain) &lt;-&gt; Layer 3 (Code Structure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links business-meaningful entities (the domain model) to their code-level representations (classes, structs, records). It is the primary bridge between "what the business cares about" and "what the code defines."</p>
+<p><strong>Verification.</strong> Every <strong>DomainEntity</strong> MUST have a <code>mapped_from_structure</code> reference. Not every <strong>DataStructure</strong> needs a domain mapping -- DTOs, internal value holders, configuration objects, and framework scaffolding do not represent domain concepts.</p>
+<p><strong>Common gap.</strong> DomainEntities created in Phase 4 are sometimes synthesized from documentation or domain knowledge without being linked back to their originating <strong>DataStructure</strong>. The extraction agent MUST verify that each <strong>DomainEntity</strong> traces to at least one code-level structure. If no matching <strong>DataStructure</strong> exists, return to Phase 2 to extract it.</p>
+<h3 id="bridge-4-attribute-to-dataelement">Bridge 4: Attribute to DataElement</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Attribute.mapped_from_element</code> --&gt; <strong>DataElement</strong></td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>DataElement.maps_to_attribute</code> --&gt; <strong>Attribute</strong></td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 5 (Domain) &lt;-&gt; Layer 3 (Code Structure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This is the field-level counterpart to Bridge 3. It links individual domain attributes to their code-level data elements (fields, columns, properties).</p>
+<p><strong>Verification.</strong> Every <strong>Attribute</strong> on a <strong>DomainEntity</strong> SHOULD have a <code>mapped_from_element</code> reference. Computed or derived attributes that have no direct code-level representation MAY omit this bridge.</p>
+<p><strong>Common gap.</strong> Attributes are often created in Phase 4 by examining <strong>DomainEntities</strong> without tracing each field back to a specific <strong>DataElement</strong>. The extraction agent SHOULD walk each <strong>DomainEntity</strong>, compare its <strong>Attributes</strong> to the <strong>DataElements</strong> on the linked <strong>DataStructure</strong> (from Bridge 3), and establish the field-level mappings.</p>
+<h3 id="bridge-5-operation-to-callableunit">Bridge 5: Operation to CallableUnit</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Operation.implemented_by_callables</code> --&gt; <strong>CallableUnit</strong> (list)</td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>CallableUnit.implements_operation</code> --&gt; <strong>Operation</strong></td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 6 (Business Intent) &lt;-&gt; Layer 3 (Code Structure)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links business operations (what the system does from a user's perspective) to the code that implements them. A single <strong>Operation</strong> is typically implemented by multiple <strong>CallableUnits</strong> working together.</p>
+<p><strong>Verification.</strong> Every <strong>Operation</strong> MUST have at least one <code>implemented_by_callables</code> reference. Not every <strong>CallableUnit</strong> implements an <strong>Operation</strong> -- internal methods, private helpers, and framework callbacks do not represent business operations.</p>
+<p><strong>Common gap.</strong> Operations created in Phase 5 are often synthesized from use case analysis without tracing back to implementing code. The extraction agent MUST verify each <strong>Operation</strong> links to at least one <strong>CallableUnit</strong>. Start from the <strong>Operation</strong>, identify the entry-point <strong>CallableUnit</strong> (typically a controller method or API handler), and link it.</p>
+<h3 id="bridge-6-capability-to-module">Bridge 6: Capability to Module</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Capability.provided_by_modules</code> --&gt; <strong>Module</strong> (list)</td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>Module.provides_capabilities</code> --&gt; <strong>Capability</strong> (list)</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 6 (Business Intent) &lt;-&gt; Layer 4 (Architecture)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links high-level business capabilities (what the system can do) to the architectural modules that provide them. It answers the question: "which part of the codebase is responsible for this business capability?"</p>
+<p><strong>Verification.</strong> Every <strong>Capability</strong> SHOULD link to at least one <strong>Module</strong> via <code>provided_by_modules</code>. Every <strong>Module</strong> that has a clear business purpose SHOULD list its capabilities via <code>provides_capabilities</code>.</p>
+<p><strong>Common gap.</strong> Capabilities synthesized in Phase 5 from business documentation are often left floating without links to the implementing modules. The extraction agent SHOULD examine each <strong>Capability</strong>, determine which <strong>Module(s)</strong> contribute to it, and establish the links in both directions.</p>
+<h3 id="bridge-7-service-to-module">Bridge 7: Service to Module</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>Service.runs_module</code> --&gt; <strong>Module</strong></td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>Module.runs_as_services</code> --&gt; <strong>Service</strong> (list)</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Layer 4 (Architecture runtime) &lt;-&gt; Layer 4 (Architecture logical)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links runtime deployment units (services, processes, containers) to the logical module structure. While both entities live in Layer 4, they represent different perspectives: <strong>Module</strong> is the logical grouping of code, while <strong>Service</strong> is the runtime incarnation.</p>
+<p><strong>Verification.</strong> Every <strong>Service</strong> SHOULD link to the <strong>Module</strong> it runs via <code>runs_module</code>. Every <strong>Module</strong> that has a deployment manifest (Dockerfile, Kubernetes deployment, serverless config) SHOULD link to its corresponding <strong>Service</strong> via <code>runs_as_services</code>.</p>
+<p><strong>Common gap.</strong> Services identified from deployment manifests in Phase 3 are sometimes not linked to their <strong>Module</strong> because the naming conventions differ (e.g., the Kubernetes deployment is named <code>order-svc</code> but the module is named <code>orders</code>). The extraction agent SHOULD match services to modules by examining deployment configs, entry points, and build targets.</p>
+<h3 id="bridge-8-knowledgeartifact-to-documented-entities">Bridge 8: KnowledgeArtifact to Documented Entities</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward</td>
+<td><code>KnowledgeArtifact.documents_system</code>, <code>documents_bounded_context</code>, <code>documents_module</code>, <code>documents_component</code>, <code>documents_aggregate</code>, <code>documents_domain_entity</code>, etc.</td>
+</tr>
+<tr>
+<td>Inverse</td>
+<td><code>System.system_documented_by_artifacts</code>, <code>Module.module_documented_by_artifacts</code>, etc.</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>Cross-cutting &lt;-&gt; All layers</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What it connects.</strong> This bridge links documentation artifacts (READMEs, ADRs, wiki pages, API docs, runbooks) to the entities they describe. Unlike the other bridges, this one fans out across all layers.</p>
+<p><strong>Verification.</strong> Every <strong>KnowledgeArtifact</strong> SHOULD link to at least one entity it documents via the appropriate <code>documents_*</code> attribute. Key entities -- <strong>System</strong>, <strong>BoundedContexts</strong>, critical <strong>Modules</strong> -- SHOULD have at least one <code>*_documented_by_artifacts</code> reference.</p>
+<p><strong>Common gap.</strong> KnowledgeArtifacts created in Phase 6 are often cataloged without linking to the specific entities they describe. The extraction agent SHOULD read each <strong>KnowledgeArtifact</strong>'s content (or summary) and match it to the most relevant entity. A README in a module directory documents that <strong>Module</strong>. An ADR about authentication documents the relevant <strong>Component</strong> and <strong>BoundedContext</strong>.</p>
+<hr />
+<h2 id="3-graph-connectivity-checks">3. Graph Connectivity Checks</h2>
+<p>After verifying all eight bridges, the extraction agent MUST perform three traversal checks to confirm the graph is fully connected.</p>
+<h3 id="top-down-traversal">Top-down traversal</h3>
+<p>Starting from the <strong>System</strong> instance, verify that every entity is reachable by following containment and bridge relationships downward:</p>
+<pre><code>System
+  └─ contains_bounded_contexts ──&gt; BoundedContext (each one)
+       └─ contains_modules ──&gt; Module (each one)
+            └─ contains_components ──&gt; Component (each one)
+                 └─ implemented_by_code ──&gt; EncapsulationUnit (each one)
+                      └─ contains_callable_units ──&gt; CallableUnit (each one)
+</code></pre>
+<p>Every <strong>BoundedContext</strong> MUST be reachable from the <strong>System</strong>. Every <strong>Module</strong> MUST be reachable from a <strong>BoundedContext</strong>. Every <strong>Component</strong> MUST be reachable from a <strong>Module</strong>. If any entity is unreachable, the containment hierarchy has a gap that MUST be fixed.</p>
+<h3 id="bottom-up-traversal">Bottom-up traversal</h3>
+<p>Starting from any <strong>CallableUnit</strong>, verify that you can trace upward to the <strong>System</strong>:</p>
+<pre><code>CallableUnit
+  └─ contained_in_unit ──&gt; EncapsulationUnit
+       └─ implements_component ──&gt; Component
+            └─ part_of_module ──&gt; Module
+                 └─ belongs_to_bounded_context ──&gt; BoundedContext
+                      └─ part_of_system ──&gt; System
+</code></pre>
+<p>Select a sample of <strong>CallableUnits</strong> (at minimum, every entry-point callable such as API handlers, event listeners, and scheduled tasks) and verify each can be traced to the <strong>System</strong>. Any break in the chain indicates a missing relationship.</p>
+<h3 id="cross-layer-traversal">Cross-layer traversal</h3>
+<p>Starting from a <strong>DomainEntity</strong>, verify that you can reach both the code layer (downward) and the architectural layer (upward):</p>
+<pre><code>DomainEntity
+  ├─ mapped_from_structure ──&gt; DataStructure (down to code)
+  │    └─ contained_in_unit ──&gt; EncapsulationUnit
+  └─ part_of_aggregate ──&gt; Aggregate (up to architecture)
+       └─ owned_by_bounded_context ──&gt; BoundedContext
+            └─ part_of_system ──&gt; System
+</code></pre>
+<p>This traversal confirms that the domain model is properly anchored to both code and architecture. Every <strong>DomainEntity</strong> MUST be reachable from both directions.</p>
+<hr />
+<h2 id="4-orphan-detection">4. Orphan Detection</h2>
+<p>An <strong>orphan</strong> is an entity with no incoming or outgoing cross-layer relationships. Orphans indicate extraction gaps -- entities that were created but never connected to the broader graph.</p>
+<h3 id="acceptable-orphans">Acceptable orphans</h3>
+<p>Some entities MAY legitimately have no cross-layer bridges:</p>
+<ul>
+<li><strong>EncapsulationUnits</strong> that are pure utilities, internal helpers, or framework-generated scaffolding</li>
+<li><strong>CallableUnits</strong> that are private methods, getters/setters, or framework callbacks</li>
+<li><strong>DataStructures</strong> that are DTOs, internal value holders, or configuration objects</li>
+<li><strong>DataElements</strong> on non-domain structures</li>
+</ul>
+<p>These entities still MUST have intra-layer relationships (e.g., an <strong>EncapsulationUnit</strong> MUST still have <code>contained_in_container</code> linking it to a <strong>CodeContainer</strong>), but they do not need cross-layer bridges.</p>
+<h3 id="entities-that-must-not-be-orphans">Entities that MUST NOT be orphans</h3>
+<p>The following entity types MUST have at least the specified cross-layer relationships:</p>
+<table>
+<thead>
+<tr>
+<th>Entity type</th>
+<th>Required relationship(s)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System</strong></td>
+<td><code>contains_bounded_contexts</code></td>
+</tr>
+<tr>
+<td><strong>BoundedContext</strong></td>
+<td><code>contains_modules</code>, <code>part_of_system</code></td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td><code>mapped_from_directory</code>, <code>belongs_to_bounded_context</code></td>
+</tr>
+<tr>
+<td><strong>Component</strong></td>
+<td><code>implemented_by_code</code>, <code>part_of_module</code></td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><code>runs_module</code></td>
+</tr>
+<tr>
+<td><strong>DomainEntity</strong></td>
+<td><code>mapped_from_structure</code>, <code>part_of_aggregate</code></td>
+</tr>
+<tr>
+<td><strong>Aggregate</strong></td>
+<td><code>root_entity</code>, <code>owned_by_bounded_context</code></td>
+</tr>
+<tr>
+<td><strong>Operation</strong></td>
+<td><code>implemented_by_callables</code></td>
+</tr>
+<tr>
+<td><strong>Capability</strong></td>
+<td><code>provided_by_modules</code></td>
+</tr>
+<tr>
+<td><strong>KnowledgeArtifact</strong></td>
+<td>At least one <code>documents_*</code> reference</td>
+</tr>
+</tbody>
+</table>
+<h3 id="systematic-orphan-check">Systematic orphan check</h3>
+<p>For each entity type in the table above, the extraction agent MUST:</p>
+<ol>
+<li>List all instances of that type</li>
+<li>For each instance, verify the required relationship(s) exist and point to valid targets</li>
+<li>Record any orphans in an orphan report</li>
+<li>For each orphan, either fill the missing relationship or document why the entity is intentionally unlinked</li>
+</ol>
+<p>The orphan report SHOULD be structured as a table:</p>
+<table>
+<thead>
+<tr>
+<th>Entity type</th>
+<th>Entity name</th>
+<th>Missing relationship</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Module</strong></td>
+<td><code>analytics</code></td>
+<td><code>mapped_from_directory</code></td>
+<td>Linked to <strong>StorageLocation</strong> <code>src/analytics</code></td>
+</tr>
+<tr>
+<td><strong>DomainEntity</strong></td>
+<td><strong>PaymentMethod</strong></td>
+<td><code>mapped_from_structure</code></td>
+<td>Linked to <strong>DataStructure</strong> <code>PaymentMethod</code> in <code>payments/models.py</code></td>
+</tr>
+<tr>
+<td><strong>Capability</strong></td>
+<td><strong>ReportGeneration</strong></td>
+<td><code>provided_by_modules</code></td>
+<td>Linked to <strong>Module</strong> <code>reporting</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="5-relationship-symmetry-verification">5. Relationship Symmetry Verification</h2>
+<p>Every bidirectional relationship pair in the SAO MUST be symmetric: if entity A references entity B via a forward relationship, then entity B MUST reference entity A via the corresponding inverse relationship. Asymmetric links are a data integrity problem that will cause traversal failures.</p>
+<h3 id="verification-procedure">Verification procedure</h3>
+<p>For each of the eight critical bridges, the extraction agent MUST perform the following check:</p>
+<ol>
+<li>
+<p><strong>Forward scan.</strong> For each instance of the source entity type, read the forward relationship attribute. For every target entity referenced, verify that the target's inverse attribute includes the source entity.</p>
+</li>
+<li>
+<p><strong>Inverse scan.</strong> For each instance of the target entity type, read the inverse relationship attribute. For every source entity referenced, verify that the source's forward attribute includes the target entity.</p>
+</li>
+<li>
+<p><strong>Record asymmetries.</strong> Any case where A.forward references B but B.inverse does not reference A (or vice versa) is an asymmetry that MUST be fixed.</p>
+</li>
+</ol>
+<p>Example verification for Bridge 2 (<strong>Component</strong> to <strong>EncapsulationUnit</strong>):</p>
+<pre><code>For each Component c:
+  For each EncapsulationUnit eu in c.implemented_by_code:
+    ASSERT eu.implements_component == c
+    If not: set eu.implements_component = c
+
+For each EncapsulationUnit eu where eu.implements_component is set:
+  Let c = eu.implements_component
+  ASSERT eu in c.implemented_by_code
+  If not: append eu to c.implemented_by_code
+</code></pre>
+<h3 id="common-asymmetries-and-fixes">Common asymmetries and fixes</h3>
+<table>
+<thead>
+<tr>
+<th>Asymmetry</th>
+<th>Typical cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forward set, inverse missing</td>
+<td>Entity created in an earlier phase before the target existed</td>
+<td>Set the inverse on the target entity</td>
+</tr>
+<tr>
+<td>Inverse set, forward missing</td>
+<td>Target entity created with a backlink but source not updated</td>
+<td>Add the reference to the source entity's forward attribute</td>
+</tr>
+<tr>
+<td>Both set but pointing to different entities</td>
+<td>Copy-paste error or entity renamed after linking</td>
+<td>Determine the correct pairing and fix both sides</td>
+</tr>
+<tr>
+<td>Dangling reference</td>
+<td>Reference points to an entity ID that does not exist</td>
+<td>Either create the missing entity (return to the appropriate phase) or remove the dangling reference</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-phase-7-checklist">6. Phase 7 Checklist</h2>
+<p>Before proceeding to Phase 8, the extraction agent MUST confirm all of the following:</p>
+<ul>
+<li>[ ] <strong>Bridge 1</strong> (Module &lt;-&gt; StorageLocation): All Modules have <code>mapped_from_directory</code>; all relevant StorageLocations have <code>maps_to_module</code></li>
+<li>[ ] <strong>Bridge 2</strong> (Component &lt;-&gt; EncapsulationUnit): All Components have <code>implemented_by_code</code>; all architecturally significant EncapsulationUnits have <code>implements_component</code></li>
+<li>[ ] <strong>Bridge 3</strong> (DomainEntity &lt;-&gt; DataStructure): All DomainEntities have <code>mapped_from_structure</code></li>
+<li>[ ] <strong>Bridge 4</strong> (Attribute &lt;-&gt; DataElement): All domain Attributes have <code>mapped_from_element</code> where a direct mapping exists</li>
+<li>[ ] <strong>Bridge 5</strong> (Operation &lt;-&gt; CallableUnit): All Operations have <code>implemented_by_callables</code></li>
+<li>[ ] <strong>Bridge 6</strong> (Capability &lt;-&gt; Module): All Capabilities have <code>provided_by_modules</code></li>
+<li>[ ] <strong>Bridge 7</strong> (Service &lt;-&gt; Module): All Services have <code>runs_module</code>; all deployed Modules have <code>runs_as_services</code></li>
+<li>[ ] <strong>Bridge 8</strong> (KnowledgeArtifact &lt;-&gt; entities): All KnowledgeArtifacts link to at least one documented entity</li>
+<li>[ ] <strong>Top-down traversal</strong> passes: System -&gt; BoundedContext -&gt; Module -&gt; Component -&gt; EncapsulationUnit is fully connected</li>
+<li>[ ] <strong>Bottom-up traversal</strong> passes: sampled CallableUnits trace back to System</li>
+<li>[ ] <strong>Cross-layer traversal</strong> passes: DomainEntities reach both code and architecture</li>
+<li>[ ] <strong>Orphan report</strong> generated and reviewed; no entity in the MUST-connect list is orphaned</li>
+<li>[ ] <strong>Bidirectional symmetry</strong> verified for all eight bridges; no asymmetric links remain</li>
+<li>[ ] <strong>No dangling references</strong>: every entity ID referenced in a relationship resolves to an existing entity</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "baseline_version": "2.1.0",
+  "classes": 147,
+  "constraints": {
+    "min_count": 330,
+    "max_count": 1293,
+    "datatype": 1009,
+    "property_shapes": 1866,
+    "class_range": 743,
+    "pattern": 15,
+    "enum": 124,
+    "any_of": 6
+  },
+  "status": "Initial translation; semantic equivalence has not been established",
+  "deferred": [
+    "Inverse relationship entailments and inconsistent inverse declarations",
+    "Identifier-to-RDF-subject mapping and JSON/YAML inlining",
+    "Abstract classes and mixin serialization",
+    "Closed-world validation policy (initial shapes are open)",
+    "Full validation equivalence and arbitrary LinkML metamodel features"
+  ]
+}

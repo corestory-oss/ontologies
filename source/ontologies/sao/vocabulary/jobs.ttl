@@ -1,0 +1,245 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/sao/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:DatasetAllocation a rdfs:Class ;
+    rdfs:label "DatasetAllocation" ;
+    rdfs:comment "A dataset (DD) allocation within a job step" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:JobDefinition a rdfs:Class ;
+    rdfs:label "JobDefinition" ;
+    rdfs:comment "A batch job definition (JCL JOB, scheduler entry, cron job)" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity ;
+    skos:note "Captures the structure and dependencies of batch workflows, enabling scheduling analysis and restart planning." .
+
+sao:JobStep a rdfs:Class ;
+    rdfs:label "JobStep" ;
+    rdfs:comment "A single step within a batch job" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf sao:NamedEntity .
+
+sao:JobStepType a rdfs:Datatype ;
+    rdfs:label "JobStepType" ;
+    rdfs:comment "Types of job steps in batch processing" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/JobStepType/conditional>,
+        <https://ontologies.corestory.ai/sao/export/values/JobStepType/exec_proc>,
+        <https://ontologies.corestory.ai/sao/export/values/JobStepType/exec_program>,
+        <https://ontologies.corestory.ai/sao/export/values/JobStepType/file_transfer>,
+        <https://ontologies.corestory.ai/sao/export/values/JobStepType/sort>,
+        <https://ontologies.corestory.ai/sao/export/values/JobStepType/utility> .
+
+sao:allocated_in_step a rdf:Property ;
+    rdfs:label "allocated_in_step" ;
+    rdfs:comment "The step where this allocation occurs.",
+        "[DatasetAllocation] The step where this allocation occurs." ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobStep .
+
+sao:allocates_datasets a rdf:Property ;
+    rdfs:label "allocates_datasets" ;
+    rdfs:comment "Datasets allocated for this step.",
+        "[JobStep] Datasets allocated for this step." ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DatasetAllocation .
+
+sao:condition_code a rdf:Property ;
+    rdfs:label "condition_code" ;
+    rdfs:comment "Condition code checks (e.g., COND=(4,LT))",
+        "[JobStep] Condition code checks (e.g., COND=(4,LT))" ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:contains_job_steps a rdf:Property ;
+    rdfs:label "contains_job_steps" ;
+    rdfs:comment "Steps within this job.",
+        "[JobDefinition] Steps within this job." ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobStep .
+
+sao:dataset_name a rdf:Property ;
+    rdfs:label "dataset_name" ;
+    rdfs:comment "Physical dataset name (DSN)",
+        "[DatasetAllocation] Physical dataset name (DSN)" ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:dd_name a rdf:Property ;
+    rdfs:label "dd_name" ;
+    rdfs:comment "DD name (logical file reference)",
+        "[DatasetAllocation] DD name (logical file reference)" ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:depended_on_by_jobs a rdf:Property ;
+    rdfs:label "depended_on_by_jobs" ;
+    rdfs:comment "Jobs that depend on this one.",
+        "[JobDefinition] Jobs that depend on this one." ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobDefinition .
+
+sao:depends_on_jobs a rdf:Property ;
+    rdfs:label "depends_on_jobs" ;
+    rdfs:comment "Jobs that must complete before this one.",
+        "[JobDefinition] Jobs that must complete before this one." ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobDefinition .
+
+sao:disposition a rdf:Property ;
+    rdfs:label "disposition" ;
+    rdfs:comment "Dataset disposition.",
+        "[DatasetAllocation] Dataset disposition." ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:DatasetDisposition .
+
+sao:job_class a rdf:Property ;
+    rdfs:label "job_class" ;
+    rdfs:comment "Job class or queue assignment.",
+        "[JobDefinition] Job class or queue assignment." ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:maps_to_file_definition a rdf:Property ;
+    rdfs:label "maps_to_file_definition" ;
+    rdfs:comment "The file definition this allocation maps to.",
+        "[DatasetAllocation] The file definition this allocation maps to." ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:FileDefinition .
+
+sao:program_name a rdf:Property ;
+    rdfs:label "program_name" ;
+    rdfs:comment "Name of the program to execute",
+        "[JobStep] Name of the program to execute" ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:region_size a rdf:Property ;
+    rdfs:label "region_size" ;
+    rdfs:comment "Memory region allocation",
+        "[JobStep] Memory region allocation" ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:restart_point a rdf:Property ;
+    rdfs:label "restart_point" ;
+    rdfs:comment "Step or checkpoint for restart",
+        "[JobDefinition] Step or checkpoint for restart" ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:scheduling_info a rdf:Property ;
+    rdfs:label "scheduling_info" ;
+    rdfs:comment "Schedule or trigger criteria",
+        "[JobDefinition] Schedule or trigger criteria" ;
+    rdfs:domain sao:JobDefinition ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:space_primary a rdf:Property ;
+    rdfs:label "space_primary" ;
+    rdfs:comment "Primary space allocation.",
+        "[DatasetAllocation] Primary space allocation." ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:space_secondary a rdf:Property ;
+    rdfs:label "space_secondary" ;
+    rdfs:comment "Secondary space allocation.",
+        "[DatasetAllocation] Secondary space allocation." ;
+    rdfs:domain sao:DatasetAllocation ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string .
+
+sao:step_executes_program a rdf:Property ;
+    rdfs:label "step_executes_program" ;
+    rdfs:comment "The program executed by this step.",
+        "[JobStep] The program executed by this step." ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:EncapsulationUnit .
+
+sao:step_in_job a rdf:Property ;
+    rdfs:label "step_in_job" ;
+    rdfs:comment "The job containing this step.",
+        "[JobStep] The job containing this step." ;
+    rdfs:domain sao:JobStep ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:JobDefinition .
+
+sao:DatasetDisposition a rdfs:Datatype ;
+    rdfs:label "DatasetDisposition" ;
+    rdfs:comment "Dataset allocation dispositions (JCL)" ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/catalog>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/delete_disp>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/modify>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/new_dataset>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/old_dataset>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/pass>,
+        <https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/shared> .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/catalog> rdf:value "catalog" ;
+    rdfs:comment "Catalog dataset." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/delete_disp> rdf:value "delete_disp" ;
+    rdfs:comment "Delete dataset." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/modify> rdf:value "modify" ;
+    rdfs:comment "Modify existing dataset." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/new_dataset> rdf:value "new_dataset" ;
+    rdfs:comment "New dataset." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/old_dataset> rdf:value "old_dataset" ;
+    rdfs:comment "Old dataset (exclusive)." .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/pass> rdf:value "pass" ;
+    rdfs:comment "Pass dataset to next step" .
+
+<https://ontologies.corestory.ai/sao/export/values/DatasetDisposition/shared> rdf:value "shared" ;
+    rdfs:comment "Shared dataset." .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/conditional> rdf:value "conditional" ;
+    rdfs:comment "Conditional step based on return codes" .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/exec_proc> rdf:value "exec_proc" ;
+    rdfs:comment "Execute a cataloged procedure" .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/exec_program> rdf:value "exec_program" ;
+    rdfs:comment "Execute a program" .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/file_transfer> rdf:value "file_transfer" ;
+    rdfs:comment "File transfer step." .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/sort> rdf:value "sort" ;
+    rdfs:comment "Sort step." .
+
+<https://ontologies.corestory.ai/sao/export/values/JobStepType/utility> rdf:value "utility" ;
+    rdfs:comment "Run a system utility (SORT, IEBCOPY, etc.)" .
+

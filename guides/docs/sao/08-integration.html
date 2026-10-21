@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 7: Integration · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-7-integration">Section 7: Integration</h1>
+<p>This section defines integration with external systems, including adapters, circuit breakers, messages, and contracts.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as <code>Contract</code> gain back-reference attributes that make navigating the ontology more explicit. Additionally, <code>ContractVersion</code> has been restructured from subclass inheritance to composition (it is now <code>is_a: NamedEntity</code> with an explicit reference attribute back to its parent <code>Contract</code>).</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Integration section provides comprehensive modeling of connections to external systems, communication protocols, message formats, and API contracts.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="externalsystem">ExternalSystem</h3>
+<p><strong>Definition</strong>: A system outside this system's boundary.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>system_type</strong>: <code>third_party_service</code>, <code>partner_system</code>, <code>legacy_system</code>, <code>saas_application</code>
+- <strong>owner</strong>: System owner or vendor
+- <strong>sla</strong>: Service level agreement
+- <strong>documentation_url</strong>: API documentation URL</p>
+<p><strong>Relationships</strong>:
+- <strong>integrated_via</strong>: <code>Integration[]</code> (inlined) connecting to this system</p>
+<p><strong>External System Types</strong>:
+- <code>third_party_service</code>: External SaaS or API service (Stripe, SendGrid, Twilio)
+- <code>partner_system</code>: Business partner's system
+- <code>legacy_system</code>: Existing legacy system being integrated
+- <code>saas_application</code>: Software-as-a-Service application</p>
+<hr />
+<h3 id="integration">Integration</h3>
+<p><strong>Definition</strong>: A configured connection to an external system.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>integration_type</strong>: <code>inbound</code> (receiving data), <code>outbound</code> (sending data), <code>bidirectional</code>
+- <strong>protocol</strong>: Communication protocol (HTTP, GRPC, KAFKA, etc.)
+- <strong>messages</strong>: List of messages exchanged</p>
+<p><strong>Relationships</strong>:
+- <strong>integrates_with_system</strong>: Target <code>ExternalSystem</code>
+- <strong>uses_adapter</strong>: <code>Adapter</code> for protocol translation
+- <strong>protected_by_breaker</strong>: <code>CircuitBreaker</code> for resilience
+- <strong>integration_governed_by_contract</strong>: <code>Contract</code> defining API
+- <strong>belongs_to_system</strong>: Parent <code>System</code></p>
+<p><strong>Integration Types</strong>:
+- <code>inbound</code>: Receive data from external system (webhooks, API calls)
+- <code>outbound</code>: Send data to external system (API calls, events)
+- <code>bidirectional</code>: Two-way communication</p>
+<p><strong>Integration Patterns</strong>:
+- <strong>Request-Response</strong>: Synchronous API calls
+- <strong>Event-Driven</strong>: Asynchronous event publishing/subscribing
+- <strong>Batch</strong>: Periodic bulk data exchange
+- <strong>Streaming</strong>: Continuous data streams</p>
+<hr />
+<h3 id="message">Message</h3>
+<p><strong>Definition</strong>: A unit of data exchanged in integration.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>message_type</strong>: <code>request</code>, <code>response</code>, <code>notification</code>, <code>command</code>, <code>event</code>, <code>query</code></p>
+<p><strong>Relationships</strong>:
+- <strong>message_structured_by_schema</strong>: <code>Schema</code> defining message structure
+- <strong>validated_by_contract</strong>: <code>Contract</code> validating message</p>
+<p><strong>Message Types</strong>:
+- <code>request</code>: Request message expecting a response
+- <code>response</code>: Response to a request
+- <code>notification</code>: One-way notification (no response expected)
+- <code>command</code>: Command for action execution
+- <code>event</code>: Event notification
+- <code>query</code>: Query for data retrieval</p>
+<p><strong>Message Patterns</strong>:
+- <strong>Envelope Pattern</strong>: Wrap payload in standard envelope (headers, metadata)
+- <strong>Claim Check</strong>: Store large payload separately, pass reference
+- <strong>Canonical Data Model</strong>: Transform all messages to canonical format
+- <strong>Message Transformation</strong>: Convert between formats</p>
+<hr />
+<h3 id="contract">Contract</h3>
+<p><strong>Definition</strong>: A formal specification of integration behavior.</p>
+<p><strong>Key Attributes</strong>:
+- Implements <code>Versionable</code> mixin
+- <strong>contract_type</strong>: <code>openapi</code>, <code>asyncapi</code>, <code>json_schema</code>, <code>protobuf</code>, <code>avro</code>, <code>graphql_schema</code>, <code>wsdl</code>
+- <strong>definition</strong>: Contract definition
+- <strong>contract_versions</strong>: List of contract versions</p>
+<p><strong>Relationships</strong>:
+- <strong>defines_interfaces</strong>: <code>Interface</code> entities defined
+- <strong>governs_integrations</strong>: <code>Integration</code> entities governed
+- <strong>validates_messages</strong>: <code>Message</code> entities validated
+- <strong>implemented_by_units</strong>: <code>EncapsulationUnit</code> entities implementing this contract
+- <strong>contract_versions</strong>: <code>ContractVersion[]</code> (v2.0 back-reference from <code>ContractVersion.version_of_contract</code>)</p>
+<p><strong>Contract Types</strong>:
+- <code>openapi</code>: REST API specification (Swagger)
+- <code>asyncapi</code>: Async API specification (events, messages)
+- <code>json_schema</code>: JSON data structure schema
+- <code>protobuf</code>: Protocol Buffers schema
+- <code>avro</code>: Apache Avro schema
+- <code>graphql_schema</code>: GraphQL type system
+- <code>wsdl</code>: SOAP web service description</p>
+<p><strong>Contract-First vs Code-First</strong>:
+- <strong>Contract-First</strong>: Define contract, generate code
+- <strong>Code-First</strong>: Write code, generate contract
+- <strong>Best Practice</strong>: Contract-first for external APIs</p>
+<hr />
+<h3 id="contractversion">ContractVersion</h3>
+<p><strong>Definition</strong>: A specific iteration of a contract.</p>
+<blockquote>
+<p><strong>v2.0 Change</strong>: <code>ContractVersion</code> is now <code>is_a: NamedEntity</code> (previously <code>is_a: Contract</code>). Instead of inheriting from <code>Contract</code>, it uses the <code>version_of_contract</code> attribute to reference its parent <code>Contract</code>.</p>
+</blockquote>
+<p><strong>Key Attributes</strong>:
+- <strong>version</strong>: Semantic version number
+- <strong>definition</strong>: Contract at this version
+- <strong>breaking_changes</strong>: List of breaking changes from previous version</p>
+<p><strong>Relationships</strong>:
+- <strong>version_of_contract</strong>: <code>Contract</code> that this version belongs to</p>
+<p><strong>API Versioning Strategies</strong>:
+- <strong>URL Versioning</strong>: <code>/api/v1/users</code>, <code>/api/v2/users</code>
+- <strong>Header Versioning</strong>: <code>Accept: application/vnd.api+json;version=1</code>
+- <strong>Query Parameter</strong>: <code>/api/users?version=1</code>
+- <strong>Content Negotiation</strong>: <code>Accept: application/vnd.api.v1+json</code></p>
+<p><strong>Breaking vs Non-Breaking Changes</strong>:
+- <strong>Breaking</strong>: Remove field, change type, rename field
+- <strong>Non-Breaking</strong>: Add optional field, add new endpoint</p>
+<hr />
+<h3 id="adapter">Adapter</h3>
+<p><strong>Definition</strong>: A component that translates between system and external protocols.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>Component</code>
+- <strong>source_protocol</strong>: Protocol to translate from
+- <strong>target_protocol</strong>: Protocol to translate to
+- <strong>transformation</strong>: Data transformation logic</p>
+<p><strong>Relationships</strong>:
+- <strong>used_by_integrations</strong>: <code>Integration</code> entities using this adapter</p>
+<p><strong>Adapter Pattern Uses</strong>:
+- Protocol translation (HTTP -&gt; GRPC)
+- Data format conversion (XML -&gt; JSON)
+- Message routing
+- API versioning support
+- Anti-corruption layer (DDD pattern)</p>
+<p><strong>Example Adapters</strong>:
+- REST to SOAP adapter
+- JSON to XML converter
+- Legacy system adapter
+- Third-party API wrapper</p>
+<hr />
+<h3 id="circuitbreaker">CircuitBreaker</h3>
+<p><strong>Definition</strong>: A resilience pattern preventing cascade failures.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>failure_threshold</strong>: Number of failures before opening circuit
+- <strong>reset_timeout_seconds</strong>: Seconds before attempting half-open
+- <strong>half_open_requests</strong>: Requests allowed in half-open state</p>
+<p><strong>Relationships</strong>:
+- <strong>protects_integrations</strong>: <code>Integration</code> entities protected</p>
+<p><strong>Circuit Breaker States</strong>:
+1. <strong>Closed</strong>: Normal operation, requests pass through
+2. <strong>Open</strong>: Too many failures, requests fail immediately
+3. <strong>Half-Open</strong>: Testing if external system recovered</p>
+<p><strong>State Transitions</strong>:
+- <strong>Closed -&gt; Open</strong>: Failure threshold reached
+- <strong>Open -&gt; Half-Open</strong>: Reset timeout elapsed
+- <strong>Half-Open -&gt; Closed</strong>: Test requests succeed
+- <strong>Half-Open -&gt; Open</strong>: Test requests fail</p>
+<p><strong>Benefits</strong>:
+- Prevent cascade failures
+- Fail fast
+- Give external system time to recover
+- Reduce load on failing systems</p>
+<hr />
+<h2 id="integration-patterns">Integration Patterns</h2>
+<h3 id="api-gateway-pattern">API Gateway Pattern</h3>
+<p>Single entry point for all client requests:
+- Routing to backend services
+- Authentication and authorization
+- Rate limiting
+- Request/response transformation
+- Circuit breaking</p>
+<h3 id="backend-for-frontend-bff">Backend for Frontend (BFF)</h3>
+<p>Separate backend for each frontend:
+- Optimized for specific client needs
+- Reduces over-fetching
+- Simplifies mobile/web differences</p>
+<h3 id="event-driven-integration">Event-Driven Integration</h3>
+<p>Asynchronous communication via events:
+- Loose coupling
+- Scalability
+- Eventual consistency
+- Event sourcing support</p>
+<h3 id="saga-pattern">Saga Pattern</h3>
+<p>Distributed transactions across services:
+- Choreography: Services coordinate via events
+- Orchestration: Central coordinator
+- Compensating transactions for rollback</p>
+<h3 id="anti-corruption-layer-acl">Anti-Corruption Layer (ACL)</h3>
+<p>Translation layer protecting domain model:
+- Isolates from external model changes
+- Domain integrity preservation
+- Adapter pattern implementation</p>
+<hr />
+<h2 id="communication-protocols">Communication Protocols</h2>
+<h3 id="httphttps">HTTP/HTTPS</h3>
+<ul>
+<li><strong>Use Case</strong>: REST APIs, webhooks</li>
+<li><strong>Pros</strong>: Universal, firewall-friendly, well-understood</li>
+<li><strong>Cons</strong>: Overhead, connection per request</li>
+</ul>
+<h3 id="websocket">WebSocket</h3>
+<ul>
+<li><strong>Use Case</strong>: Real-time bidirectional communication</li>
+<li><strong>Pros</strong>: Full-duplex, low latency</li>
+<li><strong>Cons</strong>: Requires persistent connection</li>
+</ul>
+<h3 id="grpc">gRPC</h3>
+<ul>
+<li><strong>Use Case</strong>: High-performance inter-service communication</li>
+<li><strong>Pros</strong>: Fast, efficient, strongly typed</li>
+<li><strong>Cons</strong>: Limited browser support, complexity</li>
+</ul>
+<h3 id="amqp-advanced-message-queuing-protocol">AMQP (Advanced Message Queuing Protocol)</h3>
+<ul>
+<li><strong>Use Case</strong>: Enterprise messaging (RabbitMQ)</li>
+<li><strong>Pros</strong>: Reliable, transaction support</li>
+<li><strong>Cons</strong>: Complexity, setup overhead</li>
+</ul>
+<h3 id="mqtt">MQTT</h3>
+<ul>
+<li><strong>Use Case</strong>: IoT, lightweight messaging</li>
+<li><strong>Pros</strong>: Lightweight, pub-sub</li>
+<li><strong>Cons</strong>: Limited features</li>
+</ul>
+<h3 id="kafka-protocol">Kafka Protocol</h3>
+<ul>
+<li><strong>Use Case</strong>: Event streaming, log aggregation</li>
+<li><strong>Pros</strong>: High throughput, durability</li>
+<li><strong>Cons</strong>: Operational complexity</li>
+</ul>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="integration-design">Integration Design</h3>
+<ol>
+<li><strong>Loose Coupling</strong>: Minimize dependencies between systems</li>
+<li><strong>Asynchronous</strong>: Use async communication when possible</li>
+<li><strong>Idempotency</strong>: Make operations idempotent</li>
+<li><strong>Retry Logic</strong>: Implement exponential backoff</li>
+<li><strong>Circuit Breaking</strong>: Protect against failures</li>
+</ol>
+<h3 id="contract-management">Contract Management</h3>
+<ol>
+<li><strong>Versioning</strong>: Version all contracts</li>
+<li><strong>Backward Compatibility</strong>: Maintain compatibility when possible</li>
+<li><strong>Breaking Changes</strong>: Communicate and plan breaking changes</li>
+<li><strong>Documentation</strong>: Keep API documentation up to date</li>
+<li><strong>Testing</strong>: Contract testing (Pact, Spring Cloud Contract)</li>
+</ol>
+<h3 id="error-handling">Error Handling</h3>
+<ol>
+<li><strong>Graceful Degradation</strong>: Degrade functionality, don't crash</li>
+<li><strong>Timeouts</strong>: Set appropriate timeouts</li>
+<li><strong>Fallbacks</strong>: Provide fallback responses</li>
+<li><strong>Monitoring</strong>: Monitor integration health</li>
+<li><strong>Alerting</strong>: Alert on integration failures</li>
+</ol>
+<h3 id="security">Security</h3>
+<ol>
+<li><strong>Authentication</strong>: Use API keys, OAuth, mutual TLS</li>
+<li><strong>Authorization</strong>: Validate permissions</li>
+<li><strong>Encryption</strong>: Use TLS for data in transit</li>
+<li><strong>Rate Limiting</strong>: Prevent abuse</li>
+<li><strong>Input Validation</strong>: Validate all external input</li>
+</ol>
+<h3 id="performance">Performance</h3>
+<ol>
+<li><strong>Caching</strong>: Cache responses when appropriate</li>
+<li><strong>Connection Pooling</strong>: Reuse connections</li>
+<li><strong>Compression</strong>: Compress large payloads</li>
+<li><strong>Pagination</strong>: Paginate large result sets</li>
+<li><strong>Async Processing</strong>: Use async for long operations</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Systems have integrations</li>
+<li><strong>Section 5 (Behavior)</strong>: Integration events trigger workflows</li>
+<li><strong>Section 6 (Data Management)</strong>: Messages structured by schemas</li>
+<li><strong>Section 8 (Deployment)</strong>: Services expose integration endpoints</li>
+<li><strong>Section 9 (Observability)</strong>: Integration metrics and logs</li>
+</ul>
+<hr />
+<h2 id="example-payment-gateway-integration">Example: Payment Gateway Integration</h2>
+<pre><code>ExternalSystem: StripePaymentGateway
+  Type: third_party_service
+  Owner: Stripe, Inc.
+  SLA: 99.99% uptime
+  Documentation: https://stripe.com/docs/api
+
+Integration: PaymentProcessingIntegration
+  Type: bidirectional
+  Protocol: HTTPS
+
+  Adapter: StripeAdapter
+    Source: Internal payment model
+    Target: Stripe API format
+    Transformation:
+      - Map internal currency codes to ISO 4217
+      - Convert amounts to cents
+      - Transform payment methods
+
+  Circuit Breaker:
+    Failure Threshold: 5
+    Reset Timeout: 60 seconds
+    Half-Open Requests: 3
+
+  Messages:
+    - CreatePaymentRequest (command)
+      Schema: PaymentRequestSchema v1.0
+      Fields: amount, currency, payment_method, metadata
+
+    - PaymentSucceededEvent (event)
+      Schema: PaymentEventSchema v1.0
+      Fields: payment_id, status, amount, timestamp
+
+    - RefundPaymentRequest (command)
+    - PaymentFailedEvent (event)
+
+  Contract: StripeAPIContract
+    Type: openapi
+    Version: 2023-10-16
+    Definition: OpenAPI 3.0 specification
+
+  Error Handling:
+    - Network Errors: Retry with exponential backoff (max 3 attempts)
+    - 4xx Errors: Log and return error to caller
+    - 5xx Errors: Trigger circuit breaker
+    - Timeout: 10 seconds
+
+  Monitoring:
+    - Success rate metric
+    - Latency percentiles (p50, p95, p99)
+    - Error rate by type
+    - Circuit breaker state changes
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

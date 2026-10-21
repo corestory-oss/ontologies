@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>RDFS Turtle export · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="rdfs-turtle-export">RDFS Turtle export</h1>
+<p><a href="../../../source/dist/sao.ttl"><code>dist/sao.ttl</code></a> is an assembled distribution of the editable RDFS vocabulary sources. It describes the ontology, not a populated software graph. <code>ontologies/sao/vocabulary/*.ttl</code> are now editable source. LinkML remains a legacy baseline during migration.</p>
+<pre><code class="language-sh">uv run python scripts/build_rdf.py
+uv run python scripts/build_rdf.py --check
+</code></pre>
+<p>The export preserves class and property IRIs, labels, descriptions, class inheritance and mixins as <code>rdfs:subClassOf</code>, and property hierarchy where declared. Named scalar types and enums are represented as <code>rdfs:Datatype</code>. Declared enum values and their descriptions are annotations using <code>export:permissibleValue</code> and <code>rdf:value</code>; RDFS does not close the datatype to those values. Value annotation records have stable IRIs under <code>https://ontologies.corestory.ai/sao/export/values/</code>. These are not enum individuals to substitute for the string values in existing SAO data.</p>
+<p>A property gets <code>rdfs:domain</code> or <code>rdfs:range</code> when its declarations agree on a single class or datatype. Where a shared property has multiple domains or ranges, alternatives are documented using Schema.org <code>domainIncludes</code> / <code>rangeIncludes</code>. These annotations do not add RDFS typing entailments. Multiple RDFS domain/range axioms would mean intersection and could misclassify existing data. Property descriptions carry class context where applicable; the export does not retain the pairing between each class and its local property range as a formal constraint.</p>
+<p>This is intentionally an RDFS projection, not a lossless conversion. RDFS alone cannot enforce required fields, cardinality, identifiers, inverses, inlining, abstractness, closed enums, or value constraints. The initial SHACL layer now covers some of these; LinkML is retained as a baseline for the remaining migration. Mixins become class membership via subclass edges; their LinkML implementation details are not represented. RDFS domain/range are inference statements, not validation rules. An initial SHACL profile is now available as <code>dist/sao.shacl.ttl</code>; its coverage and limitations are documented in <a href="turtle-migration.html">migration status</a>. Legacy LinkML validation remains available for its JSON/YAML baseline.</p>
+<p>The export uses RDF, RDFS, SKOS, Dublin Core and Schema.org vocabulary, plus one documented export annotation. Logical OWL axioms remain in the optional supplement. The vocabulary uses <code>owl:deprecated</code> annotations to identify predicates rejected by the 3.0.0 profile; those annotations provide no compatibility inference. CI checks that the complete export and every topic file match regeneration, and that assembling the files in the manifest yields exactly the complete graph.</p>
+<p>References: <a href="https://www.w3.org/TR/rdf-schema/">RDFS 1.1</a>, <a href="https://schema.org/domainIncludes">Schema.org domainIncludes</a>, <a href="https://schema.org/rangeIncludes">Schema.org rangeIncludes</a>.</p>
+<h2 id="modular-sources-and-distribution">Modular sources and distribution</h2>
+<p><code>ontologies/sao/vocabulary/</code> contains editable topic files corresponding to the original split. <code>ontology.ttl</code> contains vocabulary metadata. <code>common.ttl</code> contains shared properties and built-in datatypes. <code>ontologies/sao/manifests/vocabulary.json</code> lists the complete vocabulary assembly; <code>ontologies/sao/manifests/shapes.json</code> lists the SHACL assembly.</p>
+<p>Each file has its own prefix declarations. Load files individually into the same graph; no <code>owl:imports</code> or Turtle inclusion mechanism is used. Shared property semantics are authored once in <code>common.ttl</code>, not recomputed independently per topic.</p>
+<pre><code class="language-python">import json
+from pathlib import Path
+from rdflib import Graph
+
+root = Path(&quot;ontologies/sao&quot;)
+manifest = json.loads((root / &quot;manifests/vocabulary.json&quot;).read_text())
+graph = Graph()
+for filename in manifest[&quot;files&quot;]:
+    graph.parse(root / filename, format=&quot;turtle&quot;)
+</code></pre>
+<p>The assembly equals <code>dist/sao.ttl</code>. Both distributions are generated artifacts; edit their source topic files instead. Initial shape nodes and enum list cells have stable named IRIs; standard anonymous Turtle shapes are also supported by assembly comparisons.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

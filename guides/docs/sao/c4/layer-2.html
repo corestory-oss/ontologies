@@ -1,0 +1,6474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Layer 2: Container-Level Representation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="layer-2-container-level-representation">Layer 2: Container-Level Representation</h1>
+<p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 2 (Container)</strong> -- the deployable services, data stores, interfaces, pipelines, and operational infrastructure that compose a system. This layer sits between the system context (Layer 1) and the component internals (Layer 3).</p>
+<p>Where Layer 1 answers "what systems exist and how do they interact?", Layer 2 answers "what are the running parts of this system -- its services, databases, message brokers, build pipelines, and how are they deployed, monitored, and integrated?"</p>
+<hr />
+<h2 id="scope">Scope</h2>
+<p>Layer 2 covers:</p>
+<ul>
+<li><strong>Structural decomposition</strong> -- bounded contexts, modules, services, dependencies</li>
+<li><strong>Interfaces and endpoints</strong> -- user interfaces, APIs, event interfaces, screens, routes</li>
+<li><strong>Data management</strong> -- data stores, collections, records, classifications, retention, lineage, audit, database schema objects</li>
+<li><strong>Integration</strong> -- external system connections, messages, contracts, adapters, circuit breakers</li>
+<li><strong>Deployment and runtime</strong> -- environments, deployments, deployment units, configuration, infrastructure, releases</li>
+<li><strong>Observability</strong> -- metrics, logs, traces, spans, alerts, alert rules, incidents, health checks</li>
+<li><strong>Build and CI/CD</strong> -- pipelines, pipeline stages, build artifacts, artifact registries</li>
+<li><strong>Dependency management</strong> -- package managers, package dependencies, known vulnerabilities</li>
+<li><strong>Infrastructure as code</strong> -- IaC definitions, modules, resources</li>
+<li><strong>ML and data pipelines</strong> -- data pipelines, steps, datasets, ML models, model metrics, feature stores</li>
+<li><strong>Testing</strong> -- test suites, coverage, assertions</li>
+<li><strong>Frontend supporting</strong> -- state stores, UI properties, concurrency patterns</li>
+</ul>
+<p>Like Layer 3, <strong>Layer 2 is paradigm-agnostic</strong>. A mainframe CICS system and a cloud-native microservice architecture both have services, data stores, deployments, and integrations. The differences emerge in how these are implemented (Layers 3 and 4), not in what they are (Layer 2).</p>
+<hr />
+<blockquote>
+<p><strong>NamedEntity base attributes.</strong> Every class in this document extends <code>NamedEntity</code>, which provides <code>id</code> (string, required), <code>name</code> (string, required), <code>description</code> (string), <code>tags</code> (string[]), and <code>metadata</code> (Metadata, inline). These are not repeated in individual class tables.</p>
+</blockquote>
+<hr />
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Class</th>
+<th>Definition</th>
+<th>Group</th>
+<th>SAO Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>BoundedContext</td>
+<td>A semantic boundary within which a domain model applies consistently (DDD)</td>
+<td>Structural</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Module</td>
+<td>A deployable, cohesive unit of functionality within a bounded context</td>
+<td>Structural</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Service</td>
+<td>An independently deployable runtime unit</td>
+<td>Structural</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Interface (abstract)</td>
+<td>A contract-defined boundary through which interaction occurs</td>
+<td>Structural</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Dependency (inline)</td>
+<td>A lightweight dependency reference between components or services</td>
+<td>Structural</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UserInterface</td>
+<td>A user-facing interface (web, mobile, desktop, CLI)</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>ProgrammaticInterface</td>
+<td>A machine-to-machine interface (REST, GraphQL, gRPC, SDK, SOAP)</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>EventInterface</td>
+<td>An event-driven interface (webhook, message queue, event stream, pub/sub)</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Screen</td>
+<td>A single screen or view in a user interface</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Endpoint</td>
+<td>A specific addressable entry point on a service</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Route</td>
+<td>A navigation route or URL path in a frontend application</td>
+<td>Interfaces &amp; Endpoints</td>
+<td>12</td>
+</tr>
+<tr>
+<td>12</td>
+<td>DataStore</td>
+<td>A persistence mechanism (relational DB, document DB, cache, message broker, etc.)</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Collection</td>
+<td>A logical grouping of records (table, collection, bucket)</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Record</td>
+<td>A single persisted instance of data</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>15</td>
+<td>DataClassification</td>
+<td>A sensitivity or handling category for data</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>16</td>
+<td>RetentionPolicy</td>
+<td>Rules governing data lifecycle and deletion</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>17</td>
+<td>DataLineage</td>
+<td>The origin, transformation history, and movement of data</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>18</td>
+<td>AuditLog</td>
+<td>A tamper-evident record of system activities</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>19</td>
+<td>AuditEntry</td>
+<td>A single record within an audit log</td>
+<td>Data Management</td>
+<td>6</td>
+</tr>
+<tr>
+<td>20</td>
+<td>DatabaseConstraint (inline)</td>
+<td>A constraint on a database table/collection</td>
+<td>Data Management</td>
+<td>27</td>
+</tr>
+<tr>
+<td>21</td>
+<td>DatabaseIndex (inline)</td>
+<td>An index on a database table/collection</td>
+<td>Data Management</td>
+<td>27</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Integration</td>
+<td>A configured connection to an external system</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>23</td>
+<td>Message (inline)</td>
+<td>A unit of data exchanged in integration</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Contract</td>
+<td>A formal specification of integration behavior</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>25</td>
+<td>ContractVersion (inline)</td>
+<td>A specific iteration of a contract</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Adapter</td>
+<td>A component that translates between system and external protocols (extends Component from L3)</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>27</td>
+<td>CircuitBreaker</td>
+<td>A resilience pattern preventing cascade failures</td>
+<td>Integration</td>
+<td>7</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Environment</td>
+<td>A runtime context with specific configuration</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>29</td>
+<td>Deployment</td>
+<td>An instance of a service running in an environment</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>30</td>
+<td>DeploymentUnit</td>
+<td>The packaged artifact being deployed</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Configuration</td>
+<td>Runtime parameters for a deployment</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Infrastructure</td>
+<td>The underlying compute, storage, and network resources</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Release</td>
+<td>A versioned, deployable package of changes</td>
+<td>Deployment &amp; Runtime</td>
+<td>8</td>
+</tr>
+<tr>
+<td>34</td>
+<td>Metric</td>
+<td>A quantitative measurement over time</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>35</td>
+<td>Log</td>
+<td>A timestamped record of discrete events</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>36</td>
+<td>LogEntry (inline)</td>
+<td>A single record within a log</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>37</td>
+<td>Trace</td>
+<td>A causal chain of operations across services</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Span (inline)</td>
+<td>A single unit of work within a trace</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Alert</td>
+<td>A notification triggered by metric thresholds or anomalies</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>40</td>
+<td>AlertRule</td>
+<td>The condition that triggers an alert (extends Rule from L3)</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>41</td>
+<td>Incident</td>
+<td>A tracked degradation or outage event</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>42</td>
+<td>HealthCheck (inline)</td>
+<td>A probe verifying service availability</td>
+<td>Observability</td>
+<td>9</td>
+</tr>
+<tr>
+<td>43</td>
+<td>BuildPipeline</td>
+<td>A CI/CD pipeline automating build, test, and deployment</td>
+<td>Build &amp; CI/CD</td>
+<td>13</td>
+</tr>
+<tr>
+<td>44</td>
+<td>PipelineStage (inline)</td>
+<td>A discrete stage within a CI/CD pipeline</td>
+<td>Build &amp; CI/CD</td>
+<td>13</td>
+</tr>
+<tr>
+<td>45</td>
+<td>BuildArtifact</td>
+<td>An artifact produced by a build pipeline</td>
+<td>Build &amp; CI/CD</td>
+<td>13</td>
+</tr>
+<tr>
+<td>46</td>
+<td>ArtifactRegistry</td>
+<td>A registry or repository for storing build artifacts</td>
+<td>Build &amp; CI/CD</td>
+<td>13</td>
+</tr>
+<tr>
+<td>47</td>
+<td>PackageManager</td>
+<td>A package/dependency management tool</td>
+<td>Dependency Management</td>
+<td>14</td>
+</tr>
+<tr>
+<td>48</td>
+<td>PackageDependency</td>
+<td>A declared dependency on an external package or library</td>
+<td>Dependency Management</td>
+<td>14</td>
+</tr>
+<tr>
+<td>49</td>
+<td>KnownVulnerability (inline)</td>
+<td>A known security vulnerability in a dependency</td>
+<td>Dependency Management</td>
+<td>14</td>
+</tr>
+<tr>
+<td>50</td>
+<td>IaCDefinition</td>
+<td>An infrastructure-as-code definition for declarative resource provisioning</td>
+<td>Infrastructure as Code</td>
+<td>17</td>
+</tr>
+<tr>
+<td>51</td>
+<td>IaCModule</td>
+<td>A reusable module of IaC definitions</td>
+<td>Infrastructure as Code</td>
+<td>17</td>
+</tr>
+<tr>
+<td>52</td>
+<td>IaCResource (inline)</td>
+<td>A single infrastructure resource defined in code</td>
+<td>Infrastructure as Code</td>
+<td>17</td>
+</tr>
+<tr>
+<td>53</td>
+<td>DataPipeline</td>
+<td>A data processing pipeline for ETL, feature engineering, or model training</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>54</td>
+<td>DataPipelineStep (inline)</td>
+<td>A discrete step within a data pipeline</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Dataset</td>
+<td>A dataset used for training, evaluation, or inference</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>56</td>
+<td>MLModel</td>
+<td>A machine learning model defined, trained, or served by the system</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>57</td>
+<td>MLModelMetric (inline)</td>
+<td>A performance metric for an ML model</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>58</td>
+<td>FeatureStore</td>
+<td>A centralized store for computed ML features</td>
+<td>ML &amp; Data Pipelines</td>
+<td>16</td>
+</tr>
+<tr>
+<td>59</td>
+<td>TestSuite</td>
+<td>A collection of related test cases</td>
+<td>Testing</td>
+<td>11</td>
+</tr>
+<tr>
+<td>60</td>
+<td>TestCoverage</td>
+<td>Code coverage metrics for a component or module</td>
+<td>Testing</td>
+<td>11</td>
+</tr>
+<tr>
+<td>61</td>
+<td>TestAssertion (inline)</td>
+<td>An individual assertion within a test case</td>
+<td>Testing</td>
+<td>11</td>
+</tr>
+<tr>
+<td>62</td>
+<td>StateStore</td>
+<td>A frontend state management store or container</td>
+<td>Frontend Supporting</td>
+<td>12</td>
+</tr>
+<tr>
+<td>63</td>
+<td>UIProperty (inline)</td>
+<td>A property (prop) passed to a UI component</td>
+<td>Frontend Supporting</td>
+<td>12</td>
+</tr>
+<tr>
+<td>64</td>
+<td>ConcurrencyPattern</td>
+<td>A high-level concurrency pattern used in the system</td>
+<td>Frontend Supporting</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total: 64 classes</strong> (including 3 Interface subtypes, 1 Component subtype, and 1 Rule subtype that inherit from parents).</p>
+<hr />
+<h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
+<h3 id="upward-links-to-layer-1-system-context">Upward links to Layer 1 (System Context)</h3>
+<p>These relationships connect Layer 2 concepts to system-context entities:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 2 class</th>
+<th>Attribute</th>
+<th>Layer 1 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BoundedContext</td>
+<td><code>contained_in_system</code></td>
+<td>System</td>
+<td>System owning this bounded context</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td><code>belongs_to_system</code></td>
+<td>System</td>
+<td>System owning this integration</td>
+</tr>
+<tr>
+<td>Integration</td>
+<td><code>integrates_with_system</code></td>
+<td>ExternalSystem</td>
+<td>External system connected via this integration</td>
+</tr>
+<tr>
+<td>Interface</td>
+<td><code>exposed_by_system</code></td>
+<td>System</td>
+<td>System exposing this interface</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> <strong>Policy</strong> (Layer 3) also has an upward link to Layer 1 via <code>enforced_by_system</code> → <strong>System</strong>. It is documented in the Layer 3 cross-layer section rather than here, since Policy is not a Layer 2 class.</p>
+</blockquote>
+<h3 id="downward-links-to-layer-3-component">Downward links to Layer 3 (Component)</h3>
+<p>These relationships connect Layer 2 concepts to their component-level internals:</p>
+<table>
+<thead>
+<tr>
+<th>Layer 2 class</th>
+<th>Attribute</th>
+<th>Layer 3 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Module</td>
+<td><code>contains_components</code></td>
+<td>Component</td>
+<td>Components within this module</td>
+</tr>
+<tr>
+<td>BoundedContext</td>
+<td><code>contains_aggregates</code></td>
+<td>Aggregate</td>
+<td>Aggregates within this bounded context</td>
+</tr>
+<tr>
+<td>DataStore</td>
+<td><code>persists_aggregates</code></td>
+<td>Aggregate</td>
+<td>Aggregates backed by this data store</td>
+</tr>
+<tr>
+<td>Configuration</td>
+<td><code>controls_features</code></td>
+<td>Feature</td>
+<td>Features controlled by this config (feature flags)</td>
+</tr>
+<tr>
+<td>Service</td>
+<td><code>receives_integration_events</code></td>
+<td>IntegrationEvent</td>
+<td>Integration events received by this service</td>
+</tr>
+<tr>
+<td>Collection</td>
+<td><code>collection_structured_by_schema</code></td>
+<td>Schema</td>
+<td>Schema defining collection structure</td>
+</tr>
+<tr>
+<td>Module</td>
+<td><code>provides_capabilities</code></td>
+<td>Capability</td>
+<td>Capabilities provided by this module</td>
+</tr>
+<tr>
+<td>Route</td>
+<td><code>route_renders_component</code></td>
+<td>UIComponent</td>
+<td>UI component rendered on this route</td>
+</tr>
+<tr>
+<td>Route</td>
+<td><code>route_guarded_by</code></td>
+<td>Policy</td>
+<td>Policies guarding this route</td>
+</tr>
+<tr>
+<td>Screen</td>
+<td><code>offers_operations</code></td>
+<td>Operation</td>
+<td>Operations accessible from this screen</td>
+</tr>
+<tr>
+<td>Endpoint</td>
+<td><code>operations</code></td>
+<td>Operation</td>
+<td>Operations served by this endpoint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="intra-layer-links-within-layer-2">Intra-layer links (within Layer 2)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer 2 class</th>
+<th>Attribute</th>
+<th>Layer 2 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contract</td>
+<td><code>defines_interfaces</code></td>
+<td>Interface</td>
+<td>Interfaces defined by this contract</td>
+</tr>
+<tr>
+<td>Module</td>
+<td><code>runs_as_services</code></td>
+<td>Service</td>
+<td>Services running this module</td>
+</tr>
+</tbody>
+</table>
+<h3 id="downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</h3>
+<table>
+<thead>
+<tr>
+<th>Layer 2 class</th>
+<th>Attribute</th>
+<th>Layer 4 class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Collection</td>
+<td><code>persists_structures</code></td>
+<td>DataStructure</td>
+<td>Code-level data structures persisted in this collection</td>
+</tr>
+<tr>
+<td>Contract</td>
+<td><code>implemented_by_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Code units implementing this contract</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="a-structural-5-classes">A. Structural (5 classes)</h2>
+<h3 id="1-boundedcontext">1. BoundedContext</h3>
+<p>A semantic boundary within which a domain model applies consistently. Corresponds to the DDD bounded context concept.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ubiquitous_language</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Key terms in the ubiquitous language for this context</td>
+</tr>
+<tr>
+<td><code>context_map_relationship</code></td>
+<td>string</td>
+<td>No</td>
+<td>Relationship pattern (e.g., Customer-Supplier, Partnership)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_system</code></td>
+<td>System</td>
+<td>No</td>
+<td><code>contains_bounded_contexts</code></td>
+<td>Parent system (Layer 1)</td>
+</tr>
+<tr>
+<td><code>contains_modules</code></td>
+<td>Module</td>
+<td>Yes</td>
+<td><code>contained_in_context</code></td>
+<td>Modules within this context</td>
+</tr>
+<tr>
+<td><code>upstream_from</code></td>
+<td>BoundedContext</td>
+<td>Yes</td>
+<td><code>downstream_from</code></td>
+<td>Contexts upstream (this context depends on them)</td>
+</tr>
+<tr>
+<td><code>downstream_from</code></td>
+<td>BoundedContext</td>
+<td>Yes</td>
+<td><code>upstream_from</code></td>
+<td>Contexts downstream (they depend on this one)</td>
+</tr>
+<tr>
+<td><code>contains_aggregates</code></td>
+<td>Aggregate</td>
+<td>Yes</td>
+<td><code>contained_in_bounded_context</code></td>
+<td>Aggregates within this context (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="2-module">2. Module</h3>
+<p>A deployable, cohesive unit of functionality within a bounded context.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_optional</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this module is optional</td>
+</tr>
+<tr>
+<td><code>required_features</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Features required for this module</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contained_in_context</code></td>
+<td>BoundedContext</td>
+<td>No</td>
+<td><code>contains_modules</code></td>
+<td>Parent bounded context</td>
+</tr>
+<tr>
+<td><code>contains_components</code></td>
+<td>Component</td>
+<td>Yes</td>
+<td><code>contained_in_module</code></td>
+<td>Components within this module (Layer 3)</td>
+</tr>
+<tr>
+<td><code>depends_on_module</code></td>
+<td>Module</td>
+<td>Yes</td>
+<td><code>depended_on_by_module</code></td>
+<td>Modules this one depends on</td>
+</tr>
+<tr>
+<td><code>depended_on_by_module</code></td>
+<td>Module</td>
+<td>Yes</td>
+<td><code>depends_on_module</code></td>
+<td>Modules depending on this one</td>
+</tr>
+<tr>
+<td><code>provides_capabilities</code></td>
+<td>Capability</td>
+<td>Yes</td>
+<td><code>provided_by_modules</code></td>
+<td>Capabilities provided (Layer 3)</td>
+</tr>
+<tr>
+<td><code>runs_as_services</code></td>
+<td>Service</td>
+<td>Yes</td>
+<td><code>runs_module</code></td>
+<td>Services running this module</td>
+</tr>
+<tr>
+<td><code>dependencies</code></td>
+<td>Dependency</td>
+<td>Yes</td>
+<td>--</td>
+<td>Inline dependency declarations</td>
+</tr>
+<tr>
+<td><code>mapped_from_directory</code></td>
+<td>StorageLocation</td>
+<td>No</td>
+<td><code>maps_to_module</code></td>
+<td>Source directory (Layer 4)</td>
+</tr>
+<tr>
+<td><code>module_tested_by_suites</code></td>
+<td>TestSuite</td>
+<td>Yes</td>
+<td><code>tests_module</code></td>
+<td>Test suites for this module</td>
+</tr>
+<tr>
+<td><code>module_has_coverage</code></td>
+<td>TestCoverage</td>
+<td>No</td>
+<td><code>coverage_for_module</code></td>
+<td>Coverage metrics</td>
+</tr>
+<tr>
+<td><code>module_managed_by_package_manager</code></td>
+<td>PackageManager</td>
+<td>No</td>
+<td><code>manages_dependencies_for_module</code></td>
+<td>Package manager</td>
+</tr>
+<tr>
+<td><code>module_has_dependencies</code></td>
+<td>PackageDependency</td>
+<td>Yes</td>
+<td><code>dependency_of_module</code></td>
+<td>Package dependencies</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="3-service">3. Service</h3>
+<p>An independently deployable runtime unit.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>service_type</code></td>
+<td>ServiceType</td>
+<td>No</td>
+<td>Kind of service</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_health_checks</code></td>
+<td>HealthCheck</td>
+<td>Yes</td>
+<td>--</td>
+<td>Health check probes (inline)</td>
+</tr>
+<tr>
+<td><code>emits_metrics</code></td>
+<td>Metric</td>
+<td>Yes</td>
+<td>--</td>
+<td>Metrics emitted</td>
+</tr>
+<tr>
+<td><code>exposes_endpoints</code></td>
+<td>Endpoint</td>
+<td>Yes</td>
+<td><code>exposed_by_service</code></td>
+<td>Endpoints exposed (inline)</td>
+</tr>
+<tr>
+<td><code>depends_on_service</code></td>
+<td>Service</td>
+<td>Yes</td>
+<td><code>depended_on_by_service</code></td>
+<td>Services this one depends on</td>
+</tr>
+<tr>
+<td><code>depended_on_by_service</code></td>
+<td>Service</td>
+<td>Yes</td>
+<td><code>depends_on_service</code></td>
+<td>Services depending on this one</td>
+</tr>
+<tr>
+<td><code>deployed_as</code></td>
+<td>Deployment</td>
+<td>Yes</td>
+<td><code>deploys_service</code></td>
+<td>Deployment instances</td>
+</tr>
+<tr>
+<td><code>runs_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>runs_as_services</code></td>
+<td>Module this service runs</td>
+</tr>
+<tr>
+<td><code>receives_integration_events</code></td>
+<td>IntegrationEvent</td>
+<td>Yes</td>
+<td><code>targeted_at_services</code></td>
+<td>Integration events received (Layer 3)</td>
+</tr>
+<tr>
+<td><code>affected_by_incidents</code></td>
+<td>Incident</td>
+<td>Yes</td>
+<td><code>affects_services</code></td>
+<td>Incidents affecting this service</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ServiceType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>microservice</code></td>
+<td>Microservice</td>
+</tr>
+<tr>
+<td><code>monolith</code></td>
+<td>Monolith</td>
+</tr>
+<tr>
+<td><code>function</code></td>
+<td>Serverless function or lambda</td>
+</tr>
+<tr>
+<td><code>job</code></td>
+<td>Batch processing job</td>
+</tr>
+<tr>
+<td><code>daemon</code></td>
+<td>Daemon process</td>
+</tr>
+<tr>
+<td><code>cics_transaction</code></td>
+<td>CICS online transaction</td>
+</tr>
+<tr>
+<td><code>ims_transaction</code></td>
+<td>IMS online transaction</td>
+</tr>
+<tr>
+<td><code>batch_program</code></td>
+<td>Mainframe batch program</td>
+</tr>
+<tr>
+<td><code>stored_proc_service</code></td>
+<td>Stored procedure exposed as service</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="4-interface-abstract">4. Interface (abstract)</h3>
+<p>A contract-defined boundary through which interaction occurs. Abstract base for UserInterface, ProgrammaticInterface, and EventInterface.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>InterfaceCategory</td>
+<td>No</td>
+<td><code>user_interface</code>, <code>programmatic_interface</code>, <code>event_interface</code></td>
+</tr>
+<tr>
+<td><code>authentication_required</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether authentication is required</td>
+</tr>
+<tr>
+<td><code>rate_limit</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Rate limit (requests per unit time)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defined_by_contract</code></td>
+<td>Contract</td>
+<td>No</td>
+<td><code>defines_interfaces</code></td>
+<td>Contract defining this interface</td>
+</tr>
+<tr>
+<td><code>exposed_by_system</code></td>
+<td>System</td>
+<td>No</td>
+<td><code>exposes_interfaces</code></td>
+<td>System exposing this interface (Layer 1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>InterfaceCategory Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>user_interface</code></td>
+<td>User-facing interface</td>
+</tr>
+<tr>
+<td><code>programmatic_interface</code></td>
+<td>Machine-to-machine interface</td>
+</tr>
+<tr>
+<td><code>event_interface</code></td>
+<td>Event-driven interface</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="5-dependency">5. Dependency</h3>
+<p>A lightweight dependency reference between components or services. Typically inlined within Module or Component.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dependency_type</code></td>
+<td>DependencyType</td>
+<td>No</td>
+<td>Kind of dependency</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>NamedEntity</td>
+<td>No</td>
+<td>Target entity</td>
+</tr>
+<tr>
+<td><code>version_constraint</code></td>
+<td>string</td>
+<td>No</td>
+<td>Version constraint expression</td>
+</tr>
+<tr>
+<td><code>is_optional</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether optional</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DependencyType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>runtime</code></td>
+<td>Required at runtime</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>Required at build time</td>
+</tr>
+<tr>
+<td><code>optional</code></td>
+<td>Optional dependency</td>
+</tr>
+<tr>
+<td><code>dev</code></td>
+<td>Development-only dependency</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="b-interfaces-endpoints-6-classes">B. Interfaces &amp; Endpoints (6 classes)</h2>
+<h3 id="6-userinterface">6. UserInterface</h3>
+<p>A user-facing interface. Inherits all Interface attributes and relationships.</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ui_type</code></td>
+<td>UserInterfaceType</td>
+<td>No</td>
+<td>Kind of user interface</td>
+</tr>
+<tr>
+<td><code>contains_screens</code></td>
+<td>Screen</td>
+<td>Yes</td>
+<td>Screens in this interface</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_screens</code></td>
+<td>Screen</td>
+<td>Yes</td>
+<td><code>part_of_ui</code></td>
+<td>Screens in this interface</td>
+</tr>
+</tbody>
+</table>
+<p><strong>UserInterfaceType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>web_ui</code></td>
+<td>Web-based UI</td>
+</tr>
+<tr>
+<td><code>mobile_ui</code></td>
+<td>Mobile application UI</td>
+</tr>
+<tr>
+<td><code>desktop_ui</code></td>
+<td>Desktop application UI</td>
+</tr>
+<tr>
+<td><code>cli</code></td>
+<td>Command-line interface</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="7-programmaticinterface">7. ProgrammaticInterface</h3>
+<p>A machine-to-machine interface. Inherits all Interface attributes and relationships.</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>api_type</code></td>
+<td>APIType</td>
+<td>No</td>
+<td>Kind of API</td>
+</tr>
+<tr>
+<td><code>base_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Base URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_endpoints</code></td>
+<td>Endpoint</td>
+<td>Yes</td>
+<td><code>belongs_to_interface</code></td>
+<td>Endpoints in this interface (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>APIType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>rest_api</code></td>
+<td>REST API</td>
+</tr>
+<tr>
+<td><code>graphql_api</code></td>
+<td>GraphQL API</td>
+</tr>
+<tr>
+<td><code>grpc_api</code></td>
+<td>gRPC API</td>
+</tr>
+<tr>
+<td><code>sdk</code></td>
+<td>Software Development Kit</td>
+</tr>
+<tr>
+<td><code>soap_api</code></td>
+<td>SOAP API</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="8-eventinterface">8. EventInterface</h3>
+<p>An event-driven interface. Inherits all Interface attributes and relationships.</p>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>event_type</code></td>
+<td>EventInterfaceType</td>
+<td>No</td>
+<td>Kind of event interface</td>
+</tr>
+<tr>
+<td><code>topics</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Topic names</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_subscriptions</code></td>
+<td>Subscription</td>
+<td>Yes</td>
+<td><code>subscribes_to_interface</code></td>
+<td>Subscriptions to this interface (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EventInterfaceType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>webhook</code></td>
+<td>Webhook callback</td>
+</tr>
+<tr>
+<td><code>message_queue</code></td>
+<td>Message queue</td>
+</tr>
+<tr>
+<td><code>event_stream</code></td>
+<td>Event stream</td>
+</tr>
+<tr>
+<td><code>pub_sub</code></td>
+<td>Publish/subscribe</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="9-screen">9. Screen</h3>
+<p>A single screen or view in a user interface.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>route</code></td>
+<td>string</td>
+<td>No</td>
+<td>URL route or path</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>part_of_ui</code></td>
+<td>UserInterface</td>
+<td>No</td>
+<td><code>contains_screens</code></td>
+<td>Parent user interface</td>
+</tr>
+<tr>
+<td><code>offers_operations</code></td>
+<td>Operation</td>
+<td>Yes</td>
+<td><code>offered_on_screens</code></td>
+<td>Operations accessible from this screen (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="10-endpoint">10. Endpoint</h3>
+<p>A specific addressable entry point on a service.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path</code></td>
+<td>string</td>
+<td>No</td>
+<td>URL path</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>string</td>
+<td>No</td>
+<td>HTTP method or equivalent</td>
+</tr>
+<tr>
+<td><code>operations</code></td>
+<td>Operation[]</td>
+<td>No</td>
+<td>Operations served</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>ProtocolType</td>
+<td>No</td>
+<td>Communication protocol</td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Port number</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exposed_by_service</code></td>
+<td>Service</td>
+<td>No</td>
+<td><code>exposes_endpoints</code></td>
+<td>Service exposing this endpoint</td>
+</tr>
+<tr>
+<td><code>belongs_to_interface</code></td>
+<td>ProgrammaticInterface</td>
+<td>No</td>
+<td><code>has_endpoints</code></td>
+<td>Parent programmatic interface</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ProtocolType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>http</code></td>
+<td>HTTP</td>
+</tr>
+<tr>
+<td><code>https</code></td>
+<td>HTTPS</td>
+</tr>
+<tr>
+<td><code>websocket</code></td>
+<td>WebSocket</td>
+</tr>
+<tr>
+<td><code>grpc</code></td>
+<td>gRPC</td>
+</tr>
+<tr>
+<td><code>amqp</code></td>
+<td>AMQP</td>
+</tr>
+<tr>
+<td><code>mqtt</code></td>
+<td>MQTT</td>
+</tr>
+<tr>
+<td><code>kafka</code></td>
+<td>Kafka</td>
+</tr>
+<tr>
+<td><code>sftp</code></td>
+<td>SFTP</td>
+</tr>
+<tr>
+<td><code>tcp</code></td>
+<td>TCP</td>
+</tr>
+<tr>
+<td><code>udp</code></td>
+<td>UDP</td>
+</tr>
+<tr>
+<td><code>corba</code></td>
+<td>Common Object Request Broker Architecture</td>
+</tr>
+<tr>
+<td><code>dcom</code></td>
+<td>Distributed Component Object Model</td>
+</tr>
+<tr>
+<td><code>rmi</code></td>
+<td>Java Remote Method Invocation</td>
+</tr>
+<tr>
+<td><code>named_pipe</code></td>
+<td>Named pipe</td>
+</tr>
+<tr>
+<td><code>shared_memory</code></td>
+<td>Shared memory</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="11-route">11. Route</h3>
+<p>A navigation route or URL path in a frontend application.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>path_pattern</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>URL path pattern</td>
+</tr>
+<tr>
+<td><code>route_type</code></td>
+<td>RouteType</td>
+<td>No</td>
+<td>Kind of route</td>
+</tr>
+<tr>
+<td><code>http_methods</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Allowed HTTP methods</td>
+</tr>
+<tr>
+<td><code>is_dynamic</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the route has dynamic segments</td>
+</tr>
+<tr>
+<td><code>is_authenticated</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether authentication is required</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>route_renders_component</code></td>
+<td>UIComponent</td>
+<td>No</td>
+<td><code>renders_on_route</code></td>
+<td>UI component rendered (Layer 3)</td>
+</tr>
+<tr>
+<td><code>has_parent_route</code></td>
+<td>Route</td>
+<td>No</td>
+<td><code>has_child_routes</code></td>
+<td>Parent route</td>
+</tr>
+<tr>
+<td><code>has_child_routes</code></td>
+<td>Route</td>
+<td>Yes</td>
+<td><code>has_parent_route</code></td>
+<td>Child routes</td>
+</tr>
+<tr>
+<td><code>route_guarded_by</code></td>
+<td>Policy</td>
+<td>Yes</td>
+<td><code>guards_routes</code></td>
+<td>Policies guarding this route (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>RouteType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page_route</code></td>
+<td>Full page route</td>
+</tr>
+<tr>
+<td><code>api_route</code></td>
+<td>API route</td>
+</tr>
+<tr>
+<td><code>layout_route</code></td>
+<td>Layout wrapper route</td>
+</tr>
+<tr>
+<td><code>redirect</code></td>
+<td>Redirect</td>
+</tr>
+<tr>
+<td><code>catch_all</code></td>
+<td>Catch-all/wildcard route</td>
+</tr>
+<tr>
+<td><code>guarded</code></td>
+<td>Guarded/protected route</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="c-data-management-10-classes">C. Data Management (10 classes)</h2>
+<h3 id="12-datastore">12. DataStore</h3>
+<p>A persistence mechanism.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>store_type</code></td>
+<td>DataStoreType</td>
+<td>No</td>
+<td>Kind of data store</td>
+</tr>
+<tr>
+<td><code>connection_string</code></td>
+<td>string</td>
+<td>No</td>
+<td>Connection string</td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td>Collection[]</td>
+<td>No</td>
+<td>Collections within this store (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hosted_on_infrastructure</code></td>
+<td>Infrastructure</td>
+<td>No</td>
+<td><code>hosts_datastores</code></td>
+<td>Hosting infrastructure</td>
+</tr>
+<tr>
+<td><code>persists_aggregates</code></td>
+<td>Aggregate</td>
+<td>Yes</td>
+<td><code>persisted_in_stores</code></td>
+<td>Aggregates backed by this store (Layer 3)</td>
+</tr>
+<tr>
+<td><code>store_read_by_pipelines</code></td>
+<td>DataPipeline</td>
+<td>Yes</td>
+<td><code>pipeline_reads_from_stores</code></td>
+<td>Pipelines reading from this store</td>
+</tr>
+<tr>
+<td><code>store_written_by_pipelines</code></td>
+<td>DataPipeline</td>
+<td>Yes</td>
+<td><code>pipeline_writes_to_stores</code></td>
+<td>Pipelines writing to this store</td>
+</tr>
+<tr>
+<td><code>store_file_definitions</code></td>
+<td>FileDefinition</td>
+<td>Yes</td>
+<td><code>persisted_in_store</code></td>
+<td>File definitions mapped to this store (Layer 4)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DataStoreType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>relational_db</code></td>
+<td>Relational database</td>
+</tr>
+<tr>
+<td><code>document_db</code></td>
+<td>Document database</td>
+</tr>
+<tr>
+<td><code>key_value_store</code></td>
+<td>Key-value store</td>
+</tr>
+<tr>
+<td><code>graph_db</code></td>
+<td>Graph database</td>
+</tr>
+<tr>
+<td><code>time_series_db</code></td>
+<td>Time series database</td>
+</tr>
+<tr>
+<td><code>object_storage</code></td>
+<td>Object/blob storage</td>
+</tr>
+<tr>
+<td><code>search_index</code></td>
+<td>Search index (Elasticsearch, Solr)</td>
+</tr>
+<tr>
+<td><code>cache</code></td>
+<td>Cache (Redis, Memcached)</td>
+</tr>
+<tr>
+<td><code>message_broker</code></td>
+<td>Message broker</td>
+</tr>
+<tr>
+<td><code>data_lake</code></td>
+<td>Data lake</td>
+</tr>
+<tr>
+<td><code>vsam</code></td>
+<td>IBM VSAM dataset</td>
+</tr>
+<tr>
+<td><code>flat_file</code></td>
+<td>Sequential or flat file</td>
+</tr>
+<tr>
+<td><code>isam</code></td>
+<td>Indexed Sequential Access Method file</td>
+</tr>
+<tr>
+<td><code>dead_letter_queue</code></td>
+<td>Dead letter queue</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="13-collection">13. Collection</h3>
+<p>A logical grouping of records (table, collection, bucket).</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>indexes</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Index definitions as strings (<strong>deprecated</strong> -- use <code>has_indexes</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>collection_structured_by_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>structures_collections</code></td>
+<td>Schema defining structure (Layer 3)</td>
+</tr>
+<tr>
+<td><code>governed_by_retention_policy</code></td>
+<td>RetentionPolicy</td>
+<td>No</td>
+<td><code>governs_collections</code></td>
+<td>Retention policy</td>
+</tr>
+<tr>
+<td><code>stores_records</code></td>
+<td>Record</td>
+<td>Yes</td>
+<td><code>stored_in_collection</code></td>
+<td>Records stored</td>
+</tr>
+<tr>
+<td><code>persists_structures</code></td>
+<td>DataStructure</td>
+<td>Yes</td>
+<td><code>persisted_in_collection</code></td>
+<td>Code-level data structures persisted (Layer 4)</td>
+</tr>
+<tr>
+<td><code>has_constraints</code></td>
+<td>DatabaseConstraint</td>
+<td>Yes</td>
+<td><code>constraint_on_collection</code></td>
+<td>Database constraints (inline)</td>
+</tr>
+<tr>
+<td><code>has_indexes</code></td>
+<td>DatabaseIndex</td>
+<td>Yes</td>
+<td><code>index_on_collection</code></td>
+<td>Database indexes (inline)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="14-record">14. Record</h3>
+<p>A single persisted instance of data.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>classifications</code></td>
+<td>DataClassificationType[]</td>
+<td>No</td>
+<td>Data sensitivity classifications</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stored_in_collection</code></td>
+<td>Collection</td>
+<td>No</td>
+<td><code>stores_records</code></td>
+<td>Parent collection</td>
+</tr>
+<tr>
+<td><code>conforms_to_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>validates_records</code></td>
+<td>Schema this record conforms to (Layer 3)</td>
+</tr>
+<tr>
+<td><code>has_lineage</code></td>
+<td>DataLineage</td>
+<td>No</td>
+<td><code>tracks_record</code></td>
+<td>Lineage tracking</td>
+</tr>
+<tr>
+<td><code>source_of_lineage</code></td>
+<td>DataLineage</td>
+<td>Yes</td>
+<td><code>derived_from_records</code></td>
+<td>Lineage entries where this record is a source</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="15-dataclassification">15. DataClassification</h3>
+<p>A sensitivity or handling category for data.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>classification_type</code></td>
+<td>DataClassificationType</td>
+<td>No</td>
+<td>Classification level</td>
+</tr>
+<tr>
+<td><code>handling_requirements</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Handling requirements</td>
+</tr>
+<tr>
+<td><code>encryption_required</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether encryption is required</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DataClassificationType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>public</code></td>
+<td>Public data</td>
+</tr>
+<tr>
+<td><code>internal</code></td>
+<td>Internal use only</td>
+</tr>
+<tr>
+<td><code>confidential</code></td>
+<td>Confidential</td>
+</tr>
+<tr>
+<td><code>restricted</code></td>
+<td>Restricted access</td>
+</tr>
+<tr>
+<td><code>pii</code></td>
+<td>Personally Identifiable Information</td>
+</tr>
+<tr>
+<td><code>phi</code></td>
+<td>Protected Health Information</td>
+</tr>
+<tr>
+<td><code>pci</code></td>
+<td>Payment Card Industry data</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="16-retentionpolicy">16. RetentionPolicy</h3>
+<p>Rules governing data lifecycle and deletion.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>retention_days</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Days to retain data</td>
+</tr>
+<tr>
+<td><code>archive_after_days</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Days before archival</td>
+</tr>
+<tr>
+<td><code>deletion_strategy</code></td>
+<td>string</td>
+<td>No</td>
+<td>Deletion strategy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>governs_collections</code></td>
+<td>Collection</td>
+<td>Yes</td>
+<td><code>governed_by_retention_policy</code></td>
+<td>Collections governed</td>
+</tr>
+<tr>
+<td><code>governs_logs</code></td>
+<td>Log</td>
+<td>Yes</td>
+<td><code>log_governed_by_retention</code></td>
+<td>Logs governed</td>
+</tr>
+<tr>
+<td><code>governs_audit_logs</code></td>
+<td>AuditLog</td>
+<td>Yes</td>
+<td><code>auditlog_governed_by_retention</code></td>
+<td>Audit logs governed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="17-datalineage">17. DataLineage</h3>
+<p>The origin, transformation history, and movement of data.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td>string</td>
+<td>No</td>
+<td>Data source</td>
+</tr>
+<tr>
+<td><code>transformations</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Transformation descriptions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>derived_from_records</code></td>
+<td>Record</td>
+<td>Yes</td>
+<td><code>source_of_lineage</code></td>
+<td>Source records</td>
+</tr>
+<tr>
+<td><code>tracks_record</code></td>
+<td>Record</td>
+<td>No</td>
+<td><code>has_lineage</code></td>
+<td>Record tracked</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="18-auditlog">18. AuditLog</h3>
+<p>A tamper-evident record of system activities.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entries</code></td>
+<td>AuditEntry[]</td>
+<td>No</td>
+<td>Entries (legacy attribute)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auditlog_governed_by_retention</code></td>
+<td>RetentionPolicy</td>
+<td>No</td>
+<td><code>governs_audit_logs</code></td>
+<td>Retention policy</td>
+</tr>
+<tr>
+<td><code>contains_entries</code></td>
+<td>AuditEntry</td>
+<td>Yes</td>
+<td><code>entry_in_audit_log</code></td>
+<td>Audit entries</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="19-auditentry">19. AuditEntry</h3>
+<p>A single record within an audit log.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timestamp</code></td>
+<td>Timestamp</td>
+<td><strong>Yes</strong></td>
+<td>When the action occurred</td>
+</tr>
+<tr>
+<td><code>outcome</code></td>
+<td>string</td>
+<td>No</td>
+<td>Action outcome</td>
+</tr>
+<tr>
+<td><code>details</code></td>
+<td>string</td>
+<td>No</td>
+<td>Additional details</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entry_in_audit_log</code></td>
+<td>AuditLog</td>
+<td>No</td>
+<td><code>contains_entries</code></td>
+<td>Parent audit log</td>
+</tr>
+<tr>
+<td><code>audit_performed_by_actor</code></td>
+<td>Actor</td>
+<td>No</td>
+<td><code>audit_actions_performed</code></td>
+<td>Actor who performed the action</td>
+</tr>
+<tr>
+<td><code>records_action</code></td>
+<td>Action</td>
+<td>No</td>
+<td><code>recorded_in_audit</code></td>
+<td>Action recorded (Layer 3)</td>
+</tr>
+<tr>
+<td><code>affects_resource</code></td>
+<td>Resource</td>
+<td>No</td>
+<td><code>affected_in_audit</code></td>
+<td>Resource affected (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="20-databaseconstraint">20. DatabaseConstraint</h3>
+<p>A constraint on a database table/collection. Typically inlined within Collection.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>constraint_type</code></td>
+<td>DatabaseConstraintType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of constraint</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Constrained columns</td>
+</tr>
+<tr>
+<td><code>reference_table</code></td>
+<td>string</td>
+<td>No</td>
+<td>Referenced table (for foreign keys)</td>
+</tr>
+<tr>
+<td><code>reference_columns</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Referenced columns (for foreign keys)</td>
+</tr>
+<tr>
+<td><code>expression</code></td>
+<td>string</td>
+<td>No</td>
+<td>Expression (for CHECK constraints)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>constraint_on_collection</code></td>
+<td>Collection</td>
+<td>No</td>
+<td><code>has_constraints</code></td>
+<td>Parent collection</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DatabaseConstraintType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_key</code></td>
+<td>Primary key</td>
+</tr>
+<tr>
+<td><code>foreign_key</code></td>
+<td>Foreign key</td>
+</tr>
+<tr>
+<td><code>unique</code></td>
+<td>Unique constraint</td>
+</tr>
+<tr>
+<td><code>check</code></td>
+<td>Check constraint</td>
+</tr>
+<tr>
+<td><code>not_null</code></td>
+<td>Not-null constraint</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="21-databaseindex">21. DatabaseIndex</h3>
+<p>An index on a database table/collection. Typically inlined within Collection.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index_type</code></td>
+<td>IndexType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of index</td>
+</tr>
+<tr>
+<td><code>columns</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Indexed columns</td>
+</tr>
+<tr>
+<td><code>is_unique</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether unique</td>
+</tr>
+<tr>
+<td><code>is_partial</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether a partial index</td>
+</tr>
+<tr>
+<td><code>filter_expression</code></td>
+<td>string</td>
+<td>No</td>
+<td>Filter for partial indexes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index_on_collection</code></td>
+<td>Collection</td>
+<td>No</td>
+<td><code>has_indexes</code></td>
+<td>Parent collection</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IndexType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>btree</code></td>
+<td>B-tree index</td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td>Hash index</td>
+</tr>
+<tr>
+<td><code>gin</code></td>
+<td>Generalized Inverted Index (PostgreSQL)</td>
+</tr>
+<tr>
+<td><code>fulltext</code></td>
+<td>Full-text index</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="d-integration-6-classes">D. Integration (6 classes)</h2>
+<h3 id="22-integration">22. Integration</h3>
+<p>A configured connection to an external system.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integration_type</code></td>
+<td>IntegrationType</td>
+<td>No</td>
+<td>Direction of integration</td>
+</tr>
+<tr>
+<td><code>protocol</code></td>
+<td>ProtocolType</td>
+<td>No</td>
+<td>Communication protocol</td>
+</tr>
+<tr>
+<td><code>messages</code></td>
+<td>Message[]</td>
+<td>No</td>
+<td>Messages exchanged (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>integrates_with_system</code></td>
+<td>ExternalSystem</td>
+<td>No</td>
+<td><code>integrated_via</code></td>
+<td>External system (Layer 1)</td>
+</tr>
+<tr>
+<td><code>uses_adapter</code></td>
+<td>Adapter</td>
+<td>No</td>
+<td><code>used_by_integrations</code></td>
+<td>Protocol adapter</td>
+</tr>
+<tr>
+<td><code>protected_by_breaker</code></td>
+<td>CircuitBreaker</td>
+<td>No</td>
+<td><code>protects_integrations</code></td>
+<td>Circuit breaker</td>
+</tr>
+<tr>
+<td><code>integration_governed_by_contract</code></td>
+<td>Contract</td>
+<td>No</td>
+<td><code>governs_integrations</code></td>
+<td>Governing contract</td>
+</tr>
+<tr>
+<td><code>belongs_to_system</code></td>
+<td>System</td>
+<td>No</td>
+<td><code>has_integrations</code></td>
+<td>Parent system (Layer 1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IntegrationType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>inbound</code></td>
+<td>Inbound integration</td>
+</tr>
+<tr>
+<td><code>outbound</code></td>
+<td>Outbound integration</td>
+</tr>
+<tr>
+<td><code>bidirectional</code></td>
+<td>Bidirectional integration</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-message">23. Message</h3>
+<p>A unit of data exchanged in integration. Typically inlined within Integration.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message_type</code></td>
+<td>MessageType</td>
+<td>No</td>
+<td>Kind of message</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>message_structured_by_schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td><code>structures_messages</code></td>
+<td>Payload schema (Layer 3)</td>
+</tr>
+<tr>
+<td><code>validated_by_contract</code></td>
+<td>Contract</td>
+<td>No</td>
+<td><code>validates_messages</code></td>
+<td>Contract validating this message</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MessageType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>request</code></td>
+<td>Request message</td>
+</tr>
+<tr>
+<td><code>response</code></td>
+<td>Response message</td>
+</tr>
+<tr>
+<td><code>notification</code></td>
+<td>Notification</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>Command message</td>
+</tr>
+<tr>
+<td><code>event</code></td>
+<td>Event message</td>
+</tr>
+<tr>
+<td><code>query</code></td>
+<td>Query message</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="24-contract">24. Contract</h3>
+<p>A formal specification of integration behavior.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contract_type</code></td>
+<td>ContractType</td>
+<td>No</td>
+<td>Kind of contract</td>
+</tr>
+<tr>
+<td><code>definition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Contract definition content</td>
+</tr>
+<tr>
+<td><code>has_versions</code></td>
+<td>ContractVersion[]</td>
+<td>No</td>
+<td>Version history (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>defines_interfaces</code></td>
+<td>Interface</td>
+<td>Yes</td>
+<td><code>defined_by_contract</code></td>
+<td>Interfaces defined by this contract</td>
+</tr>
+<tr>
+<td><code>implemented_by_units</code></td>
+<td>EncapsulationUnit</td>
+<td>Yes</td>
+<td><code>implements_contracts</code></td>
+<td>Code units implementing this contract (Layer 4)</td>
+</tr>
+<tr>
+<td><code>validates_messages</code></td>
+<td>Message</td>
+<td>Yes</td>
+<td><code>validated_by_contract</code></td>
+<td>Messages validated</td>
+</tr>
+<tr>
+<td><code>governs_integrations</code></td>
+<td>Integration</td>
+<td>Yes</td>
+<td><code>integration_governed_by_contract</code></td>
+<td>Integrations governed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ContractType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>openapi</code></td>
+<td>OpenAPI/Swagger</td>
+</tr>
+<tr>
+<td><code>asyncapi</code></td>
+<td>AsyncAPI</td>
+</tr>
+<tr>
+<td><code>json_schema</code></td>
+<td>JSON Schema</td>
+</tr>
+<tr>
+<td><code>protobuf</code></td>
+<td>Protocol Buffers</td>
+</tr>
+<tr>
+<td><code>avro</code></td>
+<td>Apache Avro</td>
+</tr>
+<tr>
+<td><code>graphql_schema</code></td>
+<td>GraphQL schema</td>
+</tr>
+<tr>
+<td><code>wsdl</code></td>
+<td>WSDL (SOAP)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="25-contractversion">25. ContractVersion</h3>
+<p>A specific iteration of a contract. Typically inlined within Contract.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>SemanticVersion</td>
+<td>No</td>
+<td>Version number</td>
+</tr>
+<tr>
+<td><code>definition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Contract definition at this version</td>
+</tr>
+<tr>
+<td><code>breaking_changes</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Breaking changes in this version</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version_of_contract</code></td>
+<td>Contract</td>
+<td>No</td>
+<td><code>has_versions</code></td>
+<td>Parent contract</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="26-adapter">26. Adapter</h3>
+<p>A component that translates between system and external protocols.</p>
+<blockquote>
+<p><strong>Inherits all Component attributes and relationships from Layer 3.</strong> Adapter extends Component (<code>is_a: Component</code>), so it has <code>component_type</code>, <code>language</code>, <code>source_location</code>, <code>contained_in_module</code>, <code>exposes_operations</code>, <code>emits_events</code>, <code>dependencies</code>, <code>implemented_by_code</code>, <code>tested_by_suites</code>, <code>has_coverage</code>, <code>emits_metrics</code>, <code>generates_logs</code>, <code>emits_metric</code>, <code>component_serves_model</code>, and <code>component_uses_concurrency_pattern</code> -- all inherited.</p>
+</blockquote>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source_protocol</code></td>
+<td>ProtocolType</td>
+<td>No</td>
+<td>Source protocol being translated from</td>
+</tr>
+<tr>
+<td><code>target_protocol</code></td>
+<td>ProtocolType</td>
+<td>No</td>
+<td>Target protocol being translated to</td>
+</tr>
+<tr>
+<td><code>transformation</code></td>
+<td>string</td>
+<td>No</td>
+<td>Transformation logic description</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>used_by_integrations</code></td>
+<td>Integration</td>
+<td>Yes</td>
+<td><code>uses_adapter</code></td>
+<td>Integrations using this adapter</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="27-circuitbreaker">27. CircuitBreaker</h3>
+<p>A resilience pattern preventing cascade failures.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>failure_threshold</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of failures before opening</td>
+</tr>
+<tr>
+<td><code>reset_timeout_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Seconds before attempting half-open</td>
+</tr>
+<tr>
+<td><code>half_open_requests</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Requests allowed in half-open state</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>protects_integrations</code></td>
+<td>Integration</td>
+<td>Yes</td>
+<td><code>protected_by_breaker</code></td>
+<td>Integrations protected</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e-deployment-runtime-6-classes">E. Deployment &amp; Runtime (6 classes)</h2>
+<h3 id="28-environment">28. Environment</h3>
+<p>A runtime context with specific configuration.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>environment_type</code></td>
+<td>EnvironmentType</td>
+<td>No</td>
+<td>Kind of environment</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hosts_deployments</code></td>
+<td>Deployment</td>
+<td>Yes</td>
+<td><code>deployed_in_environment</code></td>
+<td>Deployments in this environment</td>
+</tr>
+<tr>
+<td><code>env_configured_by</code></td>
+<td>Configuration</td>
+<td>Yes</td>
+<td><code>configures_environments</code></td>
+<td>Configuration entries</td>
+</tr>
+<tr>
+<td><code>uses_infrastructure</code></td>
+<td>Infrastructure</td>
+<td>Yes</td>
+<td><code>used_by_environments</code></td>
+<td>Infrastructure used</td>
+</tr>
+<tr>
+<td><code>deployed_by_pipelines</code></td>
+<td>BuildPipeline</td>
+<td>Yes</td>
+<td><code>pipeline_deploys_to_environments</code></td>
+<td>Pipelines deploying to this environment</td>
+</tr>
+</tbody>
+</table>
+<p><strong>EnvironmentType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>development</code></td>
+<td>Development environment</td>
+</tr>
+<tr>
+<td><code>testing</code></td>
+<td>Testing environment</td>
+</tr>
+<tr>
+<td><code>staging</code></td>
+<td>Staging/pre-production</td>
+</tr>
+<tr>
+<td><code>production</code></td>
+<td>Production environment</td>
+</tr>
+<tr>
+<td><code>dr</code></td>
+<td>Disaster Recovery</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="29-deployment">29. Deployment</h3>
+<p>An instance of a service running in an environment.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>replicas</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of replicas</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deploys_service</code></td>
+<td>Service</td>
+<td>No</td>
+<td><code>deployed_as</code></td>
+<td>Service being deployed</td>
+</tr>
+<tr>
+<td><code>deployed_in_environment</code></td>
+<td>Environment</td>
+<td>No</td>
+<td><code>hosts_deployments</code></td>
+<td>Target environment</td>
+</tr>
+<tr>
+<td><code>deploys_unit</code></td>
+<td>DeploymentUnit</td>
+<td>No</td>
+<td><code>deployed_in_deployments</code></td>
+<td>Deployment unit</td>
+</tr>
+<tr>
+<td><code>deployment_configured_by</code></td>
+<td>Configuration</td>
+<td>Yes</td>
+<td><code>configures_deployments</code></td>
+<td>Configuration entries</td>
+</tr>
+<tr>
+<td><code>deploys_release</code></td>
+<td>Release</td>
+<td>No</td>
+<td><code>deployed_in_deployments_as_release</code></td>
+<td>Release being deployed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="30-deploymentunit">30. DeploymentUnit</h3>
+<p>The packaged artifact being deployed.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unit_type</code></td>
+<td>DeploymentUnitType</td>
+<td>No</td>
+<td>Kind of deployment unit</td>
+</tr>
+<tr>
+<td><code>artifact_uri</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Location of the artifact</td>
+</tr>
+<tr>
+<td><code>checksum</code></td>
+<td>string</td>
+<td>No</td>
+<td>Integrity checksum</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployed_in_deployments</code></td>
+<td>Deployment</td>
+<td>Yes</td>
+<td><code>deploys_unit</code></td>
+<td>Deployments using this unit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DeploymentUnitType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container</code></td>
+<td>Container image</td>
+</tr>
+<tr>
+<td><code>vm</code></td>
+<td>Virtual machine image</td>
+</tr>
+<tr>
+<td><code>serverless_function</code></td>
+<td>Serverless function package</td>
+</tr>
+<tr>
+<td><code>binary</code></td>
+<td>Compiled binary</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Software package</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="31-configuration">31. Configuration</h3>
+<p>Runtime parameters for a deployment.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>config_type</code></td>
+<td>ConfigurationType</td>
+<td>No</td>
+<td>Kind of configuration</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Configuration value</td>
+</tr>
+<tr>
+<td><code>is_secret</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is a secret</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>string</td>
+<td>No</td>
+<td>Configuration source</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>controls_features</code></td>
+<td>Feature</td>
+<td>Yes</td>
+<td><code>controlled_by_configs</code></td>
+<td>Features controlled (Layer 3)</td>
+</tr>
+<tr>
+<td><code>configures_environments</code></td>
+<td>Environment</td>
+<td>Yes</td>
+<td><code>env_configured_by</code></td>
+<td>Environments configured</td>
+</tr>
+<tr>
+<td><code>configures_deployments</code></td>
+<td>Deployment</td>
+<td>Yes</td>
+<td><code>deployment_configured_by</code></td>
+<td>Deployments configured</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ConfigurationType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>environment_variable</code></td>
+<td>Environment variable</td>
+</tr>
+<tr>
+<td><code>config_file</code></td>
+<td>Configuration file</td>
+</tr>
+<tr>
+<td><code>secret</code></td>
+<td>Secret/credential</td>
+</tr>
+<tr>
+<td><code>feature_flag</code></td>
+<td>Feature flag</td>
+</tr>
+<tr>
+<td><code>remote_config</code></td>
+<td>Remote configuration</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="32-infrastructure">32. Infrastructure</h3>
+<p>The underlying compute, storage, and network resources.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>infra_type</code></td>
+<td>InfrastructureType</td>
+<td>No</td>
+<td>Kind of infrastructure</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>string</td>
+<td>No</td>
+<td>Cloud/infrastructure provider</td>
+</tr>
+<tr>
+<td><code>region</code></td>
+<td>string</td>
+<td>No</td>
+<td>Deployment region</td>
+</tr>
+<tr>
+<td><code>specifications</code></td>
+<td>string</td>
+<td>No</td>
+<td>Resource specifications</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hosts_datastores</code></td>
+<td>DataStore</td>
+<td>Yes</td>
+<td><code>hosted_on_infrastructure</code></td>
+<td>Data stores hosted</td>
+</tr>
+<tr>
+<td><code>used_by_environments</code></td>
+<td>Environment</td>
+<td>Yes</td>
+<td><code>uses_infrastructure</code></td>
+<td>Environments using this infrastructure</td>
+</tr>
+<tr>
+<td><code>infrastructure_provisioned_by_iac</code></td>
+<td>IaCDefinition</td>
+<td>Yes</td>
+<td><code>iac_provisions_infrastructure</code></td>
+<td>IaC definitions provisioning this</td>
+</tr>
+</tbody>
+</table>
+<p><strong>InfrastructureType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compute</code></td>
+<td>Compute resources</td>
+</tr>
+<tr>
+<td><code>storage</code></td>
+<td>Storage resources</td>
+</tr>
+<tr>
+<td><code>network</code></td>
+<td>Network resources</td>
+</tr>
+<tr>
+<td><code>load_balancer</code></td>
+<td>Load balancer</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>DNS</td>
+</tr>
+<tr>
+<td><code>cdn</code></td>
+<td>Content delivery network</td>
+</tr>
+<tr>
+<td><code>firewall</code></td>
+<td>Firewall</td>
+</tr>
+<tr>
+<td><code>api_gateway</code></td>
+<td>API gateway or ingress controller</td>
+</tr>
+<tr>
+<td><code>service_mesh</code></td>
+<td>Service mesh control plane (Istio, Linkerd, etc.)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="33-release">33. Release</h3>
+<p>A versioned, deployable package of changes.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version</code></td>
+<td>SemanticVersion</td>
+<td>No</td>
+<td>Release version</td>
+</tr>
+<tr>
+<td><code>changelog</code></td>
+<td>string</td>
+<td>No</td>
+<td>Release changelog</td>
+</tr>
+<tr>
+<td><code>artifacts</code></td>
+<td>DeploymentUnit[]</td>
+<td>No</td>
+<td>Artifacts in this release</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deployed_in_deployments_as_release</code></td>
+<td>Deployment</td>
+<td>Yes</td>
+<td><code>deploys_release</code></td>
+<td>Deployments of this release</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="f-observability-9-classes">F. Observability (9 classes)</h2>
+<h3 id="34-metric">34. Metric</h3>
+<p>A quantitative measurement over time.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metric_type</code></td>
+<td>MetricType</td>
+<td>No</td>
+<td>Kind of metric</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>string</td>
+<td>No</td>
+<td>Unit of measurement</td>
+</tr>
+<tr>
+<td><code>labels</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Metric labels/dimensions</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metric_emitted_by_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>emits_metric</code></td>
+<td>Component emitting this metric (Layer 3)</td>
+</tr>
+<tr>
+<td><code>monitored_by_alert_rules</code></td>
+<td>AlertRule</td>
+<td>Yes</td>
+<td><code>monitors_metrics</code></td>
+<td>Alert rules monitoring this metric</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MetricType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>counter</code></td>
+<td>Monotonically increasing counter</td>
+</tr>
+<tr>
+<td><code>gauge</code></td>
+<td>Point-in-time value</td>
+</tr>
+<tr>
+<td><code>histogram</code></td>
+<td>Distribution of values</td>
+</tr>
+<tr>
+<td><code>summary</code></td>
+<td>Quantile summary</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="35-log">35. Log</h3>
+<p>A timestamped record of discrete events.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_type</code></td>
+<td>LogType</td>
+<td>No</td>
+<td>Kind of log</td>
+</tr>
+<tr>
+<td><code>entries</code></td>
+<td>LogEntry[]</td>
+<td>No</td>
+<td>Entries (legacy attribute)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>log_governed_by_retention</code></td>
+<td>RetentionPolicy</td>
+<td>No</td>
+<td><code>governs_logs</code></td>
+<td>Retention policy</td>
+</tr>
+<tr>
+<td><code>contains_entries</code></td>
+<td>LogEntry</td>
+<td>Yes</td>
+<td><code>entry_in_log</code></td>
+<td>Log entries</td>
+</tr>
+</tbody>
+</table>
+<p><strong>LogType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>application</code></td>
+<td>Application log</td>
+</tr>
+<tr>
+<td><code>access</code></td>
+<td>Access log</td>
+</tr>
+<tr>
+<td><code>error</code></td>
+<td>Error log</td>
+</tr>
+<tr>
+<td><code>security</code></td>
+<td>Security log</td>
+</tr>
+<tr>
+<td><code>audit</code></td>
+<td>Audit log</td>
+</tr>
+<tr>
+<td><code>debug</code></td>
+<td>Debug log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="36-logentry">36. LogEntry</h3>
+<p>A single record within a log. Typically inlined within Log.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>timestamp</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When the entry was recorded</td>
+</tr>
+<tr>
+<td><code>level</code></td>
+<td>string</td>
+<td>No</td>
+<td>Log level (DEBUG, INFO, WARN, ERROR, etc.)</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>string</td>
+<td>No</td>
+<td>Log message</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>string</td>
+<td>No</td>
+<td>Contextual information</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>entry_in_log</code></td>
+<td>Log</td>
+<td>No</td>
+<td><code>contains_entries</code></td>
+<td>Parent log</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="37-trace">37. Trace</h3>
+<p>A causal chain of operations across services.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>trace_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>Distributed trace identifier</td>
+</tr>
+<tr>
+<td><code>spans</code></td>
+<td>Span[]</td>
+<td>No</td>
+<td>Spans in this trace (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>starts_with_span</code></td>
+<td>Span</td>
+<td>No</td>
+<td><code>root_of_trace</code></td>
+<td>Root span</td>
+</tr>
+<tr>
+<td><code>contains_spans</code></td>
+<td>Span</td>
+<td>Yes</td>
+<td><code>belongs_to_trace</code></td>
+<td>All spans</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="38-span">38. Span</h3>
+<p>A single unit of work within a trace. Typically inlined within Trace.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>span_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>Span identifier</td>
+</tr>
+<tr>
+<td><code>operation_name</code></td>
+<td>string</td>
+<td>No</td>
+<td>Name of the operation</td>
+</tr>
+<tr>
+<td><code>start_time</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>Start timestamp</td>
+</tr>
+<tr>
+<td><code>end_time</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>End timestamp</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td>No</td>
+<td>Span status</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Span attributes/tags</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>belongs_to_trace</code></td>
+<td>Trace</td>
+<td>No</td>
+<td><code>contains_spans</code></td>
+<td>Parent trace</td>
+</tr>
+<tr>
+<td><code>child_of_span</code></td>
+<td>Span</td>
+<td>No</td>
+<td><code>parent_of_spans</code></td>
+<td>Parent span</td>
+</tr>
+<tr>
+<td><code>parent_of_spans</code></td>
+<td>Span</td>
+<td>Yes</td>
+<td><code>child_of_span</code></td>
+<td>Child spans</td>
+</tr>
+<tr>
+<td><code>root_of_trace</code></td>
+<td>Trace</td>
+<td>No</td>
+<td><code>starts_with_span</code></td>
+<td>Trace where this is root</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="39-alert">39. Alert</h3>
+<p>A notification triggered by metric thresholds or anomalies.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>severity</code></td>
+<td>string</td>
+<td>No</td>
+<td>Alert severity</td>
+</tr>
+<tr>
+<td><code>triggered_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When triggered</td>
+</tr>
+<tr>
+<td><code>acknowledged_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When acknowledged</td>
+</tr>
+<tr>
+<td><code>resolved_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When resolved</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>triggered_by_rule</code></td>
+<td>AlertRule</td>
+<td>No</td>
+<td><code>triggers_alerts</code></td>
+<td>Rule that triggered this alert</td>
+</tr>
+<tr>
+<td><code>escalates_to_incident</code></td>
+<td>Incident</td>
+<td>Yes</td>
+<td><code>escalated_from_alerts</code></td>
+<td>Incidents escalated to</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="40-alertrule">40. AlertRule</h3>
+<p>The condition that triggers an alert.</p>
+<blockquote>
+<p><strong>Inherits all Rule attributes and relationships from Layer 3.</strong> AlertRule extends Rule (<code>is_a: Rule</code>), so it has <code>category</code> (RuleCategory), <code>condition</code>, <code>action</code>, <code>priority</code>, <code>is_active</code>, <code>validates_attributes</code>, <code>enforces_aggregate_invariants</code>, <code>governs_domain_entities</code>, <code>validates_actions</code>, and <code>guards_transitions</code> -- all inherited.</p>
+</blockquote>
+<p><strong>Additional Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Alert condition expression (overrides Rule.condition)</td>
+</tr>
+<tr>
+<td><code>threshold</code></td>
+<td>float</td>
+<td>No</td>
+<td>Threshold value</td>
+</tr>
+<tr>
+<td><code>duration_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Duration before triggering</td>
+</tr>
+<tr>
+<td><code>notification_channels</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Notification channels</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Additional Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>monitors_metrics</code></td>
+<td>Metric</td>
+<td>Yes</td>
+<td><code>monitored_by_alert_rules</code></td>
+<td>Metrics monitored</td>
+</tr>
+<tr>
+<td><code>triggers_alerts</code></td>
+<td>Alert</td>
+<td>Yes</td>
+<td><code>triggered_by_rule</code></td>
+<td>Alerts triggered</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="41-incident">41. Incident</h3>
+<p>A tracked degradation or outage event.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>severity</code></td>
+<td>string</td>
+<td>No</td>
+<td>Incident severity</td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td>No</td>
+<td>Current status</td>
+</tr>
+<tr>
+<td><code>started_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When the incident started</td>
+</tr>
+<tr>
+<td><code>resolved_at</code></td>
+<td>Timestamp</td>
+<td>No</td>
+<td>When resolved</td>
+</tr>
+<tr>
+<td><code>root_cause</code></td>
+<td>string</td>
+<td>No</td>
+<td>Root cause description</td>
+</tr>
+<tr>
+<td><code>postmortem_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Post-mortem document URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>escalated_from_alerts</code></td>
+<td>Alert</td>
+<td>Yes</td>
+<td><code>escalates_to_incident</code></td>
+<td>Alerts that escalated to this incident</td>
+</tr>
+<tr>
+<td><code>affects_services</code></td>
+<td>Service</td>
+<td>Yes</td>
+<td><code>affected_by_incidents</code></td>
+<td>Services affected</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="42-healthcheck">42. HealthCheck</h3>
+<p>A probe verifying service availability. Typically inlined within Service.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>check_type</code></td>
+<td>HealthCheckType</td>
+<td>No</td>
+<td>Kind of health check</td>
+</tr>
+<tr>
+<td><code>endpoint</code></td>
+<td>string</td>
+<td>No</td>
+<td>Probe endpoint</td>
+</tr>
+<tr>
+<td><code>interval_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Check interval</td>
+</tr>
+<tr>
+<td><code>timeout_seconds</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Timeout</td>
+</tr>
+<tr>
+<td><code>success_threshold</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Consecutive successes required</td>
+</tr>
+<tr>
+<td><code>failure_threshold</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Consecutive failures before unhealthy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HealthCheckType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>liveness</code></td>
+<td>Is the process alive?</td>
+</tr>
+<tr>
+<td><code>readiness</code></td>
+<td>Is the service ready to accept traffic?</td>
+</tr>
+<tr>
+<td><code>dependency</code></td>
+<td>Are dependencies healthy?</td>
+</tr>
+<tr>
+<td><code>startup</code></td>
+<td>Has the service finished starting?</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="g-build-cicd-4-classes">G. Build &amp; CI/CD (4 classes)</h2>
+<h3 id="43-buildpipeline">43. BuildPipeline</h3>
+<p>A CI/CD pipeline that automates build, test, and deployment processes.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline_type</code></td>
+<td>PipelineType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of pipeline</td>
+</tr>
+<tr>
+<td><code>platform</code></td>
+<td>string</td>
+<td>No</td>
+<td>CI/CD platform (GitHub Actions, Jenkins, etc.)</td>
+</tr>
+<tr>
+<td><code>trigger</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Trigger events</td>
+</tr>
+<tr>
+<td><code>trigger_branches</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Branches that trigger this pipeline</td>
+</tr>
+<tr>
+<td><code>source_file</code></td>
+<td>string</td>
+<td>No</td>
+<td>Pipeline definition file path</td>
+</tr>
+<tr>
+<td><code>stages</code></td>
+<td>PipelineStage[]</td>
+<td>No</td>
+<td>Pipeline stages (inline)</td>
+</tr>
+<tr>
+<td><code>timeout_minutes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Pipeline timeout</td>
+</tr>
+<tr>
+<td><code>is_parallelizable</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether stages can run in parallel</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline_deploys_to_environments</code></td>
+<td>Environment</td>
+<td>Yes</td>
+<td><code>deployed_by_pipelines</code></td>
+<td>Target environments</td>
+</tr>
+<tr>
+<td><code>pipeline_produces_artifacts</code></td>
+<td>BuildArtifact</td>
+<td>Yes</td>
+<td><code>artifact_produced_by_pipeline</code></td>
+<td>Artifacts produced</td>
+</tr>
+<tr>
+<td><code>pipeline_trains_model</code></td>
+<td>MLModel</td>
+<td>Yes</td>
+<td><code>model_trained_by_pipeline</code></td>
+<td>ML models trained</td>
+</tr>
+<tr>
+<td><code>pipeline_uses_iac</code></td>
+<td>IaCDefinition</td>
+<td>Yes</td>
+<td><code>iac_used_by_pipeline</code></td>
+<td>IaC definitions used</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PipelineType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build</code></td>
+<td>Build pipeline</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Test pipeline</td>
+</tr>
+<tr>
+<td><code>deploy</code></td>
+<td>Deployment pipeline</td>
+</tr>
+<tr>
+<td><code>release</code></td>
+<td>Release pipeline</td>
+</tr>
+<tr>
+<td><code>integration</code></td>
+<td>Integration pipeline</td>
+</tr>
+<tr>
+<td><code>delivery</code></td>
+<td>Continuous delivery pipeline</td>
+</tr>
+<tr>
+<td><code>validation</code></td>
+<td>Validation pipeline</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="44-pipelinestage">44. PipelineStage</h3>
+<p>A discrete stage within a CI/CD pipeline. Typically inlined within BuildPipeline.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stage_type</code></td>
+<td>PipelineStageType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of stage</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Execution order</td>
+</tr>
+<tr>
+<td><code>depends_on_stages</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Stage dependencies (by name)</td>
+</tr>
+<tr>
+<td><code>condition</code></td>
+<td>string</td>
+<td>No</td>
+<td>Execution condition</td>
+</tr>
+<tr>
+<td><code>runner</code></td>
+<td>string</td>
+<td>No</td>
+<td>Runner/agent label</td>
+</tr>
+<tr>
+<td><code>timeout_minutes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Stage timeout</td>
+</tr>
+<tr>
+<td><code>environment_variables</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Environment variables</td>
+</tr>
+<tr>
+<td><code>is_manual</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether manual approval is required</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PipelineStageType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>checkout</code></td>
+<td>Source code checkout</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>Build/compile</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Run tests</td>
+</tr>
+<tr>
+<td><code>lint</code></td>
+<td>Lint/static analysis</td>
+</tr>
+<tr>
+<td><code>security_scan</code></td>
+<td>Security scanning</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Package artifacts</td>
+</tr>
+<tr>
+<td><code>publish</code></td>
+<td>Publish artifacts</td>
+</tr>
+<tr>
+<td><code>deploy</code></td>
+<td>Deploy to environment</td>
+</tr>
+<tr>
+<td><code>approval</code></td>
+<td>Manual approval gate</td>
+</tr>
+<tr>
+<td><code>rollback</code></td>
+<td>Rollback step</td>
+</tr>
+<tr>
+<td><code>notify</code></td>
+<td>Send notifications</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="45-buildartifact">45. BuildArtifact</h3>
+<p>An artifact produced by a build pipeline.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>artifact_type</code></td>
+<td>ArtifactType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of artifact</td>
+</tr>
+<tr>
+<td><code>artifact_uri</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Artifact location</td>
+</tr>
+<tr>
+<td><code>size_bytes</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Size in bytes</td>
+</tr>
+<tr>
+<td><code>checksum</code></td>
+<td>string</td>
+<td>No</td>
+<td>Integrity checksum</td>
+</tr>
+<tr>
+<td><code>build_number</code></td>
+<td>string</td>
+<td>No</td>
+<td>Build number or identifier</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>artifact_produced_by_pipeline</code></td>
+<td>BuildPipeline</td>
+<td>No</td>
+<td><code>pipeline_produces_artifacts</code></td>
+<td>Pipeline that produced this artifact</td>
+</tr>
+<tr>
+<td><code>artifact_stored_in_registry</code></td>
+<td>ArtifactRegistry</td>
+<td>No</td>
+<td><code>stores_artifacts</code></td>
+<td>Registry storing this artifact</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ArtifactType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>container_image</code></td>
+<td>Container image (Docker)</td>
+</tr>
+<tr>
+<td><code>binary</code></td>
+<td>Compiled binary</td>
+</tr>
+<tr>
+<td><code>archive</code></td>
+<td>Archive (ZIP, TAR)</td>
+</tr>
+<tr>
+<td><code>package</code></td>
+<td>Software package (NPM, PyPI, etc.)</td>
+</tr>
+<tr>
+<td><code>library</code></td>
+<td>Library</td>
+</tr>
+<tr>
+<td><code>documentation</code></td>
+<td>Documentation artifact</td>
+</tr>
+<tr>
+<td><code>report</code></td>
+<td>Report (test, coverage, etc.)</td>
+</tr>
+<tr>
+<td><code>load_module</code></td>
+<td>Mainframe load module</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="46-artifactregistry">46. ArtifactRegistry</h3>
+<p>A registry or repository for storing build artifacts.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>registry_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Kind of registry (Docker Hub, Nexus, ECR, etc.)</td>
+</tr>
+<tr>
+<td><code>base_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Registry base URL</td>
+</tr>
+<tr>
+<td><code>is_private</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the registry is private</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stores_artifacts</code></td>
+<td>BuildArtifact</td>
+<td>Yes</td>
+<td><code>artifact_stored_in_registry</code></td>
+<td>Artifacts stored</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="h-dependency-management-3-classes">H. Dependency Management (3 classes)</h2>
+<h3 id="47-packagemanager">47. PackageManager</h3>
+<p>A package/dependency management tool.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>manager_type</code></td>
+<td>PackageManagerType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of package manager</td>
+</tr>
+<tr>
+<td><code>manifest_file</code></td>
+<td>string</td>
+<td>No</td>
+<td>Manifest file name (package.json, pom.xml, etc.)</td>
+</tr>
+<tr>
+<td><code>lock_file</code></td>
+<td>string</td>
+<td>No</td>
+<td>Lock file name</td>
+</tr>
+<tr>
+<td><code>registry_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Package registry URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>manages_dependencies_for_module</code></td>
+<td>Module</td>
+<td>Yes</td>
+<td><code>module_managed_by_package_manager</code></td>
+<td>Modules managed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PackageManagerType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>npm</code></td>
+<td>NPM (Node.js)</td>
+</tr>
+<tr>
+<td><code>pip</code></td>
+<td>pip (Python)</td>
+</tr>
+<tr>
+<td><code>maven</code></td>
+<td>Maven (Java)</td>
+</tr>
+<tr>
+<td><code>gradle</code></td>
+<td>Gradle (Java/Kotlin)</td>
+</tr>
+<tr>
+<td><code>nuget</code></td>
+<td>NuGet (.NET)</td>
+</tr>
+<tr>
+<td><code>cargo</code></td>
+<td>Cargo (Rust)</td>
+</tr>
+<tr>
+<td><code>go_modules</code></td>
+<td>Go Modules</td>
+</tr>
+<tr>
+<td><code>bundler</code></td>
+<td>Bundler (Ruby)</td>
+</tr>
+<tr>
+<td><code>composer</code></td>
+<td>Composer (PHP)</td>
+</tr>
+<tr>
+<td><code>conan</code></td>
+<td>Conan (C/C++)</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>No package manager</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="48-packagedependency">48. PackageDependency</h3>
+<p>A declared dependency on an external package or library.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>package_name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Package name</td>
+</tr>
+<tr>
+<td><code>version_constraint</code></td>
+<td>string</td>
+<td>No</td>
+<td>Version constraint (e.g., ^1.2.0)</td>
+</tr>
+<tr>
+<td><code>resolved_version</code></td>
+<td>string</td>
+<td>No</td>
+<td>Resolved version</td>
+</tr>
+<tr>
+<td><code>scope</code></td>
+<td>DependencyScope</td>
+<td>No</td>
+<td>Dependency scope</td>
+</tr>
+<tr>
+<td><code>is_direct</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether this is a direct dependency</td>
+</tr>
+<tr>
+<td><code>license</code></td>
+<td>string</td>
+<td>No</td>
+<td>Package license</td>
+</tr>
+<tr>
+<td><code>has_known_vulnerabilities</code></td>
+<td>KnownVulnerability[]</td>
+<td>No</td>
+<td>Known vulnerabilities (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dependency_of_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>module_has_dependencies</code></td>
+<td>Module declaring this dependency</td>
+</tr>
+<tr>
+<td><code>has_transitive_dependencies</code></td>
+<td>PackageDependency</td>
+<td>Yes</td>
+<td><code>transitive_dependency_of</code></td>
+<td>Transitive dependencies</td>
+</tr>
+<tr>
+<td><code>transitive_dependency_of</code></td>
+<td>PackageDependency</td>
+<td>Yes</td>
+<td><code>has_transitive_dependencies</code></td>
+<td>Packages depending on this transitively</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DependencyScope Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>production</code></td>
+<td>Production dependency</td>
+</tr>
+<tr>
+<td><code>development</code></td>
+<td>Development-only</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>Test-only</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>Build-only</td>
+</tr>
+<tr>
+<td><code>optional</code></td>
+<td>Optional dependency</td>
+</tr>
+<tr>
+<td><code>provided</code></td>
+<td>Provided by runtime</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="49-knownvulnerability">49. KnownVulnerability</h3>
+<p>A known security vulnerability in a dependency. Typically inlined within PackageDependency.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cve_id</code></td>
+<td>string</td>
+<td>No</td>
+<td>CVE identifier</td>
+</tr>
+<tr>
+<td><code>severity</code></td>
+<td>VulnerabilitySeverity</td>
+<td><strong>Yes</strong></td>
+<td>Severity level</td>
+</tr>
+<tr>
+<td><code>cvss_score</code></td>
+<td>float</td>
+<td>No</td>
+<td>CVSS score</td>
+</tr>
+<tr>
+<td><code>affected_versions</code></td>
+<td>string</td>
+<td>No</td>
+<td>Affected version range</td>
+</tr>
+<tr>
+<td><code>fixed_version</code></td>
+<td>string</td>
+<td>No</td>
+<td>Version with fix</td>
+</tr>
+<tr>
+<td><code>advisory_url</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Security advisory URL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>VulnerabilitySeverity Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>critical</code></td>
+<td>Critical severity</td>
+</tr>
+<tr>
+<td><code>high</code></td>
+<td>High severity</td>
+</tr>
+<tr>
+<td><code>medium</code></td>
+<td>Medium severity</td>
+</tr>
+<tr>
+<td><code>low</code></td>
+<td>Low severity</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>No severity / informational</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="i-infrastructure-as-code-3-classes">I. Infrastructure as Code (3 classes)</h2>
+<h3 id="50-iacdefinition">50. IaCDefinition</h3>
+<p>An infrastructure-as-code definition that declaratively specifies infrastructure resources.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tool</code></td>
+<td>IaCToolType</td>
+<td><strong>Yes</strong></td>
+<td>IaC tool</td>
+</tr>
+<tr>
+<td><code>source_file</code></td>
+<td>string</td>
+<td>No</td>
+<td>Source file path</td>
+</tr>
+<tr>
+<td><code>provider</code></td>
+<td>string</td>
+<td>No</td>
+<td>Cloud provider</td>
+</tr>
+<tr>
+<td><code>resources</code></td>
+<td>IaCResource[]</td>
+<td>No</td>
+<td>Resources defined (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>iac_provisions_infrastructure</code></td>
+<td>Infrastructure</td>
+<td>Yes</td>
+<td><code>infrastructure_provisioned_by_iac</code></td>
+<td>Infrastructure provisioned</td>
+</tr>
+<tr>
+<td><code>iac_used_by_pipeline</code></td>
+<td>BuildPipeline</td>
+<td>Yes</td>
+<td><code>pipeline_uses_iac</code></td>
+<td>Pipelines using this definition</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IaCToolType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>terraform</code></td>
+<td>Terraform</td>
+</tr>
+<tr>
+<td><code>cloudformation</code></td>
+<td>AWS CloudFormation</td>
+</tr>
+<tr>
+<td><code>pulumi</code></td>
+<td>Pulumi</td>
+</tr>
+<tr>
+<td><code>ansible</code></td>
+<td>Ansible</td>
+</tr>
+<tr>
+<td><code>chef</code></td>
+<td>Chef</td>
+</tr>
+<tr>
+<td><code>puppet</code></td>
+<td>Puppet</td>
+</tr>
+<tr>
+<td><code>kubernetes_manifest</code></td>
+<td>Kubernetes manifest</td>
+</tr>
+<tr>
+<td><code>helm</code></td>
+<td>Helm chart</td>
+</tr>
+<tr>
+<td><code>docker_compose</code></td>
+<td>Docker Compose</td>
+</tr>
+<tr>
+<td><code>bicep</code></td>
+<td>Azure Bicep</td>
+</tr>
+<tr>
+<td><code>cdk</code></td>
+<td>AWS/Azure CDK</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="51-iacmodule">51. IaCModule</h3>
+<p>A reusable module of IaC definitions.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>source</code></td>
+<td>string</td>
+<td>No</td>
+<td>Module source (registry path, git URL, etc.)</td>
+</tr>
+<tr>
+<td><code>input_variables</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Input variable names</td>
+</tr>
+<tr>
+<td><code>output_values</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Output value names</td>
+</tr>
+<tr>
+<td><code>has_child_resources</code></td>
+<td>IaCResource[]</td>
+<td>No</td>
+<td>Resources within this module (inline)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="52-iacresource">52. IaCResource</h3>
+<p>A single infrastructure resource defined in code. Typically inlined within IaCDefinition or IaCModule.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>resource_type</code></td>
+<td>IaCResourceType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of resource</td>
+</tr>
+<tr>
+<td><code>provider_resource_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Provider-specific type (e.g., aws_instance, azurerm_storage_account)</td>
+</tr>
+<tr>
+<td><code>properties</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Resource properties</td>
+</tr>
+<tr>
+<td><code>depends_on_resources</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Resource dependencies (by name)</td>
+</tr>
+<tr>
+<td><code>is_managed</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether Terraform/IaC manages lifecycle</td>
+</tr>
+</tbody>
+</table>
+<p><strong>IaCResourceType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>compute</code></td>
+<td>Compute resource</td>
+</tr>
+<tr>
+<td><code>network</code></td>
+<td>Network resource</td>
+</tr>
+<tr>
+<td><code>storage</code></td>
+<td>Storage resource</td>
+</tr>
+<tr>
+<td><code>database</code></td>
+<td>Database resource</td>
+</tr>
+<tr>
+<td><code>messaging</code></td>
+<td>Messaging resource</td>
+</tr>
+<tr>
+<td><code>identity</code></td>
+<td>Identity/IAM resource</td>
+</tr>
+<tr>
+<td><code>monitoring</code></td>
+<td>Monitoring resource</td>
+</tr>
+<tr>
+<td><code>dns</code></td>
+<td>DNS resource</td>
+</tr>
+<tr>
+<td><code>cdn</code></td>
+<td>CDN resource</td>
+</tr>
+<tr>
+<td><code>secret</code></td>
+<td>Secret management resource</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="j-ml-data-pipelines-6-classes">J. ML &amp; Data Pipelines (6 classes)</h2>
+<h3 id="53-datapipeline">53. DataPipeline</h3>
+<p>A data processing pipeline for ETL, feature engineering, or model training.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline_type</code></td>
+<td>DataPipelineType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of pipeline</td>
+</tr>
+<tr>
+<td><code>orchestrator</code></td>
+<td>string</td>
+<td>No</td>
+<td>Orchestrator (Airflow, Dagster, etc.)</td>
+</tr>
+<tr>
+<td><code>schedule</code></td>
+<td>string</td>
+<td>No</td>
+<td>Cron expression or schedule</td>
+</tr>
+<tr>
+<td><code>source_file</code></td>
+<td>string</td>
+<td>No</td>
+<td>Pipeline definition file</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>DataPipelineStep[]</td>
+<td>No</td>
+<td>Pipeline steps (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline_reads_from_stores</code></td>
+<td>DataStore</td>
+<td>Yes</td>
+<td><code>store_read_by_pipelines</code></td>
+<td>Data stores read from</td>
+</tr>
+<tr>
+<td><code>pipeline_writes_to_stores</code></td>
+<td>DataStore</td>
+<td>Yes</td>
+<td><code>store_written_by_pipelines</code></td>
+<td>Data stores written to</td>
+</tr>
+<tr>
+<td><code>pipeline_uses_dataset</code></td>
+<td>Dataset</td>
+<td>Yes</td>
+<td><code>dataset_used_by_pipeline</code></td>
+<td>Datasets used</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DataPipelineType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>etl</code></td>
+<td>Extract-Transform-Load</td>
+</tr>
+<tr>
+<td><code>elt</code></td>
+<td>Extract-Load-Transform</td>
+</tr>
+<tr>
+<td><code>streaming</code></td>
+<td>Streaming pipeline</td>
+</tr>
+<tr>
+<td><code>feature_engineering</code></td>
+<td>Feature engineering</td>
+</tr>
+<tr>
+<td><code>training</code></td>
+<td>Model training</td>
+</tr>
+<tr>
+<td><code>inference</code></td>
+<td>Model inference</td>
+</tr>
+<tr>
+<td><code>data_quality</code></td>
+<td>Data quality checks</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="54-datapipelinestep">54. DataPipelineStep</h3>
+<p>A discrete step within a data pipeline. Typically inlined within DataPipeline.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>step_type</code></td>
+<td>DataPipelineStepType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of step</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Execution order</td>
+</tr>
+<tr>
+<td><code>depends_on_steps</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Step dependencies (by name)</td>
+</tr>
+<tr>
+<td><code>transformation_logic</code></td>
+<td>string</td>
+<td>No</td>
+<td>Transformation description</td>
+</tr>
+<tr>
+<td><code>input_schema</code></td>
+<td>string</td>
+<td>No</td>
+<td>Input schema</td>
+</tr>
+<tr>
+<td><code>output_schema</code></td>
+<td>string</td>
+<td>No</td>
+<td>Output schema</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DataPipelineStepType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>extract</code></td>
+<td>Extract data from source</td>
+</tr>
+<tr>
+<td><code>transform</code></td>
+<td>Transform data</td>
+</tr>
+<tr>
+<td><code>load</code></td>
+<td>Load data into target</td>
+</tr>
+<tr>
+<td><code>validate</code></td>
+<td>Validate data quality</td>
+</tr>
+<tr>
+<td><code>deduplicate</code></td>
+<td>Remove duplicates</td>
+</tr>
+<tr>
+<td><code>enrich</code></td>
+<td>Enrich with additional data</td>
+</tr>
+<tr>
+<td><code>aggregate</code></td>
+<td>Aggregate data</td>
+</tr>
+<tr>
+<td><code>partition</code></td>
+<td>Partition data</td>
+</tr>
+<tr>
+<td><code>train</code></td>
+<td>Train ML model</td>
+</tr>
+<tr>
+<td><code>evaluate</code></td>
+<td>Evaluate model performance</td>
+</tr>
+<tr>
+<td><code>deploy_model</code></td>
+<td>Deploy trained model</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="55-dataset">55. Dataset</h3>
+<p>A dataset used for training, evaluation, or inference.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>format</code></td>
+<td>string</td>
+<td>No</td>
+<td>Data format (CSV, Parquet, etc.)</td>
+</tr>
+<tr>
+<td><code>storage_uri</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Storage location</td>
+</tr>
+<tr>
+<td><code>row_count</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of rows/records</td>
+</tr>
+<tr>
+<td><code>schema</code></td>
+<td>Schema</td>
+<td>No</td>
+<td>Dataset schema (Layer 3)</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td>DataClassificationType</td>
+<td>No</td>
+<td>Data classification</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>dataset_used_by_pipeline</code></td>
+<td>DataPipeline</td>
+<td>Yes</td>
+<td><code>pipeline_uses_dataset</code></td>
+<td>Pipelines using this dataset</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="56-mlmodel">56. MLModel</h3>
+<p>A machine learning model defined, trained, or served by the system.</p>
+<p><strong>Mixins:</strong> <code>Versionable</code></p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model_type</code></td>
+<td>MLModelType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of ML model</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>string</td>
+<td>No</td>
+<td>ML framework (TensorFlow, PyTorch, etc.)</td>
+</tr>
+<tr>
+<td><code>model_format</code></td>
+<td>string</td>
+<td>No</td>
+<td>Serialization format (ONNX, SavedModel, etc.)</td>
+</tr>
+<tr>
+<td><code>model_uri</code></td>
+<td>URI</td>
+<td>No</td>
+<td>Model artifact location</td>
+</tr>
+<tr>
+<td><code>input_schema</code></td>
+<td>DataStructure</td>
+<td>No</td>
+<td>Input data structure (Layer 4)</td>
+</tr>
+<tr>
+<td><code>output_schema</code></td>
+<td>DataStructure</td>
+<td>No</td>
+<td>Output data structure (Layer 4)</td>
+</tr>
+<tr>
+<td><code>metrics</code></td>
+<td>MLModelMetric[]</td>
+<td>No</td>
+<td>Performance metrics (inline)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>model_trained_by_pipeline</code></td>
+<td>DataPipeline</td>
+<td>No</td>
+<td><code>pipeline_trains_model</code></td>
+<td>Training pipeline</td>
+</tr>
+<tr>
+<td><code>model_served_by_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>component_serves_model</code></td>
+<td>Serving component (Layer 3)</td>
+</tr>
+<tr>
+<td><code>model_uses_feature_store</code></td>
+<td>FeatureStore</td>
+<td>Yes</td>
+<td><code>provides_features_to_models</code></td>
+<td>Feature stores used</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MLModelType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>classification</code></td>
+<td>Classification model</td>
+</tr>
+<tr>
+<td><code>regression</code></td>
+<td>Regression model</td>
+</tr>
+<tr>
+<td><code>clustering</code></td>
+<td>Clustering model</td>
+</tr>
+<tr>
+<td><code>recommendation</code></td>
+<td>Recommendation model</td>
+</tr>
+<tr>
+<td><code>nlp</code></td>
+<td>Natural Language Processing model</td>
+</tr>
+<tr>
+<td><code>computer_vision</code></td>
+<td>Computer vision model</td>
+</tr>
+<tr>
+<td><code>generative</code></td>
+<td>Generative model</td>
+</tr>
+<tr>
+<td><code>reinforcement_learning</code></td>
+<td>Reinforcement learning model</td>
+</tr>
+<tr>
+<td><code>time_series</code></td>
+<td>Time series model</td>
+</tr>
+<tr>
+<td><code>anomaly_detection</code></td>
+<td>Anomaly detection model</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="57-mlmodelmetric">57. MLModelMetric</h3>
+<p>A performance metric for an ML model. Typically inlined within MLModel.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>metric_name</code></td>
+<td>string</td>
+<td><strong>Yes</strong></td>
+<td>Metric name (accuracy, F1, RMSE, etc.)</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td>float</td>
+<td>No</td>
+<td>Metric value</td>
+</tr>
+<tr>
+<td><code>dataset</code></td>
+<td>string</td>
+<td>No</td>
+<td>Evaluation dataset name</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="58-featurestore">58. FeatureStore</h3>
+<p>A centralized store for computed ML features.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>platform</code></td>
+<td>string</td>
+<td>No</td>
+<td>Feature store platform (Feast, Tecton, etc.)</td>
+</tr>
+<tr>
+<td><code>storage_backend</code></td>
+<td>string</td>
+<td>No</td>
+<td>Storage backend</td>
+</tr>
+<tr>
+<td><code>feature_count</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Number of features</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>provides_features_to_models</code></td>
+<td>MLModel</td>
+<td>Yes</td>
+<td><code>model_uses_feature_store</code></td>
+<td>Models using this feature store</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="k-testing-3-classes">K. Testing (3 classes)</h2>
+<h3 id="59-testsuite">59. TestSuite</h3>
+<p>A collection of related test cases.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>suite_type</code></td>
+<td>TestSuiteType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of test suite</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>string</td>
+<td>No</td>
+<td>Testing framework</td>
+</tr>
+<tr>
+<td><code>source_location</code></td>
+<td>string</td>
+<td>No</td>
+<td>Source file path</td>
+</tr>
+<tr>
+<td><code>total_cases</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Total test cases</td>
+</tr>
+<tr>
+<td><code>passing_cases</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Passing test cases</td>
+</tr>
+<tr>
+<td><code>failing_cases</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Failing test cases</td>
+</tr>
+<tr>
+<td><code>skipped_cases</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Skipped test cases</td>
+</tr>
+<tr>
+<td><code>execution_time_ms</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Total execution time in milliseconds</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>contains_test_cases</code></td>
+<td>TestCase</td>
+<td>Yes</td>
+<td><code>belongs_to_suite</code></td>
+<td>Test cases in this suite (Layer 3)</td>
+</tr>
+<tr>
+<td><code>tests_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>tested_by_suites</code></td>
+<td>Component tested (Layer 3)</td>
+</tr>
+<tr>
+<td><code>tests_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>module_tested_by_suites</code></td>
+<td>Module tested</td>
+</tr>
+</tbody>
+</table>
+<p><strong>TestSuiteType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unit</code></td>
+<td>Unit tests</td>
+</tr>
+<tr>
+<td><code>integration</code></td>
+<td>Integration tests</td>
+</tr>
+<tr>
+<td><code>functional</code></td>
+<td>Functional tests</td>
+</tr>
+<tr>
+<td><code>end_to_end</code></td>
+<td>End-to-end tests</td>
+</tr>
+<tr>
+<td><code>performance</code></td>
+<td>Performance tests</td>
+</tr>
+<tr>
+<td><code>security</code></td>
+<td>Security tests</td>
+</tr>
+<tr>
+<td><code>regression</code></td>
+<td>Regression tests</td>
+</tr>
+<tr>
+<td><code>smoke</code></td>
+<td>Smoke tests</td>
+</tr>
+<tr>
+<td><code>contract</code></td>
+<td>Contract tests</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="60-testcoverage">60. TestCoverage</h3>
+<p>Code coverage metrics for a component or module.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>line_coverage_percent</code></td>
+<td>float</td>
+<td>No</td>
+<td>Line coverage percentage</td>
+</tr>
+<tr>
+<td><code>branch_coverage_percent</code></td>
+<td>float</td>
+<td>No</td>
+<td>Branch coverage percentage</td>
+</tr>
+<tr>
+<td><code>function_coverage_percent</code></td>
+<td>float</td>
+<td>No</td>
+<td>Function coverage percentage</td>
+</tr>
+<tr>
+<td><code>statement_coverage_percent</code></td>
+<td>float</td>
+<td>No</td>
+<td>Statement coverage percentage</td>
+</tr>
+<tr>
+<td><code>uncovered_lines</code></td>
+<td>integer[]</td>
+<td>No</td>
+<td>Uncovered line numbers</td>
+</tr>
+<tr>
+<td><code>coverage_tool</code></td>
+<td>string</td>
+<td>No</td>
+<td>Coverage tool (Istanbul, JaCoCo, etc.)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>coverage_for_component</code></td>
+<td>Component</td>
+<td>No</td>
+<td><code>has_coverage</code></td>
+<td>Component measured (Layer 3)</td>
+</tr>
+<tr>
+<td><code>coverage_for_module</code></td>
+<td>Module</td>
+<td>No</td>
+<td><code>module_has_coverage</code></td>
+<td>Module measured</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="61-testassertion">61. TestAssertion</h3>
+<p>An individual assertion within a test case. Typically inlined within TestCase.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>assertion_type</code></td>
+<td>AssertionType</td>
+<td>No</td>
+<td>Kind of assertion</td>
+</tr>
+<tr>
+<td><code>expected_value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Expected value</td>
+</tr>
+<tr>
+<td><code>line_number</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Source line number</td>
+</tr>
+</tbody>
+</table>
+<p><strong>AssertionType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>equality</code></td>
+<td>Equality check</td>
+</tr>
+<tr>
+<td><code>truthiness</code></td>
+<td>True/false check</td>
+</tr>
+<tr>
+<td><code>exception</code></td>
+<td>Exception expected</td>
+</tr>
+<tr>
+<td><code>type_check</code></td>
+<td>Type assertion</td>
+</tr>
+<tr>
+<td><code>containment</code></td>
+<td>Contains/includes check</td>
+</tr>
+<tr>
+<td><code>mock_verification</code></td>
+<td>Mock call verification</td>
+</tr>
+<tr>
+<td><code>snapshot</code></td>
+<td>Snapshot comparison</td>
+</tr>
+<tr>
+<td><code>custom</code></td>
+<td>Custom assertion</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="l-frontend-supporting-3-classes">L. Frontend Supporting (3 classes)</h2>
+<h3 id="62-statestore">62. StateStore</h3>
+<p>A frontend state management store or container.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>management_type</code></td>
+<td>StateManagementType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of state management</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>string</td>
+<td>No</td>
+<td>State management framework (Redux, Vuex, Zustand, etc.)</td>
+</tr>
+<tr>
+<td><code>has_state_shape</code></td>
+<td>DataStructure</td>
+<td>No</td>
+<td>Shape of the state tree (Layer 4)</td>
+</tr>
+<tr>
+<td><code>actions</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Action names</td>
+</tr>
+<tr>
+<td><code>selectors</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Selector names</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>manages_ui_components</code></td>
+<td>UIComponent</td>
+<td>Yes</td>
+<td><code>managed_by_state</code></td>
+<td>UI components managed (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>StateManagementType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>local_state</code></td>
+<td>Component-local state</td>
+</tr>
+<tr>
+<td><code>global_store</code></td>
+<td>Global state store</td>
+</tr>
+<tr>
+<td><code>context</code></td>
+<td>Context/provider pattern</td>
+</tr>
+<tr>
+<td><code>url_state</code></td>
+<td>URL-based state</td>
+</tr>
+<tr>
+<td><code>server_state</code></td>
+<td>Server-side state (React Query, SWR)</td>
+</tr>
+<tr>
+<td><code>form_state</code></td>
+<td>Form state management</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="63-uiproperty">63. UIProperty</h3>
+<p>A property (prop) passed to a UI component. Typically inlined within UIComponent.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_type</code></td>
+<td>string</td>
+<td>No</td>
+<td>Property data type</td>
+</tr>
+<tr>
+<td><code>is_required</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the prop is required</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>No</td>
+<td>Default value</td>
+</tr>
+<tr>
+<td><code>is_reactive</code></td>
+<td>boolean</td>
+<td>No</td>
+<td>Whether the prop is reactive</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="64-concurrencypattern">64. ConcurrencyPattern</h3>
+<p>A high-level concurrency pattern used in the system.</p>
+<p><strong>Attributes:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern_type</code></td>
+<td>ConcurrencyPatternType</td>
+<td><strong>Yes</strong></td>
+<td>Kind of pattern</td>
+</tr>
+<tr>
+<td><code>max_concurrency</code></td>
+<td>integer</td>
+<td>No</td>
+<td>Maximum concurrency level</td>
+</tr>
+<tr>
+<td><code>framework</code></td>
+<td>string</td>
+<td>No</td>
+<td>Framework or library</td>
+</tr>
+<tr>
+<td><code>shared_resources</code></td>
+<td>string[]</td>
+<td>No</td>
+<td>Shared resources</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Range</th>
+<th>Multi</th>
+<th>Inverse</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pattern_used_by_component</code></td>
+<td>Component</td>
+<td>Yes</td>
+<td><code>component_uses_concurrency_pattern</code></td>
+<td>Components using this pattern (Layer 3)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>ConcurrencyPatternType Enum:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>thread_pool</code></td>
+<td>Thread pool</td>
+</tr>
+<tr>
+<td><code>actor</code></td>
+<td>Actor model</td>
+</tr>
+<tr>
+<td><code>channel</code></td>
+<td>Channel-based communication</td>
+</tr>
+<tr>
+<td><code>future_promise</code></td>
+<td>Future/Promise</td>
+</tr>
+<tr>
+<td><code>async_await</code></td>
+<td>Async/Await</td>
+</tr>
+<tr>
+<td><code>fork_join</code></td>
+<td>Fork-Join</td>
+</tr>
+<tr>
+<td><code>producer_consumer</code></td>
+<td>Producer-Consumer</td>
+</tr>
+<tr>
+<td><code>reactor</code></td>
+<td>Reactor pattern</td>
+</tr>
+<tr>
+<td><code>proactor</code></td>
+<td>Proactor pattern</td>
+</tr>
+<tr>
+<td><code>csp</code></td>
+<td>Communicating Sequential Processes</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="relationship-map">Relationship Map</h2>
+<pre><code>                        ┌──────────── Layer 1 (System Context) ─────────────┐
+                        │  System, ExternalSystem, ComplianceRequirement,   │
+                        │  RiskAssessment, Actor, Identity, Tenant, ...     │
+                        └──────────┬──────────────┬─────────────────────────┘
+                                   │              │
+                    contained_in_system     integrates_with_system
+                    exposed_by_system       belongs_to_system
+                                   │              │
+┌──────────────────────────────────▼──────────────▼────────────────────────────┐
+│                         LAYER 2 (Container)                                  │
+│                                                                              │
+│  ┌─ STRUCTURAL ──────────────────────────────────────────────────────────┐   │
+│  │  BoundedContext ──contains_modules──► Module ──runs_as_services──►    │   │
+│  │       │                                │          Service             │   │
+│  │       │                                │            │                 │   │
+│  │       └──upstream/downstream──►BC      ├──depends──►Module            │   │
+│  │                                        └──dependencies──►Dependency   │   │
+│  │  Interface (abstract)                                                 │   │
+│  │    ├── UserInterface ──screens──► Screen                              │   │
+│  │    ├── ProgrammaticInterface ──endpoints──► Endpoint                  │   │
+│  │    └── EventInterface ──subscriptions──► (L3)                         │   │
+│  │  Route (tree) ──guarded_by──► Policy (L3)                             │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ DATA MANAGEMENT ────────────────────────────────────────────────────┐   │
+│  │  DataStore ──collections──► Collection ──stores──► Record             │   │
+│  │      │                         ├──constraints──► DatabaseConstraint   │   │
+│  │      │                         └──indexes──► DatabaseIndex            │   │
+│  │      └──hosted_on──► Infrastructure                                   │   │
+│  │                                                                       │   │
+│  │  DataClassification    RetentionPolicy ──governs──► Collection, Log   │   │
+│  │  DataLineage ──tracks/derives──► Record                               │   │
+│  │  AuditLog ──entries──► AuditEntry ──records──► Action (L3)            │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ INTEGRATION ────────────────────────────────────────────────────────┐   │
+│  │  Integration ──adapter──► Adapter ──(extends Component, L3)           │   │
+│  │      ├──breaker──► CircuitBreaker                                     │   │
+│  │      ├──contract──► Contract ──versions──► ContractVersion            │   │
+│  │      └──messages──► Message                                           │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ DEPLOYMENT &amp; RUNTIME ───────────────────────────────────────────────┐   │
+│  │  Environment ──hosts──► Deployment ──deploys──► Service               │   │
+│  │      │                      ├──unit──► DeploymentUnit                 │   │
+│  │      │                      ├──config──► Configuration                │   │
+│  │      │                      └──release──► Release                     │   │
+│  │      └──infra──► Infrastructure ◄──iac──── IaCDefinition              │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ OBSERVABILITY ──────────────────────────────────────────────────────┐   │
+│  │  Metric ◄──monitors── AlertRule ──triggers──► Alert                   │   │
+│  │  Log ──entries──► LogEntry                      │                     │   │
+│  │  Trace ──spans──► Span (tree)        escalates──► Incident            │   │
+│  │  HealthCheck (inline in Service)           │──affects──► Service       │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ BUILD &amp; CI/CD ─────────────────────────────────────────────────────┐   │
+│  │  BuildPipeline ──stages──► PipelineStage                              │   │
+│  │      ├──produces──► BuildArtifact ──stored_in──► ArtifactRegistry     │   │
+│  │      ├──deploys_to──► Environment                                     │   │
+│  │      └──uses_iac──► IaCDefinition                                     │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ DEPENDENCY MANAGEMENT ──────────────────────────────────────────────┐   │
+│  │  PackageManager ──manages──► Module                                   │   │
+│  │  PackageDependency ──vulnerabilities──► KnownVulnerability            │   │
+│  │      └──transitive──► PackageDependency                               │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ IaC ───────────────────────────────────────────────────────────────┐   │
+│  │  IaCDefinition ──resources──► IaCResource                             │   │
+│  │  IaCModule ──child_resources──► IaCResource                           │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ ML &amp; DATA PIPELINES ───────────────────────────────────────────────┐   │
+│  │  DataPipeline ──steps──► DataPipelineStep                             │   │
+│  │      ├──reads/writes──► DataStore                                     │   │
+│  │      └──uses──► Dataset                                               │   │
+│  │  MLModel ──metrics──► MLModelMetric                                   │   │
+│  │      └──features──► FeatureStore                                      │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ TESTING ───────────────────────────────────────────────────────────┐   │
+│  │  TestSuite ──tests──► Component (L3), Module                          │   │
+│  │  TestCoverage ──covers──► Component (L3), Module                      │   │
+│  │  TestAssertion (inline in TestCase, L3)                               │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+│  ┌─ FRONTEND SUPPORTING ───────────────────────────────────────────────┐   │
+│  │  StateStore ──manages──► UIComponent (L3)                             │   │
+│  │  UIProperty (inline in UIComponent, L3)                               │   │
+│  │  ConcurrencyPattern ──used_by──► Component (L3)                       │   │
+│  └───────────────────────────────────────────────────────────────────────┘   │
+│                                                                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+                                   │
+                    contains_components, contains_aggregates,
+                    persists_aggregates, controls_features, ...
+                                   │
+                        ┌──────────▼────────────────────────────┐
+                        │  Layer 3 (Component)                   │
+                        │  Component, Aggregate, DomainEntity,   │
+                        │  Operation, Rule, Event, Workflow, ... │
+                        └───────────────────────────────────────┘
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

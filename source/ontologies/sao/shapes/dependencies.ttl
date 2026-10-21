@@ -1,0 +1,340 @@
+# Editable SHACL source, initially bootstrapped from SAO 2.1.0.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:KnownVulnerabilityShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/advisory_url>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/affected_versions>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/cve_id>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/cvss_score>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/description>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/fixed_version>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/id>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/name>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity>,
+        <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/tags> ;
+    sh:targetClass sao:KnownVulnerability .
+
+saosh:PackageDependencyShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/PackageDependency/dependency_of_module>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/description>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/has_known_vulnerabilities>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/has_transitive_dependencies>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/id>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/is_direct>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/license>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/name>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/package_name>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/resolved_version>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/transitive_dependency_of>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageDependency/version_constraint> ;
+    sh:targetClass sao:PackageDependency .
+
+saosh:PackageManagerShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/PackageManager/description>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/id>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/lock_file>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/manages_dependencies_for_module>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/manifest_file>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/name>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/registry_url>,
+        <https://ontologies.corestory.ai/sao/shapes/PackageManager/tags> ;
+    sh:targetClass sao:PackageManager .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/advisory_url> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Security advisory URL." ;
+    sh:maxCount 1 ;
+    sh:path sao:advisory_url .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/affected_versions> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Affected version range." ;
+    sh:maxCount 1 ;
+    sh:path sao:affected_versions .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/cve_id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "CVE identifier." ;
+    sh:maxCount 1 ;
+    sh:path sao:cve_id .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/cvss_score> a sh:PropertyShape ;
+    sh:datatype xsd:float ;
+    sh:description "CVSS score." ;
+    sh:maxCount 1 ;
+    sh:path sao:cvss_score .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/fixed_version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Version with fix." ;
+    sh:maxCount 1 ;
+    sh:path sao:fixed_version .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity> a sh:PropertyShape ;
+    sh:description "Severity level." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:severity .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values> rdf:first "critical" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/1> rdf:first "high" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/2> rdf:first "medium" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/3> rdf:first "low" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/severity/values/cell/4> rdf:first "none" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/KnownVulnerability/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/dependency_of_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "Module declaring this dependency." ;
+    sh:maxCount 1 ;
+    sh:path sao:dependency_of_module .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/has_known_vulnerabilities> a sh:PropertyShape ;
+    sh:class sao:KnownVulnerability ;
+    sh:description "Known vulnerabilities." ;
+    sh:path sao:has_known_vulnerabilities .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/has_transitive_dependencies> a sh:PropertyShape ;
+    sh:class sao:PackageDependency ;
+    sh:description "Transitive dependencies." ;
+    sh:path sao:has_transitive_dependencies .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/is_direct> a sh:PropertyShape ;
+    sh:datatype xsd:boolean ;
+    sh:description "Whether this is a direct dependency." ;
+    sh:maxCount 1 ;
+    sh:path sao:is_direct .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/license> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Package license." ;
+    sh:maxCount 1 ;
+    sh:path sao:license .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/package_name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Package name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:package_name .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/resolved_version> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Resolved version." ;
+    sh:maxCount 1 ;
+    sh:path sao:resolved_version .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope> a sh:PropertyShape ;
+    sh:description "Dependency scope." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values> ;
+    sh:maxCount 1 ;
+    sh:path sao:scope .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values> rdf:first "production" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/1> rdf:first "development" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/2> rdf:first "test" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/3> rdf:first "build" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/4> rdf:first "optional" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/scope/values/cell/5> rdf:first "provided" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/transitive_dependency_of> a sh:PropertyShape ;
+    sh:class sao:PackageDependency ;
+    sh:description "Packages depending on this transitively." ;
+    sh:path sao:transitive_dependency_of .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageDependency/version_constraint> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Version constraint (e.g., ^1.2.0)." ;
+    sh:maxCount 1 ;
+    sh:path sao:version_constraint .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/lock_file> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Lock file name." ;
+    sh:maxCount 1 ;
+    sh:path sao:lock_file .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type> a sh:PropertyShape ;
+    sh:description "Kind of package manager." ;
+    sh:in <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values> ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:manager_type .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values> rdf:first "npm" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/1> rdf:first "pip" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/2> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/10> rdf:first "none" ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/2> rdf:first "maven" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/3> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/3> rdf:first "gradle" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/4> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/4> rdf:first "nuget" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/5> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/5> rdf:first "cargo" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/6> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/6> rdf:first "go_modules" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/7> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/7> rdf:first "bundler" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/8> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/8> rdf:first "composer" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/9> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/9> rdf:first "conan" ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/PackageManager/manager_type/values/cell/10> .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manages_dependencies_for_module> a sh:PropertyShape ;
+    sh:class sao:Module ;
+    sh:description "Modules managed." ;
+    sh:path sao:manages_dependencies_for_module .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/manifest_file> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Manifest file name (package.json, pom.xml, etc.)." ;
+    sh:maxCount 1 ;
+    sh:path sao:manifest_file .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/registry_url> a sh:PropertyShape ;
+    sh:datatype xsd:anyURI ;
+    sh:description "Package registry URL." ;
+    sh:maxCount 1 ;
+    sh:path sao:registry_url .
+
+<https://ontologies.corestory.ai/sao/shapes/PackageManager/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .

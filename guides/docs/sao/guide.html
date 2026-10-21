@@ -1,0 +1,3653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Systems Abstraction Ontology: A Guide · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="systems-abstraction-ontology-a-guide">Systems Abstraction Ontology: A Guide</h1>
+<p><strong>Author:</strong> Charath Ranganathan<br />
+<strong>CoreStory, Inc.</strong><br />
+Version 1.0.0 · April 2026<br />
+147 classes · 102 enums · 970 attributes · 214 bidirectional relationships<br />
+LinkML Schema · Apache 2.0 License</p>
+<hr />
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#1-introduction">1. Introduction</a></li>
+<li><a href="#2-sao-at-a-glance">2. SAO at a Glance</a></li>
+<li><a href="#3-the-six-conceptual-layers">3. The Six Conceptual Layers</a></li>
+<li><a href="#4-layer-3-code-structure-the-foundation">4. Layer 3: Code Structure — The Foundation</a></li>
+<li><a href="#41-the-core-containment-hierarchy">4.1 The Core Containment Hierarchy</a></li>
+<li><a href="#42-behavioral-edges">4.2 Behavioral Edges</a></li>
+<li><a href="#43-internal-code-structure">4.3 Internal Code Structure</a></li>
+<li><a href="#44-platform-specific-extensions-sections-1828">4.4 Platform-Specific Extensions (Sections 18–28)</a></li>
+<li><a href="#5-layer-4-architecture-integration-the-system-map">5. Layer 4: Architecture &amp; Integration — The System Map</a></li>
+<li><a href="#51-the-architectural-containment-hierarchy">5.1 The Architectural Containment Hierarchy</a></li>
+<li><a href="#52-services-and-interfaces">5.2 Services and Interfaces</a></li>
+<li><a href="#53-integration-cluster">5.3 Integration Cluster</a></li>
+<li><a href="#6-layer-5-domain-model-the-business-entities">6. Layer 5: Domain Model — The Business Entities</a></li>
+<li><a href="#61-aggregates-entities-and-value-objects">6.1 Aggregates, Entities, and Value Objects</a></li>
+<li><a href="#62-lifecycle-and-state-machines">6.2 Lifecycle and State Machines</a></li>
+<li><a href="#63-data-persistence-layer-section-6">6.3 Data Persistence Layer (Section 6)</a></li>
+<li><a href="#7-layer-6-business-intent-behavior-rules-and-purpose">7. Layer 6: Business Intent — Behavior, Rules, and Purpose</a></li>
+<li><a href="#71-actors-section-2">7.1 Actors (Section 2)</a></li>
+<li><a href="#72-behavior-section-5">7.2 Behavior (Section 5)</a></li>
+<li><a href="#73-rules">7.3 Rules</a></li>
+<li><a href="#74-events">7.4 Events</a></li>
+<li><a href="#75-capability-and-feature">7.5 Capability and Feature</a></li>
+<li><a href="#8-cross-cutting-concerns">8. Cross-Cutting Concerns</a></li>
+<li><a href="#81-authorization-and-policy-section-3">8.1 Authorization and Policy (Section 3)</a></li>
+<li><a href="#82-deployment-and-operations-section-8">8.2 Deployment and Operations (Section 8)</a></li>
+<li><a href="#83-observability-section-9">8.3 Observability (Section 9)</a></li>
+<li><a href="#84-governance-and-compliance-section-10">8.4 Governance and Compliance (Section 10)</a></li>
+<li><a href="#85-testing-section-11">8.5 Testing (Section 11)</a></li>
+<li><a href="#86-uifrontend-section-12">8.6 UI/Frontend (Section 12)</a></li>
+<li><a href="#87-build-cicd-and-dependencies-sections-1314">8.7 Build, CI/CD, and Dependencies (Sections 13–14)</a></li>
+<li><a href="#88-advanced-sections-1517">8.8 Advanced Sections (15–17)</a></li>
+<li><a href="#89-knowledge-artifacts-section-30">8.9 Knowledge Artifacts (Section 30)</a></li>
+<li><a href="#9-section-index">9. Section Index</a></li>
+<li><a href="#10-the-glue-bidirectional-relationships">10. The Glue: Bidirectional Relationships</a></li>
+<li><a href="#101-key-cross-layer-bridges">10.1 Key Cross-Layer Bridges</a></li>
+<li><a href="#11-base-classes-and-mixins">11. Base Classes and Mixins</a></li>
+<li><a href="#12-reading-the-sao-effectively">12. Reading the SAO Effectively</a></li>
+<li><a href="#appendix-a-complete-class-inventory-147-classes">Appendix A: Complete Class Inventory (147 classes)</a></li>
+<li><a href="#appendix-b-complete-enumeration-reference-102-enums">Appendix B: Complete Enumeration Reference (102 enums)</a></li>
+<li><a href="#appendix-c-complete-bidirectional-relationship-pairs-226-rows">Appendix C: Complete Bidirectional Relationship Pairs (226 rows)</a></li>
+</ul>
+<hr />
+<h2 id="1-introduction">1. Introduction</h2>
+<p>The Systems Abstraction Ontology (SAO) is a LinkML schema that provides a comprehensive, language-agnostic framework for modeling software systems. It covers everything from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments, from database constraints to compliance requirements.</p>
+<p>This guide explains the SAO by organizing its 147 classes into six conceptual layers, ordered by abstraction. The lowest layers describe what a code parser can directly extract. The highest layers describe what the system means to the business. The layers in between bridge the two.</p>
+<blockquote>
+<p><strong>Why layers?</strong> When CoreStory ingests a codebase, the parser fills the lower layers directly from source code. Higher layers are populated through inference — recognizing that a COBOL group item named <code>CUST-MSTR-REC</code> with a primary key and CRUD operations is a Customer domain entity. Understanding which classes live at which layer tells you what's extracted vs. what's inferred, and how confident you can be in each.</p>
+</blockquote>
+<hr />
+<h2 id="2-sao-at-a-glance">2. SAO at a Glance</h2>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Count</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Classes (total)</td>
+<td>147</td>
+<td>6 abstract, 2 mixins, 139 concrete</td>
+</tr>
+<tr>
+<td>Enumerations</td>
+<td>102</td>
+<td>With 804 permissible values</td>
+</tr>
+<tr>
+<td>Attributes</td>
+<td>970</td>
+<td>Across all classes</td>
+</tr>
+<tr>
+<td>Bidirectional relationships</td>
+<td>214 pairs</td>
+<td>Every relationship has an explicit inverse</td>
+</tr>
+<tr>
+<td>Global slots</td>
+<td>20</td>
+<td>Cross-domain relationship slots</td>
+</tr>
+<tr>
+<td>Sections</td>
+<td>30</td>
+<td>Numbered thematic groupings</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-the-six-conceptual-layers">3. The Six Conceptual Layers</h2>
+<p>The SAO's 147 classes organize into six layers of ascending abstraction, plus cross-cutting concerns that attach at every level.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Abstraction</th>
+<th>Key classes</th>
+<th>How it is derived</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>Business intent</td>
+<td>Capability, Feature, Actor, Workflow, Rule, Lifecycle</td>
+<td>LLM inference + human validation</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Domain model</td>
+<td>Aggregate, DomainEntity, ValueObject, DomainRelationship</td>
+<td>Pattern recognition + LLM</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Architecture</td>
+<td>System, BoundedContext, Module, Component, Service, Integration</td>
+<td>Graph algorithms + package manifests</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Code structure</td>
+<td>CodeContainer, EncapsulationUnit, CallableUnit, DataStructure</td>
+<td>Direct parsing (deterministic)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Runtime &amp; ops</td>
+<td>Deployment, Environment, Infrastructure, Metric, Trace, Alert</td>
+<td>Config parsing + runtime telemetry</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Cross-cutting</td>
+<td>Identity, Role, Permission, Policy, TestSuite, KnowledgeArtifact</td>
+<td>Mixed: parsing + inference</td>
+</tr>
+</tbody>
+</table>
+<p>Each layer consumes the outputs of the layer below it. Layer 3 is the foundation — everything else depends on it. The key insight is that layers 3 and 4 are largely structural (you can derive them from code organization and dependency graphs), while layers 5 and 6 require semantic understanding (recognizing business meaning in code patterns).</p>
+<hr />
+<h2 id="4-layer-3-code-structure-the-foundation">4. Layer 3: Code Structure — The Foundation</h2>
+<p>When CoreStory ingests a codebase, these are the classes populated directly from parsing source files. No inference is needed — this layer is a structured representation of what the code literally says.</p>
+<h3 id="41-the-core-containment-hierarchy">4.1 The Core Containment Hierarchy</h3>
+<p>The code structure is modeled as a four-level containment hierarchy: <strong>StorageLocation</strong> (a directory or PDS library) contains <strong>CodeContainers</strong> (source files), which contain <strong>EncapsulationUnits</strong> (classes, COBOL programs, Rust modules), which contain <strong>CallableUnits</strong> (methods, functions, paragraphs) and <strong>DataStructures</strong> (structs, records, group items), which in turn contain <strong>DataElements</strong> (fields, variables).</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>What it represents</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>StorageLocation</td>
+<td>Logical/physical code storage</td>
+<td>Directory, PDS library, package namespace</td>
+</tr>
+<tr>
+<td>CodeContainer</td>
+<td>A single source file or member</td>
+<td>Python .py file, COBOL member in PDS, JCL member</td>
+</tr>
+<tr>
+<td>EncapsulationUnit</td>
+<td>Logical boundary grouping code and data</td>
+<td>Java class, COBOL program, Rust module, Go package</td>
+</tr>
+<tr>
+<td>CallableUnit</td>
+<td>Named, invocable unit of code</td>
+<td>Method, function, COBOL paragraph, stored procedure</td>
+</tr>
+<tr>
+<td>DataStructure</td>
+<td>Composite data type</td>
+<td>Struct, record, COBOL group item, protobuf message</td>
+</tr>
+<tr>
+<td>DataElement</td>
+<td>Individual data field or variable</td>
+<td>Class field, local variable, COBOL data item, column</td>
+</tr>
+<tr>
+<td>Parameter</td>
+<td>Input/output to a callable (extends DataElement)</td>
+<td>Method parameter with direction and passing mechanism</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-behavioral-edges">4.2 Behavioral Edges</h3>
+<p>The power of this layer is in the edges between nodes. These are first-class entities that capture how execution and data flow through the code:</p>
+<ul>
+<li><strong>ControlFlow</strong> — represents control transfer between code elements. Source and target can be <strong>CallableUnits</strong> or <strong>Statements</strong>. Types:<ul>
+<li><code>call</code></li>
+<li><code>async_call</code></li>
+<li><code>branch</code></li>
+<li><code>jump</code></li>
+<li><code>return</code></li>
+<li><code>throw</code></li>
+<li><code>yield</code></li>
+</ul>
+</li>
+<li><strong>DataFlow</strong> — represents data movement between <strong>DataElements</strong> through <strong>CallableUnits</strong> or <strong>Statements</strong>. Types:<ul>
+<li><code>read</code></li>
+<li><code>write</code></li>
+<li><code>modify</code></li>
+<li><code>define</code></li>
+<li><code>use</code></li>
+</ul>
+</li>
+<li><strong>CallableUnit.invokes_callables</strong> — the call graph. Bidirectional: every <strong>CallableUnit</strong> knows what it calls and what calls it.</li>
+<li><strong>CallableUnit.accesses_data_elements / modifies_data_elements</strong> — read/write access patterns, essential for impact analysis.</li>
+</ul>
+<h3 id="43-internal-code-structure">4.3 Internal Code Structure</h3>
+<p>Within a <strong>CallableUnit</strong>, the SAO models the internal structure: <strong>CodeBlock</strong> entities contain <strong>Statement</strong> entities. This gives you statement-level resolution when needed — for example, to identify exactly which line performs a particular database write.</p>
+<p>CodeBlock types:</p>
+<ul>
+<li><code>sequential</code></li>
+<li><code>conditional</code></li>
+<li><code>loop</code></li>
+<li><code>try_catch</code></li>
+<li><code>transaction</code></li>
+<li><code>critical_section</code></li>
+<li><code>scope</code></li>
+</ul>
+<p>Statement categories:</p>
+<ul>
+<li><code>declaration</code></li>
+<li><code>assignment</code></li>
+<li><code>invocation</code></li>
+<li><code>control_transfer</code></li>
+<li><code>io_operation</code></li>
+<li><code>data_manipulation</code></li>
+<li><code>transaction_control</code></li>
+<li><code>exception_handling</code></li>
+</ul>
+<p>Supporting classes include <strong>DefinitionReference</strong> (imports, includes, COBOL COPY statements, inheritance declarations), <strong>Annotation</strong> (Java annotations, Python decorators, C# attributes, COBOL compiler directives), and <strong>TypeExpression</strong> (a recursive type model for generics, unions, pointers, function types across all languages).</p>
+<h3 id="44-platform-specific-extensions-sections-1828">4.4 Platform-Specific Extensions (Sections 18–28)</h3>
+<p>The SAO extends its code-level model with specialized classes for platform-specific constructs. These are particularly important for mainframe modernization:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Section</th>
+<th>What it captures</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FileDefinition</td>
+<td>20</td>
+<td>File I/O declarations (COBOL SELECT, C fopen) with organization, access mode, record format, key fields</td>
+</tr>
+<tr>
+<td>FileOperation</td>
+<td>20</td>
+<td>Specific I/O operations (<code>read</code>, <code>write</code>, <code>rewrite</code>, <code>delete</code>, <code>start</code>, <code>sort</code>, <code>merge</code>)</td>
+</tr>
+<tr>
+<td>ScreenDefinition</td>
+<td>21</td>
+<td>Terminal screen/map definitions (CICS BMS maps, RPG display files) with rows, columns, fields</td>
+</tr>
+<tr>
+<td>ScreenField</td>
+<td>21</td>
+<td>Individual screen field with position, length, input/protected flags, attribute byte</td>
+</tr>
+<tr>
+<td>JobDefinition</td>
+<td>22</td>
+<td>Batch job definition (JCL JOB, scheduler entry) with class, priority, restart, scheduling</td>
+</tr>
+<tr>
+<td>JobStep</td>
+<td>22</td>
+<td>Single step in a batch job with program name, condition codes, region size</td>
+</tr>
+<tr>
+<td>DatasetAllocation</td>
+<td>22</td>
+<td>DD allocation within a job step (dataset name, disposition, space, record format)</td>
+</tr>
+<tr>
+<td>IPCConnection</td>
+<td>23</td>
+<td>Inter-process communication link (CICS LINK/XCTL, shared memory, message queue, REST call)</td>
+</tr>
+<tr>
+<td>PreprocessorDirective</td>
+<td>24</td>
+<td>Preprocessor/metaprogramming constructs (C preprocessor, Rust macros, COBOL COPY REPLACING)</td>
+</tr>
+<tr>
+<td>ErrorModel</td>
+<td>19</td>
+<td>Module/language error handling strategy (<code>exception_based</code>, <code>return_value_based</code>, <code>condition_based</code>, <code>error_code_based</code>, <code>panic_recover</code>, <code>monadic</code>)</td>
+</tr>
+<tr>
+<td>MemoryModel</td>
+<td>25</td>
+<td>Memory management model (GC type, ownership model, unsafe support)</td>
+</tr>
+<tr>
+<td>OwnershipAnnotation</td>
+<td>25</td>
+<td>Ownership/lifetime annotations on data elements (Rust borrows, C++ smart pointers)</td>
+</tr>
+<tr>
+<td>ProgrammingLanguage</td>
+<td>28</td>
+<td>Language as first-class entity with paradigms, type system, GC, preprocessor support</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Key design decision: enum-typed, not subclassed.</strong> <code>EncapsulationUnit</code> is abstract, but there is no <code>CobolProgram</code> or <code>JavaClass</code> subclass. Instead, the <code>encapsulation_type</code> enum (33 values) captures what kind of thing it is. Similarly, <code>CallableUnit</code> uses a <code>callable_type</code> enum (53 values) from "method" to "paragraph" to "coroutine." This keeps the relationship graph uniform across languages, making cross-language analysis possible.</p>
+</blockquote>
+<hr />
+<h2 id="5-layer-4-architecture-integration-the-system-map">5. Layer 4: Architecture &amp; Integration — The System Map</h2>
+<p>This layer models how the codebase is organized as a running system — the services, modules, components, and how they connect to each other and to the outside world.</p>
+<h3 id="51-the-architectural-containment-hierarchy">5.1 The Architectural Containment Hierarchy</h3>
+<p>The containment at this layer is: <strong>System</strong> → <strong>BoundedContext</strong> → <strong>Module</strong> → <strong>Component</strong>. This maps directly to Domain-Driven Design (DDD) concepts.</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>DDD concept</th>
+<th>What it represents</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System</td>
+<td>Application</td>
+<td>Top-level container for the entire software product</td>
+<td>The CoreStory platform</td>
+</tr>
+<tr>
+<td>BoundedContext</td>
+<td>Bounded context</td>
+<td>Semantic boundary where a domain model applies consistently</td>
+<td>Orders context, Inventory context</td>
+</tr>
+<tr>
+<td>Module</td>
+<td>Deployable unit</td>
+<td>Cohesive unit of functionality, often a package</td>
+<td>Python package, Maven module, COBOL library</td>
+</tr>
+<tr>
+<td>Component</td>
+<td>Building block</td>
+<td>Logical grouping within a module</td>
+<td>Service class, repository, controller group</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>BoundedContext</strong> carries a <code>ubiquitous_language</code> attribute (the key terms used within it), a <code>context_map_relationship</code> (Customer-Supplier, Partnership, etc.), and upstream/downstream relationships to other contexts. This captures the DDD context map.</p>
+<h3 id="52-services-and-interfaces">5.2 Services and Interfaces</h3>
+<p>A <strong>Service</strong> is an independently deployable runtime unit (microservice, monolith, serverless function, CICS transaction, batch program). It runs a <strong>Module</strong>, exposes <strong>Endpoints</strong> (with path, method, protocol, port), and connects to other services.</p>
+<p>The system exposes itself through three types of <strong>Interface</strong>, each a subclass of the abstract <code>Interface</code> class:</p>
+<ul>
+<li><strong>UserInterface</strong> — for human interaction. Contains <strong>Screens</strong>, each offering <strong>Operations</strong>. Types:<ul>
+<li><code>web_ui</code></li>
+<li><code>mobile_ui</code></li>
+<li><code>desktop_ui</code></li>
+<li><code>cli</code></li>
+</ul>
+</li>
+<li><strong>ProgrammaticInterface</strong> — for machine-to-machine interaction. Contains <strong>Endpoints</strong>. Types:<ul>
+<li><code>rest_api</code></li>
+<li><code>graphql_api</code></li>
+<li><code>grpc_api</code></li>
+<li><code>sdk</code></li>
+<li><code>soap_api</code></li>
+</ul>
+</li>
+<li><strong>EventInterface</strong> — for event-driven interaction. Contains <strong>Subscriptions</strong>. Types:<ul>
+<li><code>webhook</code></li>
+<li><code>message_queue</code></li>
+<li><code>event_stream</code></li>
+<li><code>pub_sub</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="53-integration-cluster">5.3 Integration Cluster</h3>
+<p>The <strong>Integration</strong> class models connections to external systems. Each <strong>Integration</strong> connects to an <strong>ExternalSystem</strong> via a <strong>Contract</strong> through an <strong>Adapter</strong> (protocol translation component) protected by a <strong>CircuitBreaker</strong> (resilience pattern). <strong>Messages</strong> exchanged in integration are modeled with <strong>Message</strong> entities structured by <strong>Schemas</strong>.</p>
+<ul>
+<li><strong>ExternalSystem</strong> types:<ul>
+<li><code>third_party_service</code></li>
+<li><code>partner_system</code></li>
+<li><code>legacy_system</code></li>
+<li><code>saas_application</code></li>
+</ul>
+</li>
+<li><strong>Contract</strong> types:<ul>
+<li><code>openapi</code></li>
+<li><code>asyncapi</code></li>
+<li><code>json_schema</code></li>
+<li><code>protobuf</code></li>
+<li><code>avro</code></li>
+<li><code>graphql_schema</code></li>
+<li><code>wsdl</code></li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>Bridge to Layer 3:</strong> <code>Component.implemented_by_code</code> points to <strong>EncapsulationUnits</strong> and <strong>CodeContainers</strong>. <code>Module.mapped_from_directory</code> points to a <strong>StorageLocation</strong>. These are the links that connect the architectural view to actual code. Without them, the architecture is just a diagram — with them, every box traces to source lines.</p>
+</blockquote>
+<hr />
+<h2 id="6-layer-5-domain-model-the-business-entities">6. Layer 5: Domain Model — The Business Entities</h2>
+<p>This is the DDD layer. It models the business things the system manages — the entities, their attributes, relationships, and how they persist.</p>
+<h3 id="61-aggregates-entities-and-value-objects">6.1 Aggregates, Entities, and Value Objects</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>DDD concept</th>
+<th>Key characteristic</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aggregate</td>
+<td>Aggregate</td>
+<td>Transactional boundary, enforces invariants</td>
+<td>Order (with OrderLines, ShippingAddress)</td>
+</tr>
+<tr>
+<td>DomainEntity</td>
+<td>Entity</td>
+<td>Has identity, lifecycle, mutable state</td>
+<td>Customer, Order, Policy, Claim</td>
+</tr>
+<tr>
+<td>ValueObject</td>
+<td>Value object</td>
+<td>No identity, immutable, defined by attributes</td>
+<td>Address, Money, DateRange, PhoneNumber</td>
+</tr>
+<tr>
+<td>Attribute</td>
+<td>Property</td>
+<td>Named, typed property with classification</td>
+<td>customer_name, order_total, status</td>
+</tr>
+<tr>
+<td>DomainRelationship</td>
+<td>Association</td>
+<td>Typed relationship with cardinality and FK</td>
+<td>Order has many OrderLines</td>
+</tr>
+</tbody>
+</table>
+<p>An <strong>Aggregate</strong> has a root <strong>DomainEntity</strong> (the one you address directly), may contain additional entities and value objects, is enforced by invariant <strong>Rules</strong>, persisted in <strong>DataStores</strong>, contained in a <strong>BoundedContext</strong>, and produces <strong>DomainEvents</strong> when its state changes.</p>
+<p>A <strong>DomainRelationship</strong> captures cardinality (<code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_many</code>), navigability, composition (lifecycle dependency), the foreign key field implementing it, and any join entity for many-to-many relationships. This is what gets projected into ERD diagrams.</p>
+<h3 id="62-lifecycle-and-state-machines">6.2 Lifecycle and State Machines</h3>
+<p>A <strong>Lifecycle</strong> governs a <strong>DomainEntity</strong> through a set of <strong>States</strong> connected by <strong>Transitions</strong>. Each <strong>State</strong> can be initial or terminal, and allows specific <strong>Actions</strong>. Each <strong>Transition</strong> has a source state, target state, triggering <strong>Events</strong>, guarding <strong>Rules</strong>, and <strong>Actions</strong> executed during the transition.</p>
+<p>For example: an Order entity might have states Pending, Confirmed, Shipped, Delivered, and Cancelled. The transition from Pending to Confirmed is triggered by a PaymentReceived event, guarded by a rule that verifies inventory availability, and executes an action that reserves stock.</p>
+<h3 id="63-data-persistence-layer-section-6">6.3 Data Persistence Layer (Section 6)</h3>
+<p>The persistence model connects domain entities to their storage:</p>
+<ul>
+<li><strong>DataStore</strong> — a persistence mechanism. Types:<ul>
+<li><code>relational_db</code></li>
+<li><code>document_db</code></li>
+<li><code>key_value_store</code></li>
+<li><code>graph_db</code></li>
+<li><code>time_series_db</code></li>
+<li><code>object_storage</code></li>
+<li><code>search_index</code></li>
+<li><code>cache</code></li>
+<li><code>message_broker</code></li>
+<li><code>data_lake</code></li>
+<li><code>vsam</code></li>
+<li><code>flat_file</code></li>
+<li><code>isam</code></li>
+<li><code>dead_letter_queue</code></li>
+</ul>
+</li>
+<li><strong>Collection</strong> — a logical grouping of records within a store (table, collection, bucket), structured by a <strong>Schema</strong>.</li>
+<li><strong>Record</strong> — a single persisted data instance, conforming to a <strong>Schema</strong>, with <strong>DataLineage</strong> tracking.</li>
+<li><strong>Schema / SchemaVersion</strong> — structural definition of stored data, with versioning and migration scripts.</li>
+<li><strong>DataClassification</strong> — sensitivity tagging, critical for compliance. Types:<ul>
+<li><code>public</code></li>
+<li><code>internal</code></li>
+<li><code>confidential</code></li>
+<li><code>restricted</code></li>
+<li><code>pii</code></li>
+<li><code>phi</code></li>
+<li><code>pci</code></li>
+</ul>
+</li>
+<li><strong>RetentionPolicy</strong> — rules for data lifecycle (retention days, archive timing, deletion strategy).</li>
+<li><strong>DatabaseConstraint / DatabaseIndex</strong> (Section 27) — primary keys, foreign keys, unique/check constraints, and index types.</li>
+</ul>
+<blockquote>
+<p><strong>Bridge to Layer 3:</strong> <code>DomainEntity.mapped_from_structure</code> ↔ <code>DataStructure.maps_to_domain_entity</code> is the inference bridge. The parser populates <strong>DataStructures</strong> from code; the inference engine recognizes which ones represent business concepts and populates <strong>DomainEntities</strong> from them. Similarly, <code>Attribute.mapped_from_element</code> ↔ <code>DataElement.maps_to_attribute</code> connects domain attributes to their code-level implementations.</p>
+</blockquote>
+<hr />
+<h2 id="7-layer-6-business-intent-behavior-rules-and-purpose">7. Layer 6: Business Intent — Behavior, Rules, and Purpose</h2>
+<p>This is the most abstract and most valuable layer. It answers: what does this system do, what rules does it enforce, and who uses it for what purpose?</p>
+<h3 id="71-actors-section-2">7.1 Actors (Section 2)</h3>
+<p><strong>Actor</strong> is an abstract class with two concrete subtypes:</p>
+<ul>
+<li><strong>HumanActor</strong> — represents human users. Types:<ul>
+<li><code>end_user</code></li>
+<li><code>administrator</code></li>
+<li><code>operator</code></li>
+<li><code>developer</code></li>
+<li><code>auditor</code></li>
+</ul>
+</li>
+<li><strong>SystemActor</strong> — represents automated entities. Types:<ul>
+<li><code>internal_service</code></li>
+<li><code>external_system</code></li>
+<li><code>scheduled_process</code></li>
+<li><code>ai_agent</code></li>
+<li><code>message_trigger</code></li>
+</ul>
+</li>
+</ul>
+<p>Each <strong>Actor</strong> has <strong>Identities</strong> (verified representations) backed by <strong>Credentials</strong>. <strong>Identities</strong> belong to <strong>Tenants</strong> and <strong>Organizations</strong>, enabling multi-tenant modeling. Credential types:</p>
+<ul>
+<li><code>password</code></li>
+<li><code>token</code></li>
+<li><code>certificate</code></li>
+<li><code>api_key</code></li>
+<li><code>biometric</code></li>
+<li><code>mfa</code></li>
+<li><code>oauth</code></li>
+</ul>
+<h3 id="72-behavior-section-5">7.2 Behavior (Section 5)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Role</th>
+<th>Key attributes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operation</td>
+<td>Named, invocable unit of behavior exposed via an interface</td>
+<td>Input/output schemas, implementing CallableUnits, exposed by Component</td>
+</tr>
+<tr>
+<td>Action (abstract)</td>
+<td>Atomic operation that can be performed</td>
+<td>Permitted by Permissions, targets Resources, emits Events</td>
+</tr>
+<tr>
+<td>Query (extends Action)</td>
+<td>Read-only action that retrieves data</td>
+<td>Filters, projections</td>
+</tr>
+<tr>
+<td>Command (extends Action)</td>
+<td>Action that changes system state</td>
+<td>Command type (<code>create</code>, <code>update</code>, <code>delete</code>, <code>execute</code>, <code>archive</code>, <code>restore</code>), idempotency key</td>
+</tr>
+<tr>
+<td>Workflow</td>
+<td>Coordinated sequence achieving a business goal</td>
+<td>Type: <code>synchronous</code>, <code>asynchronous</code>, <code>saga</code>, <code>choreography</code>, <code>orchestration</code></td>
+</tr>
+<tr>
+<td>Step</td>
+<td>Discrete stage within a Workflow</td>
+<td>Order, condition, timeout, compensation, preceding/following steps</td>
+</tr>
+<tr>
+<td>Transaction</td>
+<td>Unit of work with consistency guarantees</td>
+<td>Type: <code>local</code>, <code>distributed</code>, <code>saga</code>, <code>two_phase_commit</code>; isolation level, timeout</td>
+</tr>
+</tbody>
+</table>
+<p>The key relationship chain is: <strong>Actor</strong> → <strong>Action</strong> → <strong>Resource</strong>. <strong>Actors</strong> perform <strong>Actions</strong> (<strong>Queries</strong> or <strong>Commands</strong>). <strong>Actions</strong> target <strong>Resources</strong> (exposed domain entities). <strong>Actions</strong> are allowed by <strong>Permissions</strong>, validated by <strong>Rules</strong>, executed within <strong>Transactions</strong>, and recorded in <strong>AuditEntries</strong>. <strong>Operations</strong> orchestrate <strong>Actions</strong> and are implemented by <strong>CallableUnits</strong>.</p>
+<h3 id="73-rules">7.3 Rules</h3>
+<p><strong>Rule</strong> is a central class with five categories. Each <strong>Rule</strong> has a condition, action expression, priority, and active flag.</p>
+<ul>
+<li><code>validation</code> — input checks</li>
+<li><code>business</code> — business logic constraints</li>
+<li><code>derivation</code> — computed value rules</li>
+<li><code>constraint</code> — invariant enforcement</li>
+<li><code>trigger</code> — event-reactive rules</li>
+</ul>
+<p><strong>Rules</strong> connect broadly: they validate <strong>Attributes</strong>, enforce <strong>Aggregate</strong> invariants, govern <strong>DomainEntities</strong>, validate <strong>Actions</strong>, and guard <strong>Transitions</strong>. The <strong>AlertRule</strong> subclass extends <strong>Rule</strong> specifically for observability, monitoring <strong>Metrics</strong> and triggering <strong>Alerts</strong>.</p>
+<h3 id="74-events">7.4 Events</h3>
+<p><strong>Event</strong> represents something that occurred, with two key subtypes: <strong>DomainEvent</strong> (significant domain occurrences produced by <strong>Aggregates</strong>) and <strong>IntegrationEvent</strong> (cross-service communication events targeted at <strong>Services</strong>). <strong>Events</strong> are structured by <strong>Schemas</strong>, trigger <strong>Transitions</strong>, trigger <strong>Workflows</strong>, and are consumed via <strong>Subscriptions</strong>.</p>
+<h3 id="75-capability-and-feature">7.5 Capability and Feature</h3>
+<p>These are the highest abstractions. A <strong>Capability</strong> is a discrete business or technical ability the system provides ("process claims," "manage inventory"). <strong>Capabilities</strong> are provided by <strong>Modules</strong>, require <strong>Permissions</strong>, and realize <strong>Features</strong>. A <strong>Feature</strong> is a user-facing manifestation of capabilities, controlled by <strong>Configurations</strong>, and accessible by specific <strong>Roles</strong>. Categories:</p>
+<ul>
+<li><code>core</code></li>
+<li><code>optional</code></li>
+<li><code>experimental</code></li>
+<li><code>deprecated</code></li>
+</ul>
+<p>This is where generated PRDs and capability maps come from: <strong>Feature</strong> instances linked to their enabling <strong>Capabilities</strong>, required <strong>Roles</strong>, and controlling <strong>Configurations</strong>.</p>
+<hr />
+<h2 id="8-cross-cutting-concerns">8. Cross-Cutting Concerns</h2>
+<p>These concerns don't sit in the vertical hierarchy — they attach to entities at every other layer.</p>
+<h3 id="81-authorization-and-policy-section-3">8.1 Authorization and Policy (Section 3)</h3>
+<p>The authorization model follows the chain: <strong>Role</strong> → <strong>Permission</strong> → <strong>Scope</strong>. <strong>Roles</strong> grant <strong>Permissions</strong>. <strong>Permissions</strong> allow <strong>Actions</strong> on <strong>ResourceTypes</strong>, limited by <strong>Scopes</strong> (<code>global</code>, <code>tenant</code>, <code>organization</code>, <code>resource</code>, <code>field</code>). <strong>Policy</strong> entities evaluate Permissions against <strong>Constraints</strong> (<code>temporal</code>, <code>spatial</code>, <code>attribute</code>, <code>context</code>, <code>rate_limit</code>). Policy types:</p>
+<ul>
+<li><code>rbac</code></li>
+<li><code>abac</code></li>
+<li><code>rebac</code></li>
+<li><code>pbac</code></li>
+</ul>
+<h3 id="82-deployment-and-operations-section-8">8.2 Deployment and Operations (Section 8)</h3>
+<ul>
+<li><strong>Environment</strong> — runtime context. Types:<ul>
+<li><code>development</code></li>
+<li><code>testing</code></li>
+<li><code>staging</code></li>
+<li><code>production</code></li>
+<li><code>dr</code></li>
+</ul>
+</li>
+<li><strong>Deployment</strong> — instance of a <strong>Service</strong> running in an <strong>Environment</strong> with replica count.</li>
+<li><strong>DeploymentUnit</strong> — packaged artifact. Types:<ul>
+<li><code>container</code></li>
+<li><code>vm</code></li>
+<li><code>serverless_function</code></li>
+<li><code>binary</code></li>
+<li><code>package</code></li>
+</ul>
+</li>
+<li><strong>Configuration</strong> — runtime parameters. Types:<ul>
+<li><code>environment_variable</code></li>
+<li><code>config_file</code></li>
+<li><code>secret</code></li>
+<li><code>feature_flag</code></li>
+<li><code>remote_config</code></li>
+</ul>
+</li>
+<li><strong>Infrastructure</strong> — underlying resources. Types:<ul>
+<li><code>compute</code></li>
+<li><code>storage</code></li>
+<li><code>network</code></li>
+<li><code>load_balancer</code></li>
+<li><code>dns</code></li>
+<li><code>cdn</code></li>
+<li><code>firewall</code></li>
+<li><code>api_gateway</code></li>
+<li><code>service_mesh</code></li>
+</ul>
+</li>
+<li><strong>Release</strong> — versioned, deployable package of changes with changelog.</li>
+</ul>
+<h3 id="83-observability-section-9">8.3 Observability (Section 9)</h3>
+<p>The three observability pillars:</p>
+<ul>
+<li><strong>Metric</strong> — emitted by <strong>Components</strong>. Types:<ul>
+<li><code>counter</code></li>
+<li><code>gauge</code></li>
+<li><code>histogram</code></li>
+<li><code>summary</code></li>
+</ul>
+</li>
+<li><strong>Log/LogEntry</strong> — timestamped discrete events.</li>
+<li><strong>Trace/Span</strong> — causal chains of operations across services with span hierarchy.</li>
+</ul>
+<p><strong>AlertRule</strong> watches <strong>Metrics</strong>, fires <strong>Alerts</strong>, which escalate to <strong>Incidents</strong> that affect <strong>Services</strong>.</p>
+<h3 id="84-governance-and-compliance-section-10">8.4 Governance and Compliance (Section 10)</h3>
+<p><strong>ComplianceRequirement</strong> is implemented by <strong>Controls</strong> (with control IDs, implementation descriptions, and frequency). Controls are proven by <strong>Evidence</strong> (with collection timestamps and artifact URIs) and assessed in <strong>RiskAssessments</strong> (with threat/vulnerability analysis and residual risk levels). Compliance frameworks:</p>
+<ul>
+<li><code>gdpr</code></li>
+<li><code>hipaa</code></li>
+<li><code>soc2</code></li>
+<li><code>pci_dss</code></li>
+<li><code>iso27001</code></li>
+<li><code>sox</code></li>
+<li><code>ccpa</code></li>
+<li><code>fedramp</code></li>
+</ul>
+<h3 id="85-testing-section-11">8.5 Testing (Section 11)</h3>
+<p><strong>TestSuite</strong> contains <strong>TestCases</strong> with <strong>TestAssertions</strong>. <strong>TestCoverage</strong> tracks line, branch, function, and statement coverage percentages.</p>
+<ul>
+<li>TestSuite types:<ul>
+<li><code>unit</code></li>
+<li><code>integration</code></li>
+<li><code>functional</code></li>
+<li><code>end_to_end</code></li>
+<li><code>performance</code></li>
+<li><code>security</code></li>
+<li><code>regression</code></li>
+<li><code>smoke</code></li>
+<li><code>contract</code></li>
+</ul>
+</li>
+<li>TestAssertion types:<ul>
+<li><code>equality</code></li>
+<li><code>truthiness</code></li>
+<li><code>exception</code></li>
+<li><code>type_check</code></li>
+<li><code>containment</code></li>
+<li><code>mock_verification</code></li>
+<li><code>snapshot</code></li>
+<li><code>custom</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="86-uifrontend-section-12">8.6 UI/Frontend (Section 12)</h3>
+<p><strong>UIComponent</strong> models frontend components with parent/child hierarchy, lazy loading, server rendering, and accessibility roles. <strong>Route</strong> defines navigation paths. <strong>StateStore</strong> models frontend state management. UIComponent types:</p>
+<ul>
+<li><code>page</code></li>
+<li><code>layout</code></li>
+<li><code>form</code></li>
+<li><code>widget</code></li>
+<li><code>modal</code></li>
+<li><code>navigation</code></li>
+<li><code>data_display</code></li>
+<li><code>composite</code></li>
+<li><code>higher_order</code></li>
+<li><code>provider</code></li>
+</ul>
+<h3 id="87-build-cicd-and-dependencies-sections-1314">8.7 Build, CI/CD, and Dependencies (Sections 13–14)</h3>
+<p><strong>BuildPipeline</strong> with <strong>PipelineStages</strong> produces <strong>BuildArtifacts</strong> stored in <strong>ArtifactRegistries</strong>. <strong>PackageManager</strong> tracks manifest and lock files. <strong>PackageDependency</strong> entities carry version constraints, resolved versions, scopes, licenses, and links to <strong>KnownVulnerabilities</strong> (with CVE IDs, CVSS scores, and fix versions).</p>
+<h3 id="88-advanced-sections-1517">8.8 Advanced Sections (15–17)</h3>
+<p><strong>Concurrency (Section 15):</strong></p>
+<ul>
+<li>ConcurrencyPrimitive types:<ul>
+<li><code>mutex</code></li>
+<li><code>semaphore</code></li>
+<li><code>read_write_lock</code></li>
+<li><code>spin_lock</code></li>
+<li><code>condition_variable</code></li>
+<li><code>barrier</code></li>
+<li><code>latch</code></li>
+<li><code>atomic</code></li>
+</ul>
+</li>
+<li>ConcurrencyPattern types:<ul>
+<li><code>thread_pool</code></li>
+<li><code>actor</code></li>
+<li><code>channel</code></li>
+<li><code>future_promise</code></li>
+<li><code>async_await</code></li>
+<li><code>fork_join</code></li>
+<li><code>producer_consumer</code></li>
+<li><code>reactor</code></li>
+<li><code>proactor</code></li>
+<li><code>csp</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>ML/Data Pipelines (Section 16):</strong> <strong>MLModel</strong> (with type, framework, format, metrics, feature stores), <strong>Dataset</strong>, <strong>DataPipeline</strong> with <strong>DataPipelineSteps</strong>:</p>
+<ul>
+<li><code>extract</code></li>
+<li><code>transform</code></li>
+<li><code>load</code></li>
+<li><code>validate</code></li>
+<li><code>deduplicate</code></li>
+<li><code>enrich</code></li>
+<li><code>aggregate</code></li>
+<li><code>partition</code></li>
+<li><code>train</code></li>
+<li><code>evaluate</code></li>
+<li><code>deploy_model</code></li>
+</ul>
+<p><strong>Infrastructure as Code (Section 17):</strong> <strong>IaCDefinition</strong>, <strong>IaCResource</strong>, and <strong>IaCModule</strong>. IaC tool types:</p>
+<ul>
+<li><code>terraform</code></li>
+<li><code>cloudformation</code></li>
+<li><code>pulumi</code></li>
+<li><code>ansible</code></li>
+<li><code>chef</code></li>
+<li><code>puppet</code></li>
+<li><code>kubernetes_manifest</code></li>
+<li><code>helm</code></li>
+<li><code>docker_compose</code></li>
+<li><code>bicep</code></li>
+<li><code>cdk</code></li>
+</ul>
+<h3 id="89-knowledge-artifacts-section-30">8.9 Knowledge Artifacts (Section 30)</h3>
+<p><strong>KnowledgeArtifact</strong> is the self-referential class. It represents documentation with supersession chains.</p>
+<ul>
+<li>Artifact types:<ul>
+<li><code>adr</code></li>
+<li><code>readme</code></li>
+<li><code>design_doc</code></li>
+<li><code>runbook</code></li>
+<li><code>wiki_page</code></li>
+<li><code>api_doc</code></li>
+<li><code>onboarding_guide</code></li>
+<li><code>postmortem</code></li>
+<li><code>changelog</code></li>
+<li><code>comment</code></li>
+<li><code>diagram</code></li>
+<li><code>rfc</code></li>
+<li><code>sop</code></li>
+</ul>
+</li>
+<li>Status values:<ul>
+<li><code>draft</code></li>
+<li><code>published</code></li>
+<li><code>accepted</code></li>
+<li><code>superseded</code></li>
+<li><code>deprecated</code></li>
+<li><code>archived</code></li>
+</ul>
+</li>
+</ul>
+<p>Critically, <strong>KnowledgeArtifact</strong> has <code>documents_*</code> relationships pointing to <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, <strong>Aggregate</strong>, <strong>DomainEntity</strong>, and <strong>Integration</strong>. The SAO tracks its own output: generated specifications are themselves <strong>KnowledgeArtifact</strong> instances, linked back to the entities they describe.</p>
+<hr />
+<h2 id="9-section-index">9. Section Index</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Sections</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3 — Code structure</td>
+<td>1 (Structural Foundation, code parts), 18 (Type System), 19 (Error Handling), 20 (File I/O), 21 (Screen/Terminal), 22 (Job Control), 23 (IPC), 24 (Preprocessor), 25 (Memory/Ownership), 26 (Domain Entity Relationships), 27 (Database Schema), 28 (Programming Language)</td>
+</tr>
+<tr>
+<td>4 — Architecture</td>
+<td>1 (Structural Foundation, arch parts), 7 (Integration), 29 (Architectural Patterns)</td>
+</tr>
+<tr>
+<td>5 — Domain model</td>
+<td>4 (Domain Modeling), 6 (Data Management), 26 (Domain Entity Relationships), 27 (Database Schema Objects)</td>
+</tr>
+<tr>
+<td>6 — Business intent</td>
+<td>2 (Actors and Identity), 5 (Behavior and Workflow)</td>
+</tr>
+<tr>
+<td>Cross-cut — Layer 1</td>
+<td>3 (Authorization), 10 (Governance), 11 (Testing), 12 (UI/Frontend), 13 (Build/CI-CD), 14 (Dependencies), 30 (Knowledge Artifacts)</td>
+</tr>
+<tr>
+<td>Cross-cut — Layer 2</td>
+<td>8 (Deployment/Ops), 9 (Observability), 15 (Concurrency), 16 (ML/Data Pipelines), 17 (Infrastructure as Code)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="10-the-glue-bidirectional-relationships">10. The Glue: Bidirectional Relationships</h2>
+<p>The SAO has 214 bidirectional relationship pairs. Every relationship has an explicit inverse, so you can traverse the graph in either direction.</p>
+<h3 id="101-key-cross-layer-bridges">10.1 Key Cross-Layer Bridges</h3>
+<table>
+<thead>
+<tr>
+<th>Bridge</th>
+<th>Direction</th>
+<th>What it connects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DataStructure.maps_to_domain_entity</code> ↔ <code>DomainEntity.mapped_from_structure</code></td>
+<td>Layer 3 ↔ 5</td>
+<td>Code-level data structures to business entities</td>
+</tr>
+<tr>
+<td><code>Attribute.mapped_from_element</code> ↔ <code>DataElement.maps_to_attribute</code></td>
+<td>Layer 5 ↔ 3</td>
+<td>Domain attributes to code-level fields</td>
+</tr>
+<tr>
+<td><code>CallableUnit.implements_operation</code> ↔ <code>Operation.implemented_by_callables</code></td>
+<td>Layer 3 ↔ 6</td>
+<td>Code functions to business operations</td>
+</tr>
+<tr>
+<td><code>Component.implemented_by_code</code> ↔ code entities</td>
+<td>Layer 4 ↔ 3</td>
+<td>Architecture components to source code</td>
+</tr>
+<tr>
+<td><code>Module.mapped_from_directory</code> ↔ <code>StorageLocation.maps_to_module</code></td>
+<td>Layer 4 ↔ 3</td>
+<td>Architecture modules to file system structure</td>
+</tr>
+<tr>
+<td><code>Module.provides_capabilities</code> ↔ <code>Capability.provided_by_modules</code></td>
+<td>Layer 4 ↔ 6</td>
+<td>Architecture to business purpose</td>
+</tr>
+<tr>
+<td><code>Service.runs_module</code> ↔ <code>Module.runs_as_services</code></td>
+<td>Layer 4 ↔ 4</td>
+<td>Runtime identity to logical structure</td>
+</tr>
+<tr>
+<td><code>KnowledgeArtifact.documents_*</code> ↔ <code>entity.*_documented_by_artifacts</code></td>
+<td>Layer 1 ↔ all</td>
+<td>Documentation to everything it describes</td>
+</tr>
+</tbody>
+</table>
+<p>The complete list is in <a href="#appendix-c-complete-bidirectional-relationship-pairs-226-rows">Appendix C</a>.</p>
+<hr />
+<h2 id="11-base-classes-and-mixins">11. Base Classes and Mixins</h2>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Type</th>
+<th>Purpose</th>
+<th>Used by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>Base for all named entities. Provides id, name, description, tags, metadata.</td>
+<td>Nearly every class</td>
+</tr>
+<tr>
+<td>Metadata</td>
+<td>Concrete</td>
+<td>Common metadata (created_at, updated_at, created_by, version).</td>
+<td>Inlined in NamedEntity</td>
+</tr>
+<tr>
+<td>Versionable</td>
+<td>Mixin</td>
+<td>Versioning support (version, effective_from/to, is_current).</td>
+<td>System, Module, CodeContainer, Schema, Contract, Release, BuildArtifact, MLModel, Dataset, IaCDefinition, KnowledgeArtifact</td>
+</tr>
+<tr>
+<td>Auditable</td>
+<td>Mixin</td>
+<td>Audit trail support (audit_log reference).</td>
+<td>DomainEntity</td>
+</tr>
+<tr>
+<td>PlatformExtension</td>
+<td>Abstract</td>
+<td>Base for platform-specific extensions (platform attribute).</td>
+<td>ExecutionEnvironmentDirective</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-reading-the-sao-effectively">12. Reading the SAO Effectively</h2>
+<p>When working with the SAO, keep these principles in mind:</p>
+<ul>
+<li>
+<p><strong>Follow the containment.</strong> <strong>System</strong> → <strong>BoundedContext</strong> → <strong>Module</strong> → <strong>Component</strong> is the architectural spine. <strong>StorageLocation</strong> → <strong>CodeContainer</strong> → <strong>EncapsulationUnit</strong> → <strong>CallableUnit</strong> is the code spine. These two spines are bridged by <code>implemented_by_code</code> and <code>mapped_from_directory</code>.</p>
+</li>
+<li>
+<p><strong>Follow the bridges.</strong> The <code>maps_to</code> / <code>mapped_from</code> pairs are where inference happens. If you're trying to understand how a code-level entity connects to a business concept, look for these bridge relationships.</p>
+</li>
+<li>
+<p><strong>Check the enums.</strong> The SAO's 102 enums are where the real vocabulary lives. When you need to know what types of services exist, what kinds of callable units there are, or what database types are supported, the enums have the answer. See <a href="#appendix-b-complete-enumeration-reference-102-enums">Appendix B</a> for the complete list.</p>
+</li>
+<li>
+<p><strong>Use the inverses.</strong> Every bidirectional relationship can be traversed both ways. "What <strong>CallableUnits</strong> implement this <strong>Operation</strong>?" and "What <strong>Operation</strong> does this <strong>CallableUnit</strong> implement?" are both single-hop queries.</p>
+</li>
+<li>
+<p><strong>Know what's parsed vs. inferred.</strong> Layer 3 is populated by the parser with high confidence. Layers 4–6 are populated by inference with varying confidence. When you see a <strong>DomainEntity</strong> or a <strong>Capability</strong>, remember that something (an algorithm, an LLM, or a human) had to recognize it — it wasn't just read from the source code.</p>
+</li>
+</ul>
+<hr />
+<hr />
+<h2 id="appendix-a-complete-class-inventory-147-classes">Appendix A: Complete Class Inventory (147 classes)</h2>
+<p>All 147 classes organized by conceptual layer. See <a href="#3-the-six-conceptual-layers">Section 3</a> for layer definitions.</p>
+<h3 id="base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NamedEntity</code></td>
+<td>—</td>
+<td>Abstract</td>
+<td>Abstract base class for all named entities in the ontology</td>
+</tr>
+<tr>
+<td><code>Metadata</code></td>
+<td>—</td>
+<td>Concrete</td>
+<td>Common metadata for entities</td>
+</tr>
+<tr>
+<td><code>Versionable</code></td>
+<td>—</td>
+<td>Mixin</td>
+<td>Mixin for entities that support versioning</td>
+</tr>
+<tr>
+<td><code>Auditable</code></td>
+<td>—</td>
+<td>Mixin</td>
+<td>Mixin for entities requiring audit trails</td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-3-code-structure-33-classes">Layer 3: Code structure (33 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CodeContainer</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A physical container of source code - may be a file, member in a library, or other storage unit depending on the platform.</td>
+</tr>
+<tr>
+<td><code>StorageLocation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A logical or physical location for storing code containers.</td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>A logical boundary that groups related code and data. Maps to: Class (OOP), Program (COBOL), Module (functional), Package (Java), Namespa...</td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A named, invocable unit of code that performs a specific task. Maps to: Method (OOP), Function (procedural/functional), Paragraph (COBOL)...</td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A composite data type grouping related data elements. Maps to: Struct (C), Record (Pascal/COBOL), Class data (OOP), Type (Haskell), Dicti...</td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An individual data field or variable. Maps to: Field (OOP), Variable (procedural), Column (database), Data item (COBOL), Property (C#), A...</td>
+</tr>
+<tr>
+<td><code>Parameter</code></td>
+<td>DataElement</td>
+<td>Concrete</td>
+<td>An input/output parameter for a callable unit.</td>
+</tr>
+<tr>
+<td><code>CodeBlock</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A logical grouping of statements within a callable unit.</td>
+</tr>
+<tr>
+<td><code>Statement</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single executable instruction or declaration.</td>
+</tr>
+<tr>
+<td><code>DefinitionReference</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A reference from one code container to shared definitions. Maps to: Import (Python/Java), Include (C/C++), COPY (COBOL), Using (C#), Requ...</td>
+</tr>
+<tr>
+<td><code>ControlFlow</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Represents control flow between code elements.</td>
+</tr>
+<tr>
+<td><code>DataFlow</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Represents data flow between code elements.</td>
+</tr>
+<tr>
+<td><code>PlatformExtension</code></td>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>Base class for platform-specific extensions</td>
+</tr>
+<tr>
+<td><code>ExecutionEnvironmentDirective</code></td>
+<td>PlatformExtension</td>
+<td>Concrete</td>
+<td>Platform-specific execution directives. Maps to: JCL (mainframe), Docker Compose, Kubernetes manifests, Shell scripts, Makefiles, build f...</td>
+</tr>
+<tr>
+<td><code>Annotation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Metadata attached to code elements. Maps to: Annotations (Java), Decorators (Python), Attributes (C#), Pragmas (C/C++), Compiler directives.</td>
+</tr>
+<tr>
+<td><code>TypeExpression</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A recursive type model for expressing complex types (generics, unions, pointers, function types, etc.) across all languages.</td>
+</tr>
+<tr>
+<td><code>ErrorModel</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Describes how a module or language handles errors</td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A declared exception or error type in a codebase</td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A file defined for I/O in a program (COBOL SELECT, C fopen, etc.)</td>
+</tr>
+<tr>
+<td><code>FileOperation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A specific I/O operation on a file definition</td>
+</tr>
+<tr>
+<td><code>ScreenDefinition</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A terminal screen or map definition for character-mode UIs</td>
+</tr>
+<tr>
+<td><code>ScreenField</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A field on a terminal screen definition</td>
+</tr>
+<tr>
+<td><code>JobDefinition</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A batch job definition (JCL JOB, scheduler entry, cron job)</td>
+</tr>
+<tr>
+<td><code>JobStep</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single step within a batch job</td>
+</tr>
+<tr>
+<td><code>DatasetAllocation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A dataset (DD) allocation within a job step</td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A communication link between two programs/processes</td>
+</tr>
+<tr>
+<td><code>PreprocessorDirective</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A preprocessor directive, macro, or metaprogramming construct</td>
+</tr>
+<tr>
+<td><code>MemoryModel</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Describes how a language or module manages memory</td>
+</tr>
+<tr>
+<td><code>OwnershipAnnotation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An ownership/lifetime annotation on a data element</td>
+</tr>
+<tr>
+<td><code>DomainRelationship</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A named, typed relationship between two domain entities (e.g., Order has many OrderLines, User belongs to Organization)</td>
+</tr>
+<tr>
+<td><code>DatabaseConstraint</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A constraint on a database table/collection</td>
+</tr>
+<tr>
+<td><code>DatabaseIndex</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An index on a database table/collection</td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A programming language with its paradigms, type system, and runtime characteristics</td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-4-architecture-and-integration-19-classes">Layer 4: Architecture and integration (19 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>System</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>Top-level container representing a software product, platform, or application</td>
+</tr>
+<tr>
+<td><code>BoundedContext</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A semantic boundary within which a domain model applies consistently. Corresponds to DDD bounded context concept.</td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A deployable, cohesive unit of functionality within a bounded context</td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A logical building block within a module (class, function group, etc.)</td>
+</tr>
+<tr>
+<td><code>Interface</code></td>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>A contract-defined boundary through which interaction occurs</td>
+</tr>
+<tr>
+<td><code>UserInterface</code></td>
+<td>Interface</td>
+<td>Concrete</td>
+<td>User-facing interface</td>
+</tr>
+<tr>
+<td><code>Screen</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single screen or view in a user interface</td>
+</tr>
+<tr>
+<td><code>ProgrammaticInterface</code></td>
+<td>Interface</td>
+<td>Concrete</td>
+<td>Machine-to-machine interface</td>
+</tr>
+<tr>
+<td><code>EventInterface</code></td>
+<td>Interface</td>
+<td>Concrete</td>
+<td>Event-driven interface</td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An independently deployable runtime unit</td>
+</tr>
+<tr>
+<td><code>Endpoint</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A specific addressable entry point on a service</td>
+</tr>
+<tr>
+<td><code>Dependency</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A lightweight dependency reference between components or services</td>
+</tr>
+<tr>
+<td><code>ExternalSystem</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A system outside this system's boundary</td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A configured connection to an external system</td>
+</tr>
+<tr>
+<td><code>Message</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A unit of data exchanged in integration</td>
+</tr>
+<tr>
+<td><code>Contract</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A formal specification of integration behavior</td>
+</tr>
+<tr>
+<td><code>ContractVersion</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A specific iteration of a contract</td>
+</tr>
+<tr>
+<td><code>Adapter</code></td>
+<td>Component</td>
+<td>Concrete</td>
+<td>A component that translates between system and external protocols</td>
+</tr>
+<tr>
+<td><code>CircuitBreaker</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A resilience pattern preventing cascade failures</td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-5-domain-model-17-classes">Layer 5: Domain model (17 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Aggregate</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A cluster of domain entities treated as a single transactional unit. Corresponds to DDD aggregate concept.</td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td>NamedEntity + Auditable</td>
+<td>Concrete</td>
+<td>A uniquely identifiable object within the domain</td>
+</tr>
+<tr>
+<td><code>ValueObject</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An immutable domain object defined by its attributes</td>
+</tr>
+<tr>
+<td><code>Attribute</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A named property of an entity or value object</td>
+</tr>
+<tr>
+<td><code>Resource</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A domain entity or value object exposed for external interaction</td>
+</tr>
+<tr>
+<td><code>ResourceType</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A classification of resources sharing common structure and behavior</td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A discrete condition in an entity's lifecycle</td>
+</tr>
+<tr>
+<td><code>Transition</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A valid movement between states</td>
+</tr>
+<tr>
+<td><code>Lifecycle</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>The complete set of states and transitions for an entity type</td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A persistence mechanism</td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A logical grouping of records (table, collection, bucket)</td>
+</tr>
+<tr>
+<td><code>Record</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single persisted instance of data</td>
+</tr>
+<tr>
+<td><code>Schema</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>The structural definition of stored data</td>
+</tr>
+<tr>
+<td><code>SchemaVersion</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A specific iteration of a schema</td>
+</tr>
+<tr>
+<td><code>DataClassification</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A sensitivity or handling category</td>
+</tr>
+<tr>
+<td><code>RetentionPolicy</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Rules governing data lifecycle and deletion</td>
+</tr>
+<tr>
+<td><code>DataLineage</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>The origin, transformation history, and movement of data</td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-6-business-intent-17-classes">Layer 6: Business intent (17 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Capability</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A discrete business or technical ability the system provides</td>
+</tr>
+<tr>
+<td><code>Feature</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A user-facing manifestation of one or more capabilities</td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>Any entity that can initiate actions</td>
+</tr>
+<tr>
+<td><code>HumanActor</code></td>
+<td>Actor</td>
+<td>Concrete</td>
+<td>A human user of the system</td>
+</tr>
+<tr>
+<td><code>SystemActor</code></td>
+<td>Actor</td>
+<td>Concrete</td>
+<td>A system or automated actor</td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td>NamedEntity</td>
+<td>Abstract</td>
+<td>An atomic operation that can be performed</td>
+</tr>
+<tr>
+<td><code>Query</code></td>
+<td>Action</td>
+<td>Concrete</td>
+<td>A read-only action that retrieves data</td>
+</tr>
+<tr>
+<td><code>Command</code></td>
+<td>Action</td>
+<td>Concrete</td>
+<td>An action that changes system state</td>
+</tr>
+<tr>
+<td><code>Operation</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A named, invocable unit of behavior exposed via an interface</td>
+</tr>
+<tr>
+<td><code>Workflow</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A coordinated sequence of actions achieving a business goal</td>
+</tr>
+<tr>
+<td><code>Step</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A discrete stage within a workflow</td>
+</tr>
+<tr>
+<td><code>Rule</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A declarative constraint or trigger governing behavior</td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A notification that something occurred</td>
+</tr>
+<tr>
+<td><code>DomainEvent</code></td>
+<td>Event</td>
+<td>Concrete</td>
+<td>A significant occurrence in the domain</td>
+</tr>
+<tr>
+<td><code>IntegrationEvent</code></td>
+<td>Event</td>
+<td>Concrete</td>
+<td>An event for cross-service communication</td>
+</tr>
+<tr>
+<td><code>Subscription</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A registration to receive events of a certain type</td>
+</tr>
+<tr>
+<td><code>Transaction</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A unit of work with ACID or BASE guarantees</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting-security-governance-quality-knowledge-31-classes">Cross-cutting: Security, governance, quality, knowledge (31 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Identity</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A verified representation of an actor</td>
+</tr>
+<tr>
+<td><code>Credential</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Authentication material proving an identity claim</td>
+</tr>
+<tr>
+<td><code>Tenant</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An organizational boundary for multi-tenant systems</td>
+</tr>
+<tr>
+<td><code>Organization</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A logical grouping of users and resources within a tenant</td>
+</tr>
+<tr>
+<td><code>Role</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A named collection of permissions assignable to actors</td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A specific allowed action on a resource type or instance</td>
+</tr>
+<tr>
+<td><code>Policy</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A rule set governing access decisions</td>
+</tr>
+<tr>
+<td><code>Scope</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A boundary limiting where a permission applies</td>
+</tr>
+<tr>
+<td><code>Constraint</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A condition that must be satisfied for authorization</td>
+</tr>
+<tr>
+<td><code>AuditLog</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A tamper-evident record of system activities</td>
+</tr>
+<tr>
+<td><code>AuditEntry</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single record within an audit log</td>
+</tr>
+<tr>
+<td><code>ComplianceRequirement</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A regulatory or policy obligation</td>
+</tr>
+<tr>
+<td><code>Control</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A measure implementing a compliance requirement</td>
+</tr>
+<tr>
+<td><code>Evidence</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Proof that a control is operating effectively</td>
+</tr>
+<tr>
+<td><code>RiskAssessment</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An evaluation of threats and vulnerabilities</td>
+</tr>
+<tr>
+<td><code>TestSuite</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A collection of related test cases</td>
+</tr>
+<tr>
+<td><code>TestCase</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single test case that validates specific behavior</td>
+</tr>
+<tr>
+<td><code>TestAssertion</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An individual assertion within a test case</td>
+</tr>
+<tr>
+<td><code>TestCoverage</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Code coverage metrics for a component or module</td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A frontend user interface component that renders visual elements.</td>
+</tr>
+<tr>
+<td><code>UIProperty</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A property (prop) passed to a UI component</td>
+</tr>
+<tr>
+<td><code>Route</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A navigation route or URL path in a frontend application.</td>
+</tr>
+<tr>
+<td><code>StateStore</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A frontend state management store or container.</td>
+</tr>
+<tr>
+<td><code>BuildPipeline</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A CI/CD pipeline that automates build, test, and deployment processes.</td>
+</tr>
+<tr>
+<td><code>PipelineStage</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A discrete stage within a CI/CD pipeline</td>
+</tr>
+<tr>
+<td><code>BuildArtifact</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>An artifact produced by a build pipeline</td>
+</tr>
+<tr>
+<td><code>ArtifactRegistry</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A registry or repository for storing build artifacts.</td>
+</tr>
+<tr>
+<td><code>PackageManager</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A package/dependency management tool</td>
+</tr>
+<tr>
+<td><code>PackageDependency</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A declared dependency on an external package or library</td>
+</tr>
+<tr>
+<td><code>KnownVulnerability</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A known security vulnerability in a dependency</td>
+</tr>
+<tr>
+<td><code>KnowledgeArtifact</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A knowledge artifact that documents some aspect of the system</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting-runtime-ops-infrastructure-26-classes">Cross-cutting: Runtime, ops, infrastructure (26 classes)</h3>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Parent</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Environment</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A runtime context with specific configuration</td>
+</tr>
+<tr>
+<td><code>Deployment</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>An instance of a service running in an environment</td>
+</tr>
+<tr>
+<td><code>DeploymentUnit</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>The packaged artifact being deployed</td>
+</tr>
+<tr>
+<td><code>Configuration</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>Runtime parameters for a deployment</td>
+</tr>
+<tr>
+<td><code>Infrastructure</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>The underlying compute, storage, and network resources</td>
+</tr>
+<tr>
+<td><code>Release</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A versioned, deployable package of changes</td>
+</tr>
+<tr>
+<td><code>Metric</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A quantitative measurement over time</td>
+</tr>
+<tr>
+<td><code>Log</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A timestamped record of discrete events</td>
+</tr>
+<tr>
+<td><code>LogEntry</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single record within a log</td>
+</tr>
+<tr>
+<td><code>Trace</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A causal chain of operations across services</td>
+</tr>
+<tr>
+<td><code>Span</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single unit of work within a trace</td>
+</tr>
+<tr>
+<td><code>Alert</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A notification triggered by metric thresholds or anomalies</td>
+</tr>
+<tr>
+<td><code>AlertRule</code></td>
+<td>Rule</td>
+<td>Concrete</td>
+<td>The condition that triggers an alert</td>
+</tr>
+<tr>
+<td><code>Incident</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A tracked degradation or outage event</td>
+</tr>
+<tr>
+<td><code>HealthCheck</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A probe verifying service availability</td>
+</tr>
+<tr>
+<td><code>ConcurrencyPrimitive</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A low-level synchronization primitive used in concurrent code.</td>
+</tr>
+<tr>
+<td><code>ConcurrencyPattern</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A high-level concurrency pattern used in the system.</td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A machine learning model defined, trained, or served by the system</td>
+</tr>
+<tr>
+<td><code>MLModelMetric</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A performance metric for an ML model</td>
+</tr>
+<tr>
+<td><code>Dataset</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>A dataset used for training, evaluation, or inference</td>
+</tr>
+<tr>
+<td><code>FeatureStore</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A centralized store for computed ML features.</td>
+</tr>
+<tr>
+<td><code>DataPipeline</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A data processing pipeline for ETL, feature engineering, or model training.</td>
+</tr>
+<tr>
+<td><code>DataPipelineStep</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A discrete step within a data pipeline</td>
+</tr>
+<tr>
+<td><code>IaCDefinition</code></td>
+<td>NamedEntity + Versionable</td>
+<td>Concrete</td>
+<td>An infrastructure-as-code definition that declaratively specifies infrastructure resources.</td>
+</tr>
+<tr>
+<td><code>IaCResource</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A single infrastructure resource defined in code</td>
+</tr>
+<tr>
+<td><code>IaCModule</code></td>
+<td>NamedEntity</td>
+<td>Concrete</td>
+<td>A reusable module of IaC definitions.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="appendix-b-complete-enumeration-reference-102-enums">Appendix B: Complete Enumeration Reference (102 enums)</h2>
+<p>All 102 enumerations with their 804 permissible values, organized by topic. See <a href="#44-platform-specific-extensions-sections-1828">Section 4.4</a> for context on code-structure enums and <a href="#72-behavior-section-5">Section 7.2</a> for behavior enums.</p>
+<h3 id="structural">Structural</h3>
+<p><strong><code>Cardinality</code></strong> — Relationship cardinality options<br />
+Values (4): <code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_one</code>, <code>many_to_many</code></p>
+<p><strong><code>InterfaceCategory</code></strong> — Categories of system interfaces<br />
+Values (3): <code>user_interface</code>, <code>programmatic_interface</code>, <code>event_interface</code></p>
+<p><strong><code>UserInterfaceType</code></strong> — Types of user interfaces<br />
+Values (4): <code>web_ui</code>, <code>mobile_ui</code>, <code>desktop_ui</code>, <code>cli</code></p>
+<p><strong><code>APIType</code></strong> — Types of programmatic interfaces<br />
+Values (5): <code>rest_api</code>, <code>graphql_api</code>, <code>grpc_api</code>, <code>sdk</code>, <code>soap_api</code></p>
+<p><strong><code>EventInterfaceType</code></strong> — Types of event interfaces<br />
+Values (4): <code>webhook</code>, <code>message_queue</code>, <code>event_stream</code>, <code>pub_sub</code></p>
+<p><strong><code>ServiceType</code></strong> — Types of runtime services<br />
+Values (9): <code>microservice</code>, <code>monolith</code>, <code>function</code> (Serverless function or lambda), <code>job</code> (Batch processing job), <code>daemon</code>, <code>cics_transaction</code> (CICS online transaction), <code>ims_transaction</code> (IMS online transaction), <code>batch_program</code> (Mainframe batch program), <code>stored_proc_service</code> (Stored procedure exposed as service)</p>
+<p><strong><code>DependencyType</code></strong> — Types of dependencies<br />
+Values (4): <code>runtime</code>, <code>build</code>, <code>optional</code>, <code>dev</code></p>
+<p><strong><code>FeatureCategory</code></strong> — Categories of features<br />
+Values (4): <code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code></p>
+<h3 id="actors-and-identity">Actors and identity</h3>
+<p><strong><code>ActorCategory</code></strong> — Categories of actors<br />
+Values (2): <code>human</code>, <code>system</code></p>
+<p><strong><code>HumanActorType</code></strong> — Types of human actors<br />
+Values (5): <code>end_user</code>, <code>administrator</code>, <code>operator</code>, <code>developer</code>, <code>auditor</code></p>
+<p><strong><code>SystemActorType</code></strong> — Types of system actors<br />
+Values (5): <code>internal_service</code>, <code>external_system</code>, <code>scheduled_process</code>, <code>ai_agent</code>, <code>message_trigger</code></p>
+<p><strong><code>CredentialType</code></strong> — Types of authentication credentials<br />
+Values (7): <code>password</code>, <code>token</code> (Token-based authentication (JWT, bearer token)), <code>certificate</code> (Digital certificate or X.509 certificate), <code>api_key</code>, <code>biometric</code>, <code>mfa</code> (Multi-factor authentication), <code>oauth</code> (OAuth 2.0 authentication flow)</p>
+<h3 id="authorization">Authorization</h3>
+<p><strong><code>PolicyType</code></strong> — Types of authorization policies<br />
+Values (4): <code>rbac</code> (Role-Based Access Control), <code>abac</code> (Attribute-Based Access Control), <code>rebac</code> (Relationship-Based Access Control), <code>pbac</code> (Policy-Based Access Control)</p>
+<p><strong><code>ScopeType</code></strong> — Types of permission scopes<br />
+Values (5): <code>global</code>, <code>tenant</code>, <code>organization</code>, <code>resource</code>, <code>field</code></p>
+<p><strong><code>ConstraintType</code></strong> — Types of authorization constraints<br />
+Values (5): <code>temporal</code>, <code>spatial</code>, <code>attribute</code>, <code>context</code> (Context-dependent constraint (device, IP, etc.)), <code>rate_limit</code></p>
+<h3 id="domain-modeling">Domain modeling</h3>
+<p><strong><code>AttributeCategory</code></strong> — Categories of entity attributes<br />
+Values (5): <code>required</code>, <code>optional</code>, <code>computed</code>, <code>derived</code>, <code>transient</code></p>
+<p><strong><code>ActionCategory</code></strong> — Categories of actions<br />
+Values (3): <code>query</code>, <code>command</code>, <code>mutation</code></p>
+<p><strong><code>CommandType</code></strong> — Types of commands<br />
+Values (6): <code>create</code>, <code>update</code>, <code>delete</code>, <code>execute</code>, <code>archive</code>, <code>restore</code></p>
+<p><strong><code>WorkflowType</code></strong> — Types of workflows<br />
+Values (5): <code>synchronous</code>, <code>asynchronous</code>, <code>saga</code> (Saga pattern for distributed transactions), <code>choreography</code> (Event-driven choreography workflow), <code>orchestration</code></p>
+<p><strong><code>RuleCategory</code></strong> — Categories of business rules<br />
+Values (5): <code>validation</code>, <code>business</code>, <code>derivation</code>, <code>constraint</code>, <code>trigger</code></p>
+<p><strong><code>EventCategory</code></strong> — Categories of events<br />
+Values (4): <code>domain_event</code>, <code>integration_event</code>, <code>system_event</code>, <code>audit_event</code></p>
+<p><strong><code>TransactionType</code></strong> — Types of transactions<br />
+Values (4): <code>local</code>, <code>distributed</code>, <code>saga</code> (Saga pattern with compensating transactions), <code>two_phase_commit</code></p>
+<h3 id="data-management">Data management</h3>
+<p><strong><code>DataStoreType</code></strong> — Types of data stores<br />
+Values (14): <code>relational_db</code>, <code>document_db</code>, <code>key_value_store</code>, <code>graph_db</code>, <code>time_series_db</code>, <code>object_storage</code>, <code>search_index</code>, <code>cache</code>, <code>message_broker</code>, <code>data_lake</code>, <code>vsam</code> (IBM VSAM dataset), <code>flat_file</code> (Sequential or flat file), <code>isam</code> (Indexed Sequential Access Method file), <code>dead_letter_queue</code></p>
+<p><strong><code>SchemaType</code></strong> — Types of data schemas<br />
+Values (5): <code>table_schema</code>, <code>document_schema</code>, <code>event_schema</code>, <code>api_schema</code>, <code>message_schema</code></p>
+<p><strong><code>DataClassificationType</code></strong> — Data sensitivity classifications<br />
+Values (7): <code>public</code>, <code>internal</code>, <code>confidential</code>, <code>restricted</code>, <code>pii</code> (Personally Identifiable Information), <code>phi</code> (Protected Health Information), <code>pci</code> (Payment Card Industry data)</p>
+<p><strong><code>IntegrationType</code></strong> — Types of integrations<br />
+Values (3): <code>inbound</code>, <code>outbound</code>, <code>bidirectional</code></p>
+<p><strong><code>ExternalSystemType</code></strong> — Types of external systems<br />
+Values (4): <code>third_party_service</code>, <code>partner_system</code>, <code>legacy_system</code>, <code>saas_application</code></p>
+<p><strong><code>ProtocolType</code></strong> — Communication protocols<br />
+Values (15): <code>http</code>, <code>https</code>, <code>websocket</code>, <code>grpc</code>, <code>amqp</code>, <code>mqtt</code>, <code>kafka</code>, <code>sftp</code>, <code>tcp</code>, <code>udp</code>, <code>corba</code> (Common Object Request Broker Architecture), <code>dcom</code> (Distributed Component Object Model), <code>rmi</code> (Java Remote Method Invocation), <code>named_pipe</code>, <code>shared_memory</code></p>
+<p><strong><code>MessageType</code></strong> — Types of messages<br />
+Values (6): <code>request</code>, <code>response</code>, <code>notification</code>, <code>command</code>, <code>event</code>, <code>query</code></p>
+<p><strong><code>ContractType</code></strong> — Types of API contracts<br />
+Values (7): <code>openapi</code>, <code>asyncapi</code>, <code>json_schema</code>, <code>protobuf</code>, <code>avro</code>, <code>graphql_schema</code>, <code>wsdl</code></p>
+<p><strong><code>MessageFormat</code></strong> — Message serialization formats<br />
+Values (7): <code>json</code>, <code>xml</code>, <code>protobuf</code>, <code>avro</code>, <code>thrift</code>, <code>msgpack</code>, <code>custom_binary</code></p>
+<h3 id="deployment-and-operations">Deployment and operations</h3>
+<p><strong><code>EnvironmentType</code></strong> — Types of deployment environments<br />
+Values (5): <code>development</code>, <code>testing</code>, <code>staging</code>, <code>production</code>, <code>dr</code> (Disaster Recovery)</p>
+<p><strong><code>DeploymentUnitType</code></strong> — Types of deployment units<br />
+Values (5): <code>container</code>, <code>vm</code>, <code>serverless_function</code>, <code>binary</code>, <code>package</code></p>
+<p><strong><code>ConfigurationType</code></strong> — Types of configuration<br />
+Values (5): <code>environment_variable</code>, <code>config_file</code>, <code>secret</code>, <code>feature_flag</code>, <code>remote_config</code></p>
+<p><strong><code>InfrastructureType</code></strong> — Types of infrastructure<br />
+Values (9): <code>compute</code>, <code>storage</code>, <code>network</code>, <code>load_balancer</code>, <code>dns</code>, <code>cdn</code>, <code>firewall</code>, <code>api_gateway</code> (API gateway or ingress controller), <code>service_mesh</code> (Service mesh control plane (Istio, Linkerd, etc.))</p>
+<h3 id="observability">Observability</h3>
+<p><strong><code>MetricType</code></strong> — Types of metrics<br />
+Values (4): <code>counter</code>, <code>gauge</code>, <code>histogram</code>, <code>summary</code></p>
+<p><strong><code>LogType</code></strong> — Types of logs<br />
+Values (6): <code>application</code>, <code>access</code>, <code>error</code>, <code>security</code>, <code>audit</code>, <code>debug</code></p>
+<p><strong><code>HealthCheckType</code></strong> — Types of health checks<br />
+Values (4): <code>liveness</code>, <code>readiness</code>, <code>dependency</code>, <code>startup</code></p>
+<h3 id="governance">Governance</h3>
+<p><strong><code>ComplianceFramework</code></strong> — Compliance frameworks<br />
+Values (8): <code>gdpr</code>, <code>hipaa</code>, <code>soc2</code>, <code>pci_dss</code>, <code>iso27001</code>, <code>sox</code>, <code>ccpa</code>, <code>fedramp</code></p>
+<h3 id="code-structure">Code structure</h3>
+<p><strong><code>CodeContainerType</code></strong> — Types of code containers<br />
+Values (13): <code>source_file</code>, <code>library_member</code> (Member of a partitioned dataset or library), <code>include_file</code> (Shared definitions file (header, copybook)), <code>script</code>, <code>configuration</code>, <code>schema_definition</code>, <code>notebook_cell</code>, <code>inline_code</code>, <code>jcl_member</code> (JCL member in a PDS), <code>rpg_source</code>, <code>pli_source</code>, <code>assembler_source</code>, <code>cl_source</code> (IBM CL (Control Language) source)</p>
+<p><strong><code>StorageLocationType</code></strong> — Types of storage locations<br />
+Values (5): <code>directory</code>, <code>library</code> (Partitioned dataset or library (mainframe)), <code>package</code>, <code>namespace</code>, <code>module_path</code></p>
+<p><strong><code>EncapsulationType</code></strong> — Types of encapsulation units across different paradigms<br />
+Values (33): <code>class</code>, <code>interface</code>, <code>abstract_class</code>, <code>trait</code> (Trait (Rust, Scala) or mixin), <code>enum_class</code>, <code>record_class</code> (Record or data class (Java records, Python dataclass)), <code>singleton</code>, <code>program</code> (Standalone program (COBOL, Fortran)), <code>subprogram</code> (Callable subprogram or subroutine library), <code>unit</code> (Pascal/Delphi unit), <code>module</code> (Functional module (Haskell, OCaml, F#)), <code>namespace</code>, <code>package</code> (Package (Ada, Go)), <code>library</code>, <code>object</code> (JavaScript/prototype-based object), <code>component</code> (Component (React, Angular, Vue)), <code>service</code>, <code>controller</code> (Controller (MVC pattern)), <code>stored_procedure</code>, <code>function_package</code> (PL/SQL or T-SQL package), <code>trigger</code>, <code>view</code> (Database view definition), <code>script</code>, <code>batch_program</code>, <code>online_program</code> (Online transaction program (CICS, IMS)), <code>copybook</code> (COBOL copybook or include file), <code>composite</code>, <code>other</code>, <code>rpg_module</code>, <code>rpg_service_program</code>, <code>pli_procedure</code>, <code>pli_package</code>, <code>assembler_csect</code> (Assembler control section)</p>
+<p><strong><code>CallableType</code></strong> — Types of callable units across different paradigms<br />
+Values (53): <code>method</code>, <code>static_method</code>, <code>constructor</code>, <code>destructor</code>, <code>property_getter</code>, <code>property_setter</code>, <code>operator_overload</code>, <code>conversion_operator</code>, <code>indexer</code>, <code>abstract_method</code>, <code>virtual_method</code>, <code>function</code>, <code>procedure</code>, <code>subroutine</code>, <code>paragraph</code> (COBOL paragraph), <code>section</code> (COBOL section or similar grouping), <code>lambda</code>, <code>closure</code>, <code>higher_order_function</code>, <code>curried_function</code>, <code>functor</code>, <code>event_handler</code>, <code>callback</code>, <code>delegate</code>, <code>signal_handler</code>, <code>stored_procedure</code>, <code>stored_function</code>, <code>trigger_body</code>, <code>cursor</code>, <code>coroutine</code>, <code>generator</code>, <code>async_function</code>, <code>thread_entry</code>, <code>task</code>, <code>test_case</code>, <code>test_fixture</code>, <code>mock</code>, <code>macro</code>, <code>template</code> (Template function (C++)), <code>generic_method</code>, <code>main_entry</code>, <code>interrupt_handler</code>, <code>exception_handler</code>, <code>finalizer</code>, <code>factory_method</code>, <code>extension_method</code>, <code>script_function</code>, <code>command</code>, <code>other</code>, <code>rpg_subprocedure</code>, <code>pli_entry</code> (PL/I ENTRY point), <code>assembler_entry</code> (Assembler entry point), <code>rpg_subroutine</code></p>
+<p><strong><code>DataStructureType</code></strong> — Types of data structures across different paradigms<br />
+Values (50): <code>class_data</code>, <code>inner_class</code>, <code>anonymous_class</code>, <code>struct</code>, <code>record</code>, <code>union</code>, <code>group_item</code> (COBOL group item (composite)), <code>algebraic_data_type</code>, <code>type_class</code>, <code>product_type</code>, <code>sum_type</code>, <code>array</code>, <code>dynamic_array</code>, <code>list</code>, <code>dictionary</code>, <code>set</code>, <code>queue</code>, <code>stack</code>, <code>tree</code>, <code>graph</code>, <code>table_structure</code>, <code>view_structure</code>, <code>cursor_structure</code>, <code>rowtype</code>, <code>value_object</code>, <code>dto</code>, <code>tuple</code>, <code>pair</code>, <code>enum</code>, <code>flags</code>, <code>configuration_object</code>, <code>message</code>, <code>event</code>, <code>command</code>, <code>json_schema</code>, <code>xml_schema</code>, <code>protobuf_message</code>, <code>avro_record</code>, <code>smart_pointer</code>, <code>reference_wrapper</code>, <code>copybook_structure</code>, <code>commarea</code> (CICS communication area), <code>linkage_section</code> (COBOL linkage section structure), <code>opaque_type</code>, <code>variant</code>, <code>other</code>, <code>rpg_data_structure</code>, <code>pli_structure</code>, <code>assembler_dsect</code> (Assembler dummy section), <code>cobol_file_descriptor</code> (COBOL FD (File Description) entry)</p>
+<p><strong><code>VisibilityType</code></strong> — Visibility modifiers for code elements<br />
+Values (5): <code>public</code>, <code>private</code>, <code>protected</code>, <code>internal</code>, <code>package</code></p>
+<p><strong><code>CallableCategory</code></strong> — Behavioral-role categories of callable units<br />
+Values (3): <code>normal</code>, <code>operator</code>, <code>main_entry</code></p>
+<p><strong><code>EntryPointType</code></strong> — Types of program entry points<br />
+Values (5): <code>main_program</code>, <code>transaction_entry</code>, <code>event_handler</code>, <code>scheduled_entry</code>, <code>api_endpoint</code></p>
+<p><strong><code>DataStructureCategory</code></strong> — Categories of data structures<br />
+Values (6): <code>composite</code>, <code>collection</code>, <code>hierarchical</code>, <code>value_type</code>, <code>reference_type</code>, <code>union</code></p>
+<p><strong><code>DataElementCategory</code></strong> — Categories of data elements<br />
+Values (8): <code>field</code>, <code>static_field</code>, <code>local_variable</code>, <code>parameter</code>, <code>constant</code>, <code>global_variable</code>, <code>computed</code>, <code>temporary</code></p>
+<p><strong><code>ParameterDirection</code></strong> — Parameter passing direction<br />
+Values (4): <code>input</code>, <code>output</code>, <code>input_output</code>, <code>return</code></p>
+<p><strong><code>PassingMechanism</code></strong> — Parameter passing mechanisms<br />
+Values (4): <code>by_value</code>, <code>by_reference</code>, <code>by_name</code> (Pass by name (lazy evaluation)), <code>by_result</code> (Pass by result (copy-out))</p>
+<p><strong><code>CodeBlockType</code></strong> — Types of code blocks<br />
+Values (7): <code>sequential</code>, <code>conditional</code>, <code>loop</code>, <code>try_catch</code>, <code>transaction</code>, <code>critical_section</code>, <code>scope</code></p>
+<p><strong><code>StatementCategory</code></strong> — Categories of statements<br />
+Values (8): <code>declaration</code>, <code>assignment</code>, <code>invocation</code>, <code>control_transfer</code>, <code>io_operation</code>, <code>data_manipulation</code>, <code>transaction_control</code>, <code>exception_handling</code></p>
+<p><strong><code>ReferenceType</code></strong> — Types of definition references<br />
+Values (5): <code>import_module</code>, <code>import_symbol</code>, <code>include_source</code>, <code>inherit</code>, <code>implement</code></p>
+<p><strong><code>ControlFlowType</code></strong> — Types of control flow<br />
+Values (7): <code>call</code>, <code>async_call</code>, <code>branch</code>, <code>jump</code>, <code>return</code>, <code>throw</code>, <code>yield</code></p>
+<p><strong><code>DataFlowType</code></strong> — Types of data flow<br />
+Values (5): <code>read</code>, <code>write</code>, <code>modify</code>, <code>define</code>, <code>use</code></p>
+<p><strong><code>StorageClass</code></strong> — Storage classes for data elements<br />
+Values (6): <code>automatic</code>, <code>static</code>, <code>heap</code>, <code>register</code>, <code>thread_local</code>, <code>external</code></p>
+<p><strong><code>PersistenceType</code></strong> — How a data structure is persisted<br />
+Values (12): <code>transient</code>, <code>database_table</code>, <code>database_view</code>, <code>file_record</code>, <code>serialized</code>, <code>cached</code>, <code>distributed_cache</code>, <code>message_queue</code>, <code>object_store</code>, <code>document_store</code>, <code>key_value_store</code>, <code>graph_database</code></p>
+<p><strong><code>DatabaseType</code></strong> — Types of database management systems<br />
+Values (14): <code>oracle</code>, <code>postgresql</code>, <code>sql_server</code>, <code>mysql</code>, <code>db2</code>, <code>teradata</code>, <code>sybase</code>, <code>informix</code>, <code>mongodb</code>, <code>cassandra</code>, <code>sqlite</code>, <code>ims_db</code> (IBM IMS hierarchical database), <code>adabas</code> (Software AG Adabas), <code>idms</code> (CA IDMS network database)</p>
+<p><strong><code>LinkageType</code></strong> — Types of callable linkage<br />
+Values (4): <code>static</code>, <code>dynamic</code>, <code>inline</code>, <code>late_binding</code></p>
+<p><strong><code>SecurityType</code></strong> — Database security context types<br />
+Values (2): <code>definer</code>, <code>invoker</code></p>
+<p><strong><code>StructureLayout</code></strong> — Memory layout strategies for structures<br />
+Values (4): <code>sequential</code>, <code>explicit</code>, <code>auto</code>, <code>packed</code></p>
+<p><strong><code>EqualitySemantics</code></strong> — How equality is determined for value types<br />
+Values (4): <code>by_value</code>, <code>by_reference</code>, <code>by_identity</code>, <code>custom</code></p>
+<h3 id="testing">Testing</h3>
+<p><strong><code>TestSuiteType</code></strong> — Types of test suites<br />
+Values (9): <code>unit</code>, <code>integration</code>, <code>functional</code>, <code>end_to_end</code>, <code>performance</code>, <code>security</code>, <code>regression</code>, <code>smoke</code>, <code>contract</code></p>
+<p><strong><code>TestCaseStatus</code></strong> — Execution status of a test case<br />
+Values (5): <code>passing</code>, <code>failing</code>, <code>skipped</code>, <code>flaky</code>, <code>pending</code></p>
+<p><strong><code>AssertionType</code></strong> — Types of test assertions<br />
+Values (8): <code>equality</code>, <code>truthiness</code>, <code>exception</code>, <code>type_check</code>, <code>containment</code>, <code>mock_verification</code>, <code>snapshot</code>, <code>custom</code></p>
+<h3 id="uifrontend">UI/Frontend</h3>
+<p><strong><code>UIComponentType</code></strong> — Types of UI components<br />
+Values (10): <code>page</code>, <code>layout</code>, <code>form</code>, <code>widget</code>, <code>modal</code>, <code>navigation</code>, <code>data_display</code>, <code>composite</code>, <code>higher_order</code>, <code>provider</code></p>
+<p><strong><code>StateManagementType</code></strong> — Types of frontend state management<br />
+Values (6): <code>local_state</code>, <code>global_store</code>, <code>context</code>, <code>url_state</code>, <code>server_state</code>, <code>form_state</code></p>
+<p><strong><code>RouteType</code></strong> — Types of routes/navigation paths<br />
+Values (6): <code>page_route</code>, <code>api_route</code>, <code>layout_route</code>, <code>redirect</code>, <code>catch_all</code>, <code>guarded</code></p>
+<h3 id="build-and-cicd">Build and CI/CD</h3>
+<p><strong><code>PipelineType</code></strong> — Types of CI/CD pipelines<br />
+Values (7): <code>build</code>, <code>test</code>, <code>deploy</code>, <code>release</code>, <code>integration</code>, <code>delivery</code>, <code>validation</code></p>
+<p><strong><code>PipelineStageType</code></strong> — Types of pipeline stages<br />
+Values (11): <code>checkout</code>, <code>build</code>, <code>test</code>, <code>lint</code>, <code>security_scan</code>, <code>package</code>, <code>publish</code>, <code>deploy</code>, <code>approval</code>, <code>rollback</code>, <code>notify</code></p>
+<p><strong><code>ArtifactType</code></strong> — Types of build artifacts<br />
+Values (8): <code>container_image</code>, <code>binary</code>, <code>archive</code>, <code>package</code>, <code>library</code>, <code>documentation</code>, <code>report</code>, <code>load_module</code> (Mainframe load module)</p>
+<h3 id="dependency-management">Dependency management</h3>
+<p><strong><code>PackageManagerType</code></strong> — Types of package managers<br />
+Values (11): <code>npm</code>, <code>pip</code>, <code>maven</code>, <code>gradle</code>, <code>nuget</code>, <code>cargo</code>, <code>go_modules</code>, <code>bundler</code>, <code>composer</code>, <code>conan</code>, <code>none</code></p>
+<p><strong><code>DependencyScope</code></strong> — Scope/context of a dependency<br />
+Values (6): <code>production</code>, <code>development</code>, <code>test</code>, <code>build</code>, <code>optional</code>, <code>provided</code></p>
+<p><strong><code>VulnerabilitySeverity</code></strong> — Severity of a known vulnerability<br />
+Values (5): <code>critical</code>, <code>high</code>, <code>medium</code>, <code>low</code>, <code>none</code></p>
+<h3 id="concurrency">Concurrency</h3>
+<p><strong><code>ConcurrencyPrimitiveType</code></strong> — Types of concurrency primitives<br />
+Values (8): <code>mutex</code>, <code>semaphore</code>, <code>read_write_lock</code>, <code>spin_lock</code>, <code>condition_variable</code>, <code>barrier</code>, <code>latch</code>, <code>atomic</code></p>
+<p><strong><code>ConcurrencyPatternType</code></strong> — Types of concurrency patterns<br />
+Values (10): <code>thread_pool</code>, <code>actor</code>, <code>channel</code>, <code>future_promise</code>, <code>async_await</code>, <code>fork_join</code>, <code>producer_consumer</code>, <code>reactor</code>, <code>proactor</code>, <code>csp</code></p>
+<h3 id="mldata-pipelines">ML/Data pipelines</h3>
+<p><strong><code>MLModelType</code></strong> — Types of machine learning models<br />
+Values (10): <code>classification</code>, <code>regression</code>, <code>clustering</code>, <code>recommendation</code>, <code>nlp</code>, <code>computer_vision</code>, <code>generative</code>, <code>reinforcement_learning</code>, <code>time_series</code>, <code>anomaly_detection</code></p>
+<p><strong><code>DataPipelineType</code></strong> — Types of data pipelines<br />
+Values (7): <code>etl</code>, <code>elt</code>, <code>streaming</code>, <code>feature_engineering</code>, <code>training</code>, <code>inference</code>, <code>data_quality</code></p>
+<p><strong><code>DataPipelineStepType</code></strong> — Types of data pipeline steps<br />
+Values (11): <code>extract</code>, <code>transform</code>, <code>load</code>, <code>validate</code>, <code>deduplicate</code>, <code>enrich</code>, <code>aggregate</code>, <code>partition</code>, <code>train</code>, <code>evaluate</code>, <code>deploy_model</code></p>
+<h3 id="infrastructure-as-code">Infrastructure as Code</h3>
+<p><strong><code>IaCToolType</code></strong> — Types of infrastructure-as-code tools<br />
+Values (11): <code>terraform</code>, <code>cloudformation</code>, <code>pulumi</code>, <code>ansible</code>, <code>chef</code>, <code>puppet</code>, <code>kubernetes_manifest</code>, <code>helm</code>, <code>docker_compose</code>, <code>bicep</code>, <code>cdk</code></p>
+<p><strong><code>IaCResourceType</code></strong> — Types of infrastructure resources defined in code<br />
+Values (10): <code>compute</code>, <code>network</code>, <code>storage</code>, <code>database</code>, <code>messaging</code>, <code>identity</code>, <code>monitoring</code>, <code>dns</code>, <code>cdn</code>, <code>secret</code></p>
+<h3 id="type-system">Type system</h3>
+<p><strong><code>TypeKind</code></strong> — Classification of type expressions<br />
+Values (13): <code>primitive</code>, <code>generic</code>, <code>union</code>, <code>intersection</code>, <code>alias</code>, <code>pointer</code>, <code>reference</code>, <code>array_of</code>, <code>function_type</code>, <code>tuple_type</code>, <code>optional_type</code>, <code>constrained</code> (Type with constraints (e.g., sized, bounded)), <code>opaque</code></p>
+<h3 id="error-handling">Error handling</h3>
+<p><strong><code>ErrorHandlingStrategy</code></strong> — Language-level error handling paradigms<br />
+Values (6): <code>exception_based</code>, <code>return_value_based</code> (Errors returned as values (Go, Rust Result)), <code>condition_based</code> (Common Lisp condition system), <code>error_code_based</code> (Integer/enum error codes (C, COBOL)), <code>panic_recover</code> (Go-style panic/recover), <code>monadic</code> (Haskell Either/Maybe, Rust Result)</p>
+<p><strong><code>ExceptionCheckedness</code></strong> — Whether exceptions must be declared/caught<br />
+Values (3): <code>checked</code> (Compiler-enforced handling (Java checked)), <code>unchecked</code> (No compile-time enforcement), <code>not_applicable</code> (Language does not use exceptions)</p>
+<h3 id="file-io">File I/O</h3>
+<p><strong><code>FileOrganization</code></strong> — How records are organized within a file<br />
+Values (10): <code>sequential</code>, <code>indexed</code>, <code>relative</code>, <code>vsam_ksds</code> (VSAM Key-Sequenced Data Set), <code>vsam_esds</code> (VSAM Entry-Sequenced Data Set), <code>vsam_rrds</code> (VSAM Relative Record Data Set), <code>partitioned_dataset</code> (Partitioned dataset (PDS/PDSE)), <code>generation_data_group</code> (Generation data group (GDG)), <code>line_sequential</code>, <code>heap</code></p>
+<p><strong><code>FileAccessMode</code></strong> — How records are accessed during I/O<br />
+Values (3): <code>sequential_access</code>, <code>random_access</code>, <code>dynamic_access</code> (Both sequential and random in same open)</p>
+<p><strong><code>RecordFormat</code></strong> — Physical record format on storage<br />
+Values (5): <code>fixed</code>, <code>variable</code>, <code>undefined</code>, <code>spanned</code> (Records spanning multiple blocks), <code>stream</code></p>
+<p><strong><code>FileOperationType</code></strong> — Types of file I/O operations<br />
+Values (9): <code>read</code>, <code>write</code>, <code>rewrite</code> (Update existing record in place), <code>delete</code>, <code>start</code> (Position cursor for sequential read), <code>open</code>, <code>close</code>, <code>sort</code>, <code>merge</code></p>
+<h3 id="screenterminal">Screen/Terminal</h3>
+<p><strong><code>ScreenType</code></strong> — Types of terminal/screen definitions<br />
+Values (5): <code>bms_map</code> (CICS Basic Mapping Support map), <code>rpg_display_file</code> (RPG display file (DSPF)), <code>character_terminal</code> (Generic character-mode terminal), <code>tui</code> (Text User Interface (ncurses, etc.)), <code>form_based</code> (Form-based screen definition)</p>
+<h3 id="job-control">Job control</h3>
+<p><strong><code>JobStepType</code></strong> — Types of job steps in batch processing<br />
+Values (6): <code>exec_program</code> (Execute a program), <code>exec_proc</code> (Execute a cataloged procedure), <code>utility</code> (Run a system utility (SORT, IEBCOPY, etc.)), <code>sort</code>, <code>file_transfer</code>, <code>conditional</code> (Conditional step based on return codes)</p>
+<p><strong><code>DatasetDisposition</code></strong> — Dataset allocation dispositions (JCL)<br />
+Values (7): <code>new_dataset</code>, <code>old_dataset</code>, <code>shared</code>, <code>modify</code>, <code>catalog</code>, <code>delete_disp</code>, <code>pass</code> (Pass dataset to next step)</p>
+<h3 id="ipc">IPC</h3>
+<p><strong><code>IPCMechanism</code></strong> — Inter-process communication mechanisms<br />
+Values (17): <code>cics_link</code> (CICS LINK to another program), <code>cics_xctl</code> (CICS XCTL transfer of control), <code>ims_schedule</code> (IMS message scheduling), <code>shared_memory</code>, <code>pipe</code>, <code>rmi</code> (Java Remote Method Invocation), <code>corba</code>, <code>database_mediated</code> (Communication via shared database tables), <code>message_queue</code>, <code>socket</code>, <code>named_pipe</code>, <code>signal</code>, <code>semaphore</code>, <code>dcom</code>, <code>rest_call</code> (HTTP-based inter-process call), <code>grpc_call</code> (gRPC inter-process call), <code>event_bus</code> (Event bus communication)</p>
+<h3 id="preprocessor">Preprocessor</h3>
+<p><strong><code>MetaprogrammingType</code></strong> — Types of preprocessor/metaprogramming mechanisms<br />
+Values (9): <code>c_preprocessor</code>, <code>rust_macro_declarative</code>, <code>rust_macro_procedural</code>, <code>cobol_copy_replacing</code> (COBOL COPY ... REPLACING statement), <code>template_metaprogramming</code> (C++ template metaprogramming), <code>python_metaclass</code>, <code>lisp_macro</code>, <code>java_annotation_processor</code>, <code>code_generator</code></p>
+<h3 id="memoryownership">Memory/Ownership</h3>
+<p><strong><code>OwnershipModel</code></strong> — Memory ownership models<br />
+Values (9): <code>owned</code>, <code>borrowed_shared</code> (Shared/immutable borrow (Rust &amp;T)), <code>borrowed_mutable</code> (Exclusive mutable borrow (Rust &amp;mut T)), <code>moved</code>, <code>copied</code>, <code>reference_counted</code> (Rc/Arc (Rust), shared_ptr (C++)), <code>garbage_collected</code>, <code>manual</code> (Manual malloc/free), <code>stack_allocated</code></p>
+<p><strong><code>LifetimeScope</code></strong> — Lifetime/scope of a value<br />
+Values (5): <code>static_lifetime</code>, <code>function_scope</code>, <code>block_scope</code>, <code>named_lifetime</code> (Rust named lifetime ('a)), <code>heap_lifetime</code></p>
+<h3 id="database-schema">Database schema</h3>
+<p><strong><code>DatabaseConstraintType</code></strong> — Types of database constraints<br />
+Values (5): <code>primary_key</code>, <code>foreign_key</code>, <code>unique</code>, <code>check</code>, <code>not_null</code></p>
+<p><strong><code>IndexType</code></strong> — Types of database indexes<br />
+Values (4): <code>btree</code>, <code>hash</code>, <code>gin</code> (Generalized Inverted Index (PostgreSQL)), <code>fulltext</code></p>
+<h3 id="architectural-patterns">Architectural patterns</h3>
+<p><strong><code>ArchitecturalPatternType</code></strong> — Types of architectural patterns<br />
+Values (20): <code>cqrs</code> (Command Query Responsibility Segregation), <code>event_sourcing</code> (Event sourcing pattern), <code>hexagonal</code> (Hexagonal (ports and adapters) architecture), <code>clean_architecture</code> (Clean architecture (Uncle Bob)), <code>layered</code> (Traditional layered architecture), <code>microservice</code> (Microservice architecture), <code>modular_monolith</code> (Modular monolith architecture), <code>pipe_and_filter</code> (Pipe and filter architecture), <code>saga</code> (Saga pattern for distributed transactions), <code>strangler_fig</code> (Strangler fig migration pattern), <code>bff</code> (Backend for Frontend pattern), <code>api_gateway</code> (API gateway pattern), <code>sidecar</code> (Sidecar pattern), <code>event_driven</code> (Event-driven architecture), <code>batch_sequential</code> (Batch sequential processing), <code>transaction_script</code> (Transaction script pattern), <code>table_module</code> (Table module pattern), <code>domain_model</code> (Domain model pattern), <code>repository</code> (Repository pattern), <code>plugin</code> (Plugin architecture)</p>
+<h3 id="knowledge-artifacts">Knowledge artifacts</h3>
+<p><strong><code>KnowledgeArtifactType</code></strong> — Types of knowledge artifacts<br />
+Values (13): <code>adr</code> (Architecture Decision Record), <code>readme</code> (README documentation), <code>design_doc</code> (Design document), <code>runbook</code> (Operational runbook), <code>wiki_page</code> (Wiki page), <code>api_doc</code> (API documentation), <code>onboarding_guide</code> (Onboarding guide), <code>postmortem</code> (Incident postmortem), <code>changelog</code> (Changelog), <code>comment</code> (Code or review comment), <code>diagram</code> (Architecture or design diagram), <code>rfc</code> (Request for Comments), <code>sop</code> (Standard Operating Procedure)</p>
+<p><strong><code>KnowledgeArtifactStatus</code></strong> — Status of a knowledge artifact<br />
+Values (6): <code>draft</code>, <code>published</code>, <code>accepted</code>, <code>superseded</code>, <code>deprecated</code>, <code>archived</code></p>
+<h3 id="programming-language">Programming language</h3>
+<p><strong><code>ProgrammingParadigm</code></strong> — Programming paradigms<br />
+Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functional</code>, <code>logic</code>, <code>concatenative</code>, <code>data_driven</code>, <code>multi_paradigm</code></p>
+<hr />
+<h2 id="appendix-c-complete-bidirectional-relationship-pairs-226-rows">Appendix C: Complete Bidirectional Relationship Pairs (226 rows)</h2>
+<p>Every bidirectional relationship in the SAO. Each row shows one pair: the forward attribute on Class A and its inverse on Class B. See <a href="#10-the-glue-bidirectional-relationships">Section 10</a> for how these bridges work.</p>
+<blockquote>
+<p><strong>Note on the count:</strong> This appendix lists 226 rows, while the summary in Section 2 counts 214 symmetric pairs. The difference arises from two factors: (1) 16 rows here are polymorphic expansions — attributes like <code>annotates_element</code>, <code>imports_symbols</code>, <code>defined_in_container</code>, and <code>contains_callable_units</code> use <code>any_of</code> ranges targeting multiple classes, so one logical relationship is expanded into separate rows per target class even though only one side declares the <code>inverse:</code> in the schema; (2) the Section 2 total includes 4 global slot pairs that are not listed in this appendix.</p>
+</blockquote>
+<h3 id="layer-3-code-structure-73-pairs">Layer 3: Code structure (73 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Annotation</code></td>
+<td><code>annotates_element</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>annotated_by</code></td>
+</tr>
+<tr>
+<td><code>Annotation</code></td>
+<td><code>annotates_element</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>annotated_by</code></td>
+</tr>
+<tr>
+<td><code>Annotation</code></td>
+<td><code>annotates_element</code></td>
+<td><code>DataStructure</code></td>
+<td><code>annotated_by</code></td>
+</tr>
+<tr>
+<td><code>Annotation</code></td>
+<td><code>annotates_element</code></td>
+<td><code>DataElement</code></td>
+<td><code>annotated_by</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>callable_affected_by_directives</code></td>
+<td><code>PreprocessorDirective</code></td>
+<td><code>directive_affects_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>has_file_operations</code></td>
+<td><code>FileOperation</code></td>
+<td><code>performed_in_callable</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>contains_blocks</code></td>
+<td><code>CodeBlock</code></td>
+<td><code>contained_in_callable</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>defined_in_container</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>contains_code_elements</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>handles_exception_types</code></td>
+<td><code>ExceptionType</code></td>
+<td><code>handled_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>has_parameters</code></td>
+<td><code>Parameter</code></td>
+<td><code>parameter_of</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>implements_operation</code></td>
+<td><code>Operation</code></td>
+<td><code>implemented_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>invokes_callables</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>invoked_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>overrides_callable</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>overridden_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>raises_exception_types</code></td>
+<td><code>ExceptionType</code></td>
+<td><code>raised_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>has_return_type</code></td>
+<td><code>TypeExpression</code></td>
+<td><code>return_type_of_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>tested_by_cases</code></td>
+<td><code>TestCase</code></td>
+<td><code>tests_callable</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>uses_concurrency_primitives</code></td>
+<td><code>ConcurrencyPrimitive</code></td>
+<td><code>used_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CallableUnit</code></td>
+<td><code>uses_file_definitions</code></td>
+<td><code>FileDefinition</code></td>
+<td><code>used_by_callables</code></td>
+</tr>
+<tr>
+<td><code>CodeBlock</code></td>
+<td><code>contains_statements</code></td>
+<td><code>Statement</code></td>
+<td><code>contained_in_block</code></td>
+</tr>
+<tr>
+<td><code>CodeBlock</code></td>
+<td><code>has_parent_block</code></td>
+<td><code>CodeBlock</code></td>
+<td><code>has_child_blocks</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>contained_in_storage_location</code></td>
+<td><code>StorageLocation</code></td>
+<td><code>contains_containers</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>has_file_definitions</code></td>
+<td><code>FileDefinition</code></td>
+<td><code>file_defined_in_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>has_preprocessor_directives</code></td>
+<td><code>PreprocessorDirective</code></td>
+<td><code>directive_defined_in_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>has_screen_definitions</code></td>
+<td><code>ScreenDefinition</code></td>
+<td><code>screen_defined_in_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>contains_knowledge_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>stored_in_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>has_references</code></td>
+<td><code>DefinitionReference</code></td>
+<td><code>referencing_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>implements_component</code></td>
+<td><code>Component</code></td>
+<td><code>implemented_by_code</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>includes_definitions</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>included_in_containers</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>referenced_via</code></td>
+<td><code>DefinitionReference</code></td>
+<td><code>referenced_container</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>references_containers</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>referenced_by_containers</code></td>
+</tr>
+<tr>
+<td><code>CodeContainer</code></td>
+<td><code>written_in_language</code></td>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>language_used_by_containers</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>contained_in_unit</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>contains_callable_units</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>declared_type</code></td>
+<td><code>TypeExpression</code></td>
+<td><code>type_of_data_elements</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>mapped_from_screen_fields</code></td>
+<td><code>ScreenField</code></td>
+<td><code>maps_to_data_element</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>maps_to_attribute</code></td>
+<td><code>Attribute</code></td>
+<td><code>mapped_from_element</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>has_ownership_annotations</code></td>
+<td><code>OwnershipAnnotation</code></td>
+<td><code>annotates_data_element</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>has_parent_element</code></td>
+<td><code>DataElement</code></td>
+<td><code>has_child_elements</code></td>
+</tr>
+<tr>
+<td><code>DataElement</code></td>
+<td><code>protected_by_primitive</code></td>
+<td><code>ConcurrencyPrimitive</code></td>
+<td><code>protects_data_elements</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>contained_in_unit</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>contains_callable_units</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>defined_in_container</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>contains_code_elements</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>maps_to_domain_entity</code></td>
+<td><code>DomainEntity</code></td>
+<td><code>mapped_from_structure</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>maps_to_value_object</code></td>
+<td><code>ValueObject</code></td>
+<td><code>mapped_from_structure_vo</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>has_parent_structure</code></td>
+<td><code>DataStructure</code></td>
+<td><code>has_child_structures</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>passed_via_ipc</code></td>
+<td><code>IPCConnection</code></td>
+<td><code>ipc_passes_data</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>persisted_in_collection</code></td>
+<td><code>Collection</code></td>
+<td><code>persists_structures</code></td>
+</tr>
+<tr>
+<td><code>DataStructure</code></td>
+<td><code>structure_contains_elements</code></td>
+<td><code>DataElement</code></td>
+<td><code>contained_in_structure</code></td>
+</tr>
+<tr>
+<td><code>DefinitionReference</code></td>
+<td><code>imports_symbols</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>imported_via</code></td>
+</tr>
+<tr>
+<td><code>DefinitionReference</code></td>
+<td><code>imports_symbols</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>imported_via</code></td>
+</tr>
+<tr>
+<td><code>DefinitionReference</code></td>
+<td><code>imports_symbols</code></td>
+<td><code>DataStructure</code></td>
+<td><code>imported_via</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>affected_by_directives</code></td>
+<td><code>PreprocessorDirective</code></td>
+<td><code>directive_affects_encapsulation_units</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>contains_callable_units</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>contained_in_unit</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>defined_in_container</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>contains_code_elements</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>encapsulation_unit_renders_ui</code></td>
+<td><code>UIComponent</code></td>
+<td><code>ui_implements_encapsulation_unit</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>error_model_for_module</code></td>
+<td><code>ErrorModel</code></td>
+<td><code>modules_using_error_model</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>executed_by_job_steps</code></td>
+<td><code>JobStep</code></td>
+<td><code>step_executes_program</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>extends_units</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>extended_by_units</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>implements_component</code></td>
+<td><code>Component</code></td>
+<td><code>implemented_by_code</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>implements_contracts</code></td>
+<td><code>Contract</code></td>
+<td><code>implemented_by_units</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>has_incoming_ipc_connections</code></td>
+<td><code>IPCConnection</code></td>
+<td><code>has_target_program</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>memory_model_for_module</code></td>
+<td><code>MemoryModel</code></td>
+<td><code>modules_using_memory_model</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>has_outgoing_ipc_connections</code></td>
+<td><code>IPCConnection</code></td>
+<td><code>has_source_program</code></td>
+</tr>
+<tr>
+<td><code>EncapsulationUnit</code></td>
+<td><code>screen_used_by_programs</code></td>
+<td><code>ScreenDefinition</code></td>
+<td><code>program_uses_screens</code></td>
+</tr>
+<tr>
+<td><code>ErrorModel</code></td>
+<td><code>error_model_for_languages</code></td>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>has_default_error_model</code></td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td><code>has_parent_exception</code></td>
+<td><code>ExceptionType</code></td>
+<td><code>has_child_exceptions</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>file_operations</code></td>
+<td><code>FileOperation</code></td>
+<td><code>operates_on_file</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>mapped_from_dataset_allocations</code></td>
+<td><code>DatasetAllocation</code></td>
+<td><code>maps_to_file_definition</code></td>
+</tr>
+<tr>
+<td><code>JobDefinition</code></td>
+<td><code>contains_job_steps</code></td>
+<td><code>JobStep</code></td>
+<td><code>step_in_job</code></td>
+</tr>
+<tr>
+<td><code>JobDefinition</code></td>
+<td><code>depends_on_jobs</code></td>
+<td><code>JobDefinition</code></td>
+<td><code>depended_on_by_jobs</code></td>
+</tr>
+<tr>
+<td><code>JobStep</code></td>
+<td><code>allocates_datasets</code></td>
+<td><code>DatasetAllocation</code></td>
+<td><code>allocated_in_step</code></td>
+</tr>
+<tr>
+<td><code>MemoryModel</code></td>
+<td><code>memory_model_for_languages</code></td>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>has_default_memory_model</code></td>
+</tr>
+<tr>
+<td><code>Parameter</code></td>
+<td><code>has_type</code></td>
+<td><code>TypeExpression</code></td>
+<td><code>type_of_parameters</code></td>
+</tr>
+<tr>
+<td><code>ScreenDefinition</code></td>
+<td><code>contains_screen_fields</code></td>
+<td><code>ScreenField</code></td>
+<td><code>field_on_screen</code></td>
+</tr>
+<tr>
+<td><code>StorageLocation</code></td>
+<td><code>has_parent_location</code></td>
+<td><code>StorageLocation</code></td>
+<td><code>contains_locations</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-4-architecture-and-integration-47-pairs">Layer 4: Architecture and integration (47 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>BoundedContext</code></td>
+<td><code>contains_aggregates</code></td>
+<td><code>Aggregate</code></td>
+<td><code>contained_in_bounded_context</code></td>
+</tr>
+<tr>
+<td><code>BoundedContext</code></td>
+<td><code>contains_modules</code></td>
+<td><code>Module</code></td>
+<td><code>contained_in_context</code></td>
+</tr>
+<tr>
+<td><code>BoundedContext</code></td>
+<td><code>context_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_bounded_context</code></td>
+</tr>
+<tr>
+<td><code>BoundedContext</code></td>
+<td><code>upstream_from</code></td>
+<td><code>BoundedContext</code></td>
+<td><code>downstream_from</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>component_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>component_serves_model</code></td>
+<td><code>MLModel</code></td>
+<td><code>model_served_by_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>component_uses_concurrency_pattern</code></td>
+<td><code>ConcurrencyPattern</code></td>
+<td><code>pattern_used_by_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>emits_events</code></td>
+<td><code>Event</code></td>
+<td><code>emitted_by_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>emits_metric</code></td>
+<td><code>Metric</code></td>
+<td><code>metric_emitted_by_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>exposes_operations</code></td>
+<td><code>Operation</code></td>
+<td><code>exposed_by_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>has_coverage</code></td>
+<td><code>TestCoverage</code></td>
+<td><code>coverage_for_component</code></td>
+</tr>
+<tr>
+<td><code>Component</code></td>
+<td><code>tested_by_suites</code></td>
+<td><code>TestSuite</code></td>
+<td><code>tests_component</code></td>
+</tr>
+<tr>
+<td><code>Contract</code></td>
+<td><code>has_versions</code></td>
+<td><code>ContractVersion</code></td>
+<td><code>version_of_contract</code></td>
+</tr>
+<tr>
+<td><code>EventInterface</code></td>
+<td><code>has_subscriptions</code></td>
+<td><code>Subscription</code></td>
+<td><code>subscribes_to_interface</code></td>
+</tr>
+<tr>
+<td><code>ExternalSystem</code></td>
+<td><code>integrated_via</code></td>
+<td><code>Integration</code></td>
+<td><code>integrates_with_system</code></td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td><code>integration_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_integration</code></td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td><code>integration_governed_by_contract</code></td>
+<td><code>Contract</code></td>
+<td><code>governs_integrations</code></td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td><code>protected_by_breaker</code></td>
+<td><code>CircuitBreaker</code></td>
+<td><code>protects_integrations</code></td>
+</tr>
+<tr>
+<td><code>Integration</code></td>
+<td><code>uses_adapter</code></td>
+<td><code>Adapter</code></td>
+<td><code>used_by_integrations</code></td>
+</tr>
+<tr>
+<td><code>Interface</code></td>
+<td><code>defined_by_contract</code></td>
+<td><code>Contract</code></td>
+<td><code>defines_interfaces</code></td>
+</tr>
+<tr>
+<td><code>Message</code></td>
+<td><code>validated_by_contract</code></td>
+<td><code>Contract</code></td>
+<td><code>validates_messages</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>contains_components</code></td>
+<td><code>Component</code></td>
+<td><code>contained_in_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>depends_on_module</code></td>
+<td><code>Module</code></td>
+<td><code>depended_on_by_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>mapped_from_directory</code></td>
+<td><code>StorageLocation</code></td>
+<td><code>maps_to_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module_has_coverage</code></td>
+<td><code>TestCoverage</code></td>
+<td><code>coverage_for_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module_has_dependencies</code></td>
+<td><code>PackageDependency</code></td>
+<td><code>dependency_of_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module_managed_by_package_manager</code></td>
+<td><code>PackageManager</code></td>
+<td><code>manages_dependencies_for_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>module_tested_by_suites</code></td>
+<td><code>TestSuite</code></td>
+<td><code>tests_module</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>provides_capabilities</code></td>
+<td><code>Capability</code></td>
+<td><code>provided_by_modules</code></td>
+</tr>
+<tr>
+<td><code>Module</code></td>
+<td><code>runs_as_services</code></td>
+<td><code>Service</code></td>
+<td><code>runs_module</code></td>
+</tr>
+<tr>
+<td><code>ProgrammaticInterface</code></td>
+<td><code>has_endpoints</code></td>
+<td><code>Endpoint</code></td>
+<td><code>belongs_to_interface</code></td>
+</tr>
+<tr>
+<td><code>Screen</code></td>
+<td><code>offers_operations</code></td>
+<td><code>Operation</code></td>
+<td><code>offered_on_screens</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>affected_by_incidents</code></td>
+<td><code>Incident</code></td>
+<td><code>affects_services</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>depends_on_service</code></td>
+<td><code>Service</code></td>
+<td><code>depended_on_by_service</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>deployed_as</code></td>
+<td><code>Deployment</code></td>
+<td><code>deploys_service</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>exposes_endpoints</code></td>
+<td><code>Endpoint</code></td>
+<td><code>exposed_by_service</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>receives_integration_events</code></td>
+<td><code>IntegrationEvent</code></td>
+<td><code>targeted_at_services</code></td>
+</tr>
+<tr>
+<td><code>Service</code></td>
+<td><code>service_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_service</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>assessed_by</code></td>
+<td><code>RiskAssessment</code></td>
+<td><code>assesses_system</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>contains_bounded_contexts</code></td>
+<td><code>BoundedContext</code></td>
+<td><code>contained_in_system</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>enforces_policies</code></td>
+<td><code>Policy</code></td>
+<td><code>enforced_by_system</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>exposes_interfaces</code></td>
+<td><code>Interface</code></td>
+<td><code>exposed_by_system</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>has_integrations</code></td>
+<td><code>Integration</code></td>
+<td><code>belongs_to_system</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>must_comply_with</code></td>
+<td><code>ComplianceRequirement</code></td>
+<td><code>applies_to_systems</code></td>
+</tr>
+<tr>
+<td><code>System</code></td>
+<td><code>system_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_system</code></td>
+</tr>
+<tr>
+<td><code>UserInterface</code></td>
+<td><code>contains_screens</code></td>
+<td><code>Screen</code></td>
+<td><code>part_of_ui</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-5-domain-model-41-pairs">Layer 5: Domain model (41 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>aggregate_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_aggregate</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>aggregates_entities</code></td>
+<td><code>DomainEntity</code></td>
+<td><code>aggregated_by</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>enforced_by_invariant_rules</code></td>
+<td><code>Rule</code></td>
+<td><code>enforces_aggregate_invariants</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>has_root_entity</code></td>
+<td><code>DomainEntity</code></td>
+<td><code>is_root_of_aggregate</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>persisted_in_stores</code></td>
+<td><code>DataStore</code></td>
+<td><code>persists_aggregates</code></td>
+</tr>
+<tr>
+<td><code>Aggregate</code></td>
+<td><code>produces_domain_events</code></td>
+<td><code>DomainEvent</code></td>
+<td><code>produced_by_aggregate</code></td>
+</tr>
+<tr>
+<td><code>Attribute</code></td>
+<td><code>validated_by_rules</code></td>
+<td><code>Rule</code></td>
+<td><code>validates_attributes</code></td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td><code>collection_structured_by_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>structures_collections</code></td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td><code>governed_by_retention_policy</code></td>
+<td><code>RetentionPolicy</code></td>
+<td><code>governs_collections</code></td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td><code>has_constraints</code></td>
+<td><code>DatabaseConstraint</code></td>
+<td><code>constraint_on_collection</code></td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td><code>has_indexes</code></td>
+<td><code>DatabaseIndex</code></td>
+<td><code>index_on_collection</code></td>
+</tr>
+<tr>
+<td><code>Collection</code></td>
+<td><code>stores_records</code></td>
+<td><code>Record</code></td>
+<td><code>stored_in_collection</code></td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td><code>hosted_on_infrastructure</code></td>
+<td><code>Infrastructure</code></td>
+<td><code>hosts_datastores</code></td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td><code>store_file_definitions</code></td>
+<td><code>FileDefinition</code></td>
+<td><code>persisted_in_store</code></td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td><code>store_read_by_pipelines</code></td>
+<td><code>DataPipeline</code></td>
+<td><code>pipeline_reads_from_stores</code></td>
+</tr>
+<tr>
+<td><code>DataStore</code></td>
+<td><code>store_written_by_pipelines</code></td>
+<td><code>DataPipeline</code></td>
+<td><code>pipeline_writes_to_stores</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>entity_documented_by_artifacts</code></td>
+<td><code>KnowledgeArtifact</code></td>
+<td><code>documents_domain_entity</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>exposes_as_resource</code></td>
+<td><code>Resource</code></td>
+<td><code>represents_entity</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>governed_by_lifecycle</code></td>
+<td><code>Lifecycle</code></td>
+<td><code>governs_entities</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>governed_by_rules</code></td>
+<td><code>Rule</code></td>
+<td><code>governs_domain_entities</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>in_state</code></td>
+<td><code>State</code></td>
+<td><code>current_for_entities</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>has_incoming_relationships</code></td>
+<td><code>DomainRelationship</code></td>
+<td><code>has_target_entity</code></td>
+</tr>
+<tr>
+<td><code>DomainEntity</code></td>
+<td><code>has_outgoing_relationships</code></td>
+<td><code>DomainRelationship</code></td>
+<td><code>has_source_entity</code></td>
+</tr>
+<tr>
+<td><code>Record</code></td>
+<td><code>conforms_to_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>validates_records</code></td>
+</tr>
+<tr>
+<td><code>Record</code></td>
+<td><code>has_lineage</code></td>
+<td><code>DataLineage</code></td>
+<td><code>tracks_record</code></td>
+</tr>
+<tr>
+<td><code>Record</code></td>
+<td><code>source_of_lineage</code></td>
+<td><code>DataLineage</code></td>
+<td><code>derived_from_records</code></td>
+</tr>
+<tr>
+<td><code>Resource</code></td>
+<td><code>affected_in_audit</code></td>
+<td><code>AuditEntry</code></td>
+<td><code>affects_resource</code></td>
+</tr>
+<tr>
+<td><code>Resource</code></td>
+<td><code>classified_as_type</code></td>
+<td><code>ResourceType</code></td>
+<td><code>classifies_resources</code></td>
+</tr>
+<tr>
+<td><code>Resource</code></td>
+<td><code>targeted_by_actions</code></td>
+<td><code>Action</code></td>
+<td><code>targets_resources</code></td>
+</tr>
+<tr>
+<td><code>ResourceType</code></td>
+<td><code>structured_by_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>structures_resource_types</code></td>
+</tr>
+<tr>
+<td><code>RetentionPolicy</code></td>
+<td><code>governs_audit_logs</code></td>
+<td><code>AuditLog</code></td>
+<td><code>auditlog_governed_by_retention</code></td>
+</tr>
+<tr>
+<td><code>RetentionPolicy</code></td>
+<td><code>governs_logs</code></td>
+<td><code>Log</code></td>
+<td><code>log_governed_by_retention</code></td>
+</tr>
+<tr>
+<td><code>Schema</code></td>
+<td><code>has_versions</code></td>
+<td><code>SchemaVersion</code></td>
+<td><code>version_of_schema</code></td>
+</tr>
+<tr>
+<td><code>Schema</code></td>
+<td><code>structures_messages</code></td>
+<td><code>Message</code></td>
+<td><code>message_structured_by_schema</code></td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td><code>allows_actions_in_state</code></td>
+<td><code>Action</code></td>
+<td><code>allowed_in_states</code></td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td><code>initial_for_lifecycle</code></td>
+<td><code>Lifecycle</code></td>
+<td><code>starts_with_state</code></td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td><code>source_of_transitions</code></td>
+<td><code>Transition</code></td>
+<td><code>transitions_from_state</code></td>
+</tr>
+<tr>
+<td><code>State</code></td>
+<td><code>target_of_transitions</code></td>
+<td><code>Transition</code></td>
+<td><code>transitions_to_state</code></td>
+</tr>
+<tr>
+<td><code>Transition</code></td>
+<td><code>executes_actions_on_transition</code></td>
+<td><code>Action</code></td>
+<td><code>executed_during_transition</code></td>
+</tr>
+<tr>
+<td><code>Transition</code></td>
+<td><code>guarded_by_rules</code></td>
+<td><code>Rule</code></td>
+<td><code>guards_transitions</code></td>
+</tr>
+<tr>
+<td><code>Transition</code></td>
+<td><code>triggered_by_events</code></td>
+<td><code>Event</code></td>
+<td><code>triggers_transitions</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-6-business-intent-25-pairs">Layer 6: Business intent (25 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Action</code></td>
+<td><code>emits_events_from_action</code></td>
+<td><code>Event</code></td>
+<td><code>emitted_by_action</code></td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td><code>executed_by_operation</code></td>
+<td><code>Operation</code></td>
+<td><code>executes_operation_actions</code></td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td><code>executed_in_step</code></td>
+<td><code>Step</code></td>
+<td><code>executes_actions_in_step</code></td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td><code>executes_in_transaction</code></td>
+<td><code>Transaction</code></td>
+<td><code>executes_actions</code></td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td><code>recorded_in_audit</code></td>
+<td><code>AuditEntry</code></td>
+<td><code>records_action</code></td>
+</tr>
+<tr>
+<td><code>Action</code></td>
+<td><code>validated_by_action_rules</code></td>
+<td><code>Rule</code></td>
+<td><code>validates_actions</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>has_subscriptions</code></td>
+<td><code>Subscription</code></td>
+<td><code>subscribed_by_actor</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>audit_actions_performed</code></td>
+<td><code>AuditEntry</code></td>
+<td><code>audit_performed_by_actor</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>has_identities</code></td>
+<td><code>Identity</code></td>
+<td><code>represents_actor</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>owns_controls</code></td>
+<td><code>Control</code></td>
+<td><code>owned_by_actor</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>performs_actions</code></td>
+<td><code>Action</code></td>
+<td><code>performed_by_actor</code></td>
+</tr>
+<tr>
+<td><code>Actor</code></td>
+<td><code>verifies_evidence</code></td>
+<td><code>Evidence</code></td>
+<td><code>verified_by_actor</code></td>
+</tr>
+<tr>
+<td><code>Capability</code></td>
+<td><code>enables_features</code></td>
+<td><code>Feature</code></td>
+<td><code>enabled_by_capabilities</code></td>
+</tr>
+<tr>
+<td><code>Capability</code></td>
+<td><code>realizes_features</code></td>
+<td><code>Feature</code></td>
+<td><code>realized_by_capabilities</code></td>
+</tr>
+<tr>
+<td><code>Capability</code></td>
+<td><code>requires_permissions</code></td>
+<td><code>Permission</code></td>
+<td><code>required_by_capabilities</code></td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td><code>event_structured_by_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>structures_events</code></td>
+</tr>
+<tr>
+<td><code>Event</code></td>
+<td><code>subscribed_by_subscriptions</code></td>
+<td><code>Subscription</code></td>
+<td><code>subscribes_to_event_types</code></td>
+</tr>
+<tr>
+<td><code>Feature</code></td>
+<td><code>accessible_by_roles</code></td>
+<td><code>Role</code></td>
+<td><code>can_access_features</code></td>
+</tr>
+<tr>
+<td><code>Feature</code></td>
+<td><code>controlled_by_configs</code></td>
+<td><code>Configuration</code></td>
+<td><code>controls_features</code></td>
+</tr>
+<tr>
+<td><code>Operation</code></td>
+<td><code>accepts_input_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>defines_operation_input</code></td>
+</tr>
+<tr>
+<td><code>Operation</code></td>
+<td><code>operation_tested_by_cases</code></td>
+<td><code>TestCase</code></td>
+<td><code>tests_operation</code></td>
+</tr>
+<tr>
+<td><code>Operation</code></td>
+<td><code>produces_output_schema</code></td>
+<td><code>Schema</code></td>
+<td><code>defines_operation_output</code></td>
+</tr>
+<tr>
+<td><code>Step</code></td>
+<td><code>compensated_by_step</code></td>
+<td><code>Step</code></td>
+<td><code>compensates_for_step</code></td>
+</tr>
+<tr>
+<td><code>Step</code></td>
+<td><code>followed_by_steps</code></td>
+<td><code>Step</code></td>
+<td><code>follows_step</code></td>
+</tr>
+<tr>
+<td><code>Workflow</code></td>
+<td><code>triggered_by_workflow_events</code></td>
+<td><code>Event</code></td>
+<td><code>triggers_workflows</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting-security-governance-quality-knowledge-22-pairs">Cross-cutting: Security, governance, quality, knowledge (22 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AuditLog</code></td>
+<td><code>contains_entries</code></td>
+<td><code>AuditEntry</code></td>
+<td><code>entry_in_audit_log</code></td>
+</tr>
+<tr>
+<td><code>BuildArtifact</code></td>
+<td><code>artifact_stored_in_registry</code></td>
+<td><code>ArtifactRegistry</code></td>
+<td><code>stores_artifacts</code></td>
+</tr>
+<tr>
+<td><code>BuildPipeline</code></td>
+<td><code>pipeline_produces_artifacts</code></td>
+<td><code>BuildArtifact</code></td>
+<td><code>artifact_produced_by_pipeline</code></td>
+</tr>
+<tr>
+<td><code>BuildPipeline</code></td>
+<td><code>pipeline_trains_model</code></td>
+<td><code>MLModel</code></td>
+<td><code>model_trained_by_pipeline</code></td>
+</tr>
+<tr>
+<td><code>BuildPipeline</code></td>
+<td><code>pipeline_uses_iac</code></td>
+<td><code>IaCDefinition</code></td>
+<td><code>iac_used_by_pipeline</code></td>
+</tr>
+<tr>
+<td><code>Control</code></td>
+<td><code>mitigates_risks</code></td>
+<td><code>RiskAssessment</code></td>
+<td><code>mitigated_by_controls</code></td>
+</tr>
+<tr>
+<td><code>Identity</code></td>
+<td><code>belongs_to_tenant</code></td>
+<td><code>Tenant</code></td>
+<td><code>contains_identities</code></td>
+</tr>
+<tr>
+<td><code>Identity</code></td>
+<td><code>has_roles</code></td>
+<td><code>Role</code></td>
+<td><code>assigned_to_identities</code></td>
+</tr>
+<tr>
+<td><code>Identity</code></td>
+<td><code>member_of_organizations</code></td>
+<td><code>Organization</code></td>
+<td><code>has_identity_members</code></td>
+</tr>
+<tr>
+<td><code>PackageDependency</code></td>
+<td><code>has_transitive_dependencies</code></td>
+<td><code>PackageDependency</code></td>
+<td><code>transitive_dependency_of</code></td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td><code>allows_actions</code></td>
+<td><code>Action</code></td>
+<td><code>allowed_by_permissions</code></td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td><code>applies_to_resource_types</code></td>
+<td><code>ResourceType</code></td>
+<td><code>governed_by_permissions</code></td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td><code>evaluated_by_policies</code></td>
+<td><code>Policy</code></td>
+<td><code>evaluates_permissions</code></td>
+</tr>
+<tr>
+<td><code>Permission</code></td>
+<td><code>limited_by_scope</code></td>
+<td><code>Scope</code></td>
+<td><code>limits_permissions</code></td>
+</tr>
+<tr>
+<td><code>Policy</code></td>
+<td><code>guards_routes</code></td>
+<td><code>Route</code></td>
+<td><code>route_guarded_by</code></td>
+</tr>
+<tr>
+<td><code>Role</code></td>
+<td><code>grants_permissions</code></td>
+<td><code>Permission</code></td>
+<td><code>granted_by_roles</code></td>
+</tr>
+<tr>
+<td><code>Role</code></td>
+<td><code>inherits_from_role</code></td>
+<td><code>Role</code></td>
+<td><code>inherited_by_roles</code></td>
+</tr>
+<tr>
+<td><code>Route</code></td>
+<td><code>has_parent_route</code></td>
+<td><code>Route</code></td>
+<td><code>has_child_routes</code></td>
+</tr>
+<tr>
+<td><code>TestSuite</code></td>
+<td><code>contains_test_cases</code></td>
+<td><code>TestCase</code></td>
+<td><code>belongs_to_suite</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>managed_by_state</code></td>
+<td><code>StateStore</code></td>
+<td><code>manages_ui_components</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>has_parent_ui_component</code></td>
+<td><code>UIComponent</code></td>
+<td><code>has_child_ui_components</code></td>
+</tr>
+<tr>
+<td><code>UIComponent</code></td>
+<td><code>renders_on_route</code></td>
+<td><code>Route</code></td>
+<td><code>route_renders_component</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cross-cutting-runtime-ops-infrastructure-18-pairs">Cross-cutting: Runtime, ops, infrastructure (18 pairs)</h3>
+<table>
+<thead>
+<tr>
+<th>Class A</th>
+<th>Attribute (forward)</th>
+<th>Class B</th>
+<th>Attribute (inverse)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alert</code></td>
+<td><code>escalates_to_incident</code></td>
+<td><code>Incident</code></td>
+<td><code>escalated_from_alerts</code></td>
+</tr>
+<tr>
+<td><code>Alert</code></td>
+<td><code>triggered_by_rule</code></td>
+<td><code>AlertRule</code></td>
+<td><code>triggers_alerts</code></td>
+</tr>
+<tr>
+<td><code>Dataset</code></td>
+<td><code>dataset_used_by_pipeline</code></td>
+<td><code>DataPipeline</code></td>
+<td><code>pipeline_uses_dataset</code></td>
+</tr>
+<tr>
+<td><code>Deployment</code></td>
+<td><code>deployment_configured_by</code></td>
+<td><code>Configuration</code></td>
+<td><code>configures_deployments</code></td>
+</tr>
+<tr>
+<td><code>Deployment</code></td>
+<td><code>deploys_release</code></td>
+<td><code>Release</code></td>
+<td><code>deployed_in_deployments_as_release</code></td>
+</tr>
+<tr>
+<td><code>Deployment</code></td>
+<td><code>deploys_unit</code></td>
+<td><code>DeploymentUnit</code></td>
+<td><code>deployed_in_deployments</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>deployed_by_pipelines</code></td>
+<td><code>BuildPipeline</code></td>
+<td><code>pipeline_deploys_to_environments</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>env_configured_by</code></td>
+<td><code>Configuration</code></td>
+<td><code>configures_environments</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>hosts_deployments</code></td>
+<td><code>Deployment</code></td>
+<td><code>deployed_in_environment</code></td>
+</tr>
+<tr>
+<td><code>Environment</code></td>
+<td><code>uses_infrastructure</code></td>
+<td><code>Infrastructure</code></td>
+<td><code>used_by_environments</code></td>
+</tr>
+<tr>
+<td><code>Infrastructure</code></td>
+<td><code>infrastructure_provisioned_by_iac</code></td>
+<td><code>IaCDefinition</code></td>
+<td><code>iac_provisions_infrastructure</code></td>
+</tr>
+<tr>
+<td><code>Log</code></td>
+<td><code>contains_entries</code></td>
+<td><code>LogEntry</code></td>
+<td><code>entry_in_log</code></td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td><code>model_trained_by_pipeline</code></td>
+<td><code>DataPipeline</code></td>
+<td><code>pipeline_trains_model</code></td>
+</tr>
+<tr>
+<td><code>MLModel</code></td>
+<td><code>model_uses_feature_store</code></td>
+<td><code>FeatureStore</code></td>
+<td><code>provides_features_to_models</code></td>
+</tr>
+<tr>
+<td><code>Metric</code></td>
+<td><code>monitored_by_alert_rules</code></td>
+<td><code>AlertRule</code></td>
+<td><code>monitors_metrics</code></td>
+</tr>
+<tr>
+<td><code>Span</code></td>
+<td><code>child_of_span</code></td>
+<td><code>Span</code></td>
+<td><code>parent_of_spans</code></td>
+</tr>
+<tr>
+<td><code>Trace</code></td>
+<td><code>starts_with_span</code></td>
+<td><code>Span</code></td>
+<td><code>root_of_trace</code></td>
+</tr>
+<tr>
+<td><code>Trace</code></td>
+<td><code>contains_spans</code></td>
+<td><code>Span</code></td>
+<td><code>belongs_to_trace</code></td>
+</tr>
+</tbody>
+</table></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

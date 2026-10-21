@@ -1,0 +1,156 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/file-io
+name: sao-file-io
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  FileOrganization:
+    description: How records are organized within a file
+    permissible_values:
+      sequential:
+        description: "Sequential organization."
+      indexed:
+        description: "Indexed organization."
+      relative:
+        description: "Relative organization."
+      vsam_ksds:
+        description: VSAM Key-Sequenced Data Set
+      vsam_esds:
+        description: VSAM Entry-Sequenced Data Set
+      vsam_rrds:
+        description: VSAM Relative Record Data Set
+      partitioned_dataset:
+        description: Partitioned dataset (PDS/PDSE)
+      generation_data_group:
+        description: Generation data group (GDG)
+      line_sequential:
+        description: "Line-sequential organization."
+      heap:
+        description: "Heap organization."
+
+  FileAccessMode:
+    description: How records are accessed during I/O
+    permissible_values:
+      sequential_access:
+        description: "Sequential access."
+      random_access:
+        description: "Random access."
+      dynamic_access:
+        description: Both sequential and random in same open
+
+  FileOperationType:
+    description: Types of file I/O operations
+    permissible_values:
+      read:
+        description: "Read operation."
+      write:
+        description: "Write operation."
+      rewrite:
+        description: Update existing record in place
+      delete:
+        description: "Delete operation."
+      start:
+        description: Position cursor for sequential read
+      open:
+        description: "Open operation."
+      close:
+        description: "Close operation."
+      sort:
+        description: "Sort operation."
+      merge:
+        description: "Merge operation."
+
+
+classes:
+  FileDefinition:
+    comments:
+      - "Captures the physical and logical characteristics of files used by programs, enabling impact analysis when file structures change."
+    is_a: NamedEntity
+    description: >-
+      A file defined for I/O in a program (COBOL SELECT, C fopen, etc.)
+    attributes:
+      organization:
+        description: "Physical organization of the file."
+        range: FileOrganization
+      access_mode:
+        description: "How the file is accessed."
+        range: FileAccessMode
+      record_format:
+        description: "Record format."
+        range: RecordFormat
+      record_length:
+        description: "Record length in bytes."
+        range: integer
+      block_size:
+        description: "Block size in bytes."
+        range: integer
+      key_fields:
+        range: string
+        multivalued: true
+        description: Key field names for indexed files
+      file_status_field:
+        range: string
+        description: Variable receiving I/O status codes
+      external_name:
+        range: string
+        description: External/physical file name (DD name, path)
+      used_by_callables:
+        description: "Callables that perform I/O on this file."
+        range: CallableUnit
+        multivalued: true
+        inverse: uses_file_definitions
+      file_defined_in_container:
+        description: "Container where this file is defined."
+        range: CodeContainer
+        inverse: has_file_definitions
+      persisted_in_store:
+        description: "Data store backing this file."
+        range: DataStore
+        inverse: store_file_definitions
+      has_file_operations:
+        description: "Operations performed on this file."
+        range: FileOperation
+        multivalued: true
+        inverse: operates_on_file
+      mapped_from_dataset_allocations:
+        description: "JCL dataset allocations that map to this file."
+        range: DatasetAllocation
+        multivalued: true
+        inverse: maps_to_file_definition
+
+  FileOperation:
+    is_a: NamedEntity
+    description: >-
+      A specific I/O operation on a file definition
+    attributes:
+      operation_type:
+        description: "The type of I/O operation."
+        range: FileOperationType
+        required: true
+      condition_handling:
+        range: string
+        description: How I/O status conditions are handled
+      operates_on_file:
+        description: "The file being operated on."
+        range: FileDefinition
+        inverse: has_file_operations
+      performed_in_callable:
+        description: "The callable performing the operation."
+        range: CallableUnit
+        inverse: has_file_operations
+

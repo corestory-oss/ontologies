@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>A source-grounded modernization example · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="a-source-grounded-modernization-example">A source-grounded modernization example</h1>
+<p>All sources, agents, and results here are synthetic fixtures, not production evidence. The COBOL and Java files are illustrative excerpts, not complete executable modernization targets.</p>
+<p>Follow these distinct identities in <code>graph.ttl</code>:</p>
+<ol>
+<li><code>legacy-behavior</code> describes the old guard and cites an immutable source snapshot and line anchor.</li>
+<li><code>no-overdraft</code> records supplied intent to preserve it. The descriptive observation does not automatically become an obligation.</li>
+<li><code>modernization-decision</code> records a proposed implementation choice and its rationale.</li>
+<li><code>modern-behavior</code> describes the Java guard with a separate anchor and snapshot.</li>
+<li><code>comparison-result</code> records <code>not_run</code>. Matching a guard does not establish whole-program equivalence.</li>
+<li><code>spec-document</code> represents multiple knowledge items; it is not the software callable itself.</li>
+</ol>
+<p>The normative acceptance criterion is deliberately separated from the observed Java behavior. The example does not infer successful modernization from either one.</p>
+<p><code>sources.json</code> maps snapshots to local fixture files so validation can check their SHA-256 digests and anchor bounds. <code>sao-links.ttl</code> contains an optional typed implementation link plus an external identity/type manifest. That manifest is not a complete SAO graph; bridge validation checks link types against the supplied manifest and core graph, not the existence or correctness of a production software graph.</p>
+<p>The Turtle graph preserves the original 29 record identities and adds an explicit <code>SpecificationGraph</code> envelope linking the collections. Records are IRI nodes; relationships are RDF references. <code>ScenarioStep.position</code> supplies sequence order.</p>
+<p>From the repository root, run <code>uv run python scripts/validate_rdf.py</code> to check SHACL conformance, fixture digests and anchor bounds. The Python check reads only the local files listed in <code>sources.json</code>; the <code>example.org</code> identifiers are not fetched.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

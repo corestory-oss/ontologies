@@ -1,0 +1,8 @@
+{
+  "format": "turtle",
+  "files": [
+    "specspec/modernization/graph.ttl",
+    "specspec/modernization/sao-links.ttl",
+    "ecosystem/software.ttl"
+  ]
+}

@@ -1,0 +1,77 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/preprocessor
+name: sao-preprocessor
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  MetaprogrammingType:
+    description: Types of preprocessor/metaprogramming mechanisms
+    permissible_values:
+      c_preprocessor:
+        description: "C preprocessor macros."
+      rust_macro_declarative:
+        description: "Rust declarative macros."
+      rust_macro_procedural:
+        description: "Rust procedural macros."
+      cobol_copy_replacing:
+        description: COBOL COPY ... REPLACING statement
+      template_metaprogramming:
+        description: C++ template metaprogramming
+      python_metaclass:
+        description: "Python metaclass."
+      lisp_macro:
+        description: "Lisp macro."
+      java_annotation_processor:
+        description: "Java annotation processor."
+      code_generator:
+        description: "Code generator."
+
+
+classes:
+  PreprocessorDirective:
+    comments:
+      - "Captures conditional compilation, macro expansion, and code generation constructs that affect program behavior and structure."
+    is_a: NamedEntity
+    description: >-
+      A preprocessor directive, macro, or metaprogramming construct
+    attributes:
+      directive_type:
+        description: "The type of metaprogramming construct."
+        range: MetaprogrammingType
+        required: true
+      condition:
+        range: string
+        description: Conditional compilation expression
+      expansion:
+        range: string
+        description: Expanded text or transformation result
+      directive_defined_in_container:
+        description: "Container where this directive is defined."
+        range: CodeContainer
+        inverse: has_preprocessor_directives
+      directive_affects_encapsulation_units:
+        description: "Encapsulation units affected by this directive."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: affected_by_directives
+      directive_affects_callables:
+        description: "Callables affected by this directive."
+        range: CallableUnit
+        multivalued: true
+        inverse: callable_affected_by_directives
+

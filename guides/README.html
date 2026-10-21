@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../index.html" aria-label="CoreStory Ontologies home"><img src="../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../reference/">Explore</a><a href="../guides/">Guides</a><a href="../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="corestory-ontologies">CoreStory Ontologies</h1>
+<p>A shared home for two complementary, interlinked RDF ontologies:</p>
+<table>
+<thead>
+<tr>
+<th>Ontology</th>
+<th>Scope</th>
+<th>Namespace</th>
+<th>Current version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="docs/sao/README.html">SAO — Systems Abstraction Ontology</a></td>
+<td>Software structures and abstractions</td>
+<td><code>https://ontologies.corestory.ai/sao/</code></td>
+<td>3.0.0 candidate</td>
+</tr>
+<tr>
+<td><a href="docs/specspec/README.html">SpecSpec — Specification &amp; Evidence Ontology</a></td>
+<td>Specifications, claims, decisions, and supporting evidence</td>
+<td><code>https://ontologies.corestory.ai/specspec/</code></td>
+<td>0.1.0 draft</td>
+</tr>
+</tbody>
+</table>
+<p>Both are authored in Turtle, with RDFS vocabulary, SHACL validation, and optional OWL supplements. Their namespaces and ontology versions remain separate. The Python project version describes shared tooling; the ontology versions are recorded in <a href="../source/ontologies/catalog.json">the catalog</a> and their RDF metadata.</p>
+<p>SpecSpec's existing optional SAO bridge is retained for now. Its three link classes connect knowledge items to software entities. This repository reorganization does not change term meanings, IRIs, constraints, or inference axioms.</p>
+<h2 id="repository-layout">Repository layout</h2>
+<pre><code class="language-text">ontologies/
+  catalog.json             # Namespaces, ontology versions, sources and products
+  sao/
+    vocabulary/            # Editable RDFS Turtle
+    shapes/                # Editable SHACL Turtle
+    axioms/                # Editable OWL Turtle
+    manifests/             # Explicit local source lists
+  specspec/
+    vocabulary/
+    shapes/
+    axioms/
+    manifests/
+    bridges/sao/           # Current integration vocabulary, shapes and axioms
+dist/                      # Assembled, committed Turtle distributions
+docs/sao/                  # SAO guides, reference material and changelog
+docs/specspec/             # SpecSpec model notes, mappings and changelog
+examples/sao/
+examples/specspec/
+examples/ecosystem/        # One graph validated against both ontologies
+tests/                     # RDF and composition regression tests
+scripts/                   # Shared tooling, static docs builder and ontology checks
+nix/                       # Reproducible builds, checks, preview and dev shell
+web/                       # Website prose, templates, styles, brand assets and Garden pins
+legacy/sao/                # Historical LinkML baseline and its separate tests
+</code></pre>
+<h2 id="build-check-and-preview">Build, check and preview</h2>
+<p>The normal workflow uses Nix, following Plot's flake/direnv pattern:</p>
+<pre><code class="language-sh">nix build                     # Static HTML docs → result/
+nix run .#preview             # Local preview at http://127.0.0.1:4173/; Ctrl-C stops it
+nix flake check               # RDF, composition, docs and link checks
+nix build .#ontologies        # Turtle distributions → result/
+nix run .#prepare-site        # Check/build committed main and prepare local site branch
+</code></pre>
+<p>If your existing direnv setup is active, run <code>direnv allow</code> once to load the pinned development tools automatically when entering this checkout. Otherwise use <code>nix develop</code>. Neither command starts a server or rebuilds the docs automatically.</p>
+<p>The static site has a branded prose homepage, a combined RDF Garden browser under <code>reference/</code>, HTML guides under <code>guides/</code> and downloadable Turtle under <code>dist/</code>. Edit website prose in <code>web/pages/</code>; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.</p>
+<p><code>main</code> contains editable sources. The intended <code>site</code> branch contains only the generated contents of the site build's <code>result/</code>, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. <code>nix run .#prepare-site</code> checks and builds committed local <code>main</code>, then creates or updates local <code>site</code> without switching your checkout. Review it, then push explicitly with <code>git push origin site</code>. Hosting integration is configured separately.</p>
+<p>See <a href="docs/nix-and-publishing.html">Nix and publishing explained</a> for the command meanings, lockfile, direnv, local preview and CDN details.</p>
+<p>Inside the Nix development environment, maintainers can refresh committed distributions or run individual tools:</p>
+<pre><code class="language-sh">python scripts/build_rdf.py
+python scripts/build_rdf.py --check
+python scripts/validate_rdf.py
+python scripts/validate_axioms.py
+python -m unittest discover -s tests
+</code></pre>
+<p>To validate your own graph, select a profile:</p>
+<pre><code class="language-sh">nix develop -c python scripts/validate_rdf.py --ontology sao path/to/software.ttl
+nix develop -c python scripts/validate_rdf.py --ontology specspec path/to/specification.ttl
+nix develop -c python scripts/validate_rdf.py --ontology ecosystem path/to/combined.ttl
+</code></pre>
+<p>The ecosystem profile applies SAO, SpecSpec and the current bridge shapes together. The independent SpecSpec profile does not load SAO. SpecSpec's graph rules use SHACL-SPARQL, so a Core-only SHACL processor cannot run the entire profile. SHACL validation does not materialize OWL inferences.</p>
+<h2 id="distribution-files">Distribution files</h2>
+<p><a href="../source/dist/index.html">dist/</a> contains separate vocabulary, SHACL and OWL files for each ontology: <code>sao.ttl</code>, <code>sao.shacl.ttl</code>, <code>sao.owl.ttl</code>, and the corresponding <code>specspec.*ttl</code> files. The <code>specspec-sao.*ttl</code> files contain only the current bridge layer. Consumers can load the layers they need; there are no automatic network imports.</p>
+<p>The source reorganization does not change public namespace or term IRIs. Moving local build outputs into <code>dist/</code> changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a <code>site</code> branch, served through CoreStory's CDN. Static builds and local preview are available. Publication is designed around a generated <code>site</code> branch; this checkout does not configure automatic branch updates or hosting.</p>
+<h2 id="legacy-baseline">Legacy baseline</h2>
+<p>SAO's retained LinkML 2.1.0 baseline lives under <a href="legacy/sao/README.html">legacy/sao/</a>. LinkML is an optional dependency group, isolated from the ordinary RDF build, tests, and validation. It remains available for historical migration checks. SpecSpec has no active LinkML source.</p>
+<p>See <a href="CONTRIBUTING.html">CONTRIBUTING.md</a>, <a href="docs/repository-layout.html">the repository layout notes</a>, and <a href="examples/ecosystem/README.html">the ecosystem example</a>.</p>
+<h2 id="license">License</h2>
+<p>Copyright CoreStory, Inc. Both ontologies, documentation, and examples are licensed under <a href="../source/LICENSE">Apache License 2.0</a>. See <a href="../source/NOTICE">NOTICE</a> for preserved attribution.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../source/LICENSE">Apache 2.0</a> · <a href="../source/NOTICE">Notices</a> · <a href="../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

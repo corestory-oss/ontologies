@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>SAO 3.0.0 candidate: relationship redesign · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="sao-300-candidate-relationship-redesign">SAO 3.0.0 candidate: relationship redesign</h1>
+<p>This is a tentative, unreleased major-version bump. It changes the RDF relationship contract and graph validation. It is not a published release or a claim that all LinkML semantics have been migrated. The ontology namespace and class IRIs stay unchanged.</p>
+<h2 id="generic-relationships">Generic relationships</h2>
+<table>
+<thead>
+<tr>
+<th>Forward predicate</th>
+<th>Inverse</th>
+<th>Allowed class pairs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>has_versions</code></td>
+<td><code>version_of</code></td>
+<td>Contract → ContractVersion; Schema → SchemaVersion</td>
+</tr>
+<tr>
+<td><code>contains_entries</code></td>
+<td><code>entry_in</code></td>
+<td>AuditLog → AuditEntry; Log → LogEntry</td>
+</tr>
+<tr>
+<td><code>uses</code></td>
+<td><code>used_by_callables</code></td>
+<td>CallableUnit → FileDefinition or ConcurrencyPrimitive</td>
+</tr>
+<tr>
+<td><code>has_constraints</code></td>
+<td><code>constrains</code></td>
+<td>Collection → DatabaseConstraint; Permission → authorization Constraint</td>
+</tr>
+<tr>
+<td><code>contains_unit_members</code></td>
+<td><code>contained_in_unit</code></td>
+<td>EncapsulationUnit → CallableUnit, DataStructure, or DataElement (including subclasses)</td>
+</tr>
+</tbody>
+</table>
+<p>SHACL keeps the class pairings specific. For example, Contract cannot have a SchemaVersion merely because both use <code>has_versions</code>. No common version, entry, resource, or constraint superclass is introduced to achieve this.</p>
+<p>The reverse <code>constrains</code> relation remains single-valued on DatabaseConstraint, preserving its existing collection ownership. Authorization Constraint may constrain multiple Permissions; no exclusive ownership is assumed. Existing single-value and required constraints elsewhere are preserved.</p>
+<h2 id="participant-roles-remain-distinct">Participant roles remain distinct</h2>
+<table>
+<thead>
+<tr>
+<th>Relation</th>
+<th>Inverse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Actor <code>owns_subscriptions</code> Subscription</td>
+<td>Subscription <code>subscribed_by_actor</code> Actor</td>
+</tr>
+<tr>
+<td>EventInterface <code>subscriptions_to_interface</code> Subscription</td>
+<td>Subscription <code>subscribes_to_interface</code> EventInterface</td>
+</tr>
+<tr>
+<td>FileDefinition <code>operations_on_file</code> FileOperation</td>
+<td>FileOperation <code>operates_on_file</code> FileDefinition</td>
+</tr>
+<tr>
+<td>CallableUnit <code>operations_in_callable</code> FileOperation</td>
+<td>FileOperation <code>performed_in_callable</code> CallableUnit</td>
+</tr>
+</tbody>
+</table>
+<p>Subscriber versus subscribed-to interface, and operated-on file versus performing callable, remain different roles. They are not inferred from one vague inverse relation.</p>
+<h2 id="typed-unit-membership">Typed unit membership</h2>
+<p><code>contains_callable_units</code>, <code>contains_data_structures</code>, and new <code>unit_contains_data_elements</code> are subproperties of <code>contains_unit_members</code>. Their asserted edges imply generic membership and thus the <code>contained_in_unit</code> inverse.</p>
+<p><code>unit_contains_data_elements</code> is also a subproperty of <code>contains_data_elements</code>. Generic <code>contains_data_elements</code> remains valid on EncapsulationUnit and DataStructure, but is not globally a subproperty of unit membership: a structure's field must not make the structure an encapsulation unit. Use the new unit-specific predicate when asserting direct unit data membership and expecting its inverse entailment. The broader predicate remains a useful projection, not a complete substitute for the unit-specific assertion.</p>
+<p>Generic membership does not automatically populate the type-specific indexes. For example, <code>contained_in_unit</code> on a DataElement yields <code>contains_unit_members</code>, not <code>contains_callable_units</code>.</p>
+<h2 id="data-and-producer-migration">Data and producer migration</h2>
+<table>
+<thead>
+<tr>
+<th>Old predicate</th>
+<th>Replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>version_of_contract</code>, <code>version_of_schema</code></td>
+<td><code>version_of</code></td>
+</tr>
+<tr>
+<td><code>entry_in_audit_log</code>, <code>entry_in_log</code></td>
+<td><code>entry_in</code></td>
+</tr>
+<tr>
+<td><code>uses_file_definitions</code>, <code>uses_concurrency_primitives</code></td>
+<td><code>uses</code>; merge and deduplicate the old resource lists</td>
+</tr>
+<tr>
+<td><code>constraint_on_collection</code></td>
+<td><code>constrains</code></td>
+</tr>
+<tr>
+<td>Actor <code>has_subscriptions</code></td>
+<td><code>owns_subscriptions</code></td>
+</tr>
+<tr>
+<td>EventInterface <code>has_subscriptions</code></td>
+<td><code>subscriptions_to_interface</code></td>
+</tr>
+<tr>
+<td>FileDefinition <code>has_file_operations</code></td>
+<td><code>operations_on_file</code></td>
+</tr>
+<tr>
+<td>CallableUnit <code>has_file_operations</code></td>
+<td><code>operations_in_callable</code></td>
+</tr>
+<tr>
+<td>EncapsulationUnit <code>contains_data_elements</code> asserted as direct unit membership</td>
+<td>Prefer <code>unit_contains_data_elements</code>; structure containment stays <code>contains_data_elements</code></td>
+</tr>
+</tbody>
+</table>
+<p>Update internal extraction predicates, query templates, graph fixtures, and stored edges. Do not choose a role replacement from an untyped or ambiguously typed subject without resolving its intended role. No automatic rewrite is performed by loading the ontology.</p>
+<p>Nine replaced predicates retain only retirement metadata (<code>owl:deprecated true</code>) for identification and migration diagnostics. They have no compatibility aliases, inverses, or class/range semantics in the new contract. SHACL explicitly rejects their use even though the overall profile remains open. This prevents an old graph from appearing conformant merely because its replaced edges were ignored.</p>
+<p>Do not reuse old specific inverse IRIs as aliases for the generic inverse: that would reintroduce the original cross-type inference problem. Original 2.1.0 YAML, legacy examples, and the inverse audit remain historical baselines and are not relabeled 3.0.0.</p>
+<h2 id="verification">Verification</h2>
+<p>The profile now has 217 uniquely paired inverse axioms. Regression tests cover positive and negative class pairs, heterogeneous callable resources, distinct participant roles, typed membership and inverse materialization, retired predicate rejection, and version metadata consistency. The normal SHACL command still validates without OWL materialization; reasoning is an explicit consumer choice.</p>
+<pre><code class="language-sh">uv run python scripts/build_rdf.py
+uv run python scripts/validate_axioms.py
+uv run python scripts/validate_rdf.py
+uv run python -m unittest discover -s tests
+</code></pre>
+<p>Version 3.0.0 is proposed in the RDF and project metadata for review. No release tag, package publication, or CDN deployment is created by this change.</p></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

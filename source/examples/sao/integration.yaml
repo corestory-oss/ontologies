@@ -1,0 +1,10 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+id: stripe-integration
+name: Stripe Integration
+integration_type: bidirectional
+protocol: https
+integrates_with_system: stripe-payment-gateway
+uses_adapter: stripe-adapter
+protected_by_breaker: payment-circuit-breaker
+integration_governed_by_contract: stripe-api-contract

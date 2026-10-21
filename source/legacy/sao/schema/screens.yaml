@@ -1,0 +1,108 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/screens
+name: sao-screens
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ScreenType:
+    description: Types of terminal/screen definitions
+    permissible_values:
+      bms_map:
+        description: CICS Basic Mapping Support map
+      rpg_display_file:
+        description: RPG display file (DSPF)
+      character_terminal:
+        description: Generic character-mode terminal
+      tui:
+        description: Text User Interface (ncurses, etc.)
+      form_based:
+        description: Form-based screen definition
+
+
+classes:
+  ScreenDefinition:
+    comments:
+      - "Captures the layout and structure of character-mode user interfaces, enabling UI-to-program traceability and modernization analysis."
+    is_a: NamedEntity
+    description: >-
+      A terminal screen or map definition for character-mode UIs
+    attributes:
+      screen_type:
+        description: "The type of screen definition."
+        range: ScreenType
+        required: true
+      rows:
+        description: "Number of screen rows."
+        range: integer
+      columns:
+        description: "Number of screen columns."
+        range: integer
+      external_name:
+        range: string
+        description: External map/display file name
+      contains_screen_fields:
+        description: "Fields defined on this screen."
+        range: ScreenField
+        multivalued: true
+        inlined_as_list: true
+        inverse: field_on_screen
+      program_uses_screens:
+        description: "Programs that use this screen."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: screen_used_by_programs
+      screen_defined_in_container:
+        description: "Container where this screen is defined."
+        range: CodeContainer
+        inverse: has_screen_definitions
+
+  ScreenField:
+    is_a: NamedEntity
+    description: >-
+      A field on a terminal screen definition
+    attributes:
+      row:
+        description: "Row position on screen."
+        range: integer
+      column:
+        description: "Column position on screen."
+        range: integer
+      length:
+        description: "Field length in characters."
+        range: integer
+      is_input:
+        description: "Whether the user can type into this field."
+        range: boolean
+      is_protected:
+        description: "Whether the field is protected from modification."
+        range: boolean
+      attribute_byte:
+        range: string
+        description: Display attribute (bright, dark, protected, etc.)
+      initial_value:
+        description: "Default display value."
+        range: string
+      field_on_screen:
+        description: "The screen this field belongs to."
+        range: ScreenDefinition
+        inverse: contains_screen_fields
+      maps_to_data_element:
+        description: "Data element mapped to this field."
+        range: DataElement
+        inverse: mapped_from_screen_fields
+

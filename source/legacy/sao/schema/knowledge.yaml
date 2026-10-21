@@ -1,0 +1,117 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/knowledge
+name: sao-knowledge
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  KnowledgeArtifactType:
+    description: Types of knowledge artifacts
+    permissible_values:
+      adr:
+        description: Architecture Decision Record
+      readme:
+        description: README documentation
+      design_doc:
+        description: Design document
+      runbook:
+        description: Operational runbook
+      wiki_page:
+        description: Wiki page
+      api_doc:
+        description: API documentation
+      onboarding_guide:
+        description: Onboarding guide
+      postmortem:
+        description: Incident postmortem
+      changelog:
+        description: Changelog
+      comment:
+        description: Code or review comment
+      diagram:
+        description: Architecture or design diagram
+      rfc:
+        description: Request for Comments
+      sop:
+        description: Standard Operating Procedure
+
+  KnowledgeArtifactStatus:
+    description: Status of a knowledge artifact
+    permissible_values:
+      draft: {}
+      published: {}
+      accepted: {}
+      superseded: {}
+      deprecated: {}
+      archived: {}
+
+
+classes:
+  KnowledgeArtifact:
+    is_a: NamedEntity
+    mixins:
+      - Versionable
+    description: >-
+      A knowledge artifact that documents some aspect of the system
+    attributes:
+      artifact_type:
+        range: KnowledgeArtifactType
+      status:
+        range: KnowledgeArtifactStatus
+      uri:
+        range: URI
+      content:
+        range: string
+      authored_by:
+        range: string
+        multivalued: true
+      authored_at:
+        range: Timestamp
+      superseded_by:
+        range: KnowledgeArtifact
+      supersedes:
+        range: KnowledgeArtifact
+      documents_system:
+        range: System
+        inverse: system_documented_by_artifacts
+      documents_bounded_context:
+        range: BoundedContext
+        inverse: context_documented_by_artifacts
+      documents_module:
+        range: Module
+        inverse: module_documented_by_artifacts
+      documents_component:
+        range: Component
+        inverse: component_documented_by_artifacts
+      documents_service:
+        range: Service
+        inverse: service_documented_by_artifacts
+      documents_aggregate:
+        range: Aggregate
+        inverse: aggregate_documented_by_artifacts
+      documents_domain_entity:
+        range: DomainEntity
+        inverse: entity_documented_by_artifacts
+      documents_integration:
+        range: Integration
+        inverse: integration_documented_by_artifacts
+      stored_in_container:
+        range: CodeContainer
+        inverse: contains_knowledge_artifacts
+
+# GLOBAL SLOTS (multi-domain and base identification only)
+

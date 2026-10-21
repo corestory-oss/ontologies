@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 5: Behavior and Workflow · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-5-behavior-and-workflow">Section 5: Behavior and Workflow</h1>
+<p>This section defines actions, operations, workflows, rules, events, subscriptions, and transactions.</p>
+<blockquote>
+<p><strong>v2.0 Note — Inlining Change</strong>: In SAO v2.0, many previously string-based cross-references have been replaced with direct object references (inlined relationships). Classes in this section now carry explicit back-reference attributes that make the bidirectional links between ontology concepts navigable from either side.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Behavior and Workflow section models how the system behaves, processes requests, executes business logic, and coordinates complex multi-step operations.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="action-abstract">Action (Abstract)</h3>
+<p><strong>Definition</strong>: An atomic operation that can be performed.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>category</strong>: <code>query</code> (read-only), <code>command</code> (state-changing), <code>mutation</code> (data modification)</p>
+<p><strong>Relationships</strong>:
+- <strong>allowed_by_permissions</strong>: <code>Permission</code> entities required
+- <strong>performed_by_actor</strong>: <code>Actor</code> performing the action
+- <strong>targets_resources</strong>: <code>Resource</code> entities affected
+- <strong>emits_events_from_action</strong>: <code>Event</code> entities emitted
+- <strong>validated_by_action_rules</strong>: <code>Rule</code> entities that validate
+- <strong>executes_in_transaction</strong>: <code>Transaction</code> context
+- <strong>allowed_in_states</strong> <em>(v2.0)</em>: Back-reference to <code>State</code> entities that allow this action
+- <strong>executed_during_transition</strong> <em>(v2.0)</em>: Back-reference to <code>Transition</code> entities that execute this action
+- <strong>executed_by_operation</strong> <em>(v2.0)</em>: Back-reference to <code>Operation</code> entities that execute this action
+- <strong>executed_in_step</strong> <em>(v2.0)</em>: Back-reference to <code>Step</code> entities that execute this action
+- <strong>recorded_in_audit</strong> <em>(v2.0)</em>: Back-reference to <code>AuditEntry</code> entities that record this action</p>
+<p><strong>Specialized Action Types</strong>:</p>
+<h4 id="query">Query</h4>
+<p>Read-only action that retrieves data.
+- <strong>filters</strong>: Query filters
+- <strong>projections</strong>: Fields to return
+- <strong>Examples</strong>: GetUser, SearchProducts, ListOrders</p>
+<h4 id="command">Command</h4>
+<p>Action that changes system state.
+- <strong>command_type</strong>: <code>create</code>, <code>update</code>, <code>delete</code>, <code>execute</code>, <code>archive</code>, <code>restore</code>
+- <strong>idempotency_key</strong>: For idempotent execution
+- <strong>Examples</strong>: CreateOrder, UpdateProfile, DeleteComment</p>
+<hr />
+<h3 id="operation">Operation</h3>
+<p><strong>Definition</strong>: A named, invocable unit of behavior exposed via an interface.</p>
+<p><strong>Purpose</strong>: Represents a callable operation on a component or service.</p>
+<p><strong>Relationships</strong>:
+- <strong>exposed_by_component</strong>: <code>Component</code> providing this operation
+- <strong>executes_operation_actions</strong>: <code>Action</code> entities performed
+- <strong>accepts_input_schema</strong>: <code>Schema</code> for input
+- <strong>produces_output_schema</strong>: <code>Schema</code> for output
+- <strong>offered_on_screens</strong>: <code>Screen</code> entities offering this operation
+- <strong>implemented_by_callables</strong> <em>(v2.0)</em>: <code>CallableUnit</code> entities that implement this operation
+- <strong>operation_tested_by_cases</strong> <em>(v2.0)</em>: <code>TestCase</code> entities that test this operation</p>
+<p><strong>Key Attributes</strong>:
+- <strong>errors</strong>: Possible error responses</p>
+<p><strong>Example Operations</strong>:
+- PlaceOrder(order_details) -&gt; OrderConfirmation
+- AuthenticateUser(credentials) -&gt; AuthToken
+- ProcessPayment(payment_info) -&gt; PaymentResult
+- GenerateReport(parameters) -&gt; Report</p>
+<hr />
+<h3 id="workflow">Workflow</h3>
+<p><strong>Definition</strong>: A coordinated sequence of actions achieving a business goal.</p>
+<p><strong>Purpose</strong>: Orchestrates multi-step business processes.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>workflow_type</strong>: <code>synchronous</code>, <code>asynchronous</code>, <code>saga</code>, <code>choreography</code>, <code>orchestration</code>
+- <strong>steps</strong>: Ordered list of <code>Step</code> entities</p>
+<p><strong>Relationships</strong>:
+- <strong>triggered_by_workflow_events</strong>: <code>Event</code> entities that start the workflow</p>
+<p><strong>Workflow Types</strong>:</p>
+<h4 id="synchronous"><code>synchronous</code></h4>
+<p>Blocking workflow that waits for completion.
+- <strong>Use Case</strong>: Real-time operations with immediate response
+- <strong>Example</strong>: User registration during signup</p>
+<h4 id="asynchronous"><code>asynchronous</code></h4>
+<p>Non-blocking workflow processed in background.
+- <strong>Use Case</strong>: Long-running operations
+- <strong>Example</strong>: Bulk data import</p>
+<h4 id="saga"><code>saga</code></h4>
+<p>Distributed transaction with compensating actions.
+- <strong>Use Case</strong>: Cross-service transactions
+- <strong>Example</strong>: Order placement with inventory reservation, payment, shipping</p>
+<h4 id="choreography"><code>choreography</code></h4>
+<p>Event-driven coordination without central orchestrator.
+- <strong>Use Case</strong>: Loosely coupled services
+- <strong>Example</strong>: Order fulfillment via events</p>
+<h4 id="orchestration"><code>orchestration</code></h4>
+<p>Centrally coordinated workflow.
+- <strong>Use Case</strong>: Complex multi-step processes
+- <strong>Example</strong>: Employee onboarding process</p>
+<p><strong>Example Workflows</strong>:
+- Order fulfillment workflow
+- User onboarding workflow
+- Invoice generation workflow
+- Password reset workflow</p>
+<hr />
+<h3 id="step">Step</h3>
+<p><strong>Definition</strong>: A discrete stage within a workflow.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>order</strong>: Execution order
+- <strong>condition</strong>: Condition for execution
+- <strong>timeout_seconds</strong>: Step timeout</p>
+<p><strong>Relationships</strong>:
+- <strong>executes_actions_in_step</strong>: <code>Action</code> entities executed
+- <strong>followed_by_steps</strong>: Next steps in sequence
+- <strong>compensated_by_step</strong>: Compensating step for rollback</p>
+<p><strong>Step Patterns</strong>:
+- <strong>Sequential</strong>: Steps execute in order
+- <strong>Parallel</strong>: Steps execute concurrently
+- <strong>Conditional</strong>: Steps execute based on conditions
+- <strong>Compensating</strong>: Rollback steps for saga pattern</p>
+<hr />
+<h3 id="rule">Rule</h3>
+<p><strong>Definition</strong>: A declarative constraint or trigger governing behavior.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>category</strong>: <code>validation</code>, <code>business</code>, <code>derivation</code>, <code>constraint</code>, <code>trigger</code>
+- <strong>condition</strong>: Rule condition expression
+- <strong>action</strong>: Action when rule fires
+- <strong>priority</strong>: Evaluation priority
+- <strong>is_active</strong>: Whether rule is currently active</p>
+<p><strong>Relationships</strong> <em>(v2.0 back-references)</em>:
+- <strong>validates_attributes</strong>: Back-reference to <code>Attribute</code> entities validated by this rule
+- <strong>enforces_aggregate_invariants</strong>: Back-reference to <code>Aggregate</code> entities whose invariants this rule enforces
+- <strong>governs_domain_entities</strong>: Back-reference to <code>DomainEntity</code> entities governed by this rule
+- <strong>validates_actions</strong>: Back-reference to <code>Action</code> entities validated by this rule
+- <strong>guards_transitions</strong>: Back-reference to <code>Transition</code> entities guarded by this rule</p>
+<p><strong>Rule Categories</strong>:</p>
+<h4 id="validation-rules"><code>validation</code> Rules</h4>
+<p>Validate data integrity.
+- <strong>Examples</strong>: "Email must be valid format", "Age must be &gt;= 18"</p>
+<h4 id="business-rules"><code>business</code> Rules</h4>
+<p>Encode business logic.
+- <strong>Examples</strong>: "Premium customers get 20% discount", "Orders over $100 ship free"</p>
+<h4 id="derivation-rules"><code>derivation</code> Rules</h4>
+<p>Compute derived values.
+- <strong>Examples</strong>: "Total = sum of line items", "Tax = subtotal * tax_rate"</p>
+<h4 id="constraint-rules"><code>constraint</code> Rules</h4>
+<p>Enforce invariants.
+- <strong>Examples</strong>: "Account balance cannot be negative", "Stock quantity must be non-negative"</p>
+<h4 id="trigger-rules"><code>trigger</code> Rules</h4>
+<p>Automate actions based on events.
+- <strong>Examples</strong>: "Send email when order ships", "Alert when inventory low"</p>
+<p><strong>Rule Evaluation</strong>:
+1. Check if rule is active
+2. Evaluate condition
+3. If condition true, execute action
+4. Log rule execution</p>
+<hr />
+<h3 id="event">Event</h3>
+<p><strong>Definition</strong>: A notification that something occurred.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>category</strong>: <code>domain_event</code>, <code>integration_event</code>, <code>system_event</code>, <code>audit_event</code>
+- <strong>correlation_id</strong>: For tracing related events</p>
+<p><strong>Relationships</strong>:
+- <strong>emitted_by_component</strong>: <code>Component</code> that produced the event
+- <strong>event_structured_by_schema</strong>: <code>Schema</code> defining event payload
+- <strong>emitted_by_action</strong> <em>(v2.0)</em>: Back-reference to <code>Action</code> entities that emit this event
+- <strong>triggers_transitions</strong> <em>(v2.0)</em>: Back-reference to <code>Transition</code> entities triggered by this event
+- <strong>triggers_workflows</strong> <em>(v2.0)</em>: Back-reference to <code>Workflow</code> entities triggered by this event
+- <strong>subscribed_by_subscriptions</strong> <em>(v2.0)</em>: Back-reference to <code>Subscription</code> entities that subscribe to this event</p>
+<p><strong>Event Categories</strong>:</p>
+<h4 id="domain_event"><code>domain_event</code></h4>
+<p>Significant occurrence in the domain.
+- <strong>Naming</strong>: Past tense (OrderPlaced, PaymentProcessed)
+- <strong>Examples</strong>: OrderCreated, UserRegistered, ProductUpdated</p>
+<h4 id="integration_event"><code>integration_event</code></h4>
+<p>Cross-service communication.
+- <strong>Purpose</strong>: Integrate bounded contexts or services
+- <strong>Examples</strong>: OrderShipped (from fulfillment to billing)</p>
+<h4 id="system_event"><code>system_event</code></h4>
+<p>System-level technical events.
+- <strong>Examples</strong>: ServiceStarted, CacheCleared, ConfigReloaded</p>
+<h4 id="audit_event"><code>audit_event</code></h4>
+<p>Compliance and audit trail.
+- <strong>Examples</strong>: UserLoggedIn, PermissionChanged, DataExported</p>
+<p><strong>Specialized Event Types</strong>:</p>
+<h4 id="domainevent">DomainEvent</h4>
+<p>Produced by aggregates within a bounded context.
+- <strong>produced_by_aggregate</strong>: Source <code>Aggregate</code></p>
+<h4 id="integrationevent">IntegrationEvent</h4>
+<p>For cross-service communication.
+- <strong>targeted_at_services</strong>: Target <code>Service</code> entities</p>
+<p><strong>Event-Driven Patterns</strong>:
+- <strong>Event Sourcing</strong>: Store events as source of truth
+- <strong>CQRS</strong>: Separate read and write models
+- <strong>Event Notification</strong>: Simple notification of change
+- <strong>Event-Carried State Transfer</strong>: Event contains full state</p>
+<hr />
+<h3 id="subscription">Subscription</h3>
+<p><strong>Definition</strong>: A registration to receive events of a certain type.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>filter</strong>: Filter expression for event selection
+- <strong>delivery_mode</strong>: Push or pull delivery</p>
+<p><strong>Relationships</strong>:
+- <strong>subscribes_to_event_types</strong>: <code>Event</code> types subscribed to
+- <strong>subscribed_by_actor</strong>: <code>Actor</code> subscribing
+- <strong>subscribes_to_interface</strong>: <code>EventInterface</code> for delivery</p>
+<p><strong>Subscription Patterns</strong>:
+- <strong>Topic Subscription</strong>: Subscribe to event topic
+- <strong>Pattern Matching</strong>: Subscribe to events matching pattern
+- <strong>Content-Based</strong>: Subscribe based on event content</p>
+<hr />
+<h3 id="transaction">Transaction</h3>
+<p><strong>Definition</strong>: A unit of work with ACID or BASE guarantees.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>transaction_type</strong>: <code>local</code>, <code>distributed</code>, <code>saga</code>, <code>two_phase_commit</code>
+- <strong>isolation_level</strong>: Transaction isolation level
+- <strong>timeout_seconds</strong>: Transaction timeout</p>
+<p><strong>Relationships</strong>:
+- <strong>executes_actions</strong>: <code>Action</code> entities in this transaction</p>
+<p><strong>Transaction Types</strong>:</p>
+<h4 id="local"><code>local</code></h4>
+<p>Single database transaction with ACID guarantees.</p>
+<h4 id="distributed"><code>distributed</code></h4>
+<p>Transaction across multiple resources.
+- <strong>Challenge</strong>: Difficult to maintain ACID guarantees
+- <strong>Solution</strong>: Two-phase commit or distributed transaction coordinator</p>
+<h4 id="saga_1"><code>saga</code></h4>
+<p>Pattern for long-running distributed transactions.
+- <strong>Approach</strong>: Sequence of local transactions
+- <strong>Rollback</strong>: Compensating transactions
+- <strong>Types</strong>: Choreography-based or orchestration-based</p>
+<h4 id="two_phase_commit"><code>two_phase_commit</code></h4>
+<p>Distributed transaction protocol.
+- <strong>Phases</strong>: Prepare phase, Commit phase
+- <strong>Guarantees</strong>: Atomicity across resources
+- <strong>Drawback</strong>: Performance and availability impact</p>
+<hr />
+<h2 id="behavioral-patterns">Behavioral Patterns</h2>
+<h3 id="command-pattern">Command Pattern</h3>
+<ul>
+<li>Commands encapsulate requests as objects</li>
+<li>Support queuing, logging, undo operations</li>
+<li>Enable asynchronous execution</li>
+</ul>
+<h3 id="chain-of-responsibility">Chain of Responsibility</h3>
+<ul>
+<li>Rules evaluated in sequence</li>
+<li>First applicable rule handles request</li>
+<li>Supports priority-based evaluation</li>
+</ul>
+<h3 id="state-pattern">State Pattern</h3>
+<ul>
+<li>Behavior changes based on entity state</li>
+<li>Actions allowed in specific states</li>
+<li>Transitions trigger behaviors</li>
+</ul>
+<h3 id="observer-pattern">Observer Pattern</h3>
+<ul>
+<li>Events notify subscribed observers</li>
+<li>Loose coupling between publisher and subscribers</li>
+<li>Support multiple subscribers</li>
+</ul>
+<h3 id="saga-pattern">Saga Pattern</h3>
+<ul>
+<li>Coordinate distributed transactions</li>
+<li>Each step has compensating action</li>
+<li>Ensures eventual consistency</li>
+</ul>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="action-design">Action Design</h3>
+<ol>
+<li><strong>Idempotency</strong>: Make commands idempotent when possible</li>
+<li><strong>Validation</strong>: Validate before executing</li>
+<li><strong>Authorization</strong>: Check permissions before execution</li>
+<li><strong>Atomicity</strong>: Keep actions atomic</li>
+</ol>
+<h3 id="workflow-design">Workflow Design</h3>
+<ol>
+<li><strong>Compensation</strong>: Define compensating actions for sagas</li>
+<li><strong>Timeout</strong>: Set appropriate timeouts</li>
+<li><strong>Retries</strong>: Implement retry logic with exponential backoff</li>
+<li><strong>Monitoring</strong>: Track workflow execution and failures</li>
+</ol>
+<h3 id="event-design">Event Design</h3>
+<ol>
+<li><strong>Immutability</strong>: Events should be immutable</li>
+<li><strong>Minimal Payload</strong>: Include only necessary data</li>
+<li><strong>Versioning</strong>: Version events for schema evolution</li>
+<li><strong>Ordering</strong>: Preserve event ordering when required</li>
+</ol>
+<h3 id="rule-design">Rule Design</h3>
+<ol>
+<li><strong>Declarative</strong>: Express rules declaratively</li>
+<li><strong>Testable</strong>: Make rules easy to test</li>
+<li><strong>Maintainable</strong>: Keep rules simple and focused</li>
+<li><strong>Auditable</strong>: Log rule evaluations</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 2 (Actors and Identity)</strong>: Actors perform actions</li>
+<li><strong>Section 3 (Authorization)</strong>: Actions require permissions</li>
+<li><strong>Section 4 (Domain Modeling)</strong>: Actions operate on entities; events trigger transitions</li>
+<li><strong>Section 6 (Data Management)</strong>: Actions recorded in audit logs</li>
+<li><strong>Section 7 (Integration)</strong>: Integration events cross system boundaries</li>
+<li><strong>Section 9 (Observability)</strong>: Events generate logs and metrics</li>
+</ul>
+<hr />
+<h2 id="example-order-processing-workflow">Example: Order Processing Workflow</h2>
+<pre><code>Workflow: ProcessOrderWorkflow (saga)
+  Trigger: OrderPlaced event
+
+  Step 1: Reserve Inventory
+    Actions: ReserveInventoryCommand
+    Compensation: ReleaseInventoryCommand
+    Timeout: 5 seconds
+
+  Step 2: Authorize Payment
+    Actions: AuthorizePaymentCommand
+    Compensation: CancelAuthorizationCommand
+    Timeout: 10 seconds
+
+  Step 3: Create Shipment
+    Actions: CreateShipmentCommand
+    Compensation: CancelShipmentCommand
+    Timeout: 5 seconds
+
+  Step 4: Confirm Order
+    Actions: ConfirmOrderCommand
+    Events: OrderConfirmed
+
+  Error Handling:
+    - If any step fails, execute compensating actions in reverse order
+    - Emit OrderFailed event
+    - Notify customer of failure
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

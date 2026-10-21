@@ -1,0 +1,899 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/code-units
+name: sao-code-units
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  EncapsulationType:
+    description: Types of encapsulation units across different paradigms
+    permissible_values:
+      class:
+        description: "Object-oriented class."
+      interface:
+        description: "Interface or contract definition."
+      abstract_class:
+        description: "Abstract base class."
+      trait:
+        description: Trait (Rust, Scala) or mixin
+      enum_class:
+        description: "Enumeration class."
+      record_class:
+        description: Record or data class (Java records, Python dataclass)
+      singleton:
+        description: "Singleton pattern implementation."
+      program:
+        description: Standalone program (COBOL, Fortran)
+      subprogram:
+        description: Callable subprogram or subroutine library
+      unit:
+        description: Pascal/Delphi unit
+      module:
+        description: Functional module (Haskell, OCaml, F#)
+      namespace:
+        description: "Namespace grouping."
+      package:
+        description: Package (Ada, Go)
+      library:
+        description: "Library module."
+      object:
+        description: JavaScript/prototype-based object
+      component:
+        description: Component (React, Angular, Vue)
+      service:
+        description: "Service class."
+      controller:
+        description: Controller (MVC pattern)
+      stored_procedure:
+        description: "Database stored procedure package."
+      function_package:
+        description: PL/SQL or T-SQL package
+      trigger:
+        description: "Database trigger."
+      view:
+        description: Database view definition
+      script:
+        description: "Script module."
+      batch_program:
+        description: "Batch processing program."
+      online_program:
+        description: Online transaction program (CICS, IMS)
+      copybook:
+        description: COBOL copybook or include file
+      composite:
+        description: "Composite structure."
+      other:
+        description: "Other encapsulation types."
+      rpg_module:
+        description: "RPG module."
+      rpg_service_program:
+        description: "RPG service program."
+      pli_procedure:
+        description: "PL/I procedure."
+      pli_package:
+        description: "PL/I package."
+      assembler_csect:
+        description: Assembler control section
+
+  CallableType:
+    description: Types of callable units across different paradigms
+    permissible_values:
+      method:
+        description: "Instance method in OOP."
+      static_method:
+        description: "Static/class method."
+      constructor:
+        description: "Object constructor."
+      destructor:
+        description: "Object destructor/finalizer."
+      property_getter:
+        description: "Property getter method."
+      property_setter:
+        description: "Property setter method."
+      operator_overload:
+        description: "Operator overloading method."
+      conversion_operator:
+        description: "Type conversion operator."
+      indexer:
+        description: "Indexer/subscript operator."
+      abstract_method:
+        description: "Abstract method declaration."
+      virtual_method:
+        description: "Virtual/overridable method."
+      function:
+        description: "Function (procedural or functional programming)."
+      procedure:
+        description: "Procedure/subroutine."
+      subroutine:
+        description: "Subroutine."
+      paragraph:
+        description: COBOL paragraph
+      section:
+        description: COBOL section or similar grouping
+      lambda:
+        description: "Anonymous lambda function."
+      closure:
+        description: "Closure."
+      higher_order_function:
+        description: "Higher-order function."
+      curried_function:
+        description: "Curried function."
+      functor:
+        description: "Functor."
+      event_handler:
+        description: "Event handler."
+      callback:
+        description: "Callback function."
+      delegate:
+        description: "Delegate."
+      signal_handler:
+        description: "Signal handler."
+      stored_procedure:
+        description: "Database stored procedure."
+      stored_function:
+        description: "Database function."
+      trigger_body:
+        description: "Trigger implementation."
+      cursor:
+        description: "Database cursor."
+      coroutine:
+        description: "Coroutine."
+      generator:
+        description: "Generator function."
+      async_function:
+        description: "Async/await function."
+      thread_entry:
+        description: "Thread entry point."
+      task:
+        description: "Task/future/promise."
+      test_case:
+        description: "Unit test case."
+      test_fixture:
+        description: "Test fixture/setup method."
+      mock:
+        description: "Mock function."
+      macro:
+        description: "Preprocessor macro."
+      template:
+        description: Template function (C++)
+      generic_method:
+        description: "Generic method."
+      main_entry:
+        description: "Main entry point."
+      interrupt_handler:
+        description: "Interrupt service routine."
+      exception_handler:
+        description: "Exception handler."
+      finalizer:
+        description: "Finalizer/cleanup method."
+      factory_method:
+        description: "Factory method."
+      extension_method:
+        description: "Extension method."
+      script_function:
+        description: "Script function."
+      command:
+        description: "Command/action function."
+      other:
+        description: "Other callable types."
+      rpg_subprocedure:
+        description: "RPG subprocedure."
+      pli_entry:
+        description: PL/I ENTRY point
+      assembler_entry:
+        description: Assembler entry point
+      rpg_subroutine:
+        description: "RPG subroutine."
+
+  DataStructureType:
+    description: Types of data structures across different paradigms
+    permissible_values:
+      class_data:
+        description: "Data members of a class."
+      inner_class:
+        description: "Inner/nested class."
+      anonymous_class:
+        description: "Anonymous class."
+      struct:
+        description: "C/C++ struct."
+      record:
+        description: "Pascal/Ada record or COBOL record."
+      union:
+        description: "C union."
+      group_item:
+        description: COBOL group item (composite)
+      algebraic_data_type:
+        description: "Algebraic data type (Haskell, ML)."
+      type_class:
+        description: "Type class."
+      product_type:
+        description: "Product type (tuple-like)."
+      sum_type:
+        description: "Sum/variant type."
+      array:
+        description: "Fixed-size array."
+      dynamic_array:
+        description: "Dynamic/resizable array."
+      list:
+        description: "List structure."
+      dictionary:
+        description: "Dictionary/map/hash table."
+      set:
+        description: "Set structure."
+      queue:
+        description: "Queue structure."
+      stack:
+        description: "Stack structure."
+      tree:
+        description: "Tree structure."
+      graph:
+        description: "Graph structure."
+      table_structure:
+        description: "Database table structure."
+      view_structure:
+        description: "Database view structure."
+      cursor_structure:
+        description: "Cursor structure."
+      rowtype:
+        description: "Database row type."
+      value_object:
+        description: "DDD value object."
+      dto:
+        description: "Data Transfer Object."
+      tuple:
+        description: "Tuple."
+      pair:
+        description: "Key-value pair."
+      enum:
+        description: "Enumeration."
+      flags:
+        description: "Bit flags."
+      configuration_object:
+        description: "Configuration data."
+      message:
+        description: "Message structure."
+      event:
+        description: "Event data."
+      command:
+        description: "Command data."
+      json_schema:
+        description: "JSON schema structure."
+      xml_schema:
+        description: "XML schema structure."
+      protobuf_message:
+        description: "Protocol Buffers message."
+      avro_record:
+        description: "Avro record."
+      smart_pointer:
+        description: "Smart pointer wrapper."
+      reference_wrapper:
+        description: "Reference wrapper."
+      copybook_structure:
+        description: "COBOL copybook structure."
+      commarea:
+        description: CICS communication area
+      linkage_section:
+        description: COBOL linkage section structure
+      opaque_type:
+        description: "Opaque type."
+      variant:
+        description: "Variant type."
+      other:
+        description: "Other data structure types."
+      rpg_data_structure:
+        description: "RPG data structure."
+      pli_structure:
+        description: "PL/I structure."
+      assembler_dsect:
+        description: Assembler dummy section
+      cobol_file_descriptor:
+        description: COBOL FD (File Description) entry
+
+  VisibilityType:
+    description: Visibility modifiers for code elements
+    permissible_values:
+      public:
+        description: "Publicly accessible."
+      private:
+        description: "Private to containing unit."
+      protected:
+        description: "Protected (accessible to subclasses)."
+      internal:
+        description: "Internal to assembly/package."
+      package:
+        description: "Package-level visibility."
+
+  CallableCategory:
+    description: Behavioral-role categories of callable units
+    permissible_values:
+      normal:
+        description: "Normal callable."
+      operator:
+        description: "Operator overload."
+      main_entry:
+        description: "Main entry point."
+
+  EntryPointType:
+    description: Types of program entry points
+    permissible_values:
+      main_program:
+        description: "Main program entry point."
+      transaction_entry:
+        description: "Transaction entry point."
+      event_handler:
+        description: "Event handler entry."
+      scheduled_entry:
+        description: "Scheduled entry point."
+      api_endpoint:
+        description: "API endpoint entry."
+
+  DataStructureCategory:
+    description: Categories of data structures
+    permissible_values:
+      composite:
+        description: "Composite/aggregate data."
+      collection:
+        description: "Collection of items."
+      hierarchical:
+        description: "Hierarchical data."
+      value_type:
+        description: "Value type."
+      reference_type:
+        description: "Reference type."
+      union:
+        description: "Union type."
+
+  DataElementCategory:
+    description: Categories of data elements
+    permissible_values:
+      field:
+        description: "Class/struct field."
+      static_field:
+        description: "Static field."
+      local_variable:
+        description: "Local variable."
+      parameter:
+        description: "Function/method parameter."
+      constant:
+        description: "Constant value."
+      global_variable:
+        description: "Global variable."
+      computed:
+        description: "Computed data element."
+      temporary:
+        description: "Temporary data element."
+
+  ParameterDirection:
+    description: Parameter passing direction
+    permissible_values:
+      input:
+        description: "Input parameter (read-only)."
+      output:
+        description: "Output parameter (write-only)."
+      input_output:
+        description: "Input/output parameter (read-write)."
+      return:
+        description: "Return value."
+
+  PassingMechanism:
+    description: Parameter passing mechanisms
+    permissible_values:
+      by_value:
+        description: "Pass by value (copy)."
+      by_reference:
+        description: "Pass by reference."
+      by_name:
+        description: Pass by name (lazy evaluation)
+      by_result:
+        description: Pass by result (copy-out)
+
+  StorageClass:
+    description: Storage classes for data elements
+    permissible_values:
+      automatic:
+        description: "Automatic/stack storage."
+      static:
+        description: "Static storage."
+      heap:
+        description: "Heap-allocated storage."
+      register:
+        description: "Register storage."
+      thread_local:
+        description: "Thread-local storage."
+      external:
+        description: "External storage."
+
+  PersistenceType:
+    description: How a data structure is persisted
+    permissible_values:
+      transient:
+        description: "Not persisted."
+      database_table:
+        description: "Persisted in database table."
+      database_view:
+        description: "Persisted as database view."
+      file_record:
+        description: "Persisted as file record."
+      serialized:
+        description: "Serialized persistence."
+      cached:
+        description: "Cached storage."
+      distributed_cache:
+        description: "Distributed cache."
+      message_queue:
+        description: "Message queue persistence."
+      object_store:
+        description: "Object store persistence."
+      document_store:
+        description: "Document store persistence."
+      key_value_store:
+        description: "Key-value store persistence."
+      graph_database:
+        description: "Graph database persistence."
+
+
+classes:
+  EncapsulationUnit:
+    is_a: NamedEntity
+    abstract: true
+    description: >-
+      A logical boundary that groups related code and data.
+      Maps to: Class (OOP), Program (COBOL), Module (functional),
+      Package (Java), Namespace (C#), Record module (ML).
+    slots:
+      - defined_in_container
+      - contains_data_elements
+      - implements_component
+      - annotated_by
+      - imported_via
+    attributes:
+      encapsulation_type:
+        description: "**Required.** The paradigm-specific type (see EncapsulationType enum)."
+        range: EncapsulationType
+        required: true
+      visibility:
+        description: "Visibility level (public, private, protected, internal, package)."
+        range: VisibilityType
+      is_reusable:
+        description: "Whether designed for reuse."
+        range: boolean
+      is_abstract:
+        description: "Whether this is abstract/incomplete."
+        range: boolean
+      is_final:
+        range: boolean
+      qualified_name:
+        description: "Fully qualified name (e.g., com.example.UserService)."
+        range: string
+      line_start:
+        description: "Starting line in source."
+        range: integer
+      line_end:
+        description: "Ending line in source."
+        range: integer
+      stereotype:
+        range: string
+        description: Additional stereotype or pattern (e.g., Service, Repository, DTO)
+      contains_callable_units:
+        description: "Callable units (methods, functions, etc.) in this unit."
+        range: CallableUnit
+        multivalued: true
+        inverse: contained_in_unit
+      contains_data_structures:
+        description: "Data structures in this unit."
+        range: DataStructure
+        multivalued: true
+      extends_units:
+        description: "Units this extends/inherits from."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: extended_by_units
+      extended_by_units:
+        description: "Subclasses."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: extends_units
+      implements_contracts:
+        description: "Contracts (interfaces) this implements."
+        range: Contract
+        multivalued: true
+        inverse: implemented_by_units
+      uses_definitions:
+        description: "Definition references (imports, includes) used."
+        range: DefinitionReference
+        multivalued: true
+      encapsulation_unit_renders_ui:
+        description: "UI component link."
+        range: UIComponent
+        inverse: ui_implements_encapsulation_unit
+      error_model_for_module:
+        description: "ErrorModel associated with this unit."
+        range: ErrorModel
+        inverse: modules_using_error_model
+      screen_used_by_programs:
+        description: "ScreenDefinition[] used by this unit."
+        range: ScreenDefinition
+        multivalued: true
+        inverse: program_uses_screens
+      has_outgoing_ipc_connections:
+        description: "IPCConnection[] originating from this unit."
+        range: IPCConnection
+        multivalued: true
+        inverse: has_source_program
+      has_incoming_ipc_connections:
+        description: "IPCConnection[] targeting this unit."
+        range: IPCConnection
+        multivalued: true
+        inverse: has_target_program
+      affected_by_directives:
+        description: "PreprocessorDirective[] affecting this unit."
+        range: PreprocessorDirective
+        multivalued: true
+        inverse: directive_affects_encapsulation_units
+      memory_model_for_module:
+        description: "MemoryModel associated with this unit."
+        range: MemoryModel
+        inverse: modules_using_memory_model
+      executed_by_job_steps:
+        description: "JobStep[] that execute this unit."
+        range: JobStep
+        multivalued: true
+        inverse: step_executes_program
+
+  CallableUnit:
+    is_a: NamedEntity
+    description: >-
+      A named, invocable unit of code that performs a specific task.
+      Maps to: Method (OOP), Function (procedural/functional),
+      Paragraph (COBOL), Procedure (SQL), Subroutine (Fortran),
+      Lambda (functional).
+    slots:
+      - contained_in_unit
+      - defined_in_container
+      - annotated_by
+      - imported_via
+    attributes:
+      callable_type:
+        description: "**Required.** The paradigm-specific type (see CallableType enum)."
+        range: CallableType
+        required: true
+      visibility:
+        description: "Visibility level."
+        range: VisibilityType
+      callable_category:
+        description: "`normal`, `operator`, or `main_entry`."
+        range: CallableCategory
+      return_type:
+        description: "Return type (if applicable)."
+        range: string
+      is_async:
+        description: "Whether this is asynchronous."
+        range: boolean
+      is_pure:
+        range: boolean
+        description: Whether function is pure (no side effects)
+      is_static:
+        description: "Whether this is static."
+        range: boolean
+      is_virtual:
+        description: "Whether this is virtual/overridable."
+        range: boolean
+      is_override:
+        description: "Overrides parent."
+        range: boolean
+      is_recursive:
+        description: "Self-referencing."
+        range: boolean
+      is_inline:
+        description: "Inline expansion."
+        range: boolean
+      calling_convention:
+        description: "ABI calling convention."
+        range: string
+      line_start:
+        description: "Starting line."
+        range: integer
+      line_end:
+        description: "Ending line."
+        range: integer
+      entry_point_type:
+        description: "If this is an entry point (main, constructor, handler, etc.)."
+        range: EntryPointType
+      documentation:
+        description: "Docstring or comment."
+        range: string
+      complexity_score:
+        range: integer
+        description: Cyclomatic complexity or similar metric
+      has_parameters:
+        description: "Parameters of this callable."
+        range: Parameter
+        multivalued: true
+        inverse: parameter_of
+      invokes_callables:
+        description: "Other callables invoked by this one."
+        range: CallableUnit
+        multivalued: true
+        inverse: invoked_by_callables
+      invoked_by_callables:
+        description: "Inbound callers."
+        range: CallableUnit
+        multivalued: true
+        inverse: invokes_callables
+      accesses_data_elements:
+        description: "Data elements accessed (read)."
+        range: DataElement
+        multivalued: true
+      modifies_data_elements:
+        description: "Data elements modified (written)."
+        range: DataElement
+        multivalued: true
+      implements_operation:
+        description: "Architectural Operation this implements."
+        range: Operation
+        inverse: implemented_by_callables
+      raises_exceptions:
+        range: string
+        multivalued: true
+        description: >-
+          Exception names that may be raised (DEPRECATED -- use raises_exception_types)
+      handles_exceptions:
+        range: string
+        multivalued: true
+        description: >-
+          Exception names handled (DEPRECATED -- use handles_exception_types)
+      overrides_callable:
+        description: "Callable in parent this overrides."
+        range: CallableUnit
+        inverse: overridden_by_callables
+      overridden_by_callables:
+        description: "Overriding children."
+        range: CallableUnit
+        multivalued: true
+        inverse: overrides_callable
+      contains_blocks:
+        description: "Nested code blocks."
+        range: CodeBlock
+        multivalued: true
+        inverse: contained_in_callable
+      tested_by_cases:
+        description: "Test cases."
+        range: TestCase
+        multivalued: true
+        inverse: tests_callable
+      uses_concurrency_primitives:
+        description: "Locks, semaphores, etc."
+        range: ConcurrencyPrimitive
+        multivalued: true
+        inverse: used_by_callables
+      raises_exception_types:
+        description: "ExceptionType[] that may be raised."
+        range: ExceptionType
+        multivalued: true
+        inverse: raised_by_callables
+      handles_exception_types:
+        description: "ExceptionType[] that are handled."
+        range: ExceptionType
+        multivalued: true
+        inverse: handled_by_callables
+      has_return_type:
+        description: "TypeExpression for the return type."
+        range: TypeExpression
+        inverse: return_type_of_callables
+      uses_file_definitions:
+        description: "FileDefinition[] used by this callable."
+        range: FileDefinition
+        multivalued: true
+        inverse: used_by_callables
+      has_file_operations:
+        description: "FileOperation[] performed by this callable."
+        range: FileOperation
+        multivalued: true
+        inverse: performed_in_callable
+      callable_affected_by_directives:
+        description: "PreprocessorDirective[] affecting this callable."
+        range: PreprocessorDirective
+        multivalued: true
+        inverse: directive_affects_callables
+
+  DataStructure:
+    is_a: NamedEntity
+    description: >-
+      A composite data type grouping related data elements.
+      Maps to: Struct (C), Record (Pascal/COBOL), Class data (OOP),
+      Type (Haskell), Dictionary (Python), Hash (Ruby).
+    slots:
+      - contained_in_unit
+      - defined_in_container
+      - contains_data_elements
+      - annotated_by
+      - imported_via
+    attributes:
+      structure_type:
+        description: "**Required.** The paradigm-specific type (see DataStructureType enum)."
+        range: DataStructureType
+        required: true
+      structure_category:
+        description: "`composite`, `collection`, `hierarchical`, `value_type`, `reference_type`, `union`."
+        range: DataStructureCategory
+      visibility:
+        description: "Access level."
+        range: VisibilityType
+      is_mutable:
+        description: "Whether data can be modified."
+        range: boolean
+      is_nested:
+        description: "Whether nested inside another structure."
+        range: boolean
+      nesting_level:
+        range: integer
+        description: Nesting depth (for hierarchical structures like COBOL)
+      is_packed:
+        description: "Packed/compressed layout."
+        range: boolean
+      alignment:
+        description: "Memory alignment in bytes."
+        range: integer
+      size_bytes:
+        description: "Total size."
+        range: integer
+      is_serializable:
+        description: "Whether this can be serialized."
+        range: boolean
+      persistence_type:
+        description: "How this is persisted (transient, database, file, memory, cache)."
+        range: PersistenceType
+      line_start:
+        description: "Starting line."
+        range: integer
+      line_end:
+        description: "Ending line."
+        range: integer
+      has_parent_structure:
+        description: "Parent structure (for nested structures)."
+        range: DataStructure
+        inverse: has_child_structures
+      has_child_structures:
+        description: "Child/nested structures."
+        range: DataStructure
+        multivalued: true
+        inverse: has_parent_structure
+      maps_to_domain_entity:
+        description: "Domain entity this maps to."
+        range: DomainEntity
+        inverse: mapped_from_structure
+      maps_to_value_object:
+        description: "Value object this maps to."
+        range: ValueObject
+        inverse: mapped_from_structure_vo
+      persisted_in_collection:
+        description: "Collection where this is persisted."
+        range: Collection
+        inverse: persists_structures
+      structure_contains_elements:
+        description: "Fields in this structure."
+        range: DataElement
+        multivalued: true
+        inverse: contained_in_structure
+      passed_via_ipc:
+        description: "IPCConnection[] through which this structure is passed."
+        range: IPCConnection
+        multivalued: true
+        inverse: ipc_passes_data
+
+  DataElement:
+    is_a: NamedEntity
+    description: >-
+      An individual data field or variable.
+      Maps to: Field (OOP), Variable (procedural), Column (database),
+      Data item (COBOL), Property (C#), Attribute (Python).
+    slots:
+      - contained_in_unit
+      - annotated_by
+    attributes:
+      data_type:
+        range: string
+        required: true
+        description: >-
+          Data type (DEPRECATED for typed analysis -- use declared_type)
+      element_category:
+        description: "Category of element (field, static_field, local_variable, parameter, constant, global_variable, computed, temporary)."
+        range: DataElementCategory
+      visibility:
+        description: "Visibility level."
+        range: VisibilityType
+      is_constant:
+        description: "Whether this is a constant/immutable."
+        range: boolean
+      is_nullable:
+        description: "Whether this can be null."
+        range: boolean
+      default_value:
+        description: "Default value."
+        range: string
+      size_specification:
+        range: string
+        description: Size/length specification (e.g., COBOL PIC, array dimensions)
+      storage_class:
+        description: "Storage class."
+        range: StorageClass
+      classification:
+        description: "Data sensitivity (PII, PHI, PCI, etc.)."
+        range: DataClassificationType
+      line_number:
+        description: "Source line number."
+        range: integer
+      contained_in_structure:
+        description: "Data structure containing this element."
+        range: DataStructure
+        inverse: structure_contains_elements
+      has_parent_element:
+        description: "Parent element (for nested fields)."
+        range: DataElement
+        inverse: has_child_elements
+      has_child_elements:
+        description: "Children (nested fields)."
+        range: DataElement
+        multivalued: true
+        inverse: has_parent_element
+      maps_to_attribute:
+        description: "Domain attribute."
+        range: Attribute
+        inverse: mapped_from_element
+      protected_by_primitive:
+        description: "Concurrency guards."
+        range: ConcurrencyPrimitive
+        multivalued: true
+        inverse: protects_data_elements
+      declared_type:
+        description: "TypeExpression for the declared type."
+        range: TypeExpression
+        inverse: type_of_data_elements
+      has_ownership_annotations:
+        description: "OwnershipAnnotation[] for this element."
+        range: OwnershipAnnotation
+        multivalued: true
+        inverse: annotates_data_element
+      mapped_from_screen_fields:
+        description: "ScreenField[] mapped to this element."
+        range: ScreenField
+        multivalued: true
+        inverse: maps_to_data_element
+
+  Parameter:
+    is_a: DataElement
+    description: >-
+      An input/output parameter for a callable unit.
+    attributes:
+      direction:
+        description: "Direction (range: `ParameterDirection`): `input`, `output`, `input_output`, `return`."
+        range: ParameterDirection
+      position:
+        description: "Position in parameter list."
+        range: integer
+      passing_mechanism:
+        description: "How passed (by_value, by_reference, by_name, by_result)."
+        range: PassingMechanism
+      parameter_of:
+        description: "Owning callable."
+        range: CallableUnit
+        inverse: has_parameters
+      has_type:
+        description: "Structured type."
+        range: TypeExpression
+        inverse: type_of_parameters
+

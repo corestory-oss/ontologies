@@ -1,0 +1,65 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+#
+# SYSTEMS ABSTRACTION ONTOLOGY (SAO)
+# LinkML Schema Definition
+# This ontology provides a comprehensive framework for modeling software
+# systems, covering structure, behavior, security, data, and operations.
+
+id: https://ontologies.corestory.ai/sao/
+name: systems-abstraction-ontology
+title: Systems Abstraction Ontology
+description: >-
+  A comprehensive ontology for modeling software systems, including
+  structural components, domain modeling (DDD), security, data management,
+  integration, deployment, and observability concerns.
+version: 2.1.0
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+imports:
+  - linkml:types
+  - schema/common
+  - schema/structure
+  - schema/code-containers
+  - schema/code-units
+  - schema/code-semantics
+  - schema/identity
+  - schema/authorization
+  - schema/domain
+  - schema/behavior
+  - schema/data
+  - schema/integration
+  - schema/operations
+  - schema/observability
+  - schema/governance
+  - schema/testing
+  - schema/ui
+  - schema/build
+  - schema/dependencies
+  - schema/concurrency
+  - schema/ml
+  - schema/infrastructure
+  - schema/type-system
+  - schema/error-handling
+  - schema/file-io
+  - schema/screens
+  - schema/jobs
+  - schema/ipc
+  - schema/preprocessor
+  - schema/memory
+  - schema/database
+  - schema/languages
+  - schema/knowledge

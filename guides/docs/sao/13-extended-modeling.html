@@ -1,0 +1,1639 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Extended Modeling (Sections 18-28) · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="extended-modeling-sections-18-28">Extended Modeling (Sections 18-28)</h1>
+<p>This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL, RPG, Assembler, PL/I), recent legacy (C#, Java), and modern (Python, Go, Rust).</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: Sections 18-28 are entirely new in SAO v2.0.0. They introduce first-class modeling for type systems, error handling, file I/O, screen definitions, batch orchestration, inter-process communication, preprocessor constructs, memory models, domain relationships, database schema objects, and programming languages. Several of these sections deprecate older string-based attributes in favor of typed object references.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The extended modeling sections address capabilities that were either implicit or absent in SAO v1.x:</p>
+<ol>
+<li><strong>Type System Modeling</strong> (Section 18) - Recursive type expressions for generics, unions, pointers, and function types</li>
+<li><strong>Error Handling Model</strong> (Section 19) - Language-level error handling paradigms</li>
+<li><strong>File I/O Definitions</strong> (Section 20) - File-based I/O for COBOL, VSAM, and general file processing</li>
+<li><strong>Screen/Terminal Interaction</strong> (Section 21) - Character-mode UI for CICS BMS maps, RPG display files, and TUI applications</li>
+<li><strong>Job Control / Batch Orchestration</strong> (Section 22) - JCL, schedulers, and batch workflows</li>
+<li><strong>Inter-Process Communication</strong> (Section 23) - CICS LINK/XCTL, shared memory, pipes, RMI, CORBA</li>
+<li><strong>Preprocessor / Metaprogramming</strong> (Section 24) - Preprocessor directives, macros, and metaprogramming constructs</li>
+<li><strong>Memory / Ownership Model</strong> (Section 25) - Rust ownership, garbage collection, manual memory management</li>
+<li><strong>Domain Entity Relationships</strong> (Section 26) - Named, typed relationships between domain entities</li>
+<li><strong>Database Schema Objects</strong> (Section 27) - Constraints and indexes for migration and impact analysis</li>
+<li><strong>Programming Language as First-Class Entity</strong> (Section 28) - Queryable language entity replacing bare strings</li>
+</ol>
+<hr />
+<h2 id="section-18-type-system-modeling">Section 18: Type System Modeling</h2>
+<p>Provides recursive type modeling for expressing complex types across all languages.</p>
+<h3 id="typeexpression">TypeExpression</h3>
+<p><strong>Definition</strong>: A recursive type expression that models generics (<code>List&lt;T&gt;</code>), unions (<code>string | number</code>), pointers (<code>*int</code>), function types (<code>fn(int) -&gt; bool</code>), and other composite types.</p>
+<p><strong>Purpose</strong>: Replaces flat <code>data_type</code> strings with structured, queryable type information. Enables cross-language type analysis and compatibility checking.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>type_kind</strong> (TypeKind, required): The kind of type expression
+- <strong>base_type</strong> (string): The base type name (e.g., <code>List</code>, <code>int</code>, <code>String</code>)
+- <strong>type_parameters</strong> (TypeExpression[]): Self-referential list for generics (e.g., the <code>String</code> in <code>List&lt;String&gt;</code>)
+- <strong>type_constraints</strong> (string[]): Constraints on the type (e.g., <code>T: Comparable</code>)
+- <strong>is_nullable</strong> (boolean): Whether the type permits null values
+- <strong>nullability_model</strong> (string): The nullability system (e.g., <code>option_type</code>, <code>nullable_annotation</code>, <code>implicit</code>)
+- <strong>pointer_semantics</strong> (string): Pointer behavior (e.g., <code>raw</code>, <code>smart</code>, <code>weak</code>, <code>unique</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>type_of_data_elements</strong> &lt;-&gt; <code>DataElement.declared_type</code>: Data elements that have this type
+- <strong>type_of_parameters</strong> &lt;-&gt; <code>Parameter.parameter_type</code>: Parameters that have this type
+- <strong>return_type_of_callables</strong> &lt;-&gt; <code>CallableUnit.return_type_expression</code>: Callables that return this type</p>
+<p><strong>Deprecation Note</strong>: For typed analysis, <code>TypeExpression</code> replaces the <code>data_type</code> (string) attribute on <code>DataElement</code> and <code>Parameter</code>. The string attribute is retained for backward compatibility but should not be used for new models.</p>
+<p><strong>Example - Java Generic Type:</strong></p>
+<pre><code class="language-yaml">list_of_string:
+  a: TypeExpression
+  name: &quot;List&lt;String&gt;&quot;
+  type_kind: generic
+  base_type: List
+  type_parameters:
+    - a: TypeExpression
+      name: String
+      type_kind: primitive
+      base_type: String
+</code></pre>
+<p><strong>Example - Rust Function Type:</strong></p>
+<pre><code class="language-yaml">predicate_fn:
+  a: TypeExpression
+  name: &quot;fn(i32) -&gt; bool&quot;
+  type_kind: function_type
+  base_type: fn
+  type_parameters:
+    - a: TypeExpression
+      name: i32
+      type_kind: primitive
+      base_type: i32
+  is_nullable: false
+</code></pre>
+<p><strong>Example - TypeScript Union:</strong></p>
+<pre><code class="language-yaml">string_or_number:
+  a: TypeExpression
+  name: &quot;string | number&quot;
+  type_kind: union
+  type_parameters:
+    - a: TypeExpression
+      type_kind: primitive
+      base_type: string
+    - a: TypeExpression
+      type_kind: primitive
+      base_type: number
+</code></pre>
+<h3 id="typekind-enum">TypeKind Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primitive</code></td>
+<td>Built-in scalar type (int, string, bool)</td>
+</tr>
+<tr>
+<td><code>generic</code></td>
+<td>Parameterized type (List<T>, Map<K,V>)</td>
+</tr>
+<tr>
+<td><code>union</code></td>
+<td>Union of types (string | number)</td>
+</tr>
+<tr>
+<td><code>intersection</code></td>
+<td>Intersection of types (A &amp; B)</td>
+</tr>
+<tr>
+<td><code>alias</code></td>
+<td>Named type alias</td>
+</tr>
+<tr>
+<td><code>pointer</code></td>
+<td>Pointer type (*int, &amp;str)</td>
+</tr>
+<tr>
+<td><code>reference</code></td>
+<td>Reference type (&amp;T, ref T)</td>
+</tr>
+<tr>
+<td><code>array_of</code></td>
+<td>Array of a base type</td>
+</tr>
+<tr>
+<td><code>function_type</code></td>
+<td>Function signature as a type</td>
+</tr>
+<tr>
+<td><code>tuple_type</code></td>
+<td>Tuple of types</td>
+</tr>
+<tr>
+<td><code>optional_type</code></td>
+<td>Optional/nullable wrapper (Option<T>, T?)</td>
+</tr>
+<tr>
+<td><code>constrained</code></td>
+<td>Type with constraints (T: Comparable)</td>
+</tr>
+<tr>
+<td><code>opaque</code></td>
+<td>Opaque/unknown type</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-19-error-handling-model">Section 19: Error Handling Model</h2>
+<p>Models language-level error handling paradigms.</p>
+<h3 id="errormodel">ErrorModel</h3>
+<p><strong>Definition</strong>: Describes how a module or language handles errors.</p>
+<p><strong>Purpose</strong>: Enables cross-language comparison of error handling strategies and identification of mixed paradigms within a codebase.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>strategy</strong> (ErrorHandlingStrategy, required): The error handling paradigm used
+- <strong>checkedness</strong> (ExceptionCheckedness): Whether exceptions are checked or unchecked</p>
+<p><strong>Relationships</strong>:
+- <strong>modules_using_error_model</strong> &lt;-&gt; <code>EncapsulationUnit.error_model_for_module</code>: Modules that use this error model
+- <strong>error_model_for_languages</strong> &lt;-&gt; <code>ProgrammingLanguage.default_error_model</code>: Languages that use this as their default error model</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">java_error_model:
+  a: ErrorModel
+  name: JavaExceptionModel
+  strategy: exception_based
+  checkedness: checked
+
+rust_error_model:
+  a: ErrorModel
+  name: RustResultModel
+  strategy: return_value_based
+  checkedness: not_applicable
+</code></pre>
+<hr />
+<h3 id="exceptiontype">ExceptionType</h3>
+<p><strong>Definition</strong>: A declared exception or error type with hierarchy support.</p>
+<p><strong>Purpose</strong>: Models exception class hierarchies and connects them to the callables that raise or handle them.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>qualified_name</strong> (string): Fully qualified exception name (e.g., <code>java.io.IOException</code>)
+- <strong>is_checked</strong> (boolean): Whether this is a checked exception
+- <strong>parent_exception</strong> (ExceptionType, self-ref): Parent in the exception hierarchy
+- <strong>child_exceptions</strong> (ExceptionType[], self-ref): Children in the exception hierarchy</p>
+<p><strong>Relationships</strong>:
+- <strong>raised_by_callables</strong> &lt;-&gt; <code>CallableUnit.raises_exception_types</code>: Callables that may raise this exception
+- <strong>handled_by_callables</strong> &lt;-&gt; <code>CallableUnit.handles_exception_types</code>: Callables that handle this exception</p>
+<p><strong>Deprecation Note</strong>: <code>ExceptionType</code> replaces the <code>raises_exceptions</code> (string[]) and <code>handles_exceptions</code> (string[]) attributes on <code>CallableUnit</code>.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">io_exception:
+  a: ExceptionType
+  name: IOException
+  qualified_name: java.io.IOException
+  is_checked: true
+  parent_exception: java_exception
+
+file_not_found:
+  a: ExceptionType
+  name: FileNotFoundException
+  qualified_name: java.io.FileNotFoundException
+  is_checked: true
+  parent_exception: io_exception
+</code></pre>
+<h3 id="errorhandlingstrategy-enum">ErrorHandlingStrategy Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exception_based</code></td>
+<td>Try/catch exception handling (Java, Python, C#)</td>
+</tr>
+<tr>
+<td><code>return_value_based</code></td>
+<td>Result/Either return types (Rust, Go)</td>
+</tr>
+<tr>
+<td><code>condition_based</code></td>
+<td>Condition system (Common Lisp)</td>
+</tr>
+<tr>
+<td><code>error_code_based</code></td>
+<td>Numeric error codes (C, COBOL)</td>
+</tr>
+<tr>
+<td><code>panic_recover</code></td>
+<td>Panic and recover mechanism (Go)</td>
+</tr>
+<tr>
+<td><code>monadic</code></td>
+<td>Monadic error handling (Haskell)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exceptioncheckedness-enum">ExceptionCheckedness Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>checked</code></td>
+<td>Compiler-enforced handling (Java checked exceptions)</td>
+</tr>
+<tr>
+<td><code>unchecked</code></td>
+<td>Runtime-only, not enforced (Python, C#, Java unchecked)</td>
+</tr>
+<tr>
+<td><code>not_applicable</code></td>
+<td>Language does not use exception-based error handling</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-20-file-io-definitions">Section 20: File I/O Definitions</h2>
+<p>Models file-based I/O for COBOL, mainframe VSAM, and general file processing systems.</p>
+<h3 id="filedefinition">FileDefinition</h3>
+<p><strong>Definition</strong>: A file defined for I/O operations, corresponding to a COBOL SELECT clause, a C <code>fopen</code> target, or similar constructs.</p>
+<p><strong>Purpose</strong>: Captures the physical and logical characteristics of files used by programs, enabling impact analysis when file structures change.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>organization</strong> (FileOrganization): Physical organization of the file
+- <strong>access_mode</strong> (FileAccessMode): How the file is accessed
+- <strong>record_format</strong> (RecordFormat): Record format
+- <strong>record_length</strong> (int): Record length in bytes
+- <strong>block_size</strong> (int): Block size in bytes
+- <strong>key_fields</strong> (string[]): Key field names for indexed files
+- <strong>file_status_field</strong> (string): Status field for error detection
+- <strong>external_name</strong> (string): External/DD name or system filename</p>
+<p><strong>Relationships</strong>:
+- <strong>used_by_callables</strong> &lt;-&gt; <code>CallableUnit</code>: Callables that perform I/O on this file
+- <strong>file_defined_in_container</strong> &lt;-&gt; <code>CodeContainer</code>: Container where this file is defined
+- <strong>persisted_in_store</strong> &lt;-&gt; <code>DataStore</code>: Data store backing this file
+- <strong>file_operations</strong> &lt;-&gt; <code>FileOperation</code>: Operations performed on this file
+- <strong>mapped_from_dataset_allocations</strong> &lt;-&gt; <code>DatasetAllocation</code>: JCL dataset allocations that map to this file</p>
+<p><strong>Example - COBOL File:</strong></p>
+<pre><code class="language-yaml">customer_master:
+  a: FileDefinition
+  name: CUSTOMER-MASTER
+  organization: vsam_ksds
+  access_mode: random_access
+  record_format: fixed
+  record_length: 200
+  key_fields: [CUSTOMER-ID]
+  file_status_field: WS-FILE-STATUS
+  external_name: CUSTMAST
+  file_defined_in_container: customer_program_source
+</code></pre>
+<p><strong>Example - C File:</strong></p>
+<pre><code class="language-yaml">log_file:
+  a: FileDefinition
+  name: application_log
+  organization: sequential
+  access_mode: sequential_access
+  record_format: stream
+  external_name: /var/log/app.log
+</code></pre>
+<hr />
+<h3 id="fileoperation">FileOperation</h3>
+<p><strong>Definition</strong>: An individual I/O operation performed on a file.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>operation_type</strong> (FileOperationType, required): The type of I/O operation
+- <strong>condition_handling</strong> (string): Error handling approach for this operation</p>
+<p><strong>Relationships</strong>:
+- <strong>operates_on_file</strong> &lt;-&gt; <code>FileDefinition</code>: The file being operated on
+- <strong>performed_in_callable</strong> &lt;-&gt; <code>CallableUnit</code>: The callable performing the operation</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">read_customer:
+  a: FileOperation
+  name: READ-CUSTOMER-RECORD
+  operation_type: read
+  condition_handling: &quot;AT END SET END-OF-FILE TO TRUE&quot;
+  operates_on_file: customer_master
+  performed_in_callable: process_customers_paragraph
+</code></pre>
+<h3 id="fileorganization-enum">FileOrganization Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sequential</code></td>
+<td>Sequential file</td>
+</tr>
+<tr>
+<td><code>indexed</code></td>
+<td>Indexed file (ISAM)</td>
+</tr>
+<tr>
+<td><code>relative</code></td>
+<td>Relative record file</td>
+</tr>
+<tr>
+<td><code>vsam_ksds</code></td>
+<td>VSAM Key-Sequenced Data Set</td>
+</tr>
+<tr>
+<td><code>vsam_esds</code></td>
+<td>VSAM Entry-Sequenced Data Set</td>
+</tr>
+<tr>
+<td><code>vsam_rrds</code></td>
+<td>VSAM Relative Record Data Set</td>
+</tr>
+<tr>
+<td><code>partitioned_dataset</code></td>
+<td>Partitioned Data Set (PDS/PDSE)</td>
+</tr>
+<tr>
+<td><code>generation_data_group</code></td>
+<td>Generation data group (GDG)</td>
+</tr>
+<tr>
+<td><code>line_sequential</code></td>
+<td>Line-sequential text file</td>
+</tr>
+<tr>
+<td><code>heap</code></td>
+<td>Heap/unstructured file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fileaccessmode-enum">FileAccessMode Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sequential_access</code></td>
+<td>Records accessed in order</td>
+</tr>
+<tr>
+<td><code>random_access</code></td>
+<td>Records accessed by key or position</td>
+</tr>
+<tr>
+<td><code>dynamic_access</code></td>
+<td>Both sequential and random access</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recordformat-enum">RecordFormat Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fixed</code></td>
+<td>Fixed-length records</td>
+</tr>
+<tr>
+<td><code>variable</code></td>
+<td>Variable-length records</td>
+</tr>
+<tr>
+<td><code>undefined</code></td>
+<td>Undefined record format</td>
+</tr>
+<tr>
+<td><code>spanned</code></td>
+<td>Spanned records (across blocks)</td>
+</tr>
+<tr>
+<td><code>stream</code></td>
+<td>Stream-oriented (no record boundaries)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="fileoperationtype-enum">FileOperationType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>read</code></td>
+<td>Read a record</td>
+</tr>
+<tr>
+<td><code>write</code></td>
+<td>Write a new record</td>
+</tr>
+<tr>
+<td><code>rewrite</code></td>
+<td>Update an existing record</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Delete a record</td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>Position for sequential access</td>
+</tr>
+<tr>
+<td><code>open</code></td>
+<td>Open the file</td>
+</tr>
+<tr>
+<td><code>close</code></td>
+<td>Close the file</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>Sort the file</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>Merge files</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-21-screenterminal-interaction">Section 21: Screen/Terminal Interaction</h2>
+<p>Models character-mode UI definitions for CICS BMS maps, RPG display files, and TUI applications.</p>
+<h3 id="screendefinition">ScreenDefinition</h3>
+<p><strong>Definition</strong>: A screen or terminal map definition.</p>
+<p><strong>Purpose</strong>: Captures the layout and structure of character-mode user interfaces, enabling UI-to-program traceability and modernization analysis.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>screen_type</strong> (ScreenType, required): The type of screen definition
+- <strong>rows</strong> (int): Number of screen rows
+- <strong>columns</strong> (int): Number of screen columns
+- <strong>external_name</strong> (string): External map or display file name</p>
+<p><strong>Relationships</strong>:
+- <strong>contains_screen_fields</strong> &lt;-&gt; <code>ScreenField</code>: Fields defined on this screen
+- <strong>program_uses_screens</strong> &lt;-&gt; <code>EncapsulationUnit</code>: Programs that use this screen
+- <strong>screen_defined_in_container</strong> &lt;-&gt; <code>CodeContainer</code>: Container where this screen is defined</p>
+<p><strong>Example - CICS BMS Map:</strong></p>
+<pre><code class="language-yaml">customer_inquiry_map:
+  a: ScreenDefinition
+  name: CUSTINQ
+  screen_type: bms_map
+  rows: 24
+  columns: 80
+  external_name: CUSTMAP
+</code></pre>
+<hr />
+<h3 id="screenfield">ScreenField</h3>
+<p><strong>Definition</strong>: An individual field on a screen definition.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>row</strong> (int): Row position on screen
+- <strong>column</strong> (int): Column position on screen
+- <strong>length</strong> (int): Field length in characters
+- <strong>is_input</strong> (boolean): Whether the user can type into this field
+- <strong>is_protected</strong> (boolean): Whether the field is protected from modification
+- <strong>attribute_byte</strong> (string): Display attribute (e.g., bright, dark, reverse)
+- <strong>initial_value</strong> (string): Default display value</p>
+<p><strong>Relationships</strong>:
+- <strong>field_on_screen</strong> &lt;-&gt; <code>ScreenDefinition</code>: The screen this field belongs to
+- <strong>maps_to_data_element</strong> &lt;-&gt; <code>DataElement</code>: Data element mapped to this field</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">customer_name_field:
+  a: ScreenField
+  name: CUST-NAME
+  row: 5
+  column: 20
+  length: 30
+  is_input: false
+  is_protected: true
+  attribute_byte: bright
+  field_on_screen: customer_inquiry_map
+  maps_to_data_element: customer_name_element
+</code></pre>
+<h3 id="screentype-enum">ScreenType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bms_map</code></td>
+<td>CICS Basic Mapping Support map</td>
+</tr>
+<tr>
+<td><code>rpg_display_file</code></td>
+<td>RPG display file (AS/400)</td>
+</tr>
+<tr>
+<td><code>character_terminal</code></td>
+<td>Generic character terminal screen</td>
+</tr>
+<tr>
+<td><code>tui</code></td>
+<td>Text User Interface (ncurses, etc.)</td>
+</tr>
+<tr>
+<td><code>form_based</code></td>
+<td>Form-based terminal interaction</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-22-job-control-batch-orchestration">Section 22: Job Control / Batch Orchestration</h2>
+<p>Models batch job definitions for JCL, schedulers, and batch workflows.</p>
+<h3 id="jobdefinition">JobDefinition</h3>
+<p><strong>Definition</strong>: A batch job definition, such as a JCL job or scheduler entry.</p>
+<p><strong>Purpose</strong>: Captures the structure and dependencies of batch workflows, enabling scheduling analysis and restart planning.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>job_class</strong> (string): Job class or queue assignment
+- <strong>priority</strong> (int): Execution priority
+- <strong>restart_point</strong> (string): Step to restart from on failure
+- <strong>scheduling_info</strong> (string): Scheduling metadata (cron, calendar, etc.)</p>
+<p><strong>Relationships</strong>:
+- <strong>contains_job_steps</strong> &lt;-&gt; <code>JobStep</code>: Steps within this job
+- <strong>depends_on_jobs</strong> (self-ref): Jobs that must complete before this one
+- <strong>depended_on_by_jobs</strong> (self-ref): Jobs that depend on this one</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">daily_payroll_job:
+  a: JobDefinition
+  name: PAYROLL
+  job_class: A
+  priority: 10
+  restart_point: STEP030
+  scheduling_info: &quot;Daily 06:00 EST, business days only&quot;
+  depends_on_jobs: [hr_extract_job]
+</code></pre>
+<hr />
+<h3 id="jobstep">JobStep</h3>
+<p><strong>Definition</strong>: A single step within a batch job.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>step_type</strong> (JobStepType, required): The type of step
+- <strong>program_name</strong> (string): Name of the program to execute
+- <strong>condition_code</strong> (string): Condition code expression for step execution
+- <strong>region_size</strong> (string): Memory region allocation</p>
+<p><strong>Relationships</strong>:
+- <strong>step_in_job</strong> &lt;-&gt; <code>JobDefinition</code>: The job containing this step
+- <strong>step_executes_program</strong> &lt;-&gt; <code>EncapsulationUnit</code>: The program executed by this step
+- <strong>allocates_datasets</strong> &lt;-&gt; <code>DatasetAllocation</code>: Datasets allocated for this step</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">payroll_calc_step:
+  a: JobStep
+  name: STEP010
+  step_type: exec_program
+  program_name: PAYCALC
+  condition_code: &quot;COND=(4,LT)&quot;
+  region_size: 4M
+  step_in_job: daily_payroll_job
+  step_executes_program: payroll_calc_program
+</code></pre>
+<hr />
+<h3 id="datasetallocation">DatasetAllocation</h3>
+<p><strong>Definition</strong>: A dataset allocation within a job step (JCL DD statement or equivalent).</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>dd_name</strong> (string): DD name (logical file reference)
+- <strong>dataset_name</strong> (string): Physical dataset name
+- <strong>disposition</strong> (DatasetDisposition): Dataset disposition
+- <strong>space_primary</strong> (string): Primary space allocation
+- <strong>space_secondary</strong> (string): Secondary space allocation
+- <strong>record_format</strong> (RecordFormat): Record format (shared enum with Section 20)</p>
+<p><strong>Relationships</strong>:
+- <strong>allocated_in_step</strong> &lt;-&gt; <code>JobStep</code>: The step where this allocation occurs
+- <strong>maps_to_file_definition</strong> &lt;-&gt; <code>FileDefinition</code>: The file definition this allocation maps to</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">customer_file_alloc:
+  a: DatasetAllocation
+  name: CUSTDD
+  dd_name: CUSTMAST
+  dataset_name: PROD.CUSTOMER.MASTER
+  disposition: old_dataset
+  record_format: fixed
+  allocated_in_step: payroll_calc_step
+  maps_to_file_definition: customer_master
+</code></pre>
+<h3 id="jobsteptype-enum">JobStepType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exec_program</code></td>
+<td>Execute a program</td>
+</tr>
+<tr>
+<td><code>exec_proc</code></td>
+<td>Execute a cataloged or in-stream procedure</td>
+</tr>
+<tr>
+<td><code>utility</code></td>
+<td>Execute a system utility</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>Execute a sort operation</td>
+</tr>
+<tr>
+<td><code>file_transfer</code></td>
+<td>File transfer step</td>
+</tr>
+<tr>
+<td><code>conditional</code></td>
+<td>Conditional execution step</td>
+</tr>
+</tbody>
+</table>
+<h3 id="datasetdisposition-enum">DatasetDisposition Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>new_dataset</code></td>
+<td>Create a new dataset</td>
+</tr>
+<tr>
+<td><code>old_dataset</code></td>
+<td>Exclusive access to existing dataset</td>
+</tr>
+<tr>
+<td><code>shared</code></td>
+<td>Shared access to existing dataset</td>
+</tr>
+<tr>
+<td><code>modify</code></td>
+<td>Modify an existing dataset</td>
+</tr>
+<tr>
+<td><code>catalog</code></td>
+<td>Catalog the dataset after use</td>
+</tr>
+<tr>
+<td><code>delete_disp</code></td>
+<td>Delete the dataset after use</td>
+</tr>
+<tr>
+<td><code>pass</code></td>
+<td>Pass the dataset to the next step</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-23-inter-process-communication">Section 23: Inter-Process Communication</h2>
+<p>Models IPC mechanisms including CICS LINK/XCTL, shared memory, pipes, RMI, CORBA, and more.</p>
+<h3 id="ipcconnection">IPCConnection</h3>
+<p><strong>Definition</strong>: A connection between two programs via an inter-process communication mechanism.</p>
+<p><strong>Purpose</strong>: Captures how programs communicate at runtime, enabling dependency analysis across process boundaries.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>mechanism</strong> (IPCMechanism, required): The IPC mechanism used
+- <strong>is_synchronous</strong> (boolean): Whether the communication is synchronous
+- <strong>transaction_scoped</strong> (boolean): Whether the communication participates in a transaction</p>
+<p><strong>Relationships</strong>:
+- <strong>ipc_source_program</strong> / <strong>outgoing_ipc_connections</strong> &lt;-&gt; <code>EncapsulationUnit</code>: The program initiating the communication
+- <strong>ipc_target_program</strong> / <strong>incoming_ipc_connections</strong> &lt;-&gt; <code>EncapsulationUnit</code>: The program receiving the communication
+- <strong>ipc_passes_data</strong> / <strong>passed_via_ipc</strong> &lt;-&gt; <code>DataStructure</code>: Data structures passed between programs</p>
+<p><strong>Example - CICS Program Link:</strong></p>
+<pre><code class="language-yaml">cics_customer_lookup:
+  a: IPCConnection
+  name: CUSTLOOKUP-LINK
+  mechanism: cics_link
+  is_synchronous: true
+  transaction_scoped: true
+  ipc_source_program: order_entry_program
+  ipc_target_program: customer_lookup_program
+  ipc_passes_data: customer_commarea
+</code></pre>
+<p><strong>Example - Unix Pipe:</strong></p>
+<pre><code class="language-yaml">log_pipeline:
+  a: IPCConnection
+  name: log-filter-pipe
+  mechanism: pipe
+  is_synchronous: true
+  transaction_scoped: false
+  ipc_source_program: log_generator
+  ipc_target_program: log_filter
+</code></pre>
+<h3 id="ipcmechanism-enum">IPCMechanism Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cics_link</code></td>
+<td>CICS LINK (call with return)</td>
+</tr>
+<tr>
+<td><code>cics_xctl</code></td>
+<td>CICS XCTL (transfer control, no return)</td>
+</tr>
+<tr>
+<td><code>ims_schedule</code></td>
+<td>IMS message scheduling</td>
+</tr>
+<tr>
+<td><code>shared_memory</code></td>
+<td>Shared memory segment</td>
+</tr>
+<tr>
+<td><code>pipe</code></td>
+<td>Unix pipe</td>
+</tr>
+<tr>
+<td><code>rmi</code></td>
+<td>Java Remote Method Invocation</td>
+</tr>
+<tr>
+<td><code>corba</code></td>
+<td>CORBA IIOP</td>
+</tr>
+<tr>
+<td><code>database_mediated</code></td>
+<td>Communication via shared database</td>
+</tr>
+<tr>
+<td><code>message_queue</code></td>
+<td>Message queue (MQ Series, etc.)</td>
+</tr>
+<tr>
+<td><code>socket</code></td>
+<td>TCP/UDP socket</td>
+</tr>
+<tr>
+<td><code>named_pipe</code></td>
+<td>Named pipe / FIFO</td>
+</tr>
+<tr>
+<td><code>signal</code></td>
+<td>Unix signal</td>
+</tr>
+<tr>
+<td><code>semaphore</code></td>
+<td>Semaphore-based synchronization</td>
+</tr>
+<tr>
+<td><code>dcom</code></td>
+<td>Distributed COM</td>
+</tr>
+<tr>
+<td><code>rest_call</code></td>
+<td>REST API call between processes</td>
+</tr>
+<tr>
+<td><code>grpc_call</code></td>
+<td>gRPC inter-process call</td>
+</tr>
+<tr>
+<td><code>event_bus</code></td>
+<td>Event bus communication</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-24-preprocessor-metaprogramming">Section 24: Preprocessor / Metaprogramming</h2>
+<p>Models preprocessor directives, macros, and metaprogramming constructs.</p>
+<h3 id="preprocessordirective">PreprocessorDirective</h3>
+<p><strong>Definition</strong>: A preprocessor directive or metaprogramming construct that modifies code before or during compilation.</p>
+<p><strong>Purpose</strong>: Captures conditional compilation, macro expansion, and code generation constructs that affect program behavior and structure.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>directive_type</strong> (MetaprogrammingType, required): The type of metaprogramming construct
+- <strong>condition</strong> (string): Conditional expression (e.g., <code>#ifdef DEBUG</code>)
+- <strong>expansion</strong> (string): The expanded or generated code</p>
+<p><strong>Relationships</strong>:
+- <strong>directive_defined_in_container</strong> &lt;-&gt; <code>CodeContainer</code>: Container where this directive is defined
+- <strong>directive_affects_encapsulation_units</strong> &lt;-&gt; <code>EncapsulationUnit</code>: Encapsulation units affected by this directive
+- <strong>directive_affects_callables</strong> &lt;-&gt; <code>CallableUnit</code>: Callables affected by this directive</p>
+<p><strong>Example - C Preprocessor:</strong></p>
+<pre><code class="language-yaml">debug_guard:
+  a: PreprocessorDirective
+  name: DEBUG_LOGGING
+  directive_type: c_preprocessor
+  condition: &quot;#ifdef DEBUG&quot;
+  expansion: &quot;printf(\&quot;Debug: %s\\n\&quot;, msg);&quot;
+  directive_defined_in_container: logger_header
+</code></pre>
+<p><strong>Example - COBOL COPY REPLACING:</strong></p>
+<pre><code class="language-yaml">employee_copy:
+  a: PreprocessorDirective
+  name: EMPLOYEE-COPY
+  directive_type: cobol_copy_replacing
+  condition: &quot;COPY EMPLOYEE REPLACING ==:PREFIX:== BY ==EMP-==&quot;
+  directive_defined_in_container: payroll_source
+</code></pre>
+<h3 id="metaprogrammingtype-enum">MetaprogrammingType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c_preprocessor</code></td>
+<td>C/C++ preprocessor (#define, #ifdef)</td>
+</tr>
+<tr>
+<td><code>rust_macro_declarative</code></td>
+<td>Rust declarative macros (macro_rules!)</td>
+</tr>
+<tr>
+<td><code>rust_macro_procedural</code></td>
+<td>Rust procedural macros (derive, attribute)</td>
+</tr>
+<tr>
+<td><code>cobol_copy_replacing</code></td>
+<td>COBOL COPY ... REPLACING</td>
+</tr>
+<tr>
+<td><code>template_metaprogramming</code></td>
+<td>C++ template metaprogramming</td>
+</tr>
+<tr>
+<td><code>python_metaclass</code></td>
+<td>Python metaclass</td>
+</tr>
+<tr>
+<td><code>lisp_macro</code></td>
+<td>Lisp macro</td>
+</tr>
+<tr>
+<td><code>java_annotation_processor</code></td>
+<td>Java annotation processor</td>
+</tr>
+<tr>
+<td><code>code_generator</code></td>
+<td>External code generator</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-25-memory-ownership-model">Section 25: Memory / Ownership Model</h2>
+<p>Models memory management and ownership semantics.</p>
+<h3 id="memorymodel">MemoryModel</h3>
+<p><strong>Definition</strong>: Describes the memory management strategy for a module or language.</p>
+<p><strong>Purpose</strong>: Enables analysis of memory safety, ownership transfer, and resource management patterns across codebases.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>primary_model</strong> (OwnershipModel, required): The primary memory management approach
+- <strong>gc_type</strong> (string): Garbage collector type (e.g., <code>generational</code>, <code>reference_counting</code>, <code>mark_sweep</code>)
+- <strong>supports_unsafe</strong> (boolean): Whether the language/module allows unsafe memory operations</p>
+<p><strong>Relationships</strong>:
+- <strong>modules_using_memory_model</strong> &lt;-&gt; <code>EncapsulationUnit</code>: Modules that use this memory model
+- <strong>memory_model_for_languages</strong> &lt;-&gt; <code>ProgrammingLanguage</code>: Languages that use this as their default memory model</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">rust_ownership:
+  a: MemoryModel
+  name: RustOwnershipModel
+  primary_model: owned
+  supports_unsafe: true
+
+java_gc:
+  a: MemoryModel
+  name: JavaGCModel
+  primary_model: garbage_collected
+  gc_type: generational
+  supports_unsafe: false
+</code></pre>
+<hr />
+<h3 id="ownershipannotation">OwnershipAnnotation</h3>
+<p><strong>Definition</strong>: An ownership or lifetime annotation on a specific data element.</p>
+<p><strong>Purpose</strong>: Captures fine-grained ownership and lifetime information, particularly for Rust and C++ codebases.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>ownership</strong> (OwnershipModel, required): The ownership model for this element
+- <strong>lifetime</strong> (LifetimeScope): The lifetime scope
+- <strong>lifetime_name</strong> (string): Named lifetime identifier (e.g., <code>'a</code> in Rust)</p>
+<p><strong>Relationships</strong>:
+- <strong>annotates_data_element</strong> &lt;-&gt; <code>DataElement</code>: The data element this annotation applies to</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">borrowed_ref_annotation:
+  a: OwnershipAnnotation
+  name: borrowed_config_ref
+  ownership: borrowed_shared
+  lifetime: named_lifetime
+  lifetime_name: &quot;'a&quot;
+  annotates_data_element: config_reference
+</code></pre>
+<h3 id="ownershipmodel-enum">OwnershipModel Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>owned</code></td>
+<td>Exclusively owned (Rust owned value)</td>
+</tr>
+<tr>
+<td><code>borrowed_shared</code></td>
+<td>Shared immutable borrow (&amp;T in Rust)</td>
+</tr>
+<tr>
+<td><code>borrowed_mutable</code></td>
+<td>Exclusive mutable borrow (&amp;mut T in Rust)</td>
+</tr>
+<tr>
+<td><code>moved</code></td>
+<td>Value has been moved (ownership transferred)</td>
+</tr>
+<tr>
+<td><code>copied</code></td>
+<td>Value is copied (Copy trait in Rust)</td>
+</tr>
+<tr>
+<td><code>reference_counted</code></td>
+<td>Reference-counted (Rc, Arc in Rust; shared_ptr in C++)</td>
+</tr>
+<tr>
+<td><code>garbage_collected</code></td>
+<td>Managed by garbage collector</td>
+</tr>
+<tr>
+<td><code>manual</code></td>
+<td>Manual allocation/deallocation (C malloc/free)</td>
+</tr>
+<tr>
+<td><code>stack_allocated</code></td>
+<td>Stack-allocated with automatic cleanup</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lifetimescope-enum">LifetimeScope Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>static_lifetime</code></td>
+<td>Lives for the entire program duration ('static)</td>
+</tr>
+<tr>
+<td><code>function_scope</code></td>
+<td>Lives for the duration of a function call</td>
+</tr>
+<tr>
+<td><code>block_scope</code></td>
+<td>Lives for the duration of a block</td>
+</tr>
+<tr>
+<td><code>named_lifetime</code></td>
+<td>Has a named lifetime parameter ('a, 'b)</td>
+</tr>
+<tr>
+<td><code>heap_lifetime</code></td>
+<td>Lives on the heap until explicitly freed</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-26-domain-entity-relationships">Section 26: Domain Entity Relationships</h2>
+<p>Provides named, typed relationships between domain entities. Wires the previously orphaned <code>Cardinality</code> enum into the domain model.</p>
+<h3 id="domainrelationship">DomainRelationship</h3>
+<p><strong>Definition</strong>: A named, typed relationship between two domain entities (e.g., "Order has many OrderLines", "User belongs to Organization").</p>
+<p><strong>Purpose</strong>: Explicitly models ER-style relationships with cardinality, navigability, and composition semantics. This section wires the <code>Cardinality</code> enum -- previously defined but unused -- into the domain model.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>cardinality</strong> (Cardinality, required): The multiplicity of the relationship
+- <strong>is_navigable</strong> (boolean): Whether the relationship is traversable from source to target
+- <strong>is_bidirectional</strong> (boolean): Whether the relationship can be navigated in both directions
+- <strong>is_composition</strong> (boolean): Whether this represents UML composition (strong ownership) vs aggregation
+- <strong>foreign_key_field</strong> (string): The implementing field in the data layer
+- <strong>join_entity</strong> (string): For many-to-many relationships, the join table or entity</p>
+<p><strong>Relationships</strong>:
+- <strong>source_entity</strong> / <strong>outgoing_relationships</strong> &lt;-&gt; <code>DomainEntity</code>: The entity that owns or originates the relationship
+- <strong>target_entity</strong> / <strong>incoming_relationships</strong> &lt;-&gt; <code>DomainEntity</code>: The entity referenced by the relationship</p>
+<p><strong>Uses Existing Cardinality Enum</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>one_to_one</code></td>
+<td>One-to-one relationship</td>
+</tr>
+<tr>
+<td><code>one_to_many</code></td>
+<td>One-to-many relationship</td>
+</tr>
+<tr>
+<td><code>many_to_one</code></td>
+<td>Many-to-one relationship</td>
+</tr>
+<tr>
+<td><code>many_to_many</code></td>
+<td>Many-to-many relationship</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">order_has_line_items:
+  a: DomainRelationship
+  name: OrderHasLineItems
+  source_entity: order_entity
+  target_entity: order_line_item_entity
+  cardinality: one_to_many
+  is_composition: true
+  is_navigable: true
+  is_bidirectional: true
+  foreign_key_field: order_id
+
+student_enrolled_in_courses:
+  a: DomainRelationship
+  name: StudentEnrolledInCourses
+  source_entity: student_entity
+  target_entity: course_entity
+  cardinality: many_to_many
+  is_composition: false
+  is_navigable: true
+  is_bidirectional: true
+  join_entity: Enrollment
+</code></pre>
+<hr />
+<h2 id="section-27-database-schema-objects">Section 27: Database Schema Objects</h2>
+<p>Models schema-level constraints and indexes for migration, performance, and impact analysis.</p>
+<h3 id="databaseconstraint">DatabaseConstraint</h3>
+<p><strong>Definition</strong>: A constraint on a database collection (table).</p>
+<p><strong>Purpose</strong>: Captures primary keys, foreign keys, unique constraints, and check constraints for schema analysis, migration planning, and impact assessment.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>constraint_type</strong> (DatabaseConstraintType, required): The type of constraint
+- <strong>columns</strong> (string[]): Columns involved in the constraint
+- <strong>reference_table</strong> (string): Referenced table (for foreign keys)
+- <strong>reference_columns</strong> (string[]): Referenced columns (for foreign keys)
+- <strong>expression</strong> (string): Constraint expression (for check constraints)</p>
+<p><strong>Relationships</strong>:
+- <strong>constraint_on_collection</strong> &lt;-&gt; <code>Collection.has_constraints</code>: The collection this constraint belongs to</p>
+<p><strong>Deprecation Note</strong>: <code>DatabaseConstraint</code> and <code>DatabaseIndex</code> together deprecate the <code>indexes</code> (string[]) attribute on <code>Collection</code> for index information.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">order_pk:
+  a: DatabaseConstraint
+  name: pk_orders
+  constraint_type: primary_key
+  columns: [order_id]
+  constraint_on_collection: orders_table
+
+order_customer_fk:
+  a: DatabaseConstraint
+  name: fk_orders_customer
+  constraint_type: foreign_key
+  columns: [customer_id]
+  reference_table: customers
+  reference_columns: [customer_id]
+  constraint_on_collection: orders_table
+</code></pre>
+<hr />
+<h3 id="databaseindex">DatabaseIndex</h3>
+<p><strong>Definition</strong>: An index on a database collection (table).</p>
+<p><strong>Purpose</strong>: Captures index definitions for performance analysis and schema management.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>index_type</strong> (IndexType, required): The type of index
+- <strong>columns</strong> (string[]): Columns included in the index
+- <strong>is_unique</strong> (boolean): Whether the index enforces uniqueness
+- <strong>is_partial</strong> (boolean): Whether the index is partial/filtered
+- <strong>filter_expression</strong> (string): Filter expression for partial indexes</p>
+<p><strong>Relationships</strong>:
+- <strong>index_on_collection</strong> &lt;-&gt; <code>Collection.has_indexes</code>: The collection this index belongs to</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">customer_email_idx:
+  a: DatabaseIndex
+  name: idx_customers_email
+  index_type: btree
+  columns: [email]
+  is_unique: true
+  is_partial: false
+  index_on_collection: customers_table
+
+order_search_idx:
+  a: DatabaseIndex
+  name: idx_orders_fulltext
+  index_type: fulltext
+  columns: [description, notes]
+  is_unique: false
+  is_partial: false
+  index_on_collection: orders_table
+</code></pre>
+<h3 id="databaseconstrainttype-enum">DatabaseConstraintType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>primary_key</code></td>
+<td>Primary key constraint</td>
+</tr>
+<tr>
+<td><code>foreign_key</code></td>
+<td>Foreign key constraint</td>
+</tr>
+<tr>
+<td><code>unique</code></td>
+<td>Unique constraint</td>
+</tr>
+<tr>
+<td><code>check</code></td>
+<td>Check constraint (arbitrary expression)</td>
+</tr>
+<tr>
+<td><code>not_null</code></td>
+<td>Not-null constraint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="indextype-enum">IndexType Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>btree</code></td>
+<td>B-tree index (default for most databases)</td>
+</tr>
+<tr>
+<td><code>hash</code></td>
+<td>Hash index</td>
+</tr>
+<tr>
+<td><code>gin</code></td>
+<td>GIN (Generalized Inverted Index, PostgreSQL)</td>
+</tr>
+<tr>
+<td><code>fulltext</code></td>
+<td>Full-text search index</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="section-28-programming-language-as-first-class-entity">Section 28: Programming Language as First-Class Entity</h2>
+<p>Replaces bare string fields with a queryable language entity.</p>
+<h3 id="programminglanguage">ProgrammingLanguage</h3>
+<p><strong>Definition</strong>: A programming language modeled as a first-class entity.</p>
+<p><strong>Purpose</strong>: Enables structured cross-language analysis. Query "show me all Rust modules" without resorting to string matching on format or language fields.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>paradigms</strong> (ProgrammingParadigm[]): Programming paradigms supported
+- <strong>type_discipline</strong> (string): Type system discipline (e.g., <code>static_strong</code>, <code>dynamic_weak</code>)
+- <strong>has_preprocessor</strong> (boolean): Whether the language has a preprocessor
+- <strong>has_gc</strong> (boolean): Whether the language has garbage collection
+- <strong>year_introduced</strong> (int): Year the language was first released</p>
+<p><strong>Relationships</strong>:
+- <strong>language_used_by_containers</strong> &lt;-&gt; <code>CodeContainer.written_in_language</code>: Code containers written in this language
+- <strong>default_error_model</strong> &lt;-&gt; <code>ErrorModel</code>: The default error handling model for this language
+- <strong>default_memory_model</strong> &lt;-&gt; <code>MemoryModel</code>: The default memory management model for this language</p>
+<p><strong>Deprecation Note</strong>: <code>ProgrammingLanguage</code> replaces the <code>format</code> (string) attribute on <code>CodeContainer</code> and the <code>language</code> (string) attribute on <code>Component</code>.</p>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yaml">rust_language:
+  a: ProgrammingLanguage
+  name: Rust
+  paradigms: [procedural, functional, multi_paradigm]
+  type_discipline: static_strong
+  has_preprocessor: false
+  has_gc: false
+  year_introduced: 2010
+  default_error_model: rust_error_model
+  default_memory_model: rust_ownership
+
+cobol_language:
+  a: ProgrammingLanguage
+  name: COBOL
+  paradigms: [procedural]
+  type_discipline: static_strong
+  has_preprocessor: true
+  has_gc: false
+  year_introduced: 1959
+
+java_language:
+  a: ProgrammingLanguage
+  name: Java
+  paradigms: [object_oriented, multi_paradigm]
+  type_discipline: static_strong
+  has_preprocessor: false
+  has_gc: true
+  year_introduced: 1995
+  default_error_model: java_error_model
+  default_memory_model: java_gc
+</code></pre>
+<h3 id="programmingparadigm-enum">ProgrammingParadigm Enum</h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>object_oriented</code></td>
+<td>Object-oriented programming</td>
+</tr>
+<tr>
+<td><code>procedural</code></td>
+<td>Procedural programming</td>
+</tr>
+<tr>
+<td><code>functional</code></td>
+<td>Functional programming</td>
+</tr>
+<tr>
+<td><code>logic</code></td>
+<td>Logic programming (Prolog)</td>
+</tr>
+<tr>
+<td><code>concatenative</code></td>
+<td>Concatenative programming (Forth, Factor)</td>
+</tr>
+<tr>
+<td><code>data_driven</code></td>
+<td>Data-driven programming</td>
+</tr>
+<tr>
+<td><code>multi_paradigm</code></td>
+<td>Supports multiple paradigms</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cross-section-relationships">Cross-Section Relationships</h2>
+<p>The following diagram summarizes how the new sections connect to existing SAO classes and to each other.</p>
+<h3 id="connections-to-existing-classes">Connections to Existing Classes</h3>
+<table>
+<thead>
+<tr>
+<th>New Class</th>
+<th>Existing Class</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TypeExpression</code></td>
+<td><code>DataElement</code></td>
+<td><code>type_of_data_elements</code> &lt;-&gt; <code>declared_type</code></td>
+</tr>
+<tr>
+<td><code>TypeExpression</code></td>
+<td><code>Parameter</code></td>
+<td><code>type_of_parameters</code> &lt;-&gt; <code>has_type</code></td>
+</tr>
+<tr>
+<td><code>TypeExpression</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>return_type_of_callables</code> &lt;-&gt; <code>has_return_type</code></td>
+</tr>
+<tr>
+<td><code>ErrorModel</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>modules_using_error_model</code> &lt;-&gt; <code>error_model_for_module</code></td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>raised_by_callables</code> &lt;-&gt; <code>raises_exception_types</code></td>
+</tr>
+<tr>
+<td><code>ExceptionType</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>handled_by_callables</code> &lt;-&gt; <code>handles_exception_types</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>used_by_callables</code> &lt;-&gt; <code>uses_file_definitions</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>file_defined_in_container</code> &lt;-&gt; <code>has_file_definitions</code></td>
+</tr>
+<tr>
+<td><code>FileDefinition</code></td>
+<td><code>DataStore</code></td>
+<td><code>persisted_in_store</code> &lt;-&gt; <code>store_file_definitions</code></td>
+</tr>
+<tr>
+<td><code>FileOperation</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>performed_in_callable</code> &lt;-&gt; <code>has_file_operations</code></td>
+</tr>
+<tr>
+<td><code>ScreenDefinition</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>program_uses_screens</code> &lt;-&gt; <code>screen_used_by_programs</code></td>
+</tr>
+<tr>
+<td><code>ScreenDefinition</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>screen_defined_in_container</code> &lt;-&gt; <code>has_screen_definitions</code></td>
+</tr>
+<tr>
+<td><code>ScreenField</code></td>
+<td><code>DataElement</code></td>
+<td><code>maps_to_data_element</code></td>
+</tr>
+<tr>
+<td><code>JobStep</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>step_executes_program</code> &lt;-&gt; <code>executed_by_job_steps</code></td>
+</tr>
+<tr>
+<td><code>DatasetAllocation</code></td>
+<td><code>FileDefinition</code></td>
+<td><code>maps_to_file_definition</code> &lt;-&gt; <code>mapped_from_dataset_allocations</code></td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>has_source_program</code> &lt;-&gt; <code>has_outgoing_ipc_connections</code></td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>has_target_program</code> &lt;-&gt; <code>has_incoming_ipc_connections</code></td>
+</tr>
+<tr>
+<td><code>IPCConnection</code></td>
+<td><code>DataStructure</code></td>
+<td><code>ipc_passes_data</code> &lt;-&gt; <code>passed_via_ipc</code></td>
+</tr>
+<tr>
+<td><code>PreprocessorDirective</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>directive_defined_in_container</code> &lt;-&gt; <code>has_preprocessor_directives</code></td>
+</tr>
+<tr>
+<td><code>PreprocessorDirective</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>directive_affects_encapsulation_units</code> &lt;-&gt; <code>affected_by_directives</code></td>
+</tr>
+<tr>
+<td><code>PreprocessorDirective</code></td>
+<td><code>CallableUnit</code></td>
+<td><code>directive_affects_callables</code> &lt;-&gt; <code>callable_affected_by_directives</code></td>
+</tr>
+<tr>
+<td><code>MemoryModel</code></td>
+<td><code>EncapsulationUnit</code></td>
+<td><code>modules_using_memory_model</code> &lt;-&gt; <code>memory_model_for_module</code></td>
+</tr>
+<tr>
+<td><code>OwnershipAnnotation</code></td>
+<td><code>DataElement</code></td>
+<td><code>annotates_data_element</code></td>
+</tr>
+<tr>
+<td><code>DomainRelationship</code></td>
+<td><code>DomainEntity</code></td>
+<td><code>has_source_entity</code> &lt;-&gt; <code>has_outgoing_relationships</code></td>
+</tr>
+<tr>
+<td><code>DomainRelationship</code></td>
+<td><code>DomainEntity</code></td>
+<td><code>has_target_entity</code> &lt;-&gt; <code>has_incoming_relationships</code></td>
+</tr>
+<tr>
+<td><code>DatabaseConstraint</code></td>
+<td><code>Collection</code></td>
+<td><code>constraint_on_collection</code> &lt;-&gt; <code>has_constraints</code></td>
+</tr>
+<tr>
+<td><code>DatabaseIndex</code></td>
+<td><code>Collection</code></td>
+<td><code>index_on_collection</code> &lt;-&gt; <code>has_indexes</code></td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>CodeContainer</code></td>
+<td><code>language_used_by_containers</code> &lt;-&gt; <code>written_in_language</code></td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>ErrorModel</code></td>
+<td><code>has_default_error_model</code></td>
+</tr>
+<tr>
+<td><code>ProgrammingLanguage</code></td>
+<td><code>MemoryModel</code></td>
+<td><code>has_default_memory_model</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="connections-between-new-sections">Connections Between New Sections</h3>
+<table>
+<thead>
+<tr>
+<th>Source Section</th>
+<th>Target Section</th>
+<th>Relationship</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Section 22 (DatasetAllocation)</td>
+<td>Section 20 (FileDefinition)</td>
+<td><code>maps_to_file_definition</code></td>
+</tr>
+<tr>
+<td>Section 22 (DatasetAllocation)</td>
+<td>Section 20 (RecordFormat)</td>
+<td>Shared <code>RecordFormat</code> enum</td>
+</tr>
+<tr>
+<td>Section 28 (ProgrammingLanguage)</td>
+<td>Section 19 (ErrorModel)</td>
+<td><code>has_default_error_model</code></td>
+</tr>
+<tr>
+<td>Section 28 (ProgrammingLanguage)</td>
+<td>Section 25 (MemoryModel)</td>
+<td><code>has_default_memory_model</code></td>
+</tr>
+<tr>
+<td>Section 20 (FileOperation)</td>
+<td>Section 20 (FileDefinition)</td>
+<td><code>operates_on_file</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="deprecation-summary">Deprecation Summary</h2>
+<p>The following table lists all attributes deprecated by Sections 18-28, along with their replacements.</p>
+<table>
+<thead>
+<tr>
+<th>Deprecated Attribute</th>
+<th>On Class</th>
+<th>Replaced By</th>
+<th>New Type</th>
+<th>Section</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data_type</code> (string)</td>
+<td><code>DataElement</code></td>
+<td><code>declared_type</code></td>
+<td><code>TypeExpression</code></td>
+<td>18</td>
+</tr>
+<tr>
+<td><code>data_type</code> (string)</td>
+<td><code>Parameter</code></td>
+<td><code>has_type</code></td>
+<td><code>TypeExpression</code></td>
+<td>18</td>
+</tr>
+<tr>
+<td><code>raises_exceptions</code> (string[])</td>
+<td><code>CallableUnit</code></td>
+<td><code>raises_exception_types</code></td>
+<td><code>ExceptionType[]</code></td>
+<td>19</td>
+</tr>
+<tr>
+<td><code>handles_exceptions</code> (string[])</td>
+<td><code>CallableUnit</code></td>
+<td><code>handles_exception_types</code></td>
+<td><code>ExceptionType[]</code></td>
+<td>19</td>
+</tr>
+<tr>
+<td><code>indexes</code> (string[])</td>
+<td><code>Collection</code></td>
+<td><code>has_indexes</code></td>
+<td><code>DatabaseIndex[]</code></td>
+<td>27</td>
+</tr>
+<tr>
+<td><code>format</code> (string)</td>
+<td><code>CodeContainer</code></td>
+<td><code>written_in_language</code></td>
+<td><code>ProgrammingLanguage</code></td>
+<td>28</td>
+</tr>
+<tr>
+<td><code>language</code> (string)</td>
+<td><code>Component</code></td>
+<td><code>written_in_language</code> (via CodeContainer)</td>
+<td><code>ProgrammingLanguage</code></td>
+<td>28</td>
+</tr>
+</tbody>
+</table>
+<p>All deprecated attributes remain in the schema for backward compatibility. New models should use the replacement attributes exclusively.</p>
+<hr />
+<h2 id="usage-patterns">Usage Patterns</h2>
+<h3 id="cross-language-type-analysis">Cross-Language Type Analysis</h3>
+<pre><code class="language-sparql"># Find all data elements with generic types
+SELECT ?element ?base_type WHERE {
+  ?type a sao:TypeExpression ;
+        sao:type_kind &quot;generic&quot; ;
+        sao:base_type ?base_type .
+  ?element sao:declared_type ?type .
+}
+</code></pre>
+<h3 id="batch-job-impact-analysis">Batch Job Impact Analysis</h3>
+<pre><code class="language-sparql"># Find all programs executed by a job and the files they use
+SELECT ?job ?step ?program ?file WHERE {
+  ?job a sao:JobDefinition ;
+       sao:contains_job_steps ?step .
+  ?step sao:step_executes_program ?program .
+  ?program sao:uses_file_definitions ?file .
+}
+</code></pre>
+<h3 id="ipc-dependency-graph">IPC Dependency Graph</h3>
+<pre><code class="language-sparql"># Find all inter-process communication paths
+SELECT ?source ?mechanism ?target WHERE {
+  ?ipc a sao:IPCConnection ;
+       sao:mechanism ?mechanism ;
+       sao:ipc_source_program ?source ;
+       sao:ipc_target_program ?target .
+}
+</code></pre>
+<h3 id="language-scoped-queries">Language-Scoped Queries</h3>
+<pre><code class="language-sparql"># Find all Rust modules and their memory models
+SELECT ?module ?memory_model WHERE {
+  :rust_language sao:language_used_by_containers ?container .
+  ?module sao:defined_in_container ?container .
+  ?module sao:memory_model_for_module ?memory_model .
+}
+</code></pre>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li><strong>Use TypeExpression for new models</strong>: Do not rely on <code>data_type</code> strings when structured type information is needed.</li>
+<li><strong>Model error handling explicitly</strong>: Attach an <code>ErrorModel</code> to each <code>EncapsulationUnit</code> to enable cross-module error strategy analysis.</li>
+<li><strong>Connect files to jobs</strong>: Always link <code>FileDefinition</code> to <code>DatasetAllocation</code> via <code>maps_to_file_definition</code> for mainframe systems.</li>
+<li><strong>Use ProgrammingLanguage over strings</strong>: Replace bare <code>format</code> and <code>language</code> strings with <code>ProgrammingLanguage</code> entity references.</li>
+<li><strong>Capture IPC dependencies</strong>: Model all inter-process communication paths, even database-mediated ones, to get a complete dependency picture.</li>
+<li><strong>Annotate ownership in Rust/C++</strong>: Use <code>OwnershipAnnotation</code> to track borrow relationships and lifetime constraints on data elements.</li>
+<li><strong>Define screen-to-data mappings</strong>: Link <code>ScreenField</code> to <code>DataElement</code> to trace user input through the program.</li>
+<li><strong>Model constraints and indexes as objects</strong>: Use <code>DatabaseConstraint</code> and <code>DatabaseIndex</code> instead of string arrays to enable schema comparison and migration analysis.</li>
+</ol></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,303 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/specspec/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:AcceptanceCriterion a rdfs:Class ;
+    rdfs:label "AcceptanceCriterion" ;
+    rdfs:comment "A normative, checkable condition used to decide whether a requirement is satisfied." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:Claim .
+
+spec:Claim a rdfs:Class ;
+    rdfs:label "Claim" ;
+    rdfs:comment "An individually traceable statement. Origin, review, and confidence describe different aspects of the statement and must not substitute for each other." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:Requirement a rdfs:Class ;
+    rdfs:label "Requirement" ;
+    rdfs:comment "A normative obligation or intended behavior. Evidence that an implementation exhibits it is recorded separately as a descriptive claim or verification result." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:Claim .
+
+spec:Scenario a rdfs:Class ;
+    rdfs:label "Scenario" ;
+    rdfs:comment "An example of behavior under stated conditions. It can describe existing behavior or desired behavior; provenance is carried by its linked claims." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:ScenarioStep a rdfs:Class ;
+    rdfs:label "ScenarioStep" ;
+    rdfs:comment "An ordered interaction in a scenario, connected to individually traceable statements." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:Specification a rdfs:Class ;
+    rdfs:label "Specification" ;
+    rdfs:comment "A versioned collection of requirements, descriptive claims, scenarios, and decisions. It is distinct from the documents used to render it." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:UseCase a rdfs:Class ;
+    rdfs:label "UseCase" ;
+    rdfs:comment "A goal-directed interaction described from a participant’s perspective. Participants are roles in the narrative, not a replacement for software identity classes." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:action a rdf:Property ;
+    rdfs:label "action" ;
+    rdfs:comment "[ScenarioStep] The interaction performed." ;
+    rdfs:domain spec:ScenarioStep ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:applies_to_snapshots a rdf:Property ;
+    rdfs:label "applies_to_snapshots" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Source states within which this statement is being asserted; these may differ from its evidence sources.",
+        "[Claim] Source states within which this statement is being asserted; these may differ from its evidence sources.",
+        "[Requirement] Source states within which this statement is being asserted; these may differ from its evidence sources." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SourceSnapshot .
+
+spec:confidence a rdf:Property ;
+    rdfs:label "confidence" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Optional producer estimate in [0,1]; its scale is explained by confidence_basis and is not a truth value.",
+        "[Claim] Optional producer estimate in [0,1]; its scale is explained by confidence_basis and is not a truth value.",
+        "[Requirement] Optional producer estimate in [0,1]; its scale is explained by confidence_basis and is not a truth value." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:float .
+
+spec:confidence_basis a rdf:Property ;
+    rdfs:label "confidence_basis" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Explanation of the confidence estimate, including any calibration or heuristic used.",
+        "[Claim] Explanation of the confidence estimate, including any calibration or heuristic used.",
+        "[Requirement] Explanation of the confidence estimate, including any calibration or heuristic used." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:counterevidence_anchors a rdf:Property ;
+    rdfs:label "counterevidence_anchors" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Source regions offered as contradictory evidence.",
+        "[Claim] Source regions offered as contradictory evidence.",
+        "[Requirement] Source regions offered as contradictory evidence." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:EvidenceAnchor .
+
+spec:derived_from_claims a rdf:Property ;
+    rdfs:label "derived_from_claims" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Premises used to derive this statement.",
+        "[Claim] Premises used to derive this statement.",
+        "[Requirement] Premises used to derive this statement." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:goal a rdf:Property ;
+    rdfs:label "goal" ;
+    rdfs:comment "[UseCase] Outcome the participant seeks." ;
+    rdfs:domain spec:UseCase ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:illustrates_requirements a rdf:Property ;
+    rdfs:label "illustrates_requirements" ;
+    rdfs:comment "[Scenario] Requirements illustrated by this scenario." ;
+    rdfs:domain spec:Scenario ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:origin a rdf:Property ;
+    rdfs:label "origin" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] How this statement was obtained.",
+        "[Claim] How this statement was obtained.",
+        "[Requirement] How this statement was obtained." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:OriginMode .
+
+spec:outcomes a rdf:Property ;
+    rdfs:label "outcomes" ;
+    rdfs:comment "[Scenario] Statements of observed or intended outcomes." ;
+    rdfs:domain spec:Scenario ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:participant a rdf:Property ;
+    rdfs:label "participant" ;
+    rdfs:comment "[ScenarioStep] Narrative role performing this interaction." ;
+    rdfs:domain spec:ScenarioStep ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:participants a rdf:Property ;
+    rdfs:label "participants" ;
+    rdfs:comment "[UseCase] Roles participating in this interaction." ;
+    rdfs:domain spec:UseCase ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:position a rdf:Property ;
+    rdfs:label "position" ;
+    rdfs:comment "[ScenarioStep] One-based position within a scenario." ;
+    rdfs:domain spec:ScenarioStep ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:integer .
+
+spec:preconditions a rdf:Property ;
+    rdfs:label "preconditions" ;
+    rdfs:comment "[Scenario] Statements establishing the starting conditions." ;
+    rdfs:domain spec:Scenario ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:priority a rdf:Property ;
+    rdfs:label "priority" ;
+    rdfs:comment "[Requirement] Priority expressed using the authoring team’s vocabulary." ;
+    rdfs:domain spec:Requirement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:refines_requirements a rdf:Property ;
+    rdfs:label "refines_requirements" ;
+    rdfs:comment "[Requirement] Broader requirements made more specific by this requirement." ;
+    rdfs:domain spec:Requirement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Requirement .
+
+spec:requirement_kind a rdf:Property ;
+    rdfs:label "requirement_kind" ;
+    rdfs:comment "[Requirement] Broad category of obligation." ;
+    rdfs:domain spec:Requirement ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:RequirementKind .
+
+spec:review_status a rdf:Property ;
+    rdfs:label "review_status" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Current explicit review disposition; absence means no disposition was recorded.",
+        "[Claim] Current explicit review disposition; absence means no disposition was recorded.",
+        "[Requirement] Current explicit review disposition; absence means no disposition was recorded." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ReviewStatus .
+
+spec:reviewed_at a rdf:Property ;
+    rdfs:label "reviewed_at" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Time of the recorded review disposition.",
+        "[Claim] Time of the recorded review disposition.",
+        "[Requirement] Time of the recorded review disposition." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:dateTime .
+
+spec:reviewed_by a rdf:Property ;
+    rdfs:label "reviewed_by" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Agent responsible for the recorded review disposition.",
+        "[Claim] Agent responsible for the recorded review disposition.",
+        "[Requirement] Agent responsible for the recorded review disposition." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecAgent .
+
+spec:statement a rdf:Property ;
+    rdfs:label "statement" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] The proposition asserted, with enough context to assess it.",
+        "[Claim] The proposition asserted, with enough context to assess it.",
+        "[Requirement] The proposition asserted, with enough context to assess it." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:statement_mode a rdf:Property ;
+    rdfs:label "statement_mode" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Whether this describes actual behavior, an obligation, or a hypothetical.",
+        "[Claim] Whether this describes actual behavior, an obligation, or a hypothetical.",
+        "[Requirement] Whether this describes actual behavior, an obligation, or a hypothetical." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:StatementMode .
+
+spec:steps a rdf:Property ;
+    rdfs:label "steps" ;
+    rdfs:comment "[Scenario] Ordered interactions in this scenario." ;
+    rdfs:domain spec:Scenario ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ScenarioStep .
+
+spec:supporting_anchors a rdf:Property ;
+    rdfs:label "supporting_anchors" ;
+    schema:domainIncludes spec:AcceptanceCriterion,
+        spec:Claim,
+        spec:Requirement ;
+    rdfs:comment "[AcceptanceCriterion] Source regions offered as support; a link does not by itself prove this claim.",
+        "[Claim] Source regions offered as support; a link does not by itself prove this claim.",
+        "[Requirement] Source regions offered as support; a link does not by itself prove this claim." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:EvidenceAnchor .
+
+spec:verification_method a rdf:Property ;
+    rdfs:label "verification_method" ;
+    rdfs:comment "[AcceptanceCriterion] How this condition can be checked; this is a plan, not an execution result." ;
+    rdfs:domain spec:AcceptanceCriterion ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:version a rdf:Property ;
+    rdfs:label "version" ;
+    rdfs:comment "[Specification] Version of this specification collection, independent of the ontology version." ;
+    rdfs:domain spec:Specification ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:RequirementKind a rdfs:Datatype ;
+    rdfs:label "RequirementKind" ;
+    rdfs:comment "Categories of requirements without prescribing a document template." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/RequirementKind/compliance>,
+        <https://ontologies.corestory.ai/specspec/export/values/RequirementKind/constraint>,
+        <https://ontologies.corestory.ai/specspec/export/values/RequirementKind/functional>,
+        <https://ontologies.corestory.ai/specspec/export/values/RequirementKind/quality> .
+
+<https://ontologies.corestory.ai/specspec/export/values/RequirementKind/compliance> rdf:value "compliance" ;
+    rdfs:comment "Obligation arising from regulation or organizational policy." .
+
+<https://ontologies.corestory.ai/specspec/export/values/RequirementKind/constraint> rdf:value "constraint" ;
+    rdfs:comment "Restriction on a solution or its implementation." .
+
+<https://ontologies.corestory.ai/specspec/export/values/RequirementKind/functional> rdf:value "functional" ;
+    rdfs:comment "Required functionality or behavior." .
+
+<https://ontologies.corestory.ai/specspec/export/values/RequirementKind/quality> rdf:value "quality" ;
+    rdfs:comment "Required quality such as performance, reliability, or usability." .

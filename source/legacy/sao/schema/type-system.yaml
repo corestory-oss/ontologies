@@ -1,0 +1,101 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/type-system
+name: sao-type-system
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  TypeKind:
+    description: Classification of type expressions
+    permissible_values:
+      primitive:
+        description: "Primitive type."
+      generic:
+        description: "Generic/parameterized type."
+      union:
+        description: "Union type."
+      intersection:
+        description: "Intersection type."
+      alias:
+        description: "Type alias."
+      pointer:
+        description: "Pointer type."
+      reference:
+        description: "Reference type."
+      array_of:
+        description: "Array type."
+      function_type:
+        description: "Function type."
+      tuple_type:
+        description: "Tuple type."
+      optional_type:
+        description: "Optional/nullable type."
+      constrained:
+        description: Type with constraints (e.g., sized, bounded)
+      opaque:
+        description: "Opaque type."
+
+
+classes:
+  TypeExpression:
+    comments:
+      - "Replaces flat `data_type` strings with structured, queryable type information. Enables cross-language type analysis and compatibility checking."
+    is_a: NamedEntity
+    description: >-
+      A recursive type model for expressing complex types (generics, unions,
+      pointers, function types, etc.) across all languages.
+    attributes:
+      type_kind:
+        description: "The kind of type expression."
+        range: TypeKind
+        required: true
+      base_type:
+        range: string
+        description: Base type name (e.g., "List", "int", "String")
+      has_type_parameters:
+        range: TypeExpression
+        multivalued: true
+        description: Generic type parameters (e.g., T in List<T>)
+      type_constraints:
+        range: string
+        multivalued: true
+        description: Constraints on type parameters
+      is_nullable:
+        description: "Whether the type permits null values."
+        range: boolean
+      nullability_model:
+        range: string
+        description: How nullability is expressed (e.g., "optional", "nullable", "Option<T>")
+      pointer_semantics:
+        range: string
+        description: Pointer/reference semantics (e.g., "raw", "smart", "weak")
+      type_of_data_elements:
+        description: "Data elements that have this type."
+        range: DataElement
+        multivalued: true
+        inverse: declared_type
+      type_of_parameters:
+        description: "Parameters that have this type."
+        range: Parameter
+        multivalued: true
+        inverse: has_type
+      return_type_of_callables:
+        description: "Callables that return this type."
+        range: CallableUnit
+        multivalued: true
+        inverse: has_return_type
+

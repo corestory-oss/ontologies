@@ -1,0 +1,29 @@
+{
+  "ontologies": {
+    "sao": {
+      "title": "Systems Abstraction Ontology",
+      "namespace": "https://ontologies.corestory.ai/sao/",
+      "version": "3.0.0",
+      "source": "ontologies/sao",
+      "products": {
+        "vocabulary": "dist/sao.ttl",
+        "shapes": "dist/sao.shacl.ttl",
+        "axioms": "dist/sao.owl.ttl"
+      }
+    },
+    "specspec": {
+      "title": "Specification & Evidence Ontology",
+      "namespace": "https://ontologies.corestory.ai/specspec/",
+      "version": "0.1.0",
+      "source": "ontologies/specspec",
+      "products": {
+        "vocabulary": "dist/specspec.ttl",
+        "shapes": "dist/specspec.shacl.ttl",
+        "axioms": "dist/specspec.owl.ttl",
+        "sao-vocabulary": "dist/specspec-sao.ttl",
+        "sao-shapes": "dist/specspec-sao.shacl.ttl",
+        "sao-axioms": "dist/specspec-sao.owl.ttl"
+      }
+    }
+  }
+}

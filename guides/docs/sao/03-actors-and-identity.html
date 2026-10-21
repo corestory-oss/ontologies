@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 2: Actors and Identity · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-2-actors-and-identity">Section 2: Actors and Identity</h1>
+<p>This section defines entities and actors that interact with the system, along with their identity and organizational structures.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships are now defined directly on classes rather than referencing global <code>slots:</code> for single-domain relationships.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Actors and Identity section provides a comprehensive model for representing who or what can perform actions within the system, how they are authenticated, and how they are organized within tenants and organizational hierarchies.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="actor">Actor</h3>
+<p><strong>Definition</strong>: Any entity that can initiate actions within the system (abstract base class).</p>
+<p><strong>Purpose</strong>: Provides a unified abstraction for both human users and automated systems that interact with the application.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>category</strong>: Actor category (<code>human</code>, <code>system</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>has_identities</strong>: One or more <code>Identity</code> entities associated with this actor</p>
+<p><strong>Back-Reference Attributes</strong> <em>(v2.0)</em>:
+- <strong>performs_actions</strong>: <code>Action</code> entities performed by this actor
+- <strong>audit_actions_performed</strong>: <code>AuditEntry</code> entities recording actions by this actor
+- <strong>actor_subscriptions</strong>: <code>Subscription</code> entities owned by this actor
+- <strong>owns_controls</strong>: <code>Control</code> entities owned by this actor
+- <strong>verifies_evidence</strong>: <code>Evidence</code> entities verified by this actor</p>
+<p><strong>Specialized Actor Types</strong>:</p>
+<h4 id="humanactor">HumanActor</h4>
+<p>A human user of the system.</p>
+<p><strong>Attributes</strong>:
+- <strong>actor_type</strong>: Type of human actor
+  - <code>end_user</code>: Regular end user of the system
+  - <code>administrator</code>: System administrator with elevated privileges
+  - <code>operator</code>: Operations personnel managing system runtime
+  - <code>developer</code>: Software developer or engineer
+  - <code>auditor</code>: Compliance or security auditor
+- <strong>email</strong>: Contact email address</p>
+<p><strong>Example Use Cases</strong>:
+- Customer purchasing products
+- System administrator managing users
+- DevOps engineer deploying services
+- Security auditor reviewing access logs</p>
+<h4 id="systemactor">SystemActor</h4>
+<p>A system or automated actor.</p>
+<p><strong>Attributes</strong>:
+- <strong>actor_type</strong>: Type of system actor
+  - <code>internal_service</code>: Internal service within the system
+  - <code>external_system</code>: External third-party system
+  - <code>scheduled_process</code>: Scheduled or cron-based process
+  - <code>ai_agent</code>: Artificial intelligence agent or bot
+  - <code>message_trigger</code>: Message or event-triggered automation
+- <strong>service_account</strong>: Service account identifier</p>
+<p><strong>Example Use Cases</strong>:
+- Microservice calling another service
+- External payment gateway
+- Nightly batch job
+- Chatbot assistant
+- Webhook handler</p>
+<hr />
+<h3 id="identity">Identity</h3>
+<p><strong>Definition</strong>: A verified representation of an actor within the system.</p>
+<p><strong>Purpose</strong>: Represents the authenticated identity of an actor, which can have multiple roles and credentials.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>identity_type</strong>: Type of identity (user, service, device)
+- <strong>credentials</strong>: List of associated credentials</p>
+<p><strong>Relationships</strong>:
+- <strong>represents_actor</strong>: The <code>Actor</code> this identity represents <em>(v2.0: this is now also a back-reference attribute on Identity, inverse of <code>has_identities</code>)</em>
+- <strong>has_roles</strong>: <code>Role</code> entities assigned to this identity
+- <strong>belongs_to_tenant</strong>: The <code>Tenant</code> this identity belongs to
+- <strong>member_of_organizations</strong>: <code>Organization</code> entities this identity is a member of</p>
+<p><strong>Identity Types</strong>:
+- <strong>User Identity</strong>: Represents a human user account
+- <strong>Service Identity</strong>: Represents a service account for automation
+- <strong>Device Identity</strong>: Represents a registered device</p>
+<p><strong>Example Use Cases</strong>:
+- User account with email/password authentication
+- Service account for CI/CD pipeline
+- OAuth identity from third-party provider
+- Device registration for mobile app</p>
+<hr />
+<h3 id="credential">Credential</h3>
+<p><strong>Definition</strong>: Authentication material proving an identity claim.</p>
+<p><strong>Purpose</strong>: Represents the means by which an identity can be authenticated.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>credential_type</strong>: Type of credential
+  - <code>password</code>: Username and password credentials
+  - <code>token</code>: Token-based authentication (JWT, bearer token)
+  - <code>certificate</code>: Digital certificate or X.509 certificate
+  - <code>api_key</code>: API key for service authentication
+  - <code>biometric</code>: Biometric authentication (fingerprint, face recognition)
+  - <code>mfa</code>: Multi-factor authentication
+  - <code>oauth</code>: OAuth 2.0 authentication flow
+- <strong>expires_at</strong>: Expiration timestamp
+- <strong>is_active</strong>: Whether the credential is currently active</p>
+<p><strong>Credential Lifecycle</strong>:
+1. <strong>Creation</strong>: Credential is generated or registered
+2. <strong>Active</strong>: Credential can be used for authentication
+3. <strong>Rotation</strong>: New credential replaces old one (for tokens, API keys)
+4. <strong>Expiration</strong>: Credential expires based on policy
+5. <strong>Revocation</strong>: Credential is explicitly invalidated</p>
+<p><strong>Security Best Practices</strong>:
+- Store passwords using strong hashing algorithms (bcrypt, Argon2)
+- Implement credential rotation policies for tokens and API keys
+- Require MFA for privileged operations
+- Use short-lived tokens with refresh token patterns
+- Audit all credential usage</p>
+<p><strong>Example Use Cases</strong>:
+- User password for login
+- JWT token for API authentication
+- X.509 certificate for mutual TLS
+- API key for external integrations
+- Biometric fingerprint for mobile app</p>
+<hr />
+<h3 id="tenant">Tenant</h3>
+<p><strong>Definition</strong>: An organizational boundary for multi-tenant systems.</p>
+<p><strong>Purpose</strong>: Isolates data and configuration for different customers or organizational units in a multi-tenant application.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>organizations</strong>: List of organizations within this tenant
+- <strong>settings</strong>: Tenant-specific configuration</p>
+<p><strong>Relationships</strong>:
+- <strong>contains_identities</strong>: <code>Identity</code> entities within this tenant</p>
+<p><strong>Multi-Tenancy Patterns</strong>:
+- <strong>Single Database, Shared Schema</strong>: All tenants share the same database and schema with tenant ID filtering
+- <strong>Single Database, Separate Schemas</strong>: Each tenant has its own schema in a shared database
+- <strong>Separate Databases</strong>: Each tenant has a completely isolated database</p>
+<p><strong>Tenant Isolation Strategies</strong>:
+- Row-level security with tenant ID
+- Schema-level isolation
+- Database-level isolation
+- Application-level filtering</p>
+<p><strong>Example Use Cases</strong>:
+- Enterprise customer account in SaaS platform
+- Regional division of a multinational company
+- Department in a university system
+- Franchise location in retail chain</p>
+<hr />
+<h3 id="organization">Organization</h3>
+<p><strong>Definition</strong>: A logical grouping of users and resources within a tenant.</p>
+<p><strong>Purpose</strong>: Provides hierarchical organization structure within a tenant for managing users, permissions, and resources.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>parent</strong>: Parent organization for hierarchical structures
+- <strong>children</strong>: Child organizations</p>
+<p><strong>Relationships</strong>:
+- <strong>has_identity_members</strong>: <code>Identity</code> entities that are members of this organization</p>
+<p><strong>Organizational Hierarchies</strong>:
+- <strong>Flat</strong>: Single-level organizations within a tenant
+- <strong>Hierarchical</strong>: Tree structure of organizations
+- <strong>Matrix</strong>: Organizations with multiple reporting relationships</p>
+<p><strong>Use Cases for Organizations</strong>:
+- Department structure (Engineering, Sales, Marketing)
+- Geographic regions (North America, EMEA, APAC)
+- Business units (Retail, Wholesale, E-commerce)
+- Project teams or workgroups</p>
+<p><strong>Permission Inheritance</strong>:
+Organizations can be used with organizational scopes to inherit permissions down the hierarchy.</p>
+<p><strong>Example Use Cases</strong>:
+- Engineering department with sub-teams (Frontend, Backend, DevOps)
+- Regional sales offices under global sales organization
+- Product teams within engineering division
+- Store locations within retail chain</p>
+<hr />
+<h2 id="identity-and-access-management-patterns">Identity and Access Management Patterns</h2>
+<h3 id="single-sign-on-sso">Single Sign-On (SSO)</h3>
+<p>An identity can authenticate once and access multiple systems through integration with identity providers (SAML, OAuth, OpenID Connect).</p>
+<h3 id="federated-identity">Federated Identity</h3>
+<p>Identities can be federated from external identity providers (Google, Microsoft, Okta) while maintaining local role assignments.</p>
+<h3 id="service-to-service-authentication">Service-to-Service Authentication</h3>
+<p>System actors use service identities with certificate-based or token-based credentials for secure inter-service communication.</p>
+<h3 id="identity-lifecycle-management">Identity Lifecycle Management</h3>
+<ol>
+<li><strong>Provisioning</strong>: Creating new identities</li>
+<li><strong>Authentication</strong>: Verifying identities with credentials</li>
+<li><strong>Authorization</strong>: Assigning roles and permissions</li>
+<li><strong>Modification</strong>: Updating identity attributes and roles</li>
+<li><strong>Suspension</strong>: Temporarily disabling identities</li>
+<li><strong>Deprovisioning</strong>: Removing identities and revoking access</li>
+</ol>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="identity-management">Identity Management</h3>
+<ol>
+<li><strong>Unique Identifiers</strong>: Use immutable, globally unique identifiers for identities</li>
+<li><strong>Email Verification</strong>: Verify email addresses during registration</li>
+<li><strong>Account Recovery</strong>: Implement secure password reset flows</li>
+<li><strong>Activity Tracking</strong>: Log all identity changes for audit purposes</li>
+</ol>
+<h3 id="credential-management">Credential Management</h3>
+<ol>
+<li><strong>Strong Password Policies</strong>: Enforce minimum complexity requirements</li>
+<li><strong>Credential Rotation</strong>: Require periodic password changes and token rotation</li>
+<li><strong>MFA Enforcement</strong>: Require multi-factor authentication for sensitive operations</li>
+<li><strong>Secure Storage</strong>: Never store credentials in plain text</li>
+<li><strong>Rate Limiting</strong>: Implement login attempt rate limiting</li>
+</ol>
+<h3 id="tenant-management">Tenant Management</h3>
+<ol>
+<li><strong>Data Isolation</strong>: Ensure complete data isolation between tenants</li>
+<li><strong>Resource Quotas</strong>: Implement resource limits per tenant</li>
+<li><strong>Tenant-Specific Configuration</strong>: Allow tenants to customize settings</li>
+<li><strong>Tenant Lifecycle</strong>: Support tenant provisioning, suspension, and deletion</li>
+</ol>
+<h3 id="organization-management">Organization Management</h3>
+<ol>
+<li><strong>Flexible Hierarchies</strong>: Support reorganization without breaking permissions</li>
+<li><strong>Inheritance Policies</strong>: Define clear permission inheritance rules</li>
+<li><strong>Delegation</strong>: Allow organizations to manage their own members</li>
+<li><strong>Cross-Organization Collaboration</strong>: Support users in multiple organizations</li>
+</ol>
+<hr />
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="authentication">Authentication</h3>
+<ul>
+<li>Implement secure authentication protocols (OAuth 2.0, OpenID Connect)</li>
+<li>Use HTTPS for all credential transmission</li>
+<li>Implement account lockout after failed attempts</li>
+<li>Support passwordless authentication options</li>
+</ul>
+<h3 id="authorization">Authorization</h3>
+<ul>
+<li>Follow principle of least privilege</li>
+<li>Implement role-based access control (see Section 3)</li>
+<li>Audit all permission changes</li>
+<li>Regularly review and prune unused accounts</li>
+</ul>
+<h3 id="compliance">Compliance</h3>
+<ul>
+<li>Support GDPR right to deletion for identities</li>
+<li>Implement data residency requirements for tenants</li>
+<li>Maintain audit logs for compliance (see Section 10)</li>
+<li>Support data export for regulatory requirements</li>
+</ul>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 1 (Structural Foundation)</strong>: Actors interact with interfaces and perform operations</li>
+<li><strong>Section 3 (Authorization)</strong>: Identities have roles that grant permissions</li>
+<li><strong>Section 4 (Domain Modeling)</strong>: Entities track which actor created/modified them</li>
+<li><strong>Section 5 (Behavior)</strong>: Actions are performed by actors</li>
+<li><strong>Section 6 (Data Management)</strong>: Audit entries record actor actions</li>
+<li><strong>Section 10 (Governance)</strong>: Controls are owned by actors; evidence is verified by actors</li>
+</ul>
+<hr />
+<h2 id="common-patterns-and-examples">Common Patterns and Examples</h2>
+<h3 id="user-registration-flow">User Registration Flow</h3>
+<pre><code>1. HumanActor submits registration
+2. System creates Identity with email verification token
+3. User verifies email
+4. System activates Credential (PASSWORD)
+5. System assigns default Role to Identity
+6. Identity belongs to Tenant and default Organization
+</code></pre>
+<h3 id="service-account-creation">Service Account Creation</h3>
+<pre><code>1. Administrator creates SystemActor
+2. System generates service Identity
+3. System creates Credential (API_KEY or CERTIFICATE)
+4. Administrator assigns Roles with limited permissions
+5. Service uses credentials for authentication
+</code></pre>
+<h3 id="multi-tenant-user-onboarding">Multi-Tenant User Onboarding</h3>
+<pre><code>1. New Tenant is created
+2. Admin user Identity is created within Tenant
+3. Admin creates Organizations within Tenant
+4. Admin invites additional users
+5. Users accept invitations and join Organizations
+6. Permissions are scoped to Tenant and Organizations
+</code></pre>
+<h3 id="external-identity-federation">External Identity Federation</h3>
+<pre><code>1. User initiates OAuth login with external provider
+2. System receives OAuth callback with user info
+3. System creates or links Identity using external ID
+4. System creates OAUTH Credential
+5. User is authenticated and assigned appropriate Roles
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -1,0 +1,238 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix export: <https://ontologies.corestory.ai/specspec/export/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:EvidenceAnchor a rdfs:Class ;
+    rdfs:label "EvidenceAnchor" ;
+    rdfs:comment "A location within an immutable source snapshot. It is evidence offered for a statement, not proof of correctness or a confidence score." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:SourceSnapshot a rdfs:Class ;
+    rdfs:label "SourceSnapshot" ;
+    rdfs:comment "An identified state of a source repository, document, dataset, or execution capture. Revision must identify the captured state, not a moving branch name." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:SpecActivity a rdfs:Class ;
+    rdfs:label "SpecActivity" ;
+    rdfs:comment "A recorded extraction, authoring, review, generation, or verification activity with identified inputs and tool versions." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:VerificationResult a rdfs:Class ;
+    rdfs:label "VerificationResult" ;
+    rdfs:comment "An observed outcome of checking a claim against a particular source state. Passing is scoped to this check and snapshot, not a universal assertion of equivalence." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:activity a rdf:Property ;
+    rdfs:label "activity" ;
+    rdfs:comment "[VerificationResult] Execution or review activity that performed the check." ;
+    rdfs:domain spec:VerificationResult ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecActivity .
+
+spec:activity_kind a rdf:Property ;
+    rdfs:label "activity_kind" ;
+    rdfs:comment "[SpecActivity] Kind of work performed." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:ActivityKind .
+
+spec:captured_at a rdf:Property ;
+    rdfs:label "captured_at" ;
+    rdfs:comment "[SourceSnapshot] Time the snapshot was captured." ;
+    rdfs:domain spec:SourceSnapshot ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:dateTime .
+
+spec:checked_snapshot a rdf:Property ;
+    rdfs:label "checked_snapshot" ;
+    rdfs:comment "[VerificationResult] Implementation or other source state against which the check ran." ;
+    rdfs:domain spec:VerificationResult ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SourceSnapshot .
+
+spec:checks_claim a rdf:Property ;
+    rdfs:label "checks_claim" ;
+    rdfs:comment "[VerificationResult] Claim or requirement evaluated." ;
+    rdfs:domain spec:VerificationResult ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:Claim .
+
+spec:ended_at a rdf:Property ;
+    rdfs:label "ended_at" ;
+    rdfs:comment "[SpecActivity] Time this activity finished." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:dateTime .
+
+spec:excerpt a rdf:Property ;
+    rdfs:label "excerpt" ;
+    rdfs:comment "[EvidenceAnchor] Optional quoted excerpt for inspection; the immutable source remains authoritative." ;
+    rdfs:domain spec:EvidenceAnchor ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:input_elements a rdf:Property ;
+    rdfs:label "input_elements" ;
+    rdfs:comment "[SpecActivity] Specification knowledge consumed by the activity." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecElement .
+
+spec:input_snapshots a rdf:Property ;
+    rdfs:label "input_snapshots" ;
+    rdfs:comment "[SpecActivity] Source states consumed by the activity." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SourceSnapshot .
+
+spec:line_end a rdf:Property ;
+    rdfs:label "line_end" ;
+    rdfs:comment "[EvidenceAnchor] Inclusive last line; must be at least line_start." ;
+    rdfs:domain spec:EvidenceAnchor ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:integer .
+
+spec:line_start a rdf:Property ;
+    rdfs:label "line_start" ;
+    rdfs:comment "[EvidenceAnchor] Inclusive one-based first line, when the source is line-oriented." ;
+    rdfs:domain spec:EvidenceAnchor ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:integer .
+
+spec:media_type a rdf:Property ;
+    rdfs:label "media_type" ;
+    rdfs:comment "[SourceSnapshot] Media type of the captured source, when relevant." ;
+    rdfs:domain spec:SourceSnapshot ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:model_identifier a rdf:Property ;
+    rdfs:label "model_identifier" ;
+    rdfs:comment "[SpecActivity] Model and version used for inference, if applicable." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:outcome a rdf:Property ;
+    rdfs:label "outcome" ;
+    rdfs:comment "[VerificationResult] Observed check outcome." ;
+    rdfs:domain spec:VerificationResult ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:VerificationOutcome .
+
+spec:parameters a rdf:Property ;
+    rdfs:label "parameters" ;
+    rdfs:comment "[SpecActivity] Recorded configuration or a URI to the immutable configuration." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:path a rdf:Property ;
+    rdfs:label "path" ;
+    rdfs:comment "[EvidenceAnchor] Path within the captured source; use a repository-relative path for source code." ;
+    rdfs:domain spec:EvidenceAnchor ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:performed_by a rdf:Property ;
+    rdfs:label "performed_by" ;
+    rdfs:comment "[SpecActivity] Responsible agent." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecAgent .
+
+spec:result_anchors a rdf:Property ;
+    rdfs:label "result_anchors" ;
+    rdfs:comment "[VerificationResult] Captured outputs offered as evidence of the check result." ;
+    rdfs:domain spec:VerificationResult ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:EvidenceAnchor .
+
+spec:revision a rdf:Property ;
+    rdfs:label "revision" ;
+    rdfs:comment "[SourceSnapshot] Immutable commit ID, content digest, or immutable source version." ;
+    rdfs:domain spec:SourceSnapshot ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:source_uri a rdf:Property ;
+    rdfs:label "source_uri" ;
+    rdfs:comment "[SourceSnapshot] Identity or location of the source being captured." ;
+    rdfs:domain spec:SourceSnapshot ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:anyURI .
+
+spec:started_at a rdf:Property ;
+    rdfs:label "started_at" ;
+    rdfs:comment "[SpecActivity] Time this activity began." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:dateTime .
+
+spec:tool_version a rdf:Property ;
+    rdfs:label "tool_version" ;
+    rdfs:comment "[SpecActivity] Version of the tool used, if applicable." ;
+    rdfs:domain spec:SpecActivity ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:ActivityKind a rdfs:Datatype ;
+    rdfs:label "ActivityKind" ;
+    rdfs:comment "Kinds of activities producing or reviewing specification knowledge." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/authoring>,
+        <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/extraction>,
+        <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/inference>,
+        <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/rendering>,
+        <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/review>,
+        <https://ontologies.corestory.ai/specspec/export/values/ActivityKind/verification> .
+
+spec:VerificationOutcome a rdfs:Datatype ;
+    rdfs:label "VerificationOutcome" ;
+    rdfs:comment "Outcomes of a recorded check." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf rdfs:Literal ;
+    export:permissibleValue <https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/failed>,
+        <https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/inconclusive>,
+        <https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/not_run>,
+        <https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/passed> .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/authoring> rdf:value "authoring" ;
+    rdfs:comment "Record supplied knowledge or intent." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/extraction> rdf:value "extraction" ;
+    rdfs:comment "Extract knowledge from a source." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/inference> rdf:value "inference" ;
+    rdfs:comment "Synthesize or infer statements." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/rendering> rdf:value "rendering" ;
+    rdfs:comment "Produce a document representation." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/review> rdf:value "review" ;
+    rdfs:comment "Assess knowledge and its evidence." .
+
+<https://ontologies.corestory.ai/specspec/export/values/ActivityKind/verification> rdf:value "verification" ;
+    rdfs:comment "Execute or inspect a check." .
+
+<https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/failed> rdf:value "failed" ;
+    rdfs:comment "The scoped check failed." .
+
+<https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/inconclusive> rdf:value "inconclusive" ;
+    rdfs:comment "The check could not determine the outcome." .
+
+<https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/not_run> rdf:value "not_run" ;
+    rdfs:comment "The check was planned but not executed." .
+
+<https://ontologies.corestory.ai/specspec/export/values/VerificationOutcome/passed> rdf:value "passed" ;
+    rdfs:comment "The scoped check passed." .

@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 6: Data Management · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-6-data-management">Section 6: Data Management</h1>
+<p>This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as <code>Schema</code>, <code>DataStore</code>, and <code>RetentionPolicy</code> gain back-reference attributes that make navigating the ontology more explicit. Additionally, <code>SchemaVersion</code> and <code>AuditEntry</code> have been restructured from subclass inheritance to composition (they are now <code>is_a: NamedEntity</code> with explicit reference attributes back to their parent).</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Data Management section provides comprehensive modeling of data persistence, schema management, data governance, and audit trails.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="datastore">DataStore</h3>
+<p><strong>Definition</strong>: A persistence mechanism for storing data.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>store_type</strong>: <code>relational_db</code>, <code>document_db</code>, <code>key_value_store</code>, <code>graph_db</code>, <code>time_series_db</code>, <code>object_storage</code>, <code>search_index</code>, <code>cache</code>, <code>message_broker</code>, <code>data_lake</code>, <code>vsam</code>, <code>flat_file</code>, <code>isam</code>, <code>dead_letter_queue</code>
+- <strong>connection_string</strong>: Connection configuration
+- <strong>collections</strong>: List of collections/tables</p>
+<p><strong>Relationships</strong>:
+- <strong>hosted_on_infrastructure</strong>: <code>Infrastructure</code> hosting the data store
+- <strong>persists_aggregates</strong>: <code>Aggregate</code> entities stored
+- <strong>store_read_by_pipelines</strong>: <code>DataPipeline</code> entities that read from this store
+- <strong>store_written_by_pipelines</strong>: <code>DataPipeline</code> entities that write to this store
+- <strong>store_file_definitions</strong>: <code>FileDefinition</code> entities associated with this store</p>
+<p><strong>Data Store Types</strong>:
+- <code>relational_db</code>: SQL databases (PostgreSQL, MySQL, Oracle)
+- <code>document_db</code>: NoSQL document stores (MongoDB, CouchDB)
+- <code>key_value_store</code>: KV stores (Redis, DynamoDB)
+- <code>graph_db</code>: Graph databases (Neo4j, ArangoDB)
+- <code>time_series_db</code>: Time-series databases (InfluxDB, TimescaleDB)
+- <code>object_storage</code>: Object stores (S3, Azure Blob)
+- <code>search_index</code>: Search engines (Elasticsearch, Solr)
+- <code>cache</code>: In-memory caches (Redis, Memcached)
+- <code>message_broker</code>: Message queues (Kafka, RabbitMQ)
+- <code>data_lake</code>: Analytics data lakes (S3, ADLS)
+- <code>vsam</code>: IBM VSAM dataset
+- <code>flat_file</code>: Sequential or flat file
+- <code>isam</code>: Indexed Sequential Access Method file
+- <code>dead_letter_queue</code>: Dead letter queue</p>
+<hr />
+<h3 id="collection">Collection</h3>
+<p><strong>Definition</strong>: A logical grouping of records (table, collection, bucket).</p>
+<p><strong>Key Attributes</strong>:
+- <strong>indexes</strong>: Index definitions for query performance (<strong>deprecated</strong> in v2.0 -- use <code>has_indexes</code> instead)</p>
+<p><strong>Relationships</strong>:
+- <strong>collection_structured_by_schema</strong>: <code>Schema</code> defining structure
+- <strong>governed_by_retention_policy</strong>: <code>RetentionPolicy</code> for data lifecycle
+- <strong>stores_records</strong>: <code>Record</code> instances
+- <strong>has_constraints</strong>: <code>DatabaseConstraint[]</code> (inlined) -- constraint definitions for this collection (see Section 27)
+- <strong>has_indexes</strong>: <code>DatabaseIndex[]</code> (inlined) -- index definitions for this collection (see Section 27)</p>
+<p><strong>Collection Patterns</strong>:
+- <strong>Relational Table</strong>: Structured rows with fixed schema
+- <strong>Document Collection</strong>: Flexible JSON documents
+- <strong>Object Bucket</strong>: Binary objects with metadata
+- <strong>Event Stream</strong>: Append-only log of events</p>
+<hr />
+<h3 id="record">Record</h3>
+<p><strong>Definition</strong>: A single persisted instance of data.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>classifications</strong>: Data sensitivity classifications</p>
+<p><strong>Relationships</strong>:
+- <strong>stored_in_collection</strong>: Parent <code>Collection</code>
+- <strong>conforms_to_schema</strong>: <code>Schema</code> for validation
+- <strong>has_lineage</strong>: <code>DataLineage</code> tracking origin and transformations</p>
+<hr />
+<h3 id="schema">Schema</h3>
+<p><strong>Definition</strong>: Structural definition of stored data.</p>
+<p><strong>Key Attributes</strong>:
+- Implements <code>Versionable</code> mixin
+- <strong>schema_type</strong>: <code>table_schema</code>, <code>document_schema</code>, <code>event_schema</code>, <code>api_schema</code>, <code>message_schema</code>
+- <strong>definition</strong>: Schema definition (JSON Schema, DDL, etc.)
+- <strong>schema_versions</strong>: List of <code>SchemaVersion</code> entities (v2.0 back-reference)</p>
+<p><strong>Back-Reference Attributes</strong> (v2.0):
+- <strong>structures_resource_types</strong>: <code>ResourceType</code> entities structured by this schema
+- <strong>structures_collections</strong>: <code>Collection</code> entities structured by this schema
+- <strong>structures_events</strong>: <code>Event</code> entities structured by this schema
+- <strong>structures_messages</strong>: <code>Message</code> entities structured by this schema
+- <strong>defines_operation_input</strong>: <code>Operation</code> entities using this schema as input
+- <strong>defines_operation_output</strong>: <code>Operation</code> entities using this schema as output
+- <strong>validates_records</strong>: <code>Record</code> entities validated by this schema</p>
+<p><strong>Schema Evolution</strong>:
+- <strong>Backward Compatible</strong>: New schema can read old data
+- <strong>Forward Compatible</strong>: Old schema can read new data
+- <strong>Breaking Change</strong>: Incompatible schema change</p>
+<p><strong>Example Schema Types</strong>:
+- <code>table_schema</code>: SQL CREATE TABLE statement
+- <code>document_schema</code>: JSON Schema for documents
+- <code>event_schema</code>: Event payload schema
+- <code>api_schema</code>: OpenAPI/GraphQL schema
+- <code>message_schema</code>: Message format schema</p>
+<hr />
+<h3 id="schemaversion">SchemaVersion</h3>
+<p><strong>Definition</strong>: A specific iteration of a schema.</p>
+<blockquote>
+<p><strong>v2.0 Change</strong>: <code>SchemaVersion</code> is now <code>is_a: NamedEntity</code> (previously <code>is_a: Schema</code>). Instead of inheriting from <code>Schema</code>, it uses the <code>version_of_schema</code> attribute to reference its parent <code>Schema</code>.</p>
+</blockquote>
+<p><strong>Key Attributes</strong>:
+- <strong>version</strong>: Semantic version number
+- <strong>definition</strong>: Schema at this version
+- <strong>migration_script</strong>: Migration from previous version
+- <strong>is_backward_compatible</strong>: Compatibility flag</p>
+<p><strong>Relationships</strong>:
+- <strong>version_of_schema</strong>: <code>Schema</code> that this version belongs to</p>
+<p><strong>Schema Versioning Best Practices</strong>:
+1. Use semantic versioning
+2. Provide migration scripts
+3. Test backward compatibility
+4. Document breaking changes
+5. Support multiple versions during transition</p>
+<hr />
+<h3 id="dataclassification">DataClassification</h3>
+<p><strong>Definition</strong>: A sensitivity or handling category for data.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>classification_type</strong>: <code>public</code>, <code>internal</code>, <code>confidential</code>, <code>restricted</code>, <code>pii</code>, <code>phi</code>, <code>pci</code>
+- <strong>handling_requirements</strong>: Required procedures
+- <strong>encryption_required</strong>: Encryption flag</p>
+<p><strong>Classification Levels</strong>:
+- <code>public</code>: Publicly accessible information
+- <code>internal</code>: Internal use only
+- <code>confidential</code>: Sensitive business information
+- <code>restricted</code>: Highly restricted access
+- <code>pii</code>: Personally Identifiable Information (GDPR)
+- <code>phi</code>: Protected Health Information (HIPAA)
+- <code>pci</code>: Payment Card Industry data (PCI-DSS)</p>
+<p><strong>Handling Requirements</strong>:
+- Encryption at rest and in transit
+- Access logging and monitoring
+- Data masking for non-production environments
+- Secure deletion procedures
+- Access control restrictions</p>
+<hr />
+<h3 id="retentionpolicy">RetentionPolicy</h3>
+<p><strong>Definition</strong>: Rules governing data lifecycle and deletion.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>retention_days</strong>: Days to retain data
+- <strong>archive_after_days</strong>: Days before archiving
+- <strong>deletion_strategy</strong>: How data is deleted (soft delete, hard delete, anonymize)</p>
+<p><strong>Back-Reference Attributes</strong> (v2.0):
+- <strong>governs_collections</strong>: <code>Collection</code> entities governed by this policy
+- <strong>governs_logs</strong>: <code>Log</code> entities governed by this policy
+- <strong>governs_audit_logs</strong>: <code>AuditLog</code> entities governed by this policy</p>
+<p><strong>Retention Strategies</strong>:
+- <strong>Legal Hold</strong>: Prevent deletion for legal reasons
+- <strong>Compliance-Driven</strong>: Based on regulatory requirements (GDPR, HIPAA, SOX)
+- <strong>Business-Driven</strong>: Based on business needs
+- <strong>Automatic Archival</strong>: Move to cheaper storage after period
+- <strong>Secure Deletion</strong>: Cryptographic erasure or overwriting</p>
+<p><strong>Example Retention Policies</strong>:
+- <strong>User Data</strong>: 7 years retention (GDPR compliance)
+- <strong>Application Logs</strong>: 90 days retention, archive to cold storage after 30 days
+- <strong>Audit Logs</strong>: 10 years retention (regulatory requirement)
+- <strong>Session Data</strong>: 24 hours retention
+- <strong>Temporary Files</strong>: Delete after 7 days</p>
+<hr />
+<h3 id="datalineage">DataLineage</h3>
+<p><strong>Definition</strong>: The origin, transformation history, and movement of data.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>source</strong>: Original data source
+- <strong>transformations</strong>: List of transformations applied</p>
+<p><strong>Relationships</strong>:
+- <strong>derived_from_records</strong>: Source <code>Record</code> entities
+- <strong>tracks_record</strong>: Target <code>Record</code> being tracked</p>
+<p><strong>Lineage Use Cases</strong>:
+- <strong>Compliance</strong>: Demonstrate data provenance for regulations
+- <strong>Debugging</strong>: Trace data quality issues to source
+- <strong>Impact Analysis</strong>: Understand downstream effects of changes
+- <strong>Optimization</strong>: Identify redundant transformations</p>
+<p><strong>Lineage Tracking Levels</strong>:
+- <strong>Table-Level</strong>: Track dataset dependencies
+- <strong>Column-Level</strong>: Track field-level lineage
+- <strong>Record-Level</strong>: Track individual record transformations</p>
+<hr />
+<h3 id="auditlog">AuditLog</h3>
+<p><strong>Definition</strong>: A tamper-evident record of system activities.</p>
+<p><strong>Key Attributes</strong>:
+- <strong>entries</strong>: List of <code>AuditEntry</code> records
+- <strong>audit_log_entries</strong>: <code>AuditEntry[]</code> (v2.0 back-reference from <code>AuditEntry.entry_in_audit_log</code>)</p>
+<p><strong>Relationships</strong>:
+- <strong>auditlog_governed_by_retention</strong>: <code>RetentionPolicy</code> for log retention</p>
+<p><strong>Audit Log Requirements</strong>:
+- Immutability (write-once)
+- Tamper-evidence (cryptographic signatures)
+- Completeness (all actions logged)
+- Accuracy (correct timestamps, actors)
+- Availability (accessible for audits)</p>
+<hr />
+<h3 id="auditentry">AuditEntry</h3>
+<p><strong>Definition</strong>: A single record within an audit log.</p>
+<blockquote>
+<p><strong>v2.0 Change</strong>: <code>AuditEntry</code> is now <code>is_a: NamedEntity</code> (previously <code>is_a: AuditLog</code>). Instead of inheriting from <code>AuditLog</code>, it uses the <code>entry_in_audit_log</code> attribute to reference its parent <code>AuditLog</code>. Conversely, <code>AuditLog</code> now has the <code>contains_entries</code> back-reference attribute.</p>
+</blockquote>
+<p><strong>Key Attributes</strong>:
+- <strong>timestamp</strong>: When the event occurred (required)
+- <strong>outcome</strong>: Result of the action (success, failure, error)
+- <strong>details</strong>: Additional context</p>
+<p><strong>Relationships</strong>:
+- <strong>entry_in_audit_log</strong>: <code>AuditLog</code> that this entry belongs to
+- <strong>audit_performed_by_actor</strong>: <code>Actor</code> who performed action
+- <strong>records_action</strong>: <code>Action</code> that was performed
+- <strong>affects_resource</strong>: <code>Resource</code> affected</p>
+<p><strong>Audit Entry Contents</strong>:
+- <strong>Who</strong>: Actor/identity performing action
+- <strong>What</strong>: Action performed
+- <strong>When</strong>: Timestamp of action
+- <strong>Where</strong>: Source IP, location, service
+- <strong>Why</strong>: Context or reason (if available)
+- <strong>Result</strong>: Success or failure</p>
+<p><strong>Audit Event Examples</strong>:
+- User login/logout
+- Permission changes
+- Data access (especially PII/PHI)
+- Configuration changes
+- System events (start, stop, deploy)
+- Security events (failed auth, suspicious activity)</p>
+<hr />
+<h2 id="data-management-patterns">Data Management Patterns</h2>
+<h3 id="polyglot-persistence">Polyglot Persistence</h3>
+<p>Use different data stores for different use cases:
+- Relational DB for transactional data
+- Document DB for flexible schemas
+- Cache for frequently accessed data
+- Search index for full-text search
+- Time-series DB for metrics</p>
+<h3 id="cqrs-command-query-responsibility-segregation">CQRS (Command Query Responsibility Segregation)</h3>
+<p>Separate read and write data models:
+- Write model: Optimized for updates
+- Read model: Optimized for queries
+- Synchronization via events</p>
+<h3 id="event-sourcing">Event Sourcing</h3>
+<p>Store events as source of truth:
+- Append-only event log
+- Rebuild state by replaying events
+- Complete audit trail
+- Time travel capabilities</p>
+<h3 id="data-lake-pattern">Data Lake Pattern</h3>
+<p>Centralized repository for all data:
+- Raw data in native format
+- Schema-on-read
+- Support for batch and stream processing
+- Analytics and ML use cases</p>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="schema-management">Schema Management</h3>
+<ol>
+<li><strong>Version Control</strong>: Store schemas in version control</li>
+<li><strong>Validation</strong>: Validate data against schemas</li>
+<li><strong>Evolution</strong>: Plan for schema evolution</li>
+<li><strong>Documentation</strong>: Document schema fields and semantics</li>
+</ol>
+<h3 id="data-classification">Data Classification</h3>
+<ol>
+<li><strong>Automatic Classification</strong>: Auto-detect and classify sensitive data</li>
+<li><strong>Labeling</strong>: Tag data with classification labels</li>
+<li><strong>Enforcement</strong>: Enforce handling requirements automatically</li>
+<li><strong>Monitoring</strong>: Monitor access to classified data</li>
+</ol>
+<h3 id="retention-and-archival">Retention and Archival</h3>
+<ol>
+<li><strong>Automated Policies</strong>: Implement automated retention policies</li>
+<li><strong>Compliance</strong>: Align with regulatory requirements</li>
+<li><strong>Cost Optimization</strong>: Archive to cheaper storage</li>
+<li><strong>Verification</strong>: Regularly verify retention compliance</li>
+</ol>
+<h3 id="audit-logging">Audit Logging</h3>
+<ol>
+<li><strong>Comprehensive</strong>: Log all security-relevant events</li>
+<li><strong>Integrity</strong>: Ensure logs cannot be tampered</li>
+<li><strong>Availability</strong>: Make logs accessible for investigation</li>
+<li><strong>Analysis</strong>: Use SIEM tools for log analysis</li>
+<li><strong>Privacy</strong>: Protect sensitive data in logs</li>
+</ol>
+<h3 id="data-lineage">Data Lineage</h3>
+<ol>
+<li><strong>Automated Tracking</strong>: Automatically capture lineage metadata</li>
+<li><strong>Visualization</strong>: Provide lineage visualization tools</li>
+<li><strong>Granularity</strong>: Track at appropriate level (table, column, record)</li>
+<li><strong>Integration</strong>: Integrate with data catalog and governance tools</li>
+</ol>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 4 (Domain Modeling)</strong>: Aggregates persisted in data stores</li>
+<li><strong>Section 5 (Behavior)</strong>: Actions recorded in audit logs</li>
+<li><strong>Section 7 (Integration)</strong>: Message schemas for integration</li>
+<li><strong>Section 8 (Deployment)</strong>: Data stores hosted on infrastructure</li>
+<li><strong>Section 9 (Observability)</strong>: Logs stored with retention policies</li>
+<li><strong>Section 10 (Governance)</strong>: Compliance requirements drive retention policies</li>
+</ul>
+<hr />
+<h2 id="example-e-commerce-data-architecture">Example: E-Commerce Data Architecture</h2>
+<pre><code>DataStores:
+  - ProductDB (relational_db)
+    - Collections: products, categories, inventory
+    - Schema: Relational table schemas
+    - Retention: 7 years
+
+  - OrderDB (relational_db)
+    - Collections: orders, order_items, payments
+    - Classification: pci for payment data
+    - Retention: 10 years (compliance)
+    - Audit: All access logged
+
+  - SessionCache (cache)
+    - Collections: user_sessions
+    - Retention: 24 hours
+
+  - ProductSearch (search_index)
+    - Collections: product_index
+    - Schema: Product search schema
+    - Sync: From ProductDB via events
+
+  - EventStore (message_broker)
+    - Collections: domain_events
+    - Schema: Event schemas (versioned)
+    - Retention: 30 days, archive to data lake
+
+Data Lineage Example:
+  - Raw Product Data (from supplier API)
+    -&gt; Enrichment (add images, descriptions)
+    -&gt; Validation (check required fields)
+    -&gt; Normalization (standardize formats)
+    -&gt; ProductDB (transactional storage)
+    -&gt; ProductSearch (indexed for search)
+    -&gt; AnalyticsDB (for reporting)
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

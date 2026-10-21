@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Validation · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="validation">Validation</h1>
+<p><strong>Input:</strong> Complete extraction outputs from all 8 phases (Phases 1--8)
+<strong>Output:</strong> Validated SAO instance, gap report, coverage metrics</p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Validation is the quality assurance gate that ensures the extracted ontology is structurally valid, relationally complete, and semantically coherent. It operates at three levels:</p>
+<ol>
+<li><strong>Structural validation</strong> — Does the output conform to the LinkML schema (<code>legacy/sao/sao.yml</code>)? Required attributes present, enum values valid, types correct.</li>
+<li><strong>Relational validation</strong> — Are all relationships bidirectionally symmetric, referentially intact, and populated where required?</li>
+<li><strong>Semantic validation</strong> — Does the extraction make business sense? Are bounded context boundaries reasonable? Do capabilities match what the system actually does?</li>
+</ol>
+<p>Validation runs after all phases complete, but individual phases MAY also be validated incrementally. Running <code>linkml-validate</code> after each phase catches structural issues early and avoids compounding errors across phases.</p>
+<hr />
+<h2 id="2-structural-validation">2. Structural Validation</h2>
+<h3 id="21-running-linkml-validate">2.1 Running <code>linkml-validate</code></h3>
+<p>The primary structural validation tool is <code>linkml-validate</code> from the LinkML toolkit. Run it against the extraction output:</p>
+<pre><code class="language-bash">linkml-validate -s legacy/sao/sao.yml extracted-output.yaml
+</code></pre>
+<p>This checks:</p>
+<ul>
+<li><strong>Required attributes</strong> — Every instance has all attributes marked as <code>required: true</code> in the schema</li>
+<li><strong>Enum value validity</strong> — Every enum-typed attribute uses a value from the schema's <code>permissible_values</code></li>
+<li><strong>Type correctness</strong> — Strings are strings, integers are integers, lists are lists</li>
+<li><strong>Cardinality constraints</strong> — <code>multivalued: true</code> attributes contain lists; single-valued attributes contain scalars</li>
+<li><strong>Class validity</strong> — Every instance uses a class name defined in the schema</li>
+</ul>
+<h3 id="22-common-errors-and-fixes">2.2 Common Errors and Fixes</h3>
+<p><strong>Missing required field:</strong></p>
+<pre><code>Validation error: 'name' is a required property
+  in EncapsulationUnit at index 14
+</code></pre>
+<p>Fix: Go back to the phase that produced this instance and populate the missing attribute. Every <strong>EncapsulationUnit</strong> MUST have a <code>name</code>.</p>
+<p><strong>Misspelled enum value:</strong></p>
+<pre><code>Validation error: 'rest-api' is not valid under any of the given schemas
+  in Interface at index 3, attribute 'interface_type'
+</code></pre>
+<p>Fix: Use the exact <code>permissible_values</code> from <code>legacy/sao/sao.yml</code>. The correct value is <code>rest_api</code>, not <code>rest-api</code>. Enum values in SAO use underscores, not hyphens.</p>
+<p><strong>Wrong data type:</strong></p>
+<pre><code>Validation error: 42 is not of type 'string'
+  in CallableUnit at index 7, attribute 'name'
+</code></pre>
+<p>Fix: Ensure the value is a string. Wrap numeric-looking names in quotes in YAML.</p>
+<p><strong>Scalar where list expected:</strong></p>
+<pre><code>Validation error: 'OrderService' is not of type 'array'
+  in Module at index 2, attribute 'contains_components'
+</code></pre>
+<p>Fix: Use a YAML list even for single values:</p>
+<pre><code class="language-yaml">contains_components:
+  - OrderService
+</code></pre>
+<p><strong>Unknown class name:</strong></p>
+<pre><code>Validation error: 'Microservice' is not a valid class
+</code></pre>
+<p>Fix: SAO does not define a <strong>Microservice</strong> class. Use <strong>Service</strong> with <code>service_type: microservice</code> instead. Consult the guide or <code>legacy/sao/sao.yml</code> for the correct class.</p>
+<h3 id="23-incremental-validation">2.3 Incremental Validation</h3>
+<p>The extraction agent SHOULD run <code>linkml-validate</code> after completing each phase, not just at the end. This catches issues before downstream phases build on invalid data:</p>
+<pre><code class="language-bash"># After Phase 1
+linkml-validate -s legacy/sao/sao.yml phase1-output.yaml
+
+# After Phase 2 (append to growing output)
+linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
+</code></pre>
+<hr />
+<h2 id="3-relational-validation">3. Relational Validation</h2>
+<p>Structural validation confirms that individual instances are well-formed. Relational validation confirms that the relationships between instances are correct and complete.</p>
+<h3 id="31-bidirectional-symmetry">3.1 Bidirectional Symmetry</h3>
+<p>Every bidirectional relationship pair in SAO MUST be symmetric. If entity A references entity B through a relationship, entity B MUST reference entity A through the inverse relationship.</p>
+<p><strong>Example:</strong> If <code>Module.contains_components</code> includes <strong>OrderComponent</strong>, then <code>Component.part_of_module</code> on <strong>OrderComponent</strong> MUST reference that <strong>Module</strong>.</p>
+<p>The SAO defines 214+ bidirectional relationship pairs (see guide.md Appendix C). The extraction agent MUST verify symmetry for every populated pair.</p>
+<p><strong>Systematic verification approach:</strong></p>
+<ol>
+<li>Collect all relationship pairs from the extraction output</li>
+<li>For each pair (e.g., <code>contains_components</code> / <code>part_of_module</code>):</li>
+<li>Iterate over all instances of the source class</li>
+<li>For each reference in the forward relationship, verify the inverse exists on the target</li>
+<li>For each reference in the inverse relationship, verify the forward exists on the source</li>
+<li>Report any asymmetries as errors</li>
+</ol>
+<p><strong>Common asymmetry causes:</strong>
+- Entity added in one phase but the inverse relationship populated in a different phase, and one was skipped
+- Copy-paste errors when manually building YAML
+- Phase 7 (Bridge Stitching) not run or incomplete</p>
+<h3 id="32-referential-integrity">3.2 Referential Integrity</h3>
+<p>Every reference MUST point to an entity that exists in the extraction output. The extraction agent MUST check for:</p>
+<ul>
+<li><strong>Dangling references</strong> — A relationship attribute references an ID that does not correspond to any instance in the output. For example, <code>Component.implemented_by_code</code> references <code>UserService</code> but no <strong>EncapsulationUnit</strong> with that ID exists.</li>
+<li><strong>Duplicate IDs</strong> — Two instances of the same class share the same <code>id</code>. Every entity MUST have a unique identifier within its class.</li>
+<li><strong>Cross-class type errors</strong> — A relationship references an entity of the wrong class. For example, <code>Module.contains_components</code> references a <strong>CallableUnit</strong> instead of a <strong>Component</strong>.</li>
+</ul>
+<p><strong>Verification approach:</strong></p>
+<ol>
+<li>Build an index of all entity IDs, grouped by class</li>
+<li>For every relationship attribute on every instance, verify the referenced ID exists and is the correct class</li>
+<li>Check for duplicate IDs within each class</li>
+</ol>
+<h3 id="33-required-relationships">3.3 Required Relationships</h3>
+<p>Certain relationships are essential for a coherent SAO instance. The following table lists relationships that MUST or SHOULD be populated for key classes:</p>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Relationship</th>
+<th>Target</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>EncapsulationUnit</strong></td>
+<td><code>defined_in_container</code></td>
+<td><strong>CodeContainer</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>CallableUnit</strong></td>
+<td><code>contained_in_unit</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>DataStructure</strong></td>
+<td><code>defined_in_unit</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>DataElement</strong></td>
+<td><code>part_of_structure</code></td>
+<td><strong>DataStructure</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Component</strong></td>
+<td><code>implemented_by_code</code></td>
+<td><strong>EncapsulationUnit</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Component</strong></td>
+<td><code>part_of_module</code></td>
+<td><strong>Module</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td><code>mapped_from_directory</code></td>
+<td><strong>StorageLocation</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td><code>part_of_context</code></td>
+<td><strong>BoundedContext</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>BoundedContext</strong></td>
+<td><code>part_of_system</code></td>
+<td><strong>System</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>DomainEntity</strong></td>
+<td><code>mapped_from_structure</code></td>
+<td><strong>DataStructure</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Aggregate</strong></td>
+<td><code>has_root_entity</code></td>
+<td><strong>DomainEntity</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Operation</strong></td>
+<td><code>implemented_by_callables</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td><code>runs_module</code></td>
+<td><strong>Module</strong></td>
+<td>SHOULD</td>
+</tr>
+<tr>
+<td><strong>Capability</strong></td>
+<td><code>provided_by_modules</code></td>
+<td><strong>Module</strong></td>
+<td>SHOULD</td>
+</tr>
+<tr>
+<td><strong>Feature</strong></td>
+<td><code>realizes_capabilities</code></td>
+<td><strong>Capability</strong></td>
+<td>SHOULD</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong></td>
+<td><code>has_steps</code></td>
+<td><strong>Step</strong></td>
+<td>MUST</td>
+</tr>
+<tr>
+<td><strong>Rule</strong></td>
+<td><code>enforced_by</code></td>
+<td><strong>CallableUnit</strong></td>
+<td>SHOULD</td>
+</tr>
+<tr>
+<td><strong>Interface</strong></td>
+<td><code>exposed_by_component</code></td>
+<td><strong>Component</strong></td>
+<td>SHOULD</td>
+</tr>
+</tbody>
+</table>
+<p>An entity missing a MUST relationship is an extraction error that MUST be corrected. An entity missing a SHOULD relationship SHOULD be investigated -- it may indicate a gap in extraction or a legitimate case where the relationship does not apply.</p>
+<hr />
+<h2 id="4-completeness-checks">4. Completeness Checks</h2>
+<p>Beyond individual relationship correctness, the extraction agent MUST verify overall coverage. Use this checklist to assess whether the extraction captured the full scope of the codebase:</p>
+<h3 id="41-containment-chain-completeness">4.1 Containment Chain Completeness</h3>
+<ul>
+<li>[ ] Every source file in scope has a corresponding <strong>CodeContainer</strong></li>
+<li>[ ] Every <strong>CodeContainer</strong> maps to at least one <strong>EncapsulationUnit</strong> (unless the file is pure configuration, a script with no classes/modules, or a data file)</li>
+<li>[ ] Every <strong>EncapsulationUnit</strong> contains at least one <strong>CallableUnit</strong> or <strong>DataStructure</strong> (unless it is an empty marker class or interface)</li>
+<li>[ ] Every <strong>Component</strong> maps to at least one <strong>EncapsulationUnit</strong> via <code>implemented_by_code</code></li>
+<li>[ ] Every <strong>Module</strong> contains at least one <strong>Component</strong> via <code>contains_components</code></li>
+<li>[ ] Every <strong>BoundedContext</strong> contains at least one <strong>Module</strong> via <code>contains_modules</code></li>
+<li>[ ] The <strong>System</strong> contains at least one <strong>BoundedContext</strong> via <code>has_bounded_contexts</code></li>
+</ul>
+<h3 id="42-domain-model-completeness">4.2 Domain Model Completeness</h3>
+<ul>
+<li>[ ] Every <strong>DomainEntity</strong> has at least one <strong>Attribute</strong> (entities without attributes are likely extraction gaps)</li>
+<li>[ ] Every <strong>Aggregate</strong> has a root <strong>DomainEntity</strong> via <code>has_root_entity</code></li>
+<li>[ ] Every <strong>DomainEntity</strong> links back to a <strong>DataStructure</strong> via <code>mapped_from_structure</code></li>
+<li>[ ] <strong>ValueObjects</strong> identified where appropriate (immutable, identity-less data types)</li>
+</ul>
+<h3 id="43-business-intent-completeness">4.3 Business Intent Completeness</h3>
+<ul>
+<li>[ ] At least one <strong>HumanActor</strong> or <strong>SystemActor</strong> exists</li>
+<li>[ ] <strong>Operations</strong> exist for key business workflows (CRUD, domain-specific actions)</li>
+<li>[ ] Every <strong>Operation</strong> traces to at least one <strong>CallableUnit</strong> via <code>implemented_by_callables</code></li>
+<li>[ ] <strong>Capabilities</strong> exist for each major functional area</li>
+<li>[ ] <strong>Features</strong> link to <strong>Capabilities</strong> via <code>realizes_capabilities</code></li>
+</ul>
+<h3 id="44-cross-cutting-completeness">4.4 Cross-Cutting Completeness</h3>
+<ul>
+<li>[ ] <strong>Deployments</strong> exist if deployment manifests were provided</li>
+<li>[ ] <strong>TestSuites</strong> exist if test files were found in Phase 1</li>
+<li>[ ] <strong>Roles</strong> and <strong>Permissions</strong> exist if authentication/authorization code was found</li>
+<li>[ ] <strong>KnowledgeArtifacts</strong> link to the entities they document</li>
+</ul>
+<hr />
+<h2 id="5-coverage-metrics">5. Coverage Metrics</h2>
+<p>Quantitative metrics help assess extraction quality and identify areas needing attention.</p>
+<h3 id="51-file-coverage">5.1 File Coverage</h3>
+<p><strong>Definition:</strong> The percentage of source files in scope that have a <strong>CodeContainer</strong> with at least one <strong>EncapsulationUnit</strong> parsed from them.</p>
+<pre><code>file_coverage = (files_with_encapsulation_units / total_source_files) * 100
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt; 90%</td>
+<td>Good -- most code is captured</td>
+</tr>
+<tr>
+<td>70--90%</td>
+<td>Acceptable -- review uncovered files for extraction gaps</td>
+</tr>
+<tr>
+<td>&lt; 70%</td>
+<td>Needs work -- significant portions of the codebase are missing</td>
+</tr>
+</tbody>
+</table>
+<p>Files legitimately excluded from encapsulation unit parsing (config files, static assets, data files) SHOULD be documented but not counted against coverage.</p>
+<h3 id="52-class-instantiation">5.2 Class Instantiation</h3>
+<p><strong>Definition:</strong> The percentage of the 147 SAO classes that have at least one instance in the extraction output.</p>
+<pre><code>class_instantiation = (classes_with_instances / 147) * 100
+</code></pre>
+<p>Not all 147 classes will apply to every codebase. A typical extraction SHOULD instantiate 60--80% of classes. Classes that are not instantiated SHOULD be reviewed to confirm they genuinely do not apply, rather than being overlooked.</p>
+<table>
+<thead>
+<tr>
+<th>Threshold</th>
+<th>Assessment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt; 80%</td>
+<td>Comprehensive extraction</td>
+</tr>
+<tr>
+<td>60--80%</td>
+<td>Typical -- review unused classes for applicability</td>
+</tr>
+<tr>
+<td>&lt; 60%</td>
+<td>May indicate gaps -- verify against codebase characteristics</td>
+</tr>
+</tbody>
+</table>
+<h3 id="53-relationship-density">5.3 Relationship Density</h3>
+<p><strong>Definition:</strong> The average number of populated relationship attributes per entity instance.</p>
+<pre><code>relationship_density = total_populated_relationships / total_entity_instances
+</code></pre>
+<p>Low relationship density (&lt; 2 relationships per entity on average) suggests entities are isolated and not well-connected. SAO's value comes from the relationships between entities -- an ontology of disconnected nodes provides little insight.</p>
+<h3 id="54-bridge-coverage">5.4 Bridge Coverage</h3>
+<p><strong>Definition:</strong> The percentage of the 8 key cross-layer bridges (from guide.md Section 10.1) that are fully populated.</p>
+<p>The 8 critical bridges are:</p>
+<ol>
+<li><code>DataStructure.maps_to_domain_entity</code> ↔ <code>DomainEntity.mapped_from_structure</code> (Layer 3 ↔ 5)</li>
+<li><code>Attribute.mapped_from_element</code> ↔ <code>DataElement.maps_to_attribute</code> (Layer 5 ↔ 3)</li>
+<li><code>CallableUnit.implements_operation</code> ↔ <code>Operation.implemented_by_callables</code> (Layer 3 ↔ 6)</li>
+<li><code>Component.implemented_by_code</code> ↔ code entities (Layer 4 ↔ 3)</li>
+<li><code>Module.mapped_from_directory</code> ↔ <code>StorageLocation.maps_to_module</code> (Layer 4 ↔ 3)</li>
+<li><code>Module.provides_capabilities</code> ↔ <code>Capability.provided_by_modules</code> (Layer 4 ↔ 6)</li>
+<li><code>Service.runs_module</code> ↔ <code>Module.runs_as_services</code> (Layer 4 ↔ 4)</li>
+<li><code>KnowledgeArtifact.documents_*</code> ↔ <code>entity.*_documented_by_artifacts</code> (Layer 1 ↔ all)</li>
+</ol>
+<p>A bridge is "fully populated" when at least one instance of each side of the relationship pair exists and the pair is bidirectionally symmetric. All 8 bridges SHOULD be populated for a complete extraction.</p>
+<h3 id="55-coverage-summary-report">5.5 Coverage Summary Report</h3>
+<p>The extraction agent SHOULD produce a summary report at the end of validation:</p>
+<pre><code>=== SAO Extraction Coverage Report ===
+File coverage:        94% (188/200 source files)
+Class instantiation:  68% (100/147 classes)
+Relationship density: 3.4 relationships/entity
+Bridge coverage:      8/8 (100%)
+
+Uncovered files: 12 (config/data files excluded)
+Unused classes:  47 (reviewed — not applicable to this codebase)
+</code></pre>
+<hr />
+<h2 id="6-semantic-validation">6. Semantic Validation</h2>
+<p>Structural and relational validation can be automated. Semantic validation requires human judgment. This level asks whether the extraction <em>makes sense</em>, not just whether it is technically correct.</p>
+<h3 id="61-domain-model-review">6.1 Domain Model Review</h3>
+<p>A domain expert SHOULD review:</p>
+<ul>
+<li><strong>Bounded context boundaries</strong> — Do they align with actual team boundaries or business subdomains? Are contexts too broad (a monolith forced into one context) or too narrow (every class in its own context)?</li>
+<li><strong>Aggregate identification</strong> — Is each <strong>Aggregate</strong> a true consistency boundary? Does the root entity make sense as the transactional unit?</li>
+<li><strong>Entity vs. Value Object classification</strong> — Are <strong>DomainEntities</strong> genuinely identity-bearing? Are <strong>ValueObjects</strong> genuinely immutable and identity-less?</li>
+</ul>
+<h3 id="62-business-intent-review">6.2 Business Intent Review</h3>
+<p>A domain expert SHOULD review:</p>
+<ul>
+<li><strong>Capability descriptions</strong> — Do they match what the system actually does, or are they aspirational?</li>
+<li><strong>Feature scope</strong> — Are <strong>Features</strong> granular enough to be meaningful but not so granular they duplicate <strong>Operations</strong>?</li>
+<li><strong>Actor types</strong> — Are <code>actor_type</code> values correct? Is a <code>scheduled_process</code> really a scheduled process, or is it an <code>internal_service</code> that happens to run on a timer?</li>
+<li><strong>Rule accuracy</strong> — Do extracted <strong>Rules</strong> reflect actual business constraints, or are they implementation artifacts?</li>
+</ul>
+<h3 id="63-architecture-review">6.3 Architecture Review</h3>
+<p>A domain expert SHOULD review:</p>
+<ul>
+<li><strong>Module boundaries</strong> — Do they reflect logical groupings, or are they just mirroring the directory structure without architectural meaning?</li>
+<li><strong>Component responsibilities</strong> — Does each <strong>Component</strong> have a single, coherent responsibility?</li>
+<li><strong>Service identification</strong> — Are <strong>Services</strong> correctly identified from deployment manifests, or are some missing?</li>
+</ul>
+<h3 id="64-flagging-confidence-levels">6.4 Flagging Confidence Levels</h3>
+<p>The extraction agent SHOULD annotate entities with confidence indicators using the <code>tags</code> or <code>metadata</code> attributes:</p>
+<ul>
+<li>Entities from Phases 1--2 (deterministic parsing): high confidence, no flag needed</li>
+<li>Entities from Phase 3 (heuristic inference): flag with <code>confidence: medium</code></li>
+<li>Entities from Phases 4--5 (LLM inference): flag with <code>confidence: low</code> and <code>needs_review: true</code></li>
+</ul>
+<p>Human reviewers SHOULD prioritize entities flagged with <code>confidence: low</code>.</p>
+<hr />
+<h2 id="7-iteration-and-gap-filling">7. Iteration and Gap-Filling</h2>
+<p>Validation almost always reveals gaps. This section describes common gap patterns and an iterative workflow for closing them.</p>
+<h3 id="71-common-gap-patterns">7.1 Common Gap Patterns</h3>
+<p><strong>Missing cross-layer bridges.</strong> Code entities exist (Phase 2) and architectural entities exist (Phase 3), but <code>implemented_by_code</code> and <code>part_of_module</code> relationships are not populated. This typically means Phase 7 (Bridge Stitching) was incomplete.</p>
+<p><strong>Unclassified DataStructures.</strong> <strong>DataStructures</strong> were parsed in Phase 2 but never evaluated for domain entity status in Phase 4. Every <strong>DataStructure</strong> SHOULD be assessed -- even if the conclusion is that it is a utility type and not a <strong>DomainEntity</strong>.</p>
+<p><strong>Missing business rules.</strong> <strong>Rules</strong> embedded in conditional logic, validation methods, or guard clauses are often missed by automated extraction. Look for methods named <code>validate*</code>, <code>check*</code>, <code>assert*</code>, <code>is_valid</code>, or <code>can_*</code> that were not captured as <strong>Rule</strong> instances.</p>
+<p><strong>Incomplete call graph.</strong> Dynamic dispatch (reflection, dependency injection, event buses) means some <strong>ControlFlow</strong> edges are invisible to static analysis. The extraction agent SHOULD document known limitations and flag areas where dynamic dispatch is likely.</p>
+<p><strong>Missing events.</strong> Event publishing through generic mechanisms (e.g., <code>eventBus.publish(new Event(...))</code>) may not be detected as <strong>DomainEvent</strong> or <strong>IntegrationEvent</strong> instances. Search for event bus, message broker, and pub/sub patterns that Phase 5 may have missed.</p>
+<p><strong>Orphaned entities.</strong> Entities that exist but have no relationships to other entities. An <strong>EncapsulationUnit</strong> with no <code>defined_in_container</code>, no <code>implements_component</code>, and no <strong>CallableUnits</strong> is likely an extraction error.</p>
+<h3 id="72-iterative-workflow">7.2 Iterative Workflow</h3>
+<p>Validation and gap-filling follow a convergent loop:</p>
+<pre><code>Validate → Identify gaps → Prioritize → Extract missing entities → Re-validate
+</code></pre>
+<p><strong>Step 1: Validate.</strong> Run all three levels of validation (structural, relational, semantic).</p>
+<p><strong>Step 2: Identify gaps.</strong> Compile a gap report listing every error, missing relationship, and coverage shortfall.</p>
+<p><strong>Step 3: Prioritize.</strong> Not all gaps are equally important. Prioritize by:
+1. Structural errors (MUST fix -- the output is invalid without these)
+2. Missing MUST relationships (required for a coherent ontology)
+3. Missing cross-layer bridges (these are what make SAO valuable)
+4. Missing SHOULD relationships (important but not blocking)
+5. Coverage shortfalls (nice to have, diminishing returns)</p>
+<p><strong>Step 4: Extract.</strong> Go back to the relevant phase and extract the missing entities or relationships. This does not require re-running the entire phase -- target the specific gaps.</p>
+<p><strong>Step 5: Re-validate.</strong> Run validation again to confirm the gaps are closed and no new issues were introduced.</p>
+<h3 id="73-when-to-stop">7.3 When to Stop</h3>
+<p>Extraction is complete when:</p>
+<ul>
+<li><code>linkml-validate</code> passes with no errors</li>
+<li>All bidirectional relationships are symmetric</li>
+<li>No dangling references exist</li>
+<li>All MUST relationships are populated</li>
+<li>File coverage exceeds the target threshold (&gt; 90% recommended)</li>
+<li>All 8 critical bridges are populated</li>
+<li>A human reviewer has signed off on the domain model and business intent layers</li>
+<li>Successive iterations produce diminishing returns (each round catches fewer gaps)</li>
+</ul>
+<p>The extraction agent SHOULD define coverage targets upfront and track progress toward them. Perfection is not the goal -- a well-connected, structurally valid ontology with 90%+ coverage is far more useful than an incomplete extraction with 100% coverage of a small subset.</p>
+<hr />
+<h2 id="8-validation-checklist">8. Validation Checklist</h2>
+<p>Use this checklist as a final sign-off gate before declaring extraction complete:</p>
+<h3 id="structural">Structural</h3>
+<ul>
+<li>[ ] <code>linkml-validate -s legacy/sao/sao.yml extracted-output.yaml</code> passes with no errors</li>
+<li>[ ] All enum values match <code>permissible_values</code> in <code>legacy/sao/sao.yml</code></li>
+<li>[ ] All required attributes are populated</li>
+<li>[ ] No type errors (strings where lists expected, etc.)</li>
+</ul>
+<h3 id="relational">Relational</h3>
+<ul>
+<li>[ ] All bidirectional relationships are symmetric (forward and inverse match)</li>
+<li>[ ] No dangling references (every referenced ID exists)</li>
+<li>[ ] No duplicate IDs within the same class</li>
+<li>[ ] All MUST relationships populated (see Section 3.3 table)</li>
+</ul>
+<h3 id="completeness">Completeness</h3>
+<ul>
+<li>[ ] File coverage &gt; 90%</li>
+<li>[ ] Every <strong>Module</strong> has at least one <strong>Component</strong></li>
+<li>[ ] Every <strong>Component</strong> traces to code via <code>implemented_by_code</code></li>
+<li>[ ] Every <strong>DomainEntity</strong> has at least one <strong>Attribute</strong></li>
+<li>[ ] Every <strong>Aggregate</strong> has a root entity</li>
+<li>[ ] Every <strong>Operation</strong> traces to <strong>CallableUnits</strong></li>
+</ul>
+<h3 id="bridges">Bridges</h3>
+<ul>
+<li>[ ] All 8 critical cross-layer bridges populated (see Section 5.4)</li>
+<li>[ ] Bridge relationships are bidirectionally symmetric</li>
+</ul>
+<h3 id="semantic">Semantic</h3>
+<ul>
+<li>[ ] Domain model reviewed by human expert</li>
+<li>[ ] Bounded context boundaries validated</li>
+<li>[ ] Capability and feature descriptions match system behavior</li>
+<li>[ ] Actor types verified</li>
+<li>[ ] Low-confidence entities reviewed and accepted or corrected</li>
+</ul>
+<h3 id="reporting">Reporting</h3>
+<ul>
+<li>[ ] Coverage report generated (Section 5.5)</li>
+<li>[ ] Gap report generated and all critical gaps addressed</li>
+<li>[ ] Remaining known limitations documented</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

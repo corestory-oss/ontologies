@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Section 3: Authorization and Policy · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="section-3-authorization-and-policy">Section 3: Authorization and Policy</h1>
+<p>This section defines the authorization model including roles, permissions, policies, scopes, and constraints.</p>
+<blockquote>
+<p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships and back-references are now defined directly on classes rather than referencing global <code>slots:</code> for single-domain relationships.</p>
+</blockquote>
+<h2 id="overview">Overview</h2>
+<p>The Authorization and Policy section provides a flexible, fine-grained access control model that supports multiple authorization paradigms including RBAC (Role-Based Access Control), ABAC (Attribute-Based Access Control), REBAC (Relationship-Based Access Control), and PBAC (Policy-Based Access Control).</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<h3 id="role">Role</h3>
+<p><strong>Definition</strong>: A named collection of permissions assignable to actors.</p>
+<p><strong>Purpose</strong>: Groups permissions into meaningful job functions or responsibilities that can be assigned to identities.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>is_system_role</strong>: Whether this is a built-in system role that cannot be deleted</p>
+<p><strong>Relationships</strong>:
+- <strong>grants_permissions</strong>: <code>Permission</code> entities included in this role
+- <strong>assigned_to_identities</strong>: <code>Identity</code> entities that have this role
+- <strong>inherits_from_role</strong>: Parent role for role hierarchy
+- <strong>inherited_by_roles</strong>: Child roles that inherit from this role <em>(v2.0 back-reference)</em>
+- <strong>can_access_features</strong>: <code>Feature</code> entities accessible to this role <em>(v2.0 back-reference)</em></p>
+<p><strong>Role Patterns</strong>:
+- <strong>Flat Roles</strong>: Simple role assignments without hierarchy
+- <strong>Role Hierarchy</strong>: Roles inherit permissions from parent roles
+- <strong>Parametric Roles</strong>: Roles with parameters (e.g., Owner of Resource X)</p>
+<p><strong>Example Roles</strong>:
+- <strong>Administrator</strong>: Full system access
+- <strong>User Manager</strong>: Can create and manage users
+- <strong>Content Editor</strong>: Can create and edit content
+- <strong>Viewer</strong>: Read-only access
+- <strong>Billing Admin</strong>: Can manage billing and subscriptions
+- <strong>Security Auditor</strong>: Can view audit logs and security events</p>
+<p><strong>Best Practices</strong>:
+1. Follow principle of least privilege
+2. Create roles based on job functions, not individuals
+3. Regularly audit role assignments
+4. Use role hierarchy to reduce redundancy
+5. Document the purpose and scope of each role</p>
+<hr />
+<h3 id="permission">Permission</h3>
+<p><strong>Definition</strong>: A specific allowed action on a resource type or instance.</p>
+<p><strong>Purpose</strong>: Represents atomic units of access that can be granted or denied.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>constraints</strong>: List of conditions that must be satisfied</p>
+<p><strong>Relationships</strong>:
+- <strong>allows_actions</strong>: <code>Action</code> entities permitted by this permission
+- <strong>granted_by_roles</strong>: <code>Role</code> entities that grant this permission
+- <strong>applies_to_resource_types</strong>: <code>ResourceType</code> entities this permission governs
+- <strong>limited_by_scope</strong>: <code>Scope</code> entity defining boundaries
+- <strong>required_by_capabilities</strong>: <code>Capability</code> entities requiring this permission <em>(v2.0 back-reference)</em>
+- <strong>evaluated_by_policies</strong>: <code>Policy</code> entities evaluating this permission <em>(v2.0 back-reference)</em></p>
+<p><strong>Permission Naming Conventions</strong>:
+- <code>&lt;action&gt;:&lt;resource_type&gt;</code> - e.g., <code>read:user</code>, <code>write:order</code>
+- <code>&lt;resource&gt;:&lt;action&gt;</code> - e.g., <code>user:read</code>, <code>order:write</code>
+- <code>&lt;service&gt;:&lt;resource&gt;:&lt;action&gt;</code> - e.g., <code>billing:invoice:create</code></p>
+<p><strong>Permission Granularity</strong>:
+- <strong>Coarse-Grained</strong>: <code>manage:users</code> (all user operations)
+- <strong>Fine-Grained</strong>: <code>read:user:email</code> (specific field access)
+- <strong>Instance-Level</strong>: <code>delete:order:123</code> (specific resource instance)</p>
+<p><strong>Example Permissions</strong>:
+- <code>read:user</code> - Read user information
+- <code>write:order</code> - Create or update orders
+- <code>delete:comment</code> - Delete comments
+- <code>execute:report:financial</code> - Run financial reports
+- <code>admin:system</code> - Full system administration</p>
+<hr />
+<h3 id="policy">Policy</h3>
+<p><strong>Definition</strong>: A rule set governing access decisions.</p>
+<p><strong>Purpose</strong>: Implements complex authorization logic that cannot be expressed through simple role-permission mappings.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>policy_type</strong>: Type of policy
+  - <code>rbac</code>: Role-Based Access Control
+  - <code>abac</code>: Attribute-Based Access Control
+  - <code>rebac</code>: Relationship-Based Access Control
+  - <code>pbac</code>: Policy-Based Access Control
+- <strong>rules</strong>: List of rules within this policy
+- <strong>priority</strong>: Evaluation priority (higher priority policies evaluated first)</p>
+<p><strong>Relationships</strong>:
+- <strong>evaluates_permissions</strong>: <code>Permission</code> entities evaluated by this policy
+- <strong>enforced_by_system</strong>: <code>System</code> that enforces this policy <em>(v2.0 inlined attribute)</em>
+- <strong>guards_routes</strong>: <code>Route</code> entities guarded by this policy <em>(v2.0 inlined attribute)</em></p>
+<p><strong>Policy Types Explained</strong>:</p>
+<h4 id="rbac-role-based-access-control">RBAC (Role-Based Access Control)</h4>
+<p>Access decisions based on roles assigned to identities.
+- <strong>Use Case</strong>: Simple organizational hierarchies
+- <strong>Example</strong>: "Users with 'Editor' role can edit articles"</p>
+<h4 id="abac-attribute-based-access-control">ABAC (Attribute-Based Access Control)</h4>
+<p>Access decisions based on attributes of subject, resource, action, and environment.
+- <strong>Use Case</strong>: Complex, context-dependent access rules
+- <strong>Example</strong>: "Users can edit articles if article.status='draft' AND user.department=article.department"</p>
+<h4 id="rebac-relationship-based-access-control">REBAC (Relationship-Based Access Control)</h4>
+<p>Access decisions based on relationships between entities.
+- <strong>Use Case</strong>: Social networks, collaborative applications
+- <strong>Example</strong>: "Users can view files shared with them OR files in groups they are members of"</p>
+<h4 id="pbac-policy-based-access-control">PBAC (Policy-Based Access Control)</h4>
+<p>Access decisions based on centrally defined policies.
+- <strong>Use Case</strong>: Enterprise compliance, regulatory requirements
+- <strong>Example</strong>: "Access to PHI requires MFA AND recent security training"</p>
+<p><strong>Policy Evaluation Flow</strong>:
+1. Collect policies applicable to the request
+2. Sort policies by priority
+3. Evaluate each policy's rules
+4. Combine results (allow, deny, not applicable)
+5. Apply policy combination algorithm (deny-overrides, permit-overrides, etc.)</p>
+<p><strong>Example Policies</strong>:
+- Data residency policy (GDPR compliance)
+- Time-based access restrictions
+- IP address allowlisting
+- MFA requirement for sensitive operations
+- Data classification-based access control</p>
+<hr />
+<h3 id="scope">Scope</h3>
+<p><strong>Definition</strong>: A boundary limiting where a permission applies.</p>
+<p><strong>Purpose</strong>: Restricts permissions to specific contexts, reducing the blast radius of access grants.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>scope_type</strong>: Type of scope
+  - <code>global</code>: System-wide global scope
+  - <code>tenant</code>: Limited to a specific tenant
+  - <code>organization</code>: Limited to an organization within a tenant
+  - <code>resource</code>: Limited to a specific resource or resource type
+  - <code>field</code>: Limited to specific fields within a resource
+- <strong>resource_pattern</strong>: Pattern matching resources in scope (e.g., regex, glob)</p>
+<p><strong>Relationships</strong>:
+- <strong>limits_permissions</strong>: <code>Permission</code> entities limited by this scope <em>(v2.0 back-reference)</em></p>
+<p><strong>Scope Hierarchies</strong>:</p>
+<pre><code>GLOBAL
+  └── TENANT (tenant_id=123)
+       └── ORGANIZATION (org_id=456)
+            └── RESOURCE (resource_type=order)
+                 └── FIELD (field=payment_info)
+</code></pre>
+<p><strong>Example Scopes</strong>:
+- Global scope: System-wide access (administrators)
+- Tenant scope: Access limited to tenant's data
+- Organization scope: Department-specific access
+- Resource scope: Access to specific resource types (e.g., only "draft" orders)
+- Field scope: Access to specific fields (e.g., hide salary information)</p>
+<p><strong>Scope Pattern Matching</strong>:
+- <strong>Exact Match</strong>: <code>resource_id=12345</code>
+- <strong>Wildcard</strong>: <code>resource_type=order:*</code>
+- <strong>Attribute Match</strong>: <code>status=published</code>
+- <strong>Path Pattern</strong>: <code>/tenants/*/users/*</code></p>
+<hr />
+<h3 id="constraint">Constraint</h3>
+<p><strong>Definition</strong>: A condition that must be satisfied for authorization.</p>
+<p><strong>Purpose</strong>: Adds contextual or temporal restrictions to permissions.</p>
+<p><strong>Key Attributes</strong>:
+- Inherits from <code>NamedEntity</code>
+- <strong>constraint_type</strong>: Type of constraint
+  - <code>temporal</code>: Time-based constraint (date/time ranges)
+  - <code>spatial</code>: Location or geography-based constraint
+  - <code>attribute</code>: Attribute or property-based constraint
+  - <code>context</code>: Context-dependent constraint (device, IP, etc.)
+  - <code>rate_limit</code>: Rate limiting or quota-based constraint
+- <strong>expression</strong>: Constraint expression (e.g., "hour &gt;= 9 AND hour &lt;= 17")
+- <strong>parameters</strong>: Constraint parameters</p>
+<p><strong>Constraint Types Explained</strong>:</p>
+<h4 id="temporal-constraints">TEMPORAL Constraints</h4>
+<p>Access allowed only during specific time periods.
+- <strong>Examples</strong>:
+  - Business hours only: "Monday-Friday, 9am-5pm"
+  - Embargo period: "Not before 2024-01-01"
+  - Expiration: "Access expires on 2024-12-31"</p>
+<h4 id="spatial-constraints">SPATIAL Constraints</h4>
+<p>Access restricted by geographic location.
+- <strong>Examples</strong>:
+  - Country restriction: "user.country IN ['US', 'CA', 'MX']"
+  - Office location: "user.location = 'HQ'"
+  - IP range: "request.ip IN office_ip_ranges"</p>
+<h4 id="attribute-constraints">ATTRIBUTE Constraints</h4>
+<p>Access based on resource or user attributes.
+- <strong>Examples</strong>:
+  - Ownership: "resource.owner_id = user.id"
+  - Department match: "user.department = resource.department"
+  - Classification: "user.clearance_level &gt;= resource.classification_level"</p>
+<h4 id="context-constraints">CONTEXT Constraints</h4>
+<p>Access based on request context.
+- <strong>Examples</strong>:
+  - Device type: "device.type = 'corporate_managed'"
+  - Network: "request.network = 'corporate_vpn'"
+  - Authentication method: "auth.method = 'MFA'"</p>
+<h4 id="rate_limit-constraints">RATE_LIMIT Constraints</h4>
+<p>Access limited by usage quotas.
+- <strong>Examples</strong>:
+  - API rate limit: "100 requests per minute"
+  - Download quota: "10 GB per day"
+  - Concurrent sessions: "Maximum 5 active sessions"</p>
+<p><strong>Constraint Evaluation</strong>:
+Constraints are evaluated at authorization time, and access is granted only if all constraints are satisfied.</p>
+<p><strong>Example Constraints</strong>:</p>
+<pre><code>Temporal: &quot;access_time.hour &gt;= 9 AND access_time.hour &lt;= 17 AND access_time.day_of_week IN ['MON','TUE','WED','THU','FRI']&quot;
+
+Spatial: &quot;user.ip_address IN corporate_ip_ranges&quot;
+
+Attribute: &quot;user.clearance_level &gt;= 'SECRET' AND user.training.security_awareness.completed = true&quot;
+
+Context: &quot;request.mfa_verified = true AND device.trusted = true&quot;
+
+Rate Limit: &quot;api_calls.count(last_1_hour) &lt;= 1000&quot;
+</code></pre>
+<hr />
+<h2 id="authorization-patterns">Authorization Patterns</h2>
+<h3 id="simple-rbac">Simple RBAC</h3>
+<ol>
+<li>Identity has one or more Roles</li>
+<li>Roles grant Permissions</li>
+<li>Permissions allow Actions on ResourceTypes</li>
+<li>Decision: Allow if identity has required permission</li>
+</ol>
+<h3 id="rbac-with-constraints">RBAC with Constraints</h3>
+<ol>
+<li>Basic RBAC decision</li>
+<li>Evaluate constraints on permission</li>
+<li>Decision: Allow if permission exists AND all constraints satisfied</li>
+</ol>
+<h3 id="abac-with-policies">ABAC with Policies</h3>
+<ol>
+<li>Identify applicable policies for request</li>
+<li>Evaluate policy rules using attributes of:</li>
+<li>Subject (identity, roles, attributes)</li>
+<li>Resource (type, attributes, owner)</li>
+<li>Action (operation type)</li>
+<li>Environment (time, location, context)</li>
+<li>Combine policy decisions</li>
+<li>Decision: Based on policy combination algorithm</li>
+</ol>
+<h3 id="rebac-relationship-based">REBAC (Relationship-Based)</h3>
+<ol>
+<li>Identify relationships between identity and resource</li>
+<li>Check if relationship grants required permission</li>
+<li>Decision: Allow if relationship exists with sufficient permission</li>
+</ol>
+<h3 id="hierarchical-rbac">Hierarchical RBAC</h3>
+<ol>
+<li>Resolve role hierarchy (inherit permissions from parent roles)</li>
+<li>Collect all permissions from all roles</li>
+<li>Evaluate constraints on each permission</li>
+<li>Decision: Allow if any permission grants access</li>
+</ol>
+<hr />
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="permission-design">Permission Design</h3>
+<ol>
+<li><strong>Granularity</strong>: Balance between too coarse (security risk) and too fine (management complexity)</li>
+<li><strong>Naming</strong>: Use consistent, descriptive naming conventions</li>
+<li><strong>Documentation</strong>: Document the purpose and scope of each permission</li>
+<li><strong>Least Privilege</strong>: Grant minimum necessary permissions</li>
+</ol>
+<h3 id="role-design">Role Design</h3>
+<ol>
+<li><strong>Job Functions</strong>: Base roles on actual job functions, not individuals</li>
+<li><strong>Separation of Duties</strong>: Prevent conflicts of interest through role separation</li>
+<li><strong>Regular Review</strong>: Audit role assignments periodically</li>
+<li><strong>Dynamic Roles</strong>: Support temporary role assignments for special projects</li>
+</ol>
+<h3 id="policy-design">Policy Design</h3>
+<ol>
+<li><strong>Principle of Least Privilege</strong>: Default deny, explicit allow</li>
+<li><strong>Defense in Depth</strong>: Layer multiple authorization mechanisms</li>
+<li><strong>Clear Precedence</strong>: Define clear policy evaluation order</li>
+<li><strong>Testing</strong>: Test policies with various scenarios before deployment</li>
+</ol>
+<h3 id="scope-management">Scope Management</h3>
+<ol>
+<li><strong>Hierarchical Scopes</strong>: Use scope hierarchies for easier management</li>
+<li><strong>Pattern Matching</strong>: Use resource patterns to avoid explicit enumeration</li>
+<li><strong>Inheritance</strong>: Allow scope inheritance down organizational hierarchy</li>
+</ol>
+<h3 id="constraint-implementation">Constraint Implementation</h3>
+<ol>
+<li><strong>Performance</strong>: Evaluate lightweight constraints before expensive ones</li>
+<li><strong>Caching</strong>: Cache constraint evaluations when appropriate</li>
+<li><strong>Failure Modes</strong>: Define behavior when constraint evaluation fails</li>
+<li><strong>Monitoring</strong>: Track constraint violations for security monitoring</li>
+</ol>
+<hr />
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="authorization-bypass-prevention">Authorization Bypass Prevention</h3>
+<ul>
+<li>Enforce authorization at API gateway and service layers</li>
+<li>Never rely on client-side authorization checks</li>
+<li>Use cryptographic signatures to prevent parameter tampering</li>
+<li>Audit all authorization decisions</li>
+</ul>
+<h3 id="privilege-escalation-prevention">Privilege Escalation Prevention</h3>
+<ul>
+<li>Restrict permission to grant permissions (delegation)</li>
+<li>Prevent circular role inheritance</li>
+<li>Validate all authorization changes</li>
+<li>Implement approval workflows for sensitive permissions</li>
+</ul>
+<h3 id="performance-and-scalability">Performance and Scalability</h3>
+<ul>
+<li>Cache authorization decisions when appropriate</li>
+<li>Use efficient policy evaluation algorithms</li>
+<li>Implement authorization decision caching</li>
+<li>Monitor authorization system performance</li>
+</ul>
+<h3 id="compliance">Compliance</h3>
+<ul>
+<li>Support separation of duties requirements</li>
+<li>Implement audit logging for all authorization decisions</li>
+<li>Support time-limited access grants</li>
+<li>Enable access recertification processes</li>
+</ul>
+<hr />
+<h2 id="relationships-with-other-sections">Relationships with Other Sections</h2>
+<ul>
+<li><strong>Section 2 (Actors and Identity)</strong>: Identities have roles; actors perform authorized actions</li>
+<li><strong>Section 4 (Domain Modeling)</strong>: Permissions target resources and resource types</li>
+<li><strong>Section 5 (Behavior)</strong>: Actions are subject to authorization</li>
+<li><strong>Section 6 (Data Management)</strong>: Authorization decisions are audited</li>
+<li><strong>Section 10 (Governance)</strong>: Compliance requirements drive authorization policies</li>
+</ul>
+<hr />
+<h2 id="common-authorization-scenarios">Common Authorization Scenarios</h2>
+<h3 id="document-editing-system">Document Editing System</h3>
+<pre><code>Role: Editor
+Permissions:
+  - read:document (scope: tenant)
+  - write:document (scope: tenant, constraint: owner OR collaborator)
+  - delete:document (scope: tenant, constraint: owner ONLY)
+
+Policy: Time-Based Editing
+Rules:
+  - Allow write:document IF current_time BETWEEN 9am-5pm
+  - Deny write:document on weekends
+</code></pre>
+<h3 id="healthcare-system-hipaa-compliance">Healthcare System (HIPAA Compliance)</h3>
+<pre><code>Role: Clinician
+Permissions:
+  - read:patient_record (scope: assigned_patients, constraint: active_treatment)
+  - write:clinical_note (scope: assigned_patients)
+
+Policy: PHI Access Control
+Rules:
+  - Require MFA for PHI access
+  - Allow access only from corporate network
+  - Log all PHI access for audit
+  - Deny access if security training expired
+</code></pre>
+<h3 id="multi-tenant-saas-platform">Multi-Tenant SaaS Platform</h3>
+<pre><code>Role: Tenant Admin
+Permissions:
+  - manage:users (scope: tenant)
+  - configure:settings (scope: tenant)
+  - view:billing (scope: tenant)
+
+Constraints:
+  - Spatial: Access only from approved countries
+  - Rate Limit: Max 1000 API calls per hour
+  - Temporal: No billing access during month-end close
+</code></pre>
+<h3 id="collaborative-platform-rebac">Collaborative Platform (REBAC)</h3>
+<pre><code>Relationships:
+  - user OWNS resource
+  - user COLLABORATES_ON resource
+  - user MEMBER_OF group
+  - group HAS_ACCESS_TO resource
+
+Permissions derived from relationships:
+  - Owner: read, write, delete, share
+  - Collaborator: read, write
+  - Group Member: read (if group has access)
+</code></pre></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

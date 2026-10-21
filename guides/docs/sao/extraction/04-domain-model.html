@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 4: Domain Model (Layer 5) · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-4-domain-model-layer-5">Phase 4: Domain Model (Layer 5)</h1>
+<p><strong>Input:</strong> Phase 2 outputs (<strong>DataStructure</strong>, <strong>DataElement</strong>) + Phase 3 outputs (<strong>BoundedContext</strong>, <strong>Module</strong>)
+<strong>Output:</strong> <strong>Aggregate</strong>, <strong>DomainEntity</strong>, <strong>ValueObject</strong>, <strong>Attribute</strong>, <strong>DomainRelationship</strong>, <strong>Lifecycle</strong>, <strong>State</strong>, <strong>Transition</strong>, <strong>DataStore</strong>, <strong>Collection</strong>, <strong>Schema</strong>, <strong>SchemaVersion</strong>, <strong>DataClassification</strong>, <strong>RetentionPolicy</strong>, <strong>DatabaseConstraint</strong>, <strong>DatabaseIndex</strong></p>
+<hr />
+<h2 id="1-overview">1. Overview</h2>
+<p>Phase 4 is where extraction moves from deterministic parsing to inferential reasoning. Prior phases catalogued files (Phase 1), parsed code structures (Phase 2), and identified architectural boundaries (Phase 3). This phase recognizes <em>business meaning</em> in those code structures using Domain-Driven Design patterns.</p>
+<p>The key insight: a COBOL group item named <code>CUST-MSTR-REC</code> with a primary key field and CRUD operations is not just a <strong>DataStructure</strong> -- it is a <strong>Customer</strong> domain entity. A Java class with <code>@Entity</code>, a primary key, and repository methods is an <strong>Order</strong> aggregate root. This phase surfaces those facts.</p>
+<p>Automation level: 40--50%. Deterministic heuristics (presence of <code>@Entity</code>, primary key fields, ORM annotations) handle part of the classification, but an LLM or human analyst MUST confirm business names, aggregate boundaries, and lifecycle semantics.</p>
+<h3 id="critical-bridge">Critical bridge</h3>
+<p>Phase 4 establishes the central bridge between code and domain:</p>
+<ul>
+<li><code>DomainEntity.mapped_from_structure</code> links to the <strong>DataStructure</strong>(s) from Phase 2</li>
+<li><code>DataStructure.maps_to_domain_entity</code> is the inverse</li>
+<li><code>Attribute.mapped_from_element</code> links to the <strong>DataElement</strong>(s) from Phase 2</li>
+<li><code>DataElement.maps_to_attribute</code> is the inverse</li>
+</ul>
+<p>These bidirectional links MUST be established for every <strong>DomainEntity</strong> and <strong>Attribute</strong> created in this phase.</p>
+<hr />
+<h2 id="2-step-1-classify-datastructures">2. Step 1: Classify DataStructures</h2>
+<p>Iterate over every <strong>DataStructure</strong> produced in Phase 2 and apply the following decision tree.</p>
+<h3 id="decision-tree">Decision tree</h3>
+<pre><code>For each DataStructure:
+│
+├─ Has unique identifier + CRUD operations + persisted?
+│  └─ → Create a DomainEntity
+│
+├─ No unique identifier + immutable + used as property of another structure?
+│  └─ → Create a ValueObject
+│
+├─ DTO, transport object, configuration, utility type?
+│  └─ → Leave as DataStructure only (no domain mapping)
+│
+└─ Ambiguous → Flag for human review
+</code></pre>
+<h3 id="signals-by-language">Signals by language</h3>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Language</th>
+<th>Implies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@Entity</code>, <code>@Table</code></td>
+<td>Java/JPA</td>
+<td>DomainEntity</td>
+</tr>
+<tr>
+<td><code>@Embeddable</code></td>
+<td>Java/JPA</td>
+<td>ValueObject</td>
+</tr>
+<tr>
+<td><code>class Meta: db_table</code></td>
+<td>Python/Django</td>
+<td>DomainEntity</td>
+</tr>
+<tr>
+<td><code>01 ... RECORD</code> with PK and FD</td>
+<td>COBOL</td>
+<td>DomainEntity</td>
+</tr>
+<tr>
+<td><code>01 ... GROUP</code> (no PK, used inline)</td>
+<td>COBOL</td>
+<td>ValueObject</td>
+</tr>
+<tr>
+<td><code>CREATE TABLE</code> with <code>PRIMARY KEY</code></td>
+<td>SQL DDL</td>
+<td>DomainEntity</td>
+</tr>
+<tr>
+<td><code>frozen&lt;&gt;</code> UDT</td>
+<td>Cassandra CQL</td>
+<td>ValueObject</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-step-2-create-domainentities-and-map-attributes">3. Step 2: Create DomainEntities and map Attributes</h2>
+<p>For each <strong>DataStructure</strong> classified as a domain entity, create a <strong>DomainEntity</strong> instance.</p>
+<h3 id="required-attributes">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Clean business name -- e.g., "Customer", not "CUST-MSTR-REC"</td>
+</tr>
+<tr>
+<td><code>mapped_from_structure</code></td>
+<td><strong>DataStructure</strong> (multivalued)</td>
+<td>MUST link to the originating structure(s)</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><strong>Attribute</strong> list (inlined)</td>
+<td>One per meaningful field</td>
+</tr>
+<tr>
+<td><code>classifications</code></td>
+<td><code>DataClassificationType</code> list</td>
+<td>If the entity holds sensitive data</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-attributes">Creating Attributes</h3>
+<p>For each meaningful field (skip framework noise like serialization IDs), create an <strong>Attribute</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Clean business name for the field</td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td><code>AttributeCategory</code></td>
+<td>One of: <code>required</code>, <code>optional</code>, <code>computed</code>, <code>derived</code>, <code>transient</code></td>
+</tr>
+<tr>
+<td><code>data_type</code></td>
+<td>string (required)</td>
+<td>Data type: <code>string</code>, <code>integer</code>, <code>boolean</code>, <code>date</code>, <code>timestamp</code>, <code>decimal</code>, etc.</td>
+</tr>
+<tr>
+<td><code>is_identifier</code></td>
+<td>boolean</td>
+<td><code>true</code> for primary key / unique identifier fields</td>
+</tr>
+<tr>
+<td><code>is_indexed</code></td>
+<td>boolean</td>
+<td><code>true</code> if the field is indexed</td>
+</tr>
+<tr>
+<td><code>default_value</code></td>
+<td>string</td>
+<td>Default value if discoverable</td>
+</tr>
+<tr>
+<td><code>classification</code></td>
+<td><code>DataClassificationType</code></td>
+<td>One of: <code>public</code>, <code>internal</code>, <code>confidential</code>, <code>restricted</code>, <code>pii</code>, <code>phi</code>, <code>pci</code></td>
+</tr>
+<tr>
+<td><code>mapped_from_element</code></td>
+<td><strong>DataElement</strong> (multivalued)</td>
+<td>MUST link to the originating element(s)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="establishing-bridges">Establishing bridges</h3>
+<p>The extraction agent MUST set both sides of every bridge:</p>
+<ol>
+<li><code>DomainEntity.mapped_from_structure</code> → the <strong>DataStructure</strong></li>
+<li><code>DataStructure.maps_to_domain_entity</code> → the <strong>DomainEntity</strong></li>
+<li><code>Attribute.mapped_from_element</code> → the <strong>DataElement</strong></li>
+<li><code>DataElement.maps_to_attribute</code> → the <strong>Attribute</strong></li>
+</ol>
+<h3 id="yaml-example">YAML example</h3>
+<pre><code class="language-yaml">DomainEntity:
+  - name: Customer
+    mapped_from_structure: CUST-MSTR-REC
+    classifications:
+      - pii
+    attributes:
+      - name: customer_id
+        data_type: string
+        category: required
+        is_identifier: true
+        mapped_from_element: CUST-ID
+      - name: name
+        data_type: string
+        category: required
+        classification: pii
+        mapped_from_element: CUST-NAME
+      - name: email
+        data_type: string
+        category: required
+        classification: pii
+        mapped_from_element: CUST-EMAIL
+      - name: loyalty_points
+        data_type: integer
+        category: computed
+        mapped_from_element: CUST-LOYALTY-PTS
+      - name: created_at
+        data_type: timestamp
+        category: required
+        mapped_from_element: CUST-CREATE-DT
+</code></pre>
+<hr />
+<h2 id="4-step-3-create-valueobjects">4. Step 3: Create ValueObjects</h2>
+<p>For each <strong>DataStructure</strong> classified as a value object, create a <strong>ValueObject</strong> instance.</p>
+<h3 id="required-attributes_1">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Clean business name (e.g., "Money", "Address")</td>
+</tr>
+<tr>
+<td><code>attributes</code></td>
+<td><strong>Attribute</strong> list (inlined)</td>
+<td>Component fields</td>
+</tr>
+<tr>
+<td><code>mapped_from_structure_vo</code></td>
+<td><strong>DataStructure</strong> (multivalued)</td>
+<td>MUST link to the originating structure(s)</td>
+</tr>
+</tbody>
+</table>
+<p>The inverse <code>DataStructure.maps_to_value_object</code> MUST also be set.</p>
+<h3 id="common-value-object-patterns">Common value object patterns</h3>
+<ul>
+<li><strong>Money</strong>: <code>amount</code> + <code>currency</code></li>
+<li><strong>Address</strong>: <code>street</code>, <code>city</code>, <code>state</code>, <code>postal_code</code>, <code>country</code></li>
+<li><strong>DateRange</strong>: <code>start_date</code>, <code>end_date</code></li>
+<li><strong>Coordinates</strong>: <code>latitude</code>, <code>longitude</code></li>
+<li><strong>PhoneNumber</strong>: <code>country_code</code>, <code>area_code</code>, <code>number</code></li>
+</ul>
+<h3 id="yaml-example_1">YAML example</h3>
+<pre><code class="language-yaml">ValueObject:
+  - name: Money
+    mapped_from_structure_vo: AMOUNT-FIELDS
+    attributes:
+      - name: amount
+        data_type: decimal
+        category: required
+        mapped_from_element: AMT-VALUE
+      - name: currency
+        data_type: string
+        category: required
+        default_value: &quot;USD&quot;
+        mapped_from_element: AMT-CURRENCY
+
+  - name: Address
+    mapped_from_structure_vo: CUST-ADDR-GRP
+    attributes:
+      - name: street
+        data_type: string
+        category: required
+        classification: pii
+        mapped_from_element: CUST-ADDR-STREET
+      - name: city
+        data_type: string
+        category: required
+        mapped_from_element: CUST-ADDR-CITY
+      # ... state, postal_code, country follow the same pattern
+</code></pre>
+<hr />
+<h2 id="5-step-4-group-into-aggregates">5. Step 4: Group into Aggregates</h2>
+<p>Create <strong>Aggregate</strong> instances that define transactional consistency boundaries around related entities and value objects.</p>
+<h3 id="heuristics-for-identifying-aggregate-boundaries">Heuristics for identifying aggregate boundaries</h3>
+<p>The extraction agent SHOULD use the following signals:</p>
+<ol>
+<li><strong>Co-loaded entities</strong> -- entities that are always fetched and saved together (e.g., Order and OrderLineItem loaded in the same repository method)</li>
+<li><strong>Shared transaction boundary</strong> -- entities modified within the same <code>@Transactional</code> method, the same CICS <code>SYNCPOINT</code>, or the same database transaction</li>
+<li><strong>Root-controls-access</strong> -- a root entity that mediates all access to its children (e.g., <code>Order.addLineItem()</code> rather than direct <code>OrderLineItem</code> creation)</li>
+<li><strong>Cascade delete</strong> -- if deleting entity A always deletes entity B, they belong in the same aggregate</li>
+<li><strong>Bounded context alignment</strong> -- aggregates SHOULD NOT cross <strong>BoundedContext</strong> boundaries</li>
+</ol>
+<h3 id="required-attributes_2">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Aggregate name (typically same as root entity)</td>
+</tr>
+<tr>
+<td><code>has_root_entity</code></td>
+<td><strong>DomainEntity</strong> (required)</td>
+<td>The root entity -- MUST be set</td>
+</tr>
+<tr>
+<td><code>aggregates_entities</code></td>
+<td><strong>DomainEntity</strong> list</td>
+<td>Non-root entities in the aggregate</td>
+</tr>
+<tr>
+<td><code>has_value_objects</code></td>
+<td><strong>ValueObject</strong> list (inlined)</td>
+<td>Value objects within the aggregate</td>
+</tr>
+<tr>
+<td><code>enforced_by_invariant_rules</code></td>
+<td><strong>Rule</strong> list</td>
+<td>Invariant rules (if known at this point)</td>
+</tr>
+<tr>
+<td><code>persisted_in_stores</code></td>
+<td><strong>DataStore</strong> list</td>
+<td>Where the aggregate is persisted</td>
+</tr>
+<tr>
+<td><code>contained_in_bounded_context</code></td>
+<td><strong>BoundedContext</strong></td>
+<td>Parent bounded context from Phase 3</td>
+</tr>
+</tbody>
+</table>
+<h3 id="linking-to-boundedcontext">Linking to BoundedContext</h3>
+<p>Set <code>Aggregate.contained_in_bounded_context</code> to the <strong>BoundedContext</strong> identified in Phase 3. The inverse <code>BoundedContext.contains_aggregates</code> MUST also be set.</p>
+<h3 id="yaml-example_2">YAML example</h3>
+<pre><code class="language-yaml">Aggregate:
+  - name: Order
+    has_root_entity: Order
+    aggregates_entities:
+      - OrderLineItem
+    value_objects:
+      - Money           # defined in Step 3
+    enforced_by_invariant_rules:
+      - OrderMustHaveAtLeastOneItem
+      - TotalMustEqualSumOfLineItems
+    persisted_in_stores:
+      - OrderDatabase
+    contained_in_bounded_context: OrderManagement
+</code></pre>
+<hr />
+<h2 id="6-step-5-extract-domainrelationships">6. Step 5: Extract DomainRelationships</h2>
+<p>Create a <strong>DomainRelationship</strong> for each association between domain entities.</p>
+<h3 id="required-attributes_3">Required attributes</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Descriptive name (e.g., "OrderHasLineItems")</td>
+</tr>
+<tr>
+<td><code>has_source_entity</code></td>
+<td><strong>DomainEntity</strong></td>
+<td>The entity that owns or originates the relationship</td>
+</tr>
+<tr>
+<td><code>has_target_entity</code></td>
+<td><strong>DomainEntity</strong></td>
+<td>The entity that is referenced</td>
+</tr>
+<tr>
+<td><code>cardinality</code></td>
+<td><code>Cardinality</code> (required)</td>
+<td>One of: <code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_one</code>, <code>many_to_many</code></td>
+</tr>
+<tr>
+<td><code>is_navigable</code></td>
+<td>boolean</td>
+<td>Whether the relationship can be traversed source → target</td>
+</tr>
+<tr>
+<td><code>is_bidirectional</code></td>
+<td>boolean</td>
+<td>Whether it can be navigated in both directions</td>
+</tr>
+<tr>
+<td><code>is_composition</code></td>
+<td>boolean</td>
+<td><code>true</code> if the target's lifecycle depends on the source</td>
+</tr>
+<tr>
+<td><code>foreign_key_field</code></td>
+<td>string</td>
+<td>The field implementing this relationship in the data layer</td>
+</tr>
+<tr>
+<td><code>join_entity</code></td>
+<td>string</td>
+<td>For <code>many_to_many</code>, the join table or entity name</td>
+</tr>
+</tbody>
+</table>
+<h3 id="sources-for-discovering-relationships">Sources for discovering relationships</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Language / Platform</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ORM annotations</td>
+<td>Java (<code>@ManyToOne</code>, <code>@OneToMany</code>)</td>
+<td><code>@OneToMany(mappedBy = "order")</code></td>
+</tr>
+<tr>
+<td>ORM declarations</td>
+<td>Python/Django (<code>ForeignKey</code>, <code>ManyToManyField</code>)</td>
+<td><code>ForeignKey(Customer, on_delete=CASCADE)</code></td>
+</tr>
+<tr>
+<td>FK constraints</td>
+<td>SQL DDL</td>
+<td><code>FOREIGN KEY (customer_id) REFERENCES customers(id)</code></td>
+</tr>
+<tr>
+<td>Record references</td>
+<td>COBOL</td>
+<td><code>CUST-ID</code> field in <code>ORDER-REC</code> referencing <code>CUST-MSTR-REC</code></td>
+</tr>
+<tr>
+<td>ActiveRecord</td>
+<td>Ruby on Rails (<code>belongs_to</code>, <code>has_many</code>)</td>
+<td><code>has_many :order_line_items</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="composition-vs-association">Composition vs. association</h3>
+<p>Set <code>is_composition</code> to <code>true</code> when:</p>
+<ul>
+<li>The child entity cannot exist without the parent (e.g., <strong>OrderLineItem</strong> cannot exist without <strong>Order</strong>)</li>
+<li>Cascade delete is configured (<code>on_delete=CASCADE</code>, <code>CascadeType.ALL</code>)</li>
+<li>The child has no independent access path (no standalone repository)</li>
+</ul>
+<h3 id="yaml-example_3">YAML example</h3>
+<pre><code class="language-yaml">DomainRelationship:
+  - name: OrderHasLineItems
+    source_entity: Order
+    target_entity: OrderLineItem
+    cardinality: one_to_many
+    is_composition: true
+    is_navigable: true
+    is_bidirectional: true
+    foreign_key_field: order_id
+
+  - name: OrderBelongsToCustomer
+    source_entity: Order
+    target_entity: Customer
+    cardinality: many_to_one
+    is_composition: false
+    is_navigable: true
+    is_bidirectional: true
+    foreign_key_field: customer_id
+
+  - name: StudentEnrolledInCourses
+    source_entity: Student
+    target_entity: Course
+    cardinality: many_to_many
+    is_composition: false
+    is_navigable: true
+    is_bidirectional: true
+    join_entity: Enrollment
+</code></pre>
+<hr />
+<h2 id="7-step-6-extract-lifecycles-and-state-machines">7. Step 6: Extract Lifecycles and State Machines</h2>
+<p>Look for evidence of state management in the codebase and create lifecycle definitions.</p>
+<h3 id="signals-for-state-machines">Signals for state machines</h3>
+<ul>
+<li>Status/state fields with constrained values (enums, finite string sets)</li>
+<li>State transition methods (e.g., <code>order.submit()</code>, <code>order.cancel()</code>)</li>
+<li>Workflow definitions (state machine DSLs, workflow engines)</li>
+<li>Guard conditions (e.g., <code>if order.status == 'CONFIRMED' then allow ship</code>)</li>
+<li>COBOL paragraph names following transition patterns (e.g., <code>1000-PROCESS-NEW-ORDER</code>, <code>2000-CONFIRM-ORDER</code>)</li>
+</ul>
+<h3 id="creating-instances">Creating instances</h3>
+<p>Create a <strong>Lifecycle</strong> with <code>name</code>, <code>states</code> (inlined <strong>State</strong> list), <code>transitions</code> (inlined <strong>Transition</strong> list), <code>starts_with_state</code> (initial <strong>State</strong>), and <code>governs_entities</code> (the <strong>DomainEntity</strong> instances that follow this lifecycle).</p>
+<p>For each <strong>State</strong>, set <code>name</code>, <code>is_initial</code>, <code>is_terminal</code>, and optionally <code>allows_actions_in_state</code>.</p>
+<p>For each <strong>Transition</strong>, set <code>name</code>, <code>transitions_from_state</code> (required), <code>transitions_to_state</code> (required), and optionally <code>triggered_by_events</code>, <code>guarded_by_rules</code>, and <code>executes_actions_on_transition</code>.</p>
+<p>Link <code>DomainEntity.governed_by_lifecycle</code> → <strong>Lifecycle</strong> for each entity that has state behavior.</p>
+<h3 id="yaml-example_4">YAML example</h3>
+<pre><code class="language-yaml">Lifecycle:
+  - name: OrderLifecycle
+    governs_entities:
+      - Order
+    starts_with_state: Draft
+    states:
+      - name: Draft
+        is_initial: true
+        is_terminal: false
+        allows_actions_in_state:
+          - AddLineItem
+          - RemoveLineItem
+      - name: Submitted
+        is_initial: false
+        is_terminal: false
+      - name: Confirmed
+        is_initial: false
+        is_terminal: false
+      - name: Shipped
+        is_initial: false
+        is_terminal: false
+      - name: Delivered
+        is_initial: false
+        is_terminal: true
+      - name: Cancelled
+        is_initial: false
+        is_terminal: true
+    transitions:
+      - name: SubmitOrder
+        transitions_from_state: Draft
+        transitions_to_state: Submitted
+        triggered_by_events:
+          - OrderSubmitted
+        guarded_by_rules:
+          - OrderMustHaveAtLeastOneItem
+      - name: ConfirmOrder
+        transitions_from_state: Submitted
+        transitions_to_state: Confirmed
+        guarded_by_rules:
+          - PaymentMustBeAuthorized
+      - name: ShipOrder
+        transitions_from_state: Confirmed
+        transitions_to_state: Shipped
+        executes_actions_on_transition:
+          - CreateShipment
+          - NotifyCustomer
+      - name: DeliverOrder
+        transitions_from_state: Shipped
+        transitions_to_state: Delivered
+      - name: CancelOrder
+        transitions_from_state: Submitted   # also valid from Confirmed
+        transitions_to_state: Cancelled
+        executes_actions_on_transition:
+          - RefundPayment
+</code></pre>
+<hr />
+<h2 id="8-step-7-identify-datastores-and-collections">8. Step 7: Identify DataStores and Collections</h2>
+<p>Create persistence infrastructure instances that capture where aggregates are stored.</p>
+<h3 id="creating-datastore-instances">Creating DataStore instances</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>E.g., "OrderDatabase", "CustomerVSAM"</td>
+</tr>
+<tr>
+<td><code>store_type</code></td>
+<td><code>DataStoreType</code></td>
+<td>See permissible values below</td>
+</tr>
+<tr>
+<td><code>connection_string</code></td>
+<td>string</td>
+<td>Connection URI if discoverable</td>
+</tr>
+<tr>
+<td><code>collections</code></td>
+<td><strong>Collection</strong> list (inlined)</td>
+<td>Tables, collections, or buckets</td>
+</tr>
+</tbody>
+</table>
+<h4 id="store_type-permissible-values"><code>store_type</code> permissible values</h4>
+<p><code>relational_db</code>, <code>document_db</code>, <code>key_value_store</code>, <code>graph_db</code>, <code>time_series_db</code>, <code>object_storage</code>, <code>search_index</code>, <code>cache</code>, <code>message_broker</code>, <code>data_lake</code>, <code>vsam</code>, <code>flat_file</code>, <code>isam</code>, <code>dead_letter_queue</code></p>
+<h3 id="creating-collection-instances">Creating Collection instances</h3>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>string</td>
+<td>Table/collection/bucket name</td>
+</tr>
+<tr>
+<td><code>collection_structured_by_schema</code></td>
+<td><strong>Schema</strong></td>
+<td>Schema that defines the structure</td>
+</tr>
+<tr>
+<td><code>persists_structures</code></td>
+<td><strong>DataStructure</strong> list</td>
+<td>Link to Phase 2 DataStructures stored here</td>
+</tr>
+<tr>
+<td><code>has_constraints</code></td>
+<td><strong>DatabaseConstraint</strong> list (inlined)</td>
+<td>PK, FK, unique, check constraints</td>
+</tr>
+<tr>
+<td><code>has_indexes</code></td>
+<td><strong>DatabaseIndex</strong> list (inlined)</td>
+<td>Index definitions</td>
+</tr>
+<tr>
+<td><code>governed_by_retention_policy</code></td>
+<td><strong>RetentionPolicy</strong></td>
+<td>Data retention rules</td>
+</tr>
+</tbody>
+</table>
+<h3 id="creating-schema-and-schemaversion">Creating Schema and SchemaVersion</h3>
+<p>If DDL files or migration scripts exist, create a <strong>Schema</strong> with <code>schema_type</code> (one of: <code>table_schema</code>, <code>document_schema</code>, <code>event_schema</code>, <code>api_schema</code>, <code>message_schema</code>) and <code>definition</code> (the DDL or schema content). Add <strong>SchemaVersion</strong> instances to <code>has_versions</code> for each migration, setting <code>version</code>, <code>migration_script</code>, and <code>is_backward_compatible</code>.</p>
+<h3 id="creating-databaseconstraint-and-databaseindex-instances">Creating DatabaseConstraint and DatabaseIndex instances</h3>
+<p>For each <strong>Collection</strong>, create <strong>DatabaseConstraint</strong> instances with <code>constraint_type</code> (required, one of: <code>primary_key</code>, <code>foreign_key</code>, <code>unique</code>, <code>check</code>, <code>not_null</code>), <code>columns</code>, and -- for foreign keys -- <code>reference_table</code> and <code>reference_columns</code>. For <code>check</code> constraints, set <code>expression</code>.</p>
+<p>Create <strong>DatabaseIndex</strong> instances with <code>index_type</code> (required, one of: <code>btree</code>, <code>hash</code>, <code>gin</code>, <code>fulltext</code>), <code>columns</code>, and optionally <code>is_unique</code>, <code>is_partial</code>, and <code>filter_expression</code>.</p>
+<h3 id="dataclassification-and-retentionpolicy">DataClassification and RetentionPolicy</h3>
+<p>If data sensitivity or retention requirements are discoverable (from comments, annotations, compliance documentation):</p>
+<ul>
+<li>Create <strong>DataClassification</strong> with <code>classification_type</code> (one of: <code>public</code>, <code>internal</code>, <code>confidential</code>, <code>restricted</code>, <code>pii</code>, <code>phi</code>, <code>pci</code>), <code>handling_requirements</code>, and <code>encryption_required</code>.</li>
+<li>Create <strong>RetentionPolicy</strong> with <code>retention_days</code>, <code>archive_after_days</code>, and <code>deletion_strategy</code>.</li>
+</ul>
+<h3 id="linking-aggregates-to-stores">Linking aggregates to stores</h3>
+<p>Set <code>Aggregate.persisted_in_stores</code> → <strong>DataStore</strong> and the inverse <code>DataStore.persists_aggregates</code>.</p>
+<p>Set <code>DataStore.collections</code> → <strong>Collection</strong> list (inlined).</p>
+<p>Set <code>Collection.persists_structures</code> → <strong>DataStructure</strong> and the inverse <code>DataStructure.persisted_in_collection</code>.</p>
+<h3 id="yaml-example_5">YAML example</h3>
+<pre><code class="language-yaml">DataStore:
+  - name: OrderDatabase
+    store_type: relational_db
+    persists_aggregates:
+      - Order
+    collections:
+      - name: orders
+        collection_structured_by_schema: OrderTableSchema
+        persists_structures:
+          - ORDER-REC
+        has_constraints:
+          - name: pk_orders
+            constraint_type: primary_key
+            columns: [order_id]
+          - name: fk_orders_customer
+            constraint_type: foreign_key
+            columns: [customer_id]
+            reference_table: customers
+            reference_columns: [customer_id]
+          - name: chk_order_total
+            constraint_type: check
+            expression: &quot;total_amount &gt;= 0&quot;
+        has_indexes:
+          - name: idx_orders_customer
+            index_type: btree
+            columns: [customer_id]
+          - name: idx_orders_status
+            index_type: btree
+            columns: [status]
+        governed_by_retention_policy: OrderRetention
+
+      - name: order_line_items
+        persists_structures: [ORDER-LINE-REC]
+        has_constraints:
+          - name: pk_order_lines
+            constraint_type: primary_key
+            columns: [line_item_id]
+
+Schema:
+  - name: OrderTableSchema
+    schema_type: table_schema
+    definition: &quot;CREATE TABLE orders (order_id UUID PRIMARY KEY, ...);&quot;
+    schema_versions:
+      - name: OrderTable_v1
+        version: &quot;1.0.0&quot;
+        is_backward_compatible: true
+      - name: OrderTable_v2
+        version: &quot;2.0.0&quot;
+        migration_script: &quot;ALTER TABLE orders ADD COLUMN discount_code VARCHAR(20);&quot;
+        is_backward_compatible: true
+
+DataClassification:
+  - name: CustomerPII
+    classification_type: pii
+    handling_requirements: [&quot;Must be encrypted at rest&quot;, &quot;Access requires audit logging&quot;]
+    encryption_required: true
+
+RetentionPolicy:
+  - name: OrderRetention
+    retention_days: 2555
+    archive_after_days: 365
+    deletion_strategy: &quot;anonymize&quot;
+</code></pre>
+<hr />
+<h2 id="9-phase-4-checklist">9. Phase 4 Checklist</h2>
+<p>Before proceeding to Phase 5, verify the following:</p>
+<ul>
+<li>[ ] Every persistent <strong>DataStructure</strong> from Phase 2 has been evaluated against the decision tree (Section 2)</li>
+<li>[ ] <strong>DomainEntity</strong> instances have clean business names and <code>mapped_from_structure</code> bridges</li>
+<li>[ ] <strong>Attribute</strong> instances have <code>mapped_from_element</code> bridges back to <strong>DataElement</strong></li>
+<li>[ ] <strong>ValueObject</strong> instances have <code>mapped_from_structure_vo</code> bridges</li>
+<li>[ ] <strong>Aggregate</strong> instances have <code>has_root_entity</code> set (required) and are assigned to a <strong>BoundedContext</strong> via <code>contained_in_bounded_context</code></li>
+<li>[ ] <strong>DomainRelationship</strong> instances capture entity associations with correct <code>cardinality</code>, <code>is_composition</code>, and <code>foreign_key_field</code></li>
+<li>[ ] <strong>Lifecycle</strong>, <strong>State</strong>, and <strong>Transition</strong> instances are created where state patterns exist in the code</li>
+<li>[ ] <strong>DataStore</strong> and <strong>Collection</strong> instances identify all persistence mechanisms</li>
+<li>[ ] <strong>DatabaseConstraint</strong> and <strong>DatabaseIndex</strong> instances capture schema-level metadata where DDL or migrations are available</li>
+<li>[ ] <strong>DataClassification</strong> and <strong>RetentionPolicy</strong> instances are created where data sensitivity or retention requirements are discoverable</li>
+<li>[ ] All bidirectional inverse links are set on both sides of every relationship</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

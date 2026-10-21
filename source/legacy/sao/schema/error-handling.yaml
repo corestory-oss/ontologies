@@ -1,0 +1,107 @@
+# Copyright (c) 2025 CoreStory, Inc.
+# SPDX-License-Identifier: Apache-2.0
+# See LICENSE for the full license text.
+
+id: https://ontologies.corestory.ai/sao/schema/error-handling
+name: sao-error-handling
+license: Apache-2.0
+
+prefixes:
+  sao: https://ontologies.corestory.ai/sao/
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  skos: http://www.w3.org/2004/02/skos/core#
+  dcterms: http://purl.org/dc/terms/
+
+default_prefix: sao
+default_range: string
+
+enums:
+  ErrorHandlingStrategy:
+    description: Language-level error handling paradigms
+    permissible_values:
+      exception_based:
+        description: "Exception-based error handling."
+      return_value_based:
+        description: Errors returned as values (Go, Rust Result)
+      condition_based:
+        description: Common Lisp condition system
+      error_code_based:
+        description: Integer/enum error codes (C, COBOL)
+      panic_recover:
+        description: Go-style panic/recover
+      monadic:
+        description: Haskell Either/Maybe, Rust Result
+
+  ExceptionCheckedness:
+    description: Whether exceptions must be declared/caught
+    permissible_values:
+      checked:
+        description: Compiler-enforced handling (Java checked)
+      unchecked:
+        description: No compile-time enforcement
+      not_applicable:
+        description: Language does not use exceptions
+
+
+classes:
+  ErrorModel:
+    comments:
+      - "Enables cross-language comparison of error handling strategies and identification of mixed paradigms within a codebase."
+    is_a: NamedEntity
+    description: >-
+      Describes how a module or language handles errors
+    attributes:
+      strategy:
+        description: "The error handling paradigm used."
+        range: ErrorHandlingStrategy
+        required: true
+      checkedness:
+        description: "Whether exceptions are checked or unchecked."
+        range: ExceptionCheckedness
+      modules_using_error_model:
+        description: "Modules that use this error model."
+        range: EncapsulationUnit
+        multivalued: true
+        inverse: error_model_for_module
+      error_model_for_languages:
+        description: "Languages that use this as their default error model."
+        range: ProgrammingLanguage
+        multivalued: true
+        inverse: has_default_error_model
+
+  ExceptionType:
+    comments:
+      - "Models exception class hierarchies and connects them to the callables that raise or handle them."
+    is_a: NamedEntity
+    description: >-
+      A declared exception or error type in a codebase
+    attributes:
+      qualified_name:
+        range: string
+        description: Fully qualified type name
+      is_checked:
+        description: "Whether this is a checked exception."
+        range: boolean
+      has_parent_exception:
+        description: "Parent in the exception hierarchy."
+        range: ExceptionType
+        inverse: has_child_exceptions
+      has_child_exceptions:
+        description: "Children in the exception hierarchy."
+        range: ExceptionType
+        multivalued: true
+        inverse: has_parent_exception
+      raised_by_callables:
+        description: "Callables that may raise this exception."
+        range: CallableUnit
+        multivalued: true
+        inverse: raises_exception_types
+      handled_by_callables:
+        description: "Callables that handle this exception."
+        range: CallableUnit
+        multivalued: true
+        inverse: handles_exception_types
+

@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Phase 3: Architecture and Integration (Layers 2 &amp; 4) · CoreStory Ontologies</title>
+<link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../../../assets/styles/site.css">
+
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+</div></header>
+<main id="content" class="page-content"><h1 id="phase-3-architecture-and-integration-layers-2-4">Phase 3: Architecture and Integration (Layers 2 &amp; 4)</h1>
+<p>This phase bridges the physical code structure extracted in Phases 1-2 to logical architectural concepts. It maps directories to <strong>Modules</strong>, groups them into <strong>BoundedContexts</strong>, identifies <strong>Components</strong> and <strong>Services</strong>, extracts <strong>Interfaces</strong> and <strong>Endpoints</strong>, and documents <strong>ExternalSystem</strong> connections.</p>
+<p><strong>Automation level</strong>: 60-70%. Module and service identification can be largely automated from build manifests and deployment configs. Bounded context identification requires judgment and is the most subjective step in the entire extraction process.</p>
+<p><strong>Input</strong>: Phase 1 outputs (<strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong>) + Phase 2 outputs (<strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>DefinitionReference</strong>) + build manifests + deployment configs + documentation</p>
+<p><strong>Output</strong>: <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, <strong>Interface</strong> (and subtypes <strong>UserInterface</strong>, <strong>ProgrammaticInterface</strong>, <strong>EventInterface</strong>), <strong>Endpoint</strong>, <strong>Screen</strong>, <strong>Subscription</strong>, <strong>ExternalSystem</strong>, <strong>Integration</strong>, <strong>Contract</strong>, <strong>Adapter</strong>, <strong>CircuitBreaker</strong>, <strong>Dependency</strong>, <strong>Capability</strong>, <strong>Feature</strong></p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>Phase 3 establishes the architectural skeleton of the application. Where Phase 2 asks "what code exists?", Phase 3 asks "how is that code organized into deployable, meaningful units?"</p>
+<p>Two critical bridges are established in this phase:</p>
+<ol>
+<li><strong>Code-to-Module bridge</strong>: <code>Module.mapped_from_directory</code> links to a <strong>StorageLocation</strong>, and <code>StorageLocation.maps_to_module</code> provides the inverse. This connects the physical file tree to the logical module structure.</li>
+<li><strong>Code-to-Component bridge</strong>: <code>Component.implemented_by_code</code> links to <strong>EncapsulationUnit</strong> (or <strong>CodeContainer</strong>) instances, and the inverse <code>EncapsulationUnit.implements_component</code> links back. This connects individual code units to their architectural role.</li>
+</ol>
+<p>These bridges are what make SAO a true cross-layer ontology rather than a collection of disconnected models.</p>
+<hr />
+<h2 id="step-1-create-the-system-instance">Step 1: Create the System instance</h2>
+<p>Every extraction produces exactly one <strong>System</strong> instance. This is the root container from which all other architectural entities are reachable.</p>
+<p>The extraction agent MUST create the <strong>System</strong> before proceeding to any other step in this phase. Set the following attributes:</p>
+<ul>
+<li><code>name</code> -- the application or product name</li>
+<li><code>description</code> -- a concise summary of what the system does</li>
+<li><code>version</code> -- the version being extracted (inherited from the <code>Versionable</code> mixin)</li>
+</ul>
+<pre><code class="language-yaml">systems:
+  - name: order-platform
+    description: &gt;-
+      E-commerce order management platform handling order placement,
+      payment processing, and fulfillment tracking.
+    version: 2.4.1
+</code></pre>
+<p>All subsequent entities in this phase will be linked back to this <strong>System</strong> instance via relationship attributes such as <code>contains_bounded_contexts</code>, <code>has_integrations</code>, and <code>exposes_interfaces</code>.</p>
+<hr />
+<h2 id="step-2-map-storagelocations-to-modules">Step 2: Map StorageLocations to Modules</h2>
+<p>Create one <strong>Module</strong> for each cohesive, deployable unit of code. The goal is to transform the flat directory tree from Phase 1 into a logical module structure.</p>
+<h3 id="heuristic-what-constitutes-a-module">Heuristic: what constitutes a Module?</h3>
+<p>A <strong>Module</strong> is a cohesive, deployable unit of code. Use these signals to identify module boundaries:</p>
+<ul>
+<li>A top-level package or directory with its own build manifest (<code>pom.xml</code>, <code>package.json</code>, <code>build.gradle</code>, <code>Cargo.toml</code>)</li>
+<li>A separate build target within a monorepo</li>
+<li>A directory that represents a distinct functional area and could be deployed independently</li>
+<li>In mainframe systems, a partition of programs grouped by function (e.g., all batch programs for a subsystem)</li>
+</ul>
+<h3 id="required-attributes">Required attributes</h3>
+<ul>
+<li><code>name</code> -- the module name, typically matching the directory or package name</li>
+<li><code>mapped_from_directory</code> -- MUST reference the corresponding <strong>StorageLocation</strong> from Phase 1</li>
+</ul>
+<h3 id="establishing-the-bridge">Establishing the bridge</h3>
+<p>The extraction agent MUST set both sides of the code-to-module bridge:</p>
+<ul>
+<li><code>Module.mapped_from_directory</code> pointing to the <strong>StorageLocation</strong></li>
+<li><code>StorageLocation.maps_to_module</code> pointing back to the <strong>Module</strong></li>
+</ul>
+<h3 id="module-dependencies">Module dependencies</h3>
+<p>Use the <strong>DefinitionReference</strong> instances from Phase 2 to infer inter-module dependencies. When code in Module A imports or references code in Module B, set <code>depends_on_module</code> on Module A to include Module B.</p>
+<h3 id="optional-enrichment">Optional enrichment</h3>
+<ul>
+<li><code>is_optional</code> -- whether the module is an optional plugin or extension</li>
+<li><code>required_features</code> -- feature flags needed to enable the module</li>
+<li><code>architectural_patterns</code> -- applicable patterns (e.g., <code>layered</code>, <code>hexagonal</code>, <code>cqrs</code>)</li>
+<li><code>dependencies</code> -- inline <strong>Dependency</strong> instances with <code>dependency_type</code> (<code>runtime</code>, <code>build</code>, <code>optional</code>, <code>dev</code>)</li>
+</ul>
+<pre><code class="language-yaml">modules:
+  - name: order-service
+    mapped_from_directory: storage-locations/src-orders
+    depends_on_module:
+      - payment-module
+      - inventory-module
+    architectural_patterns:
+      - hexagonal
+    dependencies:
+      - name: spring-boot-starter-web
+        dependency_type: runtime
+      - name: junit-jupiter
+        dependency_type: dev
+
+  - name: payment-module
+    mapped_from_directory: storage-locations/src-payments
+    is_optional: false
+</code></pre>
+<p>On the <strong>StorageLocation</strong> side, set the inverse:</p>
+<pre><code class="language-yaml">storage_locations:
+  - name: src-orders
+    location_path: src/main/java/com/example/orders
+    maps_to_module: order-service
+</code></pre>
+<hr />
+<h2 id="step-3-group-modules-into-boundedcontexts">Step 3: Group Modules into BoundedContexts</h2>
+<p>Create <strong>BoundedContext</strong> instances representing the DDD semantic boundaries within the system. This is the most subjective step in the extraction process -- the extraction agent SHOULD flag bounded context assignments for human review.</p>
+<h3 id="decision-tree-for-identifying-bounded-context-boundaries">Decision tree for identifying bounded context boundaries</h3>
+<p>Use these signals, ordered from strongest to weakest:</p>
+<ol>
+<li><strong>Separate databases</strong> -- if two modules use different databases or schemas, they are almost certainly in separate contexts</li>
+<li><strong>Separate deployment units</strong> -- independently deployed services map to separate contexts</li>
+<li><strong>Separate teams</strong> -- if different teams own different modules, those modules likely belong to different contexts</li>
+<li><strong>Clear domain-oriented package names</strong> -- directories like <code>orders/</code>, <code>inventory/</code>, <code>users/</code>, <code>payments/</code> are strong candidates for separate contexts</li>
+<li><strong>Distinct ubiquitous language</strong> -- if the same term (e.g., "account") means different things in different parts of the code, those parts belong to different contexts</li>
+</ol>
+<p>When boundaries are unclear (e.g., a monolith with no clear domain separation), start with a single <strong>BoundedContext</strong> and refine later as domain understanding deepens.</p>
+<h3 id="required-attributes_1">Required attributes</h3>
+<ul>
+<li><code>name</code> -- the context name, typically a domain concept (e.g., "Order Management", "Inventory")</li>
+<li><code>contained_in_system</code> -- MUST reference the <strong>System</strong> instance</li>
+<li><code>contains_modules</code> -- MUST list the <strong>Module</strong> instances in this context</li>
+</ul>
+<h3 id="recommended-attributes">Recommended attributes</h3>
+<ul>
+<li><code>ubiquitous_language</code> -- list of key domain terms used within this context</li>
+<li><code>context_map_relationship</code> -- the DDD relationship pattern as a free-text string (e.g., "Customer-Supplier", "Partnership", "Shared Kernel", "Conformist", "Anti-Corruption Layer")</li>
+<li><code>upstream_from</code> / <code>downstream_from</code> -- other <strong>BoundedContext</strong> instances this context depends on or is depended on by</li>
+<li><code>architectural_patterns</code> -- applicable patterns (e.g., <code>cqrs</code>, <code>event_sourcing</code>, <code>domain_model</code>)</li>
+</ul>
+<h3 id="system-level-link">System-level link</h3>
+<p>The extraction agent MUST also set <code>System.contains_bounded_contexts</code> to reference all created <strong>BoundedContext</strong> instances.</p>
+<pre><code class="language-yaml">systems:
+  - name: order-platform
+    contains_bounded_contexts:
+      - order-management-context
+      - inventory-context
+      - payment-context
+
+bounded_contexts:
+  - name: order-management-context
+    contained_in_system: order-platform
+    contains_modules:
+      - order-service
+    ubiquitous_language:
+      - order
+      - line item
+      - fulfillment
+      - shipment
+    context_map_relationship: &quot;Upstream to Inventory (Customer-Supplier)&quot;
+    downstream_from:
+      - payment-context
+    architectural_patterns:
+      - domain_model
+      - cqrs
+
+  - name: payment-context
+    contained_in_system: order-platform
+    contains_modules:
+      - payment-module
+    ubiquitous_language:
+      - payment
+      - refund
+      - transaction
+      - settlement
+    upstream_from:
+      - order-management-context
+</code></pre>
+<hr />
+<h2 id="step-4-identify-components-within-modules">Step 4: Identify Components within Modules</h2>
+<p>Create <strong>Component</strong> instances representing the logical building blocks within each module. Components group related <strong>EncapsulationUnit</strong> instances by their architectural role.</p>
+<h3 id="heuristic-what-constitutes-a-component">Heuristic: what constitutes a Component?</h3>
+<p>Group EncapsulationUnits by stereotype or architectural role:</p>
+<ul>
+<li><strong>Controller/Handler layer</strong> -- classes annotated with <code>@Controller</code>, <code>@RestController</code>, or similar</li>
+<li><strong>Service layer</strong> -- classes annotated with <code>@Service</code> or named <code>*Service</code></li>
+<li><strong>Repository/DAO layer</strong> -- classes annotated with <code>@Repository</code> or implementing data access</li>
+<li><strong>DTO/Model layer</strong> -- data transfer objects, request/response models</li>
+<li><strong>Domain layer</strong> -- domain entities, value objects, aggregates</li>
+<li><strong>Configuration layer</strong> -- configuration classes, factories, dependency injection setup</li>
+</ul>
+<h3 id="required-attributes_2">Required attributes</h3>
+<ul>
+<li><code>name</code> -- the component name (e.g., "OrderController", "PaymentService", "OrderRepository")</li>
+<li><code>component_type</code> -- a free-text string describing the component's role (e.g., "controller", "service", "repository", "adapter")</li>
+<li><code>contained_in_module</code> -- MUST reference the parent <strong>Module</strong></li>
+</ul>
+<h3 id="establishing-the-bridge_1">Establishing the bridge</h3>
+<p>The extraction agent MUST set both sides of the code-to-component bridge:</p>
+<ul>
+<li><code>Component.implemented_by_code</code> -- list of <strong>EncapsulationUnit</strong> (or <strong>CodeContainer</strong>) instances that implement this component</li>
+<li><code>EncapsulationUnit.implements_component</code> -- pointing back to the <strong>Component</strong></li>
+</ul>
+<h3 id="module-level-link">Module-level link</h3>
+<p>Set <code>Module.contains_components</code> to reference all components within the module.</p>
+<pre><code class="language-yaml">modules:
+  - name: order-service
+    contains_components:
+      - order-controller
+      - order-service-component
+      - order-repository
+      - order-dto-layer
+
+components:
+  - name: order-controller
+    component_type: controller
+    contained_in_module: order-service
+    implemented_by_code:
+      - OrderController       # EncapsulationUnit
+      - OrderExceptionHandler  # EncapsulationUnit
+
+  - name: order-service-component
+    component_type: service
+    contained_in_module: order-service
+    implemented_by_code:
+      - OrderService
+      - OrderValidationService
+      - OrderNotificationService
+
+  - name: order-repository
+    component_type: repository
+    contained_in_module: order-service
+    implemented_by_code:
+      - OrderRepository
+      - OrderItemRepository
+</code></pre>
+<p>On the <strong>EncapsulationUnit</strong> side, set the inverse:</p>
+<pre><code class="language-yaml">encapsulation_units:
+  - name: OrderController
+    encapsulation_type: class
+    implements_component: order-controller
+</code></pre>
+<hr />
+<h2 id="step-5-extract-services">Step 5: Extract Services</h2>
+<p>Create <strong>Service</strong> instances from deployment manifests. A <strong>Service</strong> represents an independently deployable runtime unit.</p>
+<h3 id="where-to-find-services">Where to find services</h3>
+<p>Scan for deployment artifacts:</p>
+<ul>
+<li><strong>Dockerfiles</strong> and <code>docker-compose.yml</code> -- each service definition is a <strong>Service</strong></li>
+<li><strong>Kubernetes manifests</strong> -- each Deployment, StatefulSet, or CronJob is a <strong>Service</strong></li>
+<li><strong>Serverless configs</strong> (<code>serverless.yml</code>, SAM templates, <code>functions/</code>) -- each function is a <strong>Service</strong></li>
+<li><strong>JCL procedures</strong> -- each batch job or CICS transaction is a <strong>Service</strong></li>
+<li><strong>Procfiles</strong>, <code>systemd</code> units, Windows Services -- each process definition is a <strong>Service</strong></li>
+</ul>
+<h3 id="required-attributes_3">Required attributes</h3>
+<ul>
+<li><code>name</code> -- the service name, matching the deployment artifact name</li>
+<li><code>service_type</code> -- one of: <code>microservice</code>, <code>monolith</code>, <code>function</code>, <code>job</code>, <code>daemon</code>, <code>cics_transaction</code>, <code>ims_transaction</code>, <code>batch_program</code>, <code>stored_proc_service</code></li>
+<li><code>runs_module</code> -- MUST reference the <strong>Module</strong> this service runs</li>
+</ul>
+<h3 id="recommended-attributes_1">Recommended attributes</h3>
+<ul>
+<li><code>depends_on_service</code> -- other <strong>Service</strong> instances this service depends on</li>
+<li><code>exposes_endpoints</code> -- <strong>Endpoint</strong> instances exposed by this service (see Step 6)</li>
+</ul>
+<h3 id="module-level-inverse">Module-level inverse</h3>
+<p>Set <code>Module.runs_as_services</code> on the corresponding module.</p>
+<pre><code class="language-yaml">services:
+  - name: order-api
+    service_type: microservice
+    runs_module: order-service
+    depends_on_service:
+      - payment-api
+      - inventory-api
+
+  - name: order-processor
+    service_type: job
+    runs_module: order-service
+    description: Nightly batch job for order reconciliation
+
+  - name: payment-api
+    service_type: microservice
+    runs_module: payment-module
+</code></pre>
+<p>On the <strong>Module</strong> side:</p>
+<pre><code class="language-yaml">modules:
+  - name: order-service
+    runs_as_services:
+      - order-api
+      - order-processor
+</code></pre>
+<hr />
+<h2 id="step-6-extract-interfaces-and-endpoints">Step 6: Extract Interfaces and Endpoints</h2>
+<p><strong>Interface</strong> is an abstract class with three concrete subtypes. The extraction agent MUST determine which subtype to use based on the nature of the interface.</p>
+<h3 id="userinterface">UserInterface</h3>
+<p>Use for any human-facing interface. Set <code>category</code> to <code>user_interface</code>.</p>
+<p><strong>Required attributes</strong>:</p>
+<ul>
+<li><code>name</code> -- the interface name</li>
+<li><code>category</code> -- <code>user_interface</code></li>
+<li><code>ui_type</code> -- one of: <code>web_ui</code>, <code>mobile_ui</code>, <code>desktop_ui</code>, <code>cli</code></li>
+</ul>
+<p><strong>UserInterface</strong> MAY contain <strong>Screen</strong> instances with <code>route</code> and <code>offers_operations</code> attributes.</p>
+<pre><code class="language-yaml">user_interfaces:
+  - name: order-management-ui
+    category: user_interface
+    ui_type: web_ui
+    exposed_by_system: order-platform
+    screens:
+      - name: order-list-screen
+        route: /orders
+      - name: order-detail-screen
+        route: /orders/:id
+      - name: create-order-screen
+        route: /orders/new
+</code></pre>
+<h3 id="programmaticinterface">ProgrammaticInterface</h3>
+<p>Use for machine-to-machine interfaces. Set <code>category</code> to <code>programmatic_interface</code>.</p>
+<p><strong>Required attributes</strong>:</p>
+<ul>
+<li><code>name</code> -- the interface name</li>
+<li><code>category</code> -- <code>programmatic_interface</code></li>
+<li><code>api_type</code> -- one of: <code>rest_api</code>, <code>graphql_api</code>, <code>grpc_api</code>, <code>sdk</code>, <code>soap_api</code></li>
+</ul>
+<p><strong>ProgrammaticInterface</strong> MAY contain <strong>Endpoint</strong> instances. Each <strong>Endpoint</strong> SHOULD specify <code>path</code>, <code>method</code>, and <code>protocol</code>.</p>
+<pre><code class="language-yaml">programmatic_interfaces:
+  - name: order-rest-api
+    category: programmatic_interface
+    api_type: rest_api
+    base_url: https://api.example.com/v2
+    exposed_by_system: order-platform
+    has_endpoints:
+      - name: list-orders
+        path: /orders
+        method: GET
+        protocol: https
+      - name: create-order
+        path: /orders
+        method: POST
+        protocol: https
+      - name: get-order
+        path: /orders/{id}
+        method: GET
+        protocol: https
+      - name: cancel-order
+        path: /orders/{id}/cancel
+        method: POST
+        protocol: https
+</code></pre>
+<p><strong>Endpoint</strong> instances MAY also be linked to a <strong>Service</strong> via <code>exposed_by_service</code> / <code>Service.exposes_endpoints</code>.</p>
+<h3 id="eventinterface">EventInterface</h3>
+<p>Use for event-driven interfaces. Set <code>category</code> to <code>event_interface</code>.</p>
+<p><strong>Required attributes</strong>:</p>
+<ul>
+<li><code>name</code> -- the interface name</li>
+<li><code>category</code> -- <code>event_interface</code></li>
+<li><code>event_type</code> -- one of: <code>webhook</code>, <code>message_queue</code>, <code>event_stream</code>, <code>pub_sub</code></li>
+</ul>
+<p><strong>EventInterface</strong> MAY specify <code>topics</code> and contain <strong>Subscription</strong> instances.</p>
+<pre><code class="language-yaml">event_interfaces:
+  - name: order-events
+    category: event_interface
+    event_type: pub_sub
+    topics:
+      - order.created
+      - order.fulfilled
+      - order.cancelled
+    exposed_by_system: order-platform
+    has_subscriptions:
+      - name: inventory-order-subscription
+        filter: &quot;order.created&quot;
+        delivery_mode: at_least_once
+</code></pre>
+<h3 id="linking-interfaces">Linking interfaces</h3>
+<p>Interfaces MAY be linked at the <strong>System</strong> level via <code>System.exposes_interfaces</code>, or they MAY be linked to specific services via the <strong>Endpoint</strong> relationship. The extraction agent SHOULD use <code>System.exposes_interfaces</code> for the primary linkage and add service-level endpoint links for additional precision.</p>
+<hr />
+<h2 id="step-7-identify-external-systems-and-integrations">Step 7: Identify External Systems and Integrations</h2>
+<p>Create an <strong>ExternalSystem</strong> for each system outside the extraction boundary that this system interacts with.</p>
+<h3 id="identifying-external-systems">Identifying external systems</h3>
+<p>Scan these sources:</p>
+<ul>
+<li><strong>Configuration files</strong> -- database connection strings, API base URLs, message broker addresses</li>
+<li><strong>Environment variables</strong> -- <code>DATABASE_URL</code>, <code>REDIS_HOST</code>, <code>STRIPE_API_KEY</code></li>
+<li><strong>Infrastructure-as-Code</strong> -- Terraform resources, CloudFormation stacks</li>
+<li><strong>Import statements</strong> -- SDK imports for third-party services (e.g., <code>import stripe</code>, <code>import boto3</code>)</li>
+<li><strong>Docker Compose</strong> -- linked services (PostgreSQL, Redis, RabbitMQ)</li>
+</ul>
+<h3 id="required-externalsystem-attributes">Required ExternalSystem attributes</h3>
+<ul>
+<li><code>name</code> -- the external system name</li>
+<li><code>system_type</code> -- one of: <code>third_party_service</code>, <code>partner_system</code>, <code>legacy_system</code>, <code>saas_application</code></li>
+</ul>
+<h3 id="optional-externalsystem-attributes">Optional ExternalSystem attributes</h3>
+<ul>
+<li><code>owner</code> -- the team or vendor that owns the external system</li>
+<li><code>sla</code> -- service level agreement</li>
+<li><code>documentation_url</code> -- link to API docs</li>
+</ul>
+<h3 id="creating-integrations">Creating Integrations</h3>
+<p>For each connection between the system and an external system, create an <strong>Integration</strong> instance.</p>
+<p><strong>Required Integration attributes</strong>:</p>
+<ul>
+<li><code>name</code> -- a descriptive name for the integration</li>
+<li><code>integration_type</code> -- one of: <code>inbound</code>, <code>outbound</code>, <code>bidirectional</code></li>
+<li><code>integrates_with_system</code> -- reference to the <strong>ExternalSystem</strong></li>
+<li><code>belongs_to_system</code> -- reference to the <strong>System</strong></li>
+</ul>
+<p><strong>Recommended Integration attributes</strong>:</p>
+<ul>
+<li><code>protocol</code> -- one of: <code>http</code>, <code>https</code>, <code>websocket</code>, <code>grpc</code>, <code>amqp</code>, <code>mqtt</code>, <code>kafka</code>, <code>sftp</code>, <code>tcp</code>, <code>udp</code>, <code>corba</code>, <code>dcom</code>, <code>rmi</code>, <code>named_pipe</code>, <code>shared_memory</code></li>
+<li><code>integration_governed_by_contract</code> -- a <strong>Contract</strong> if one exists</li>
+<li><code>uses_adapter</code> -- an <strong>Adapter</strong> if protocol translation is needed</li>
+<li><code>protected_by_breaker</code> -- a <strong>CircuitBreaker</strong> if resilience patterns are in place</li>
+</ul>
+<h3 id="optional-supporting-entities">Optional supporting entities</h3>
+<p><strong>Contract</strong> -- create when a formal API specification exists:</p>
+<ul>
+<li><code>contract_type</code> -- one of: <code>openapi</code>, <code>asyncapi</code>, <code>json_schema</code>, <code>protobuf</code>, <code>avro</code>, <code>graphql_schema</code>, <code>wsdl</code></li>
+<li><code>definition</code> -- the contract definition or path to the spec file</li>
+</ul>
+<p><strong>Adapter</strong> (extends <strong>Component</strong>) -- create when protocol translation occurs:</p>
+<ul>
+<li><code>source_protocol</code> and <code>target_protocol</code> -- the protocols being translated between</li>
+<li><code>transformation</code> -- description of the data transformation</li>
+</ul>
+<p><strong>CircuitBreaker</strong> -- create when resilience patterns are detected (e.g., Hystrix, Resilience4j, Polly):</p>
+<ul>
+<li><code>failure_threshold</code> -- number of failures before opening</li>
+<li><code>reset_timeout_seconds</code> -- time before attempting half-open</li>
+<li><code>half_open_requests</code> -- requests allowed in half-open state</li>
+</ul>
+<h3 id="system-level-link_1">System-level link</h3>
+<p>Set <code>System.has_integrations</code> to reference all <strong>Integration</strong> instances.</p>
+<pre><code class="language-yaml">external_systems:
+  - name: stripe-payments
+    system_type: third_party_service
+    owner: Stripe Inc.
+    documentation_url: https://stripe.com/docs/api
+
+  - name: order-database
+    system_type: legacy_system
+    owner: Platform Team
+
+  - name: notification-broker
+    system_type: third_party_service
+    owner: Platform Team
+
+integrations:
+  - name: stripe-payment-integration
+    integration_type: outbound
+    protocol: https
+    integrates_with_system: stripe-payments
+    belongs_to_system: order-platform
+    integration_governed_by_contract: stripe-api-contract
+    uses_adapter: stripe-adapter
+    protected_by_breaker: stripe-circuit-breaker
+
+  - name: order-db-integration
+    integration_type: bidirectional
+    protocol: tcp
+    integrates_with_system: order-database
+    belongs_to_system: order-platform
+
+contracts:
+  - name: stripe-api-contract
+    contract_type: openapi
+    definition: &quot;specs/stripe-api-v3.yaml&quot;
+
+adapters:
+  - name: stripe-adapter
+    component_type: adapter
+    source_protocol: https
+    target_protocol: https
+    transformation: &quot;Maps internal PaymentRequest to Stripe charge API format&quot;
+
+circuit_breakers:
+  - name: stripe-circuit-breaker
+    failure_threshold: 5
+    reset_timeout_seconds: 30
+    half_open_requests: 3
+</code></pre>
+<hr />
+<h2 id="capabilities-and-features">Capabilities and Features</h2>
+<p>If the extraction scope warrants it, the extraction agent MAY create <strong>Capability</strong> and <strong>Feature</strong> instances at this stage.</p>
+<ul>
+<li><strong>Capability</strong> represents a discrete business or technical ability the system provides. Link via <code>provided_by_modules</code> to the <strong>Module</strong> instances that deliver it, and via <code>enables_features</code> to the <strong>Feature</strong> instances it supports.</li>
+<li><strong>Feature</strong> represents a user-facing manifestation of one or more capabilities. Set <code>category</code> to one of: <code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code>.</li>
+</ul>
+<p>These entities are often better populated in Phase 5 (Business Intent) when domain understanding is richer. Creating placeholders here and refining later is acceptable.</p>
+<pre><code class="language-yaml">capabilities:
+  - name: order-placement
+    provided_by_modules:
+      - order-service
+    enables_features:
+      - place-order-feature
+
+features:
+  - name: place-order-feature
+    category: core
+    enabled_by_capabilities:
+      - order-placement
+</code></pre>
+<hr />
+<h2 id="phase-3-checklist">Phase 3 Checklist</h2>
+<p>Before proceeding to Phase 4, verify the following:</p>
+<ul>
+<li>[ ] A single <strong>System</strong> instance exists with <code>name</code>, <code>description</code>, and <code>version</code></li>
+<li>[ ] Every top-level package or directory identified in Phase 1 maps to a <strong>Module</strong> via <code>mapped_from_directory</code> / <code>maps_to_module</code></li>
+<li>[ ] Every <strong>Module</strong> is assigned to a <strong>BoundedContext</strong> via <code>contained_in_context</code> / <code>contains_modules</code></li>
+<li>[ ] <strong>Components</strong> are identified within each module and linked to <strong>EncapsulationUnit</strong> instances via <code>implemented_by_code</code> / <code>implements_component</code></li>
+<li>[ ] <strong>Services</strong> are identified from deployment manifests and linked to modules via <code>runs_module</code> / <code>runs_as_services</code></li>
+<li>[ ] <strong>Interfaces</strong> are extracted and categorized by subtype (<strong>UserInterface</strong>, <strong>ProgrammaticInterface</strong>, <strong>EventInterface</strong>)</li>
+<li>[ ] <strong>Endpoints</strong> are documented for programmatic interfaces with <code>path</code>, <code>method</code>, and <code>protocol</code></li>
+<li>[ ] <strong>ExternalSystem</strong> instances exist for every external dependency</li>
+<li>[ ] <strong>Integration</strong> instances connect the system to each external system with <code>integration_type</code> and <code>protocol</code></li>
+<li>[ ] Module dependencies (<code>depends_on_module</code>) are captured from Phase 2 import analysis</li>
+<li>[ ] All inverse relationships are set (both sides of every bridge)</li>
+<li>[ ] Bounded context assignments are flagged for human review</li>
+</ul></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+</body>
+</html>

@@ -56,7 +56,7 @@ If your existing direnv setup is active, run `direnv allow` once to load the pin
 
 The static site has a branded prose homepage, a combined RDF Garden browser under `reference/`, HTML guides under `guides/` and downloadable Turtle under `dist/`. Edit website prose in `web/pages/`; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.
 
-`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. `nix run .#prepare-site` checks and builds committed local `main`, then creates or updates local `site` without switching your checkout. Review it, then push explicitly with `git push origin site`. Hosting integration is configured separately.
+`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI invokes `nix flake check`, which validates source and builds/checks the static site; it does not publish. `nix run .#prepare-site` checks and builds committed local `main`, then creates or updates local `site` without switching your checkout. Review it, then push explicitly with `git push origin site`. Hosting integration is configured separately.
 
 See [Nix and publishing explained](docs/nix-and-publishing.md) for the command meanings, lockfile, direnv, local preview and CDN details.
 

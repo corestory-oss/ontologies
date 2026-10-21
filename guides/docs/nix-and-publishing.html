@@ -14,7 +14,7 @@
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
 </div></header>
 <main id="content" class="page-content"><h1 id="nix-builds-and-static-documentation">Nix builds and static documentation</h1>
 <p>The public commands are Nix commands. Python remains the implementation language, but a normal build does not invoke uv, pip, or a local virtual environment.</p>
@@ -27,7 +27,7 @@ nix run .#prepare-site        # Populate local site from committed main; never p
 </code></pre>
 <p><code>nix build</code> puts the completed artifact in the Nix store and creates a <code>result</code> symlink in your checkout. <code>result/</code> contains the prose homepage, the Garden browser in <code>reference/</code>, JavaScript, CSS, fonts, ontology JSON, HTML guides, source downloads and Turtle distributions. It is a directory of static files, not a running service.</p>
 <p><code>nix run .#preview</code> is a convenience application supplied by this repository. The <code>preview</code> name is our choice; <code>nix run</code> is the standard Nix mechanism for running such a named application. It starts an ordinary foreground HTTP server bound to <code>127.0.0.1:4173</code>. That server exists only for local preview and stays up until Ctrl-C or the terminal closes. The preview disables HTTP caching, including timestamp-based 304 responses: Nix normalizes file timestamps, which would otherwise let browsers reuse an older dataset. It does not watch files or rebuild automatically; restart the command after editing. To use another port, run <code>nix run .#preview -- 8080</code>.</p>
-<p><code>nix flake check</code> runs finite checks and exits. It does not start a long-lived server. CI invokes the same checks and builds the same site, then attaches the site directory as a downloadable artifact.</p>
+<p><code>nix flake check</code> runs finite checks and exits. It does not start a long-lived server. CI invokes <code>nix flake check</code> directly. Its checks include the static site build and validation, so there is no separate CI build script or artifact-copy step. Publication stays local.</p>
 <h2 id="direnv-and-the-development-shell">direnv and the development shell</h2>
 <p>Like Plot, this repository has an <code>.envrc</code> containing <code>use flake</code>. If your existing direnv/nix-direnv setup is active, run this once in the checkout:</p>
 <pre><code class="language-sh">direnv allow
@@ -76,7 +76,7 @@ git push origin site
 <h2 id="reproducibility-and-scope">Reproducibility and scope</h2>
 <p>The builder reads the ontology catalog and authored Turtle. Garden JSON is a display projection; it does not replace SHACL validation or the source graphs. Cardinalities, allowed values and ranges appear in definitions; additional constraints and graph-rule descriptions appear in remarks. Source versions, hashes and display limitations are recorded in <code>snapshot.json</code>.</p>
 <p>Output records no wall-clock time or absolute developer paths. Anonymous RDF nodes are canonicalized before distribution serialization. Tests check stable projection output, anonymous-node serialization, term coverage and local HTML links.</p>
-<p>SAO's old LinkML checks remain a separate optional legacy job. Its commands are documented under <code>legacy/sao/</code>. The primary RDF and documentation workflow does not need that toolchain.</p>
+<p>SAO's old LinkML baseline is archived and excluded from CI. Its manual comparison commands remain documented under <code>legacy/sao/</code>. The active RDF and documentation workflow does not need that toolchain.</p>
 <p>The Garden runtime is third-party software fetched from its official distribution, retaining its built-in attribution. The asset manifest records the source and exact bytes; those assets are not relicensed by this repository's Apache license. The local-preview bootstrap adaptations are documented in <code>web/README.md</code>.</p>
 <h2 id="evaluation-cache-contention-and-binary-caches">Evaluation-cache contention and binary caches</h2>
 <p>A dirty-tree warning is expected during development. If Nix/Lix reports that its SQLite evaluation cache is busy, retry with <code>nix build --option eval-cache false</code>. This bypasses the evaluation cache for that invocation; it does not disable binary substitutions or rebuild every dependency. Check the exit status and the <code>result/</code> symlink to confirm the build succeeded. No cache files need to be deleted.</p>

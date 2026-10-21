@@ -10,6 +10,6 @@ Ontology versions live in `ontologies/catalog.json` and RDF metadata; update bot
 
 Use one repository-level [changelog](CHANGELOG.md) for shared tooling/layout changes and the ontology-specific changelogs for model changes: [SAO](docs/sao/CHANGELOG.md), [SpecSpec](docs/specspec/CHANGELOG.md).
 
-Historical LinkML commands and tests are documented under [legacy/sao/](legacy/sao/README.md). They use an optional Python dependency group and a separate CI job. Do not regenerate editable Turtle sources from the legacy model.
+Historical LinkML commands and tests are documented under [legacy/sao/](legacy/sao/README.md). They use an optional Python dependency group for manual historical comparisons and are not part of active CI. Do not regenerate editable Turtle sources from the legacy model.
 
 Keep terms self-documenting and examples synthetic. Avoid private implementation vocabularies and customer data. Retain corporate and original-author attribution. Contributions are submitted under Apache License 2.0, consistent with Section 5 of [LICENSE](LICENSE).

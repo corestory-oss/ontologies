@@ -14,7 +14,7 @@
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../index.html" aria-label="CoreStory Ontologies home"><img src="../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../reference/">Explore</a><a href="../guides/">Guides</a><a href="../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/sao">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../reference/">Explore</a><a href="../guides/">Guides</a><a href="../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
 </div></header>
 <main id="content" class="page-content"><h1 id="corestory-ontologies">CoreStory Ontologies</h1>
 <p>A shared home for two complementary, interlinked RDF ontologies:</p>
@@ -80,7 +80,7 @@ nix run .#prepare-site        # Check/build committed main and prepare local sit
 </code></pre>
 <p>If your existing direnv setup is active, run <code>direnv allow</code> once to load the pinned development tools automatically when entering this checkout. Otherwise use <code>nix develop</code>. Neither command starts a server or rebuilds the docs automatically.</p>
 <p>The static site has a branded prose homepage, a combined RDF Garden browser under <code>reference/</code>, HTML guides under <code>guides/</code> and downloadable Turtle under <code>dist/</code>. Edit website prose in <code>web/pages/</code>; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.</p>
-<p><code>main</code> contains editable sources. The intended <code>site</code> branch contains only the generated contents of the site build's <code>result/</code>, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. <code>nix run .#prepare-site</code> checks and builds committed local <code>main</code>, then creates or updates local <code>site</code> without switching your checkout. Review it, then push explicitly with <code>git push origin site</code>. Hosting integration is configured separately.</p>
+<p><code>main</code> contains editable sources. The intended <code>site</code> branch contains only the generated contents of the site build's <code>result/</code>, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI invokes <code>nix flake check</code>, which validates source and builds/checks the static site; it does not publish. <code>nix run .#prepare-site</code> checks and builds committed local <code>main</code>, then creates or updates local <code>site</code> without switching your checkout. Review it, then push explicitly with <code>git push origin site</code>. Hosting integration is configured separately.</p>
 <p>See <a href="docs/nix-and-publishing.html">Nix and publishing explained</a> for the command meanings, lockfile, direnv, local preview and CDN details.</p>
 <p>Inside the Nix development environment, maintainers can refresh committed distributions or run individual tools:</p>
 <pre><code class="language-sh">python scripts/build_rdf.py

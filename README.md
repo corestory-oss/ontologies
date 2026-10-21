@@ -49,13 +49,14 @@ nix build                     # Static HTML docs → result/
 nix run .#preview             # Local preview at http://127.0.0.1:4173/; Ctrl-C stops it
 nix flake check               # RDF, composition, docs and link checks
 nix build .#ontologies        # Turtle distributions → result/
+nix run .#prepare-site        # Check/build committed main and prepare local site branch
 ```
 
 If your existing direnv setup is active, run `direnv allow` once to load the pinned development tools automatically when entering this checkout. Otherwise use `nix develop`. Neither command starts a server or rebuilds the docs automatically.
 
 The static site has a branded prose homepage, a combined RDF Garden browser under `reference/`, HTML guides under `guides/` and downloadable Turtle under `dist/`. Edit website prose in `web/pages/`; layouts, styles and official brand assets live alongside it. No application server or runtime Nix/Python installation is required.
 
-`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. Branch population and hosting integration are separate from this layout change.
+`main` contains editable sources. The intended `site` branch contains only the generated contents of the site build's `result/`, committed locally and pushed for the host to serve. Generated files are never edited by hand. CI validates source and attaches a build artifact; it does not publish. `nix run .#prepare-site` checks and builds committed local `main`, then creates or updates local `site` without switching your checkout. Review it, then push explicitly with `git push origin site`. Hosting integration is configured separately.
 
 See [Nix and publishing explained](docs/nix-and-publishing.md) for the command meanings, lockfile, direnv, local preview and CDN details.
 

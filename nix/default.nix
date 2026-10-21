@@ -65,7 +65,10 @@
       rdfChecks =
         pkgs.runCommand "corestory-ontology-checks"
           {
-            nativeBuildInputs = [ python ];
+            nativeBuildInputs = [
+              python
+              pkgs.git
+            ];
           }
           ''
             cp -R ${src} source
@@ -88,6 +91,18 @@
       checks = {
         rdf = rdfChecks;
         inherit site;
+      };
+      apps.prepare-site = {
+        type = "app";
+        program = "${
+          pkgs.writeShellApplication {
+            name = "ontology-prepare-site";
+            runtimeInputs = [ pkgs.git ];
+            text = ''
+              exec ${python}/bin/python ${../scripts/prepare_site.py} "$@"
+            '';
+          }
+        }/bin/ontology-prepare-site";
       };
       apps.preview = {
         type = "app";

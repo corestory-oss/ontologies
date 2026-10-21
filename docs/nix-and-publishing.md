@@ -9,6 +9,7 @@ nix build                     # Build static documentation; result/ points to it
 nix run .#preview             # Build and serve it locally; Ctrl-C stops it
 nix flake check               # Run RDF, composition, projection and site checks
 nix build .#ontologies        # Build just the Turtle distributions
+nix run .#prepare-site        # Populate local site from committed main; never push
 ```
 
 `nix build` puts the completed artifact in the Nix store and creates a `result` symlink in your checkout. `result/` contains the prose homepage, the Garden browser in `reference/`, JavaScript, CSS, fonts, ontology JSON, HTML guides, source downloads and Turtle distributions. It is a directory of static files, not a running service.
@@ -33,7 +34,7 @@ Without direnv, run `nix develop`. This opens a shell with the same Python/RDF t
 
 - `flake.nix` is the project's entry point. It declares public inputs and supported platforms.
 - `flake.lock` pins those inputs to exact revisions and content hashes. We started from Plot's existing public nixpkgs and flake-parts revisions; this project does not import Plot or need its private cache.
-- `nix/default.nix` describes the products, checks, preview application and development shell. Each product is a recipe, called a derivation: inputs go in and a directory or executable comes out.
+- `nix/default.nix` describes the products, checks, preview/preparation applications and development shell. Each product is a recipe, called a derivation: inputs go in and a directory or executable comes out.
 - `nix/python.nix` builds the Python environment from pinned Nix packages. The validator remains at the version recorded in `uv.lock`, preserving the earlier migration's pySHACL contract.
 - `web/garden-assets.json` pins the browser runtime by URL and SHA-256. Nix checks the downloaded bytes rather than silently accepting a changed upstream asset.
 
@@ -64,11 +65,26 @@ assets/                 # Brand assets, fonts, CSS and pinned Garden runtime
 source/                 # Files linked as downloads from the guides
 snapshot.json           # Ontology versions and input hashes
 _headers                # Static hosting headers
+publication.json        # Exact source commit (added when preparing site)
 ```
 
 The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain `/sao/` and `/specspec/`; moving the browser to `/reference/` does not rename terms. Existing root-fragment Garden bookmarks redirect to the new browser location.
 
-The publication process is local: start from committed `main`, run `nix flake check` and `nix build`, populate a separate `site` checkout with the complete output (removing files left over from earlier builds), record the source commit, then commit and push `site` with ordinary fast-forward history. Never merge `site` into `main` or hand-edit generated HTML. Publication automation is a subsequent step; these commands currently build and preview only.
+The publication process is local: start from committed `main`, run `nix flake check` and `nix build`, populate a separate `site` checkout with the complete output (removing files left over from earlier builds), record the source commit, then commit and push `site` with ordinary fast-forward history. Never merge `site` into `main` or hand-edit generated HTML. The command performs the checks, build and local branch update; pushing remains an explicit separate step:
+
+```sh
+nix run .#prepare-site
+# Review the new branch; your source checkout stays where it is.
+git log -1 site
+git show site:publication.json
+git push origin site
+```
+
+Preparation requires a clean checkout, including untracked files, and uses **local `main`**, not an automatic fetch of `origin/main`. Update and push your source branch through your usual Git workflow before publishing. To prepare a candidate from the current committed feature branch instead, use `nix run .#prepare-site -- --source-ref HEAD`; its actual commit is recorded in `publication.json`. The source is passed to Nix by immutable Git revision. Tests and the site build must succeed before local `site` changes.
+
+Preparation uses a temporary Git index and content directory. It creates an initial parentless `site` commit, then preserves ordinary history on subsequent updates. Old generated files disappear, identical output with the same source commit is a no-op, and concurrent branch changes cause a refusal instead of an overwrite. Your current branch, files and index stay untouched. It refuses to update `site` while that branch is checked out in any worktree, or to repurpose an existing source branch named `site`. Git author/committer identity must already be configured.
+
+No Git network operations occur during preparation. If you already have a published branch on another machine, first fetch it and create local tracking history with `git branch --track site origin/site`. If a concurrent push makes your later `git push origin site` fail, do not force-push: preserve the remote history and prepare again from it. A successful branch push is what the future Git-connected host will use as its deployment trigger. Nix may fetch declared build dependencies; there are no Cloudflare credentials or API calls in preparation.
 
 A Git-connected static host can watch `site` and serve its root without installing Nix or rebuilding the ontologies. No Cloudflare API credentials or GitHub Actions publishing job are needed for that arrangement. Existing Cloudflare project migration and domain configuration are outside this repository layout change.
 

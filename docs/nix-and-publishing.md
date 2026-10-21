@@ -16,7 +16,7 @@ nix run .#prepare-site        # Populate local site from committed main; never p
 
 `nix run .#preview` is a convenience application supplied by this repository. The `preview` name is our choice; `nix run` is the standard Nix mechanism for running such a named application. It starts an ordinary foreground HTTP server bound to `127.0.0.1:4173`. That server exists only for local preview and stays up until Ctrl-C or the terminal closes. The preview disables HTTP caching, including timestamp-based 304 responses: Nix normalizes file timestamps, which would otherwise let browsers reuse an older dataset. It does not watch files or rebuild automatically; restart the command after editing. To use another port, run `nix run .#preview -- 8080`.
 
-`nix flake check` runs finite checks and exits. It does not start a long-lived server. CI invokes the same checks and builds the same site, then attaches the site directory as a downloadable artifact.
+`nix flake check` runs finite checks and exits. It does not start a long-lived server. CI invokes `nix flake check` directly. Its checks include the static site build and validation, so there is no separate CI build script or artifact-copy step. Publication stays local.
 
 ## direnv and the development shell
 
@@ -94,7 +94,7 @@ The builder reads the ontology catalog and authored Turtle. Garden JSON is a dis
 
 Output records no wall-clock time or absolute developer paths. Anonymous RDF nodes are canonicalized before distribution serialization. Tests check stable projection output, anonymous-node serialization, term coverage and local HTML links.
 
-SAO's old LinkML checks remain a separate optional legacy job. Its commands are documented under `legacy/sao/`. The primary RDF and documentation workflow does not need that toolchain.
+SAO's old LinkML baseline is archived and excluded from CI. Its manual comparison commands remain documented under `legacy/sao/`. The active RDF and documentation workflow does not need that toolchain.
 
 The Garden runtime is third-party software fetched from its official distribution, retaining its built-in attribution. The asset manifest records the source and exact bytes; those assets are not relicensed by this repository's Apache license. The local-preview bootstrap adaptations are documented in `web/README.md`.
 

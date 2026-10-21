@@ -16,4 +16,4 @@ uv run --group legacy linkml-validate --exit-on-first-failure -s legacy/sao/sao.
 uv run --group legacy linkml-validate --exit-on-first-failure -s legacy/sao/sao.yml -C Integration examples/sao/integration.yaml
 ```
 
-The schema's local module imports remain unchanged. Migration tools under `scripts/migration/sao/` default to this relocated schema and require explicit output paths for one-time generation. Do not use them to overwrite current Turtle sources. The historical baseline has its own CI job and is not imported by the normal RDF build or test suite.
+The schema's local module imports remain unchanged. Migration tools under `scripts/migration/sao/` default to this relocated schema and require explicit output paths for one-time generation. Do not use them to overwrite current Turtle sources. The historical baseline is archived, is not checked by CI, and is not imported by the normal RDF build or test suite. The commands above remain available for manual historical comparisons.

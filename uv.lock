@@ -151,6 +151,7 @@ name = "corestory-ontologies"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "markdown" },
     { name = "owlrl" },
     { name = "pyshacl" },
     { name = "rdflib" },
@@ -163,6 +164,7 @@ legacy = [
 
 [package.metadata]
 requires-dist = [
+    { name = "markdown", specifier = ">=3.7,<4" },
     { name = "owlrl", specifier = ">=7.1,<8" },
     { name = "pyshacl", specifier = ">=0.30,<0.31" },
     { name = "rdflib", specifier = ">=7.1,<8" },
@@ -477,6 +479,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/e0/38/38ac19a5b81982f03709cda0a008327dc775d11f008d0cbdc0f2a5389e24/linkml_runtime-1.9.5.tar.gz", hash = "sha256:78dc1383adf11ad5f20bb11b6adde56ed566fbd2429a292d57699ad4596c738a", size = 480288, upload-time = "2025-08-15T22:22:51.098Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/34/28/cdcbe1f0521a98b891dd30249513eef1ddcc7bb406be953b4a8d7825e68f/linkml_runtime-1.9.5-py3-none-any.whl", hash = "sha256:fece3e8aa25a4246165c6528b6a7fe83a929b985d2ce1951cc8a0f4da1a30b90", size = 576405, upload-time = "2025-08-15T22:22:49.264Z" },
+]
+
+[[package]]
+name = "markdown"
+version = "3.11.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/32/0b4d0297064244f04af4331b65de16237cc3cce07474171ee14222a28981/markdown-3.11.2.tar.gz", hash = "sha256:87bf5d90f2d2882e2c02fcda182c2800456b985bff38913867c49706481514b0", size = 491445, upload-time = "2026-10-19T19:41:42.687Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fe/66/bcab3b677b71ad286b4e607e3427499537c76e13ad2e22584ba7a7d9882c/markdown-3.11.2-py3-none-any.whl", hash = "sha256:f80390747a2a0ff2ba54da074ce4f862f72a6685f608cd2637b646a6d83993f5", size = 114266, upload-time = "2026-10-19T19:41:41.244Z" },
 ]
 
 [[package]]

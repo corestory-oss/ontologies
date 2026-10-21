@@ -34,48 +34,54 @@ examples/sao/
 examples/specspec/
 examples/ecosystem/        # One graph validated against both ontologies
 tests/                     # RDF and composition regression tests
-scripts/                   # Shared tooling and ontology-specific checks
+scripts/                   # Shared tooling, static docs builder and ontology checks
+nix/                       # Reproducible builds, checks, preview and dev shell
+web/                       # Pinned Garden asset manifest
 legacy/sao/                # Historical LinkML baseline and its separate tests
 ```
 
-## Build and validate
+## Build, check and preview
 
-Use Python 3.13+ and uv. Run commands from the repository root; they do not depend on this checkout's directory name.
-
-```sh
-uv sync --locked
-uv run python scripts/build_rdf.py
-uv run python scripts/build_rdf.py --check
-uv run python scripts/validate_rdf.py
-uv run python scripts/validate_axioms.py
-uv run python -m unittest discover -s tests
-```
-
-The default build assembles both ontologies. The default RDF validation checks the independent SAO and SpecSpec examples and a combined modernization graph, including evidence fixture integrity. CI also checks SAO's relationship example and the narrower bridge endpoint-type fixture. No inference is materialized during SHACL validation.
-
-To work on just one ontology:
+The normal workflow uses Nix, following Plot's flake/direnv pattern:
 
 ```sh
-uv run python scripts/build_rdf.py --ontology sao
-uv run python scripts/validate_rdf.py --ontology specspec
-uv run python scripts/validate_axioms.py --ontology sao
+nix build                     # Static HTML docs → result/
+nix run .#preview             # Local preview at http://127.0.0.1:4173/; Ctrl-C stops it
+nix flake check               # RDF, composition, docs and link checks
+nix build .#ontologies        # Turtle distributions → result/
 ```
 
-To validate your own graph, select the applicable profile:
+If your existing direnv setup is active, run `direnv allow` once to load the pinned development tools automatically when entering this checkout. Otherwise use `nix develop`. Neither command starts a server or rebuilds the docs automatically.
+
+The static docs include a combined RDF Garden reference, pre-rendered HTML guides and downloadable Turtle. Deploy the contents of the site build's `result/` directory to Cloudflare Pages or another static host. No application server or runtime Nix/Python installation is required. CI builds and attaches the static site as an artifact; deployment remains a separate step.
+
+See [Nix and publishing explained](docs/nix-and-publishing.md) for the command meanings, lockfile, direnv, local preview and CDN details.
+
+Inside the Nix development environment, maintainers can refresh committed distributions or run individual tools:
 
 ```sh
-uv run python scripts/validate_rdf.py --ontology sao path/to/software.ttl
-uv run python scripts/validate_rdf.py --ontology specspec path/to/specification.ttl
-uv run python scripts/validate_rdf.py --ontology ecosystem path/to/combined.ttl
+python scripts/build_rdf.py
+python scripts/build_rdf.py --check
+python scripts/validate_rdf.py
+python scripts/validate_axioms.py
+python -m unittest discover -s tests
 ```
 
-The ecosystem profile applies SAO, SpecSpec, and the existing bridge shapes together. The independent SpecSpec profile does not load SAO. SpecSpec's graph rules use SHACL-SPARQL, so a Core-only SHACL processor cannot run the entire profile.
+To validate your own graph, select a profile:
+
+```sh
+nix develop -c python scripts/validate_rdf.py --ontology sao path/to/software.ttl
+nix develop -c python scripts/validate_rdf.py --ontology specspec path/to/specification.ttl
+nix develop -c python scripts/validate_rdf.py --ontology ecosystem path/to/combined.ttl
+```
+
+The ecosystem profile applies SAO, SpecSpec and the current bridge shapes together. The independent SpecSpec profile does not load SAO. SpecSpec's graph rules use SHACL-SPARQL, so a Core-only SHACL processor cannot run the entire profile. SHACL validation does not materialize OWL inferences.
 
 ## Distribution files
 
 [dist/](dist/) contains separate vocabulary, SHACL and OWL files for each ontology: `sao.ttl`, `sao.shacl.ttl`, `sao.owl.ttl`, and the corresponding `specspec.*ttl` files. The `specspec-sao.*ttl` files contain only the current bridge layer. Consumers can load the layers they need; there are no automatic network imports.
 
-The source reorganization does not change public namespace or term IRIs. Moving local build outputs into `dist/` changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a `site` branch, served through CoreStory's CDN. No publishing or persistent preview service is configured by this change.
+The source reorganization does not change public namespace or term IRIs. Moving local build outputs into `dist/` changes repository paths; eventual CDN URL routing is a publishing decision. The intended documentation publishing model remains static output on a `site` branch, served through CoreStory's CDN. A static site build and foreground local preview are available; deployment is not configured.
 
 ## Legacy baseline
 

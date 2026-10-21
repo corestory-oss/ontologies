@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 from rdflib import Graph, BNode
-from rdflib.compare import isomorphic
+from rdflib.compare import isomorphic, to_canonical_graph
 
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -37,6 +37,16 @@ def same_graph(left, right):
     return isomorphic(left, right)
 
 
+def turtle(graph):
+    if any(isinstance(term, BNode) for triple in graph for term in triple):
+        stable = Graph()
+        for prefix, namespace in graph.namespaces():
+            stable.bind(prefix, namespace)
+        stable += to_canonical_graph(graph)
+        graph = stable
+    return graph.serialize(format="turtle")
+
+
 def build(check=False, ontology=None):
     entries = catalog()
     if ontology is not None and ontology not in entries:
@@ -65,7 +75,7 @@ def build(check=False, ontology=None):
                     f"# Generated distribution; edit {entry['source']}/, then run scripts/build_rdf.py.\n"
                     "# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n"
                 )
-                output.write_text((header + graph.serialize(format="turtle")).rstrip() + "\n")
+                output.write_text((header + turtle(graph)).rstrip() + "\n")
                 if not same_graph(Graph().parse(output, format="turtle"), graph):
                     raise ValueError(f"{filename} did not round-trip")
             print(f"{identifier}/{name}: {len(graph)} triples {'match' if check else 'assembled'}")

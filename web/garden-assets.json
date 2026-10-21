@@ -1,0 +1,25 @@
+{
+  "version": "2.0.56",
+  "assets": [
+    {
+      "path": "v2/explorer.js",
+      "url": "https://the.rdf.garden/v2/explorer.js",
+      "hash": "sha256-8bB+OLOu5JKlD8qMcU1iYgkQmBVpyMR2v/S2s6xgHBc="
+    },
+    {
+      "path": "explorer/JNPGHQN7.js",
+      "url": "https://the.rdf.garden/explorer/JNPGHQN7.js",
+      "hash": "sha256-zTKm28NjlZyxiZXixhuDLpVUsUC2wpg/uzChjURD9oM="
+    },
+    {
+      "path": "explorer/YYSRLKNL.css",
+      "url": "https://the.rdf.garden/explorer/YYSRLKNL.css",
+      "hash": "sha256-ENx0/03B+K2s85A1KvB6SfS4ZbVyNlk7+WTRlD2PY9k="
+    },
+    {
+      "path": "explorer/DY55LB47.woff2",
+      "url": "https://the.rdf.garden/explorer/DY55LB47.woff2",
+      "hash": "sha256-BxlBvVW1GmNLo7MlnJM5dGatcPjR2iAqJVdw3ldpFfc="
+    }
+  ]
+}

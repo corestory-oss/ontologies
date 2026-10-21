@@ -21,3 +21,8 @@ wheels/
 
 # Shared runtime and preview output
 .idea/
+
+# Nix and direnv local outputs
+/result
+/result-*
+.direnv/

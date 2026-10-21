@@ -1,0 +1,63 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:ArtifactFragment a rdfs:Class ;
+    rdfs:label "ArtifactFragment" ;
+    rdfs:comment "A section or fragment of a document that represents specific knowledge items." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:RepresentationProfile a rdfs:Class ;
+    rdfs:label "RepresentationProfile" ;
+    rdfs:comment "An identified external document convention, such as OpenSpec, arc42, MADR, or an organization’s PRD template. Declaring a profile does not implement an adapter or certify conformance." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:SpecificationArtifact a rdfs:Class ;
+    rdfs:label "SpecificationArtifact" ;
+    rdfs:comment "A document or other presentation of specification knowledge. Its identity is distinct from the requirements, decisions, and software entities it discusses." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:subClassOf spec:SpecElement .
+
+spec:artifact a rdf:Property ;
+    rdfs:label "artifact" ;
+    rdfs:comment "[ArtifactFragment] Document containing this fragment." ;
+    rdfs:domain spec:ArtifactFragment ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecificationArtifact .
+
+spec:profile a rdf:Property ;
+    rdfs:label "profile" ;
+    rdfs:comment "[SpecificationArtifact] Document convention used for this representation." ;
+    rdfs:domain spec:SpecificationArtifact ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:RepresentationProfile .
+
+spec:profile_uri a rdf:Property ;
+    rdfs:label "profile_uri" ;
+    rdfs:comment "[RepresentationProfile] Authoritative documentation for the convention." ;
+    rdfs:domain spec:RepresentationProfile ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:anyURI .
+
+spec:profile_version a rdf:Property ;
+    rdfs:label "profile_version" ;
+    rdfs:comment "[RepresentationProfile] External format version or documentation revision used for the mapping." ;
+    rdfs:domain spec:RepresentationProfile ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range xsd:string .
+
+spec:represents a rdf:Property ;
+    rdfs:label "represents" ;
+    schema:domainIncludes spec:ArtifactFragment,
+        spec:SpecificationArtifact ;
+    rdfs:comment "[ArtifactFragment] Knowledge items represented by the fragment; one fragment may describe many items.",
+        "[SpecificationArtifact] Knowledge items represented by this artifact." ;
+    rdfs:isDefinedBy spec: ;
+    rdfs:range spec:SpecElement .

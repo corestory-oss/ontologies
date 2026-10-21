@@ -1,0 +1,12 @@
+{
+  "format": "turtle",
+  "files": [
+    "vocabulary/common.ttl",
+    "vocabulary/decisions.ttl",
+    "vocabulary/evidence.ttl",
+    "vocabulary/graph.ttl",
+    "vocabulary/ontology.ttl",
+    "vocabulary/representations.ttl",
+    "vocabulary/specifications.ttl"
+  ]
+}

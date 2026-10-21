@@ -1,14 +1,17 @@
 [project]
-name = "systems-abstraction-ontology"
-version = "3.0.0"
-description = "A language-agnostic LinkML ontology for modeling software systems"
+name = "corestory-ontologies"
+version = "0.1.0"
+description = "Shared RDF tooling for CoreStory's SAO and SpecSpec ontologies"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
 authors = [{ name = "CoreStory, Inc." }]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "linkml>=1.9.6",
+    "rdflib>=7.1,<8",
     "owlrl>=7.1,<8",
     "pyshacl>=0.30,<0.31",
 ]
+
+[dependency-groups]
+legacy = ["linkml>=1.9.6"]

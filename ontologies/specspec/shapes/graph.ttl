@@ -1,0 +1,32 @@
+# Editable Turtle source; assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix specsh: <https://ontologies.corestory.ai/specspec/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+specsh:SpecificationGraphShape a sh:NodeShape ;
+    sh:closed true ;
+    sh:ignoredProperties specsh:IgnoredType ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsh:acceptance_criteria_89c935ed,
+        specsh:activities_b7413348,
+        specsh:agents_afd9842f,
+        specsh:anchors_6b2d19ed,
+        specsh:artifacts_49a1b471,
+        specsh:change_proposals_dd899439,
+        specsh:claims_79a510a1,
+        specsh:decision_options_03722748,
+        specsh:decisions_c9076bfa,
+        specsh:fragments_ba8b8483,
+        specsh:profiles_ea747476,
+        specsh:requirement_replacements_1e599028,
+        specsh:requirements_6fec8ffc,
+        specsh:scenario_steps_3470593b,
+        specsh:scenarios_8d1e0dd8,
+        specsh:snapshots_52979db1,
+        specsh:specifications_a0143a35,
+        specsh:use_cases_7fd18544,
+        specsh:verification_results_8f5992bd ;
+    sh:targetClass spec:SpecificationGraph .

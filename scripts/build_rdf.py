@@ -8,7 +8,10 @@ from pathlib import Path
 from rdflib import Graph, BNode
 from rdflib.compare import isomorphic
 
-ROOT = Path(__file__).resolve().parents[1]
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.catalog import ROOT, catalog
+
 
 def assemble(manifest_path):
     manifest_path = Path(manifest_path)
@@ -34,28 +37,43 @@ def same_graph(left, right):
     return isomorphic(left, right)
 
 
-def build(check=False):
-    products = {"vocabulary": ROOT / "sao.ttl", "shapes": ROOT / "sao.shacl.ttl", "axioms": ROOT / "sao.owl.ttl"}
-    for name, output in products.items():
-        manifest = ROOT / "rdf/manifests" / (name + ".json")
-        listed = set(json.loads(manifest.read_text())["files"])
-        directory = ROOT / "rdf" / name
-        actual = {str(path.relative_to(ROOT / "rdf")) for path in directory.rglob("*.ttl")}
-        if listed != actual:
-            raise ValueError(f"{name}: manifest and source files disagree")
-        graph = assemble(manifest)
-        if check:
-            if not same_graph(Graph().parse(output, format="turtle"), graph):
-                raise ValueError(f"{output.name} is stale; run scripts/build_rdf.py")
-        else:
-            header = "# Generated distribution; edit rdf/ source files, then run scripts/build_rdf.py.\n# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n"
-            output.write_text((header + graph.serialize(format="turtle")).rstrip() + "\n")
-            if not same_graph(Graph().parse(output, format="turtle"), graph):
-                raise ValueError(f"{output.name} did not round-trip")
-        print(f"{name}: {len(graph)} triples {'match' if check else 'assembled'}")
+def build(check=False, ontology=None):
+    entries = catalog()
+    if ontology is not None and ontology not in entries:
+        raise ValueError(f"Unknown ontology: {ontology}")
+    for identifier, entry in entries.items():
+        if ontology is not None and identifier != ontology:
+            continue
+        source = ROOT / entry["source"]
+        for name, filename in entry["products"].items():
+            output = ROOT / filename
+            manifest = source / "manifests" / (name + ".json")
+            listed = set(json.loads(manifest.read_text())["files"])
+            if name.startswith("sao-"):
+                actual = {"bridges/sao/" + name.removeprefix("sao-") + ".ttl"}
+            else:
+                actual = {str(p.relative_to(source)) for p in (source / name).rglob("*.ttl")}
+            if listed != actual:
+                raise ValueError(f"{identifier}/{name}: manifest and sources disagree")
+            graph = assemble(manifest)
+            if check:
+                if not same_graph(Graph().parse(output, format="turtle"), graph):
+                    raise ValueError(f"{filename} is stale; run scripts/build_rdf.py")
+            else:
+                output.parent.mkdir(parents=True, exist_ok=True)
+                header = (
+                    f"# Generated distribution; edit {entry['source']}/, then run scripts/build_rdf.py.\n"
+                    "# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0\n\n"
+                )
+                output.write_text((header + graph.serialize(format="turtle")).rstrip() + "\n")
+                if not same_graph(Graph().parse(output, format="turtle"), graph):
+                    raise ValueError(f"{filename} did not round-trip")
+            print(f"{identifier}/{name}: {len(graph)} triples {'match' if check else 'assembled'}")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--ontology", choices=tuple(catalog()))
     args = parser.parse_args()
-    build(args.check)
+    build(args.check, args.ontology)

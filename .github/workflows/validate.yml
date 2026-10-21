@@ -1,4 +1,4 @@
-name: Validate ontology
+name: Validate ontologies
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  validate:
+  rdf:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,20 +16,30 @@ jobs:
         with:
           version: "0.11.2"
       - run: uv sync --locked
-      - run: uv run linkml-lint --validate-only sao.yml
-      - run: uv run python scripts/check_schema.py
       - run: uv run python scripts/build_rdf.py --check
       - run: uv run python scripts/validate_rdf.py
-      - run: uv run python scripts/validate_rdf.py examples/rdf/relationships-3.ttl
+      - run: uv run python scripts/validate_rdf.py --ontology sao examples/sao/rdf/relationships-3.ttl
       - run: uv run python scripts/validate_axioms.py
+      - run: uv run python scripts/validate_rdf.py --ontology specspec --sao-vocabulary tests/specspec/fixtures/sao.ttl --bridge-data examples/specspec/modernization/sao-links.ttl
       - run: uv run python -m unittest discover -s tests
-      - name: Validate schema modules
+  legacy-sao:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.11.2"
+      - run: uv sync --locked --group legacy
+      - run: uv run --group legacy linkml-lint --validate-only legacy/sao/sao.yml
+      - run: uv run --group legacy python scripts/migration/sao/check_schema.py
+      - run: uv run --group legacy python -m unittest discover -s legacy/sao/tests
+      - name: Validate legacy modules and generators
         run: |
-          for module in schema/*.yaml; do
-            uv run linkml-lint --validate-only "$module"
+          for module in legacy/sao/schema/*.yaml; do
+            uv run --group legacy linkml-lint --validate-only "$module"
           done
-      - run: uv run gen-json-schema sao.yml > /tmp/sao.schema.json
-      - run: uv run gen-doc --render-imports --directory /tmp/sao-reference sao.yml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C System examples/system.yaml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Aggregate examples/aggregate.yaml
-      - run: uv run linkml-validate --exit-on-first-failure -s sao.yml -C Integration examples/integration.yaml
+          uv run --group legacy gen-json-schema legacy/sao/sao.yml > /tmp/sao.schema.json
+          uv run --group legacy gen-doc --render-imports --directory /tmp/sao-reference legacy/sao/sao.yml
+      - run: uv run --group legacy linkml-validate --exit-on-first-failure -s legacy/sao/sao.yml -C System examples/sao/system.yaml
+      - run: uv run --group legacy linkml-validate --exit-on-first-failure -s legacy/sao/sao.yml -C Aggregate examples/sao/aggregate.yaml
+      - run: uv run --group legacy linkml-validate --exit-on-first-failure -s legacy/sao/sao.yml -C Integration examples/sao/integration.yaml

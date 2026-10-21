@@ -1,0 +1,68 @@
+# Generated distribution; edit ontologies/specspec/, then run scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix schema1: <http://schema.org/> .
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix specsao: <https://ontologies.corestory.ai/specspec/sao/> .
+
+specsao:RequirementImplementationLink a rdfs:Class ;
+    rdfs:label "RequirementImplementationLink" ;
+    rdfs:comment "An assertion that a callable implements a requirement, with the supporting claim recorded explicitly. Other implementation granularities can be added in later bridge revisions." ;
+    rdfs:isDefinedBy specsao: ;
+    rdfs:subClassOf spec:SpecElement .
+
+specsao:SoftwareSubjectLink a rdfs:Class ;
+    rdfs:label "SoftwareSubjectLink" ;
+    rdfs:comment "States which software entity a knowledge item concerns. Mentioning an entity is not evidence that a requirement is implemented." ;
+    rdfs:isDefinedBy specsao: ;
+    rdfs:subClassOf spec:SpecElement .
+
+specsao:VerificationTestLink a rdfs:Class ;
+    rdfs:label "VerificationTestLink" ;
+    rdfs:comment "Connects a recorded verification outcome to the SAO test definition used for the check; the test definition is distinct from its execution result." ;
+    rdfs:isDefinedBy specsao: ;
+    rdfs:subClassOf spec:SpecElement .
+
+specsao:basis_claim a rdf:Property ;
+    rdfs:label "basis_claim" ;
+    rdfs:comment "Descriptive claim carrying provenance and support for this assertion." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:callable a rdf:Property ;
+    rdfs:label "callable" ;
+    rdfs:comment "SAO callable asserted to implement the obligation." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:requirement a rdf:Property ;
+    rdfs:label "requirement" ;
+    rdfs:comment "Obligation asserted to be implemented." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:result a rdf:Property ;
+    rdfs:label "result" ;
+    rdfs:comment "Recorded check outcome." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:software_entity a rdf:Property ;
+    rdfs:label "software_entity" ;
+    rdfs:comment "SAO entity discussed by the knowledge item." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:subject a rdf:Property ;
+    rdfs:label "subject" ;
+    rdfs:comment "Specification knowledge discussing this software entity." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:test_case a rdf:Property ;
+    rdfs:label "test_case" ;
+    rdfs:comment "SAO test definition used by this check." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao: a schema1:DefinedTermSet ;
+    dcterms:requires sao:,
+        spec: ;
+    dcterms:title "SpecSpec–SAO bridge" .

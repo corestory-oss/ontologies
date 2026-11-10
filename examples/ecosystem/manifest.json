@@ -3,6 +3,8 @@
   "files": [
     "specspec/modernization/graph.ttl",
     "specspec/modernization/sao-links.ttl",
-    "ecosystem/software.ttl"
+    "ecosystem/software.ttl",
+    "sao/rdf/glossary.ttl",
+    "ecosystem/glossary-mapping.ttl"
   ]
 }

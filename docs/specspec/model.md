@@ -24,9 +24,9 @@ The initial draft preserves context, rationale and consequences through dedicate
 
 ## Optional bridge
 
-`ontologies/specspec/bridges/sao/` owns three initial link classes: SoftwareSubjectLink, RequirementImplementationLink and VerificationTestLink. Their subject and target properties have explicit class ranges in SHACL. Both endpoints are identified references; records do not need to be nested inside one another.
+`ontologies/specspec/bridges/sao/` owns four link classes: SoftwareSubjectLink, RequirementImplementationLink, VerificationTestLink and TermMappingLink. Their subject and target properties have explicit class ranges in SHACL. Both endpoints are identified references; records do not need to be nested inside one another.
 
-The software-target ranges deliberately differ: a subject link may mention any SAO NamedEntity; an implementation link currently targets CallableUnit; a verification link targets TestCase. Further link classes should state their intended range rather than weakening all links to arbitrary URIs. These link nodes preserve the draft exchange design and its qualified relationships.
+The software-target ranges deliberately differ: a subject link may mention any SAO NamedEntity; an implementation link currently targets CallableUnit; a verification link targets TestCase; a term mapping link connects two SAO GlossaryTerm nodes and cites a basis claim, without merging them. Further link classes should state their intended range rather than weakening all links to arbitrary URIs. These link nodes preserve the draft exchange design and its qualified relationships.
 
 Core SpecSpec class names avoid colliding with SAO’s existing NamedEntity, Evidence and KnowledgeArtifact. Core manifests do not include the bridge. Optional integration explicitly loads both vocabularies and the bridge, without network imports.
 

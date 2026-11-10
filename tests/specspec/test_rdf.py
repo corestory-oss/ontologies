@@ -192,8 +192,10 @@ class SourceAssemblyTests(unittest.TestCase):
             head = URIRef(str(SPEC) + "shapes/" + name + "Values")
             self.assertEqual({str(v) for v in Collection(shapes, head)}, values)
         bridge = assemble(ROOT / "ontologies/specspec/manifests/sao-vocabulary.json")
+        # The migration baseline stays a historical record; later bridge classes are listed explicitly.
+        post_migration = {BRIDGE.TermMappingLink}
         self.assertEqual(set(bridge.subjects(RDF.type, RDFS.Class)),
-                         {URIRef(v) for v in baseline["bridge_classes"].values()})
+                         {URIRef(v) for v in baseline["bridge_classes"].values()} | post_migration)
         data = Graph().parse(ROOT / "examples/specspec/modernization/graph.ttl")
         self.assertEqual(len(set(data.subjects(RDF.type, None))) - 1, baseline["example_records"])
         self.assertEqual(len(data), baseline["example_triples"])

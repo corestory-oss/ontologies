@@ -1,4 +1,4 @@
 {
   "format": "turtle",
-  "files": ["axioms/relationships.ttl"]
+  "files": ["axioms/glossary.ttl", "axioms/relationships.ttl"]
 }

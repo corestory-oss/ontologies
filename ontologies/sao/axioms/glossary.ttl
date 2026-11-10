@@ -1,0 +1,19 @@
+# Editable OWL supplement; glossary term relationships.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+
+sao:contained_in_glossary a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_terms .
+
+sao:has_broader_terms a owl:ObjectProperty ;
+    owl:inverseOf sao:has_narrower_terms .
+
+sao:related_to_terms a owl:ObjectProperty,
+        owl:SymmetricProperty .
+
+sao:contains_terms a owl:ObjectProperty .
+
+sao:has_narrower_terms a owl:ObjectProperty .
+

@@ -21,6 +21,12 @@ specsao:SoftwareSubjectLink a rdfs:Class ;
     rdfs:isDefinedBy specsao: ;
     rdfs:subClassOf spec:SpecElement .
 
+specsao:TermMappingLink a rdfs:Class ;
+    rdfs:label "TermMappingLink" ;
+    rdfs:comment "An assertion that a glossary term matches a term in another glossary, with the supporting claim recorded explicitly. The claim carries how the match was made, its confidence, and its review status. A match never merges the two terms; each keeps its own glossary, labels, and bindings." ;
+    rdfs:isDefinedBy specsao: ;
+    rdfs:subClassOf spec:SpecElement .
+
 specsao:VerificationTestLink a rdfs:Class ;
     rdfs:label "VerificationTestLink" ;
     rdfs:comment "Connects a recorded verification outcome to the SAO test definition used for the check; the test definition is distinct from its execution result." ;
@@ -35,6 +41,16 @@ specsao:basis_claim a rdf:Property ;
 specsao:callable a rdf:Property ;
     rdfs:label "callable" ;
     rdfs:comment "SAO callable asserted to implement the obligation." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:mapping_relation a rdf:Property ;
+    rdfs:label "mapping_relation" ;
+    rdfs:comment "How the terms match. `exact_match`, `close_match`, `broad_match`, `narrow_match`, and `related_match` correspond to the SKOS mapping properties skos:exactMatch, skos:closeMatch, skos:broadMatch, skos:narrowMatch, and skos:relatedMatch, read from `term` to `matched_term`." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:matched_term a rdf:Property ;
+    rdfs:label "matched_term" ;
+    rdfs:comment "Glossary term that `term` is asserted to match." ;
     rdfs:isDefinedBy specsao: .
 
 specsao:requirement a rdf:Property ;
@@ -55,6 +71,11 @@ specsao:software_entity a rdf:Property ;
 specsao:subject a rdf:Property ;
     rdfs:label "subject" ;
     rdfs:comment "Specification knowledge discussing this software entity." ;
+    rdfs:isDefinedBy specsao: .
+
+specsao:term a rdf:Property ;
+    rdfs:label "term" ;
+    rdfs:comment "Glossary term whose meaning is being matched." ;
     rdfs:isDefinedBy specsao: .
 
 specsao:test_case a rdf:Property ;

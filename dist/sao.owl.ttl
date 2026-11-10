@@ -134,6 +134,9 @@ sao:contained_in_callable a owl:ObjectProperty ;
 sao:contained_in_context a owl:ObjectProperty ;
     owl:inverseOf sao:contains_modules .
 
+sao:contained_in_glossary a owl:ObjectProperty ;
+    owl:inverseOf sao:contains_terms .
+
 sao:contained_in_module a owl:ObjectProperty ;
     owl:inverseOf sao:contains_components .
 
@@ -349,6 +352,9 @@ sao:guards_routes a owl:ObjectProperty ;
 
 sao:handled_by_callables a owl:ObjectProperty ;
     owl:inverseOf sao:handles_exception_types .
+
+sao:has_broader_terms a owl:ObjectProperty ;
+    owl:inverseOf sao:has_narrower_terms .
 
 sao:has_child_blocks a owl:ObjectProperty ;
     owl:inverseOf sao:has_parent_block .
@@ -593,6 +599,9 @@ sao:referenced_by_containers a owl:ObjectProperty ;
 sao:referenced_container a owl:ObjectProperty ;
     owl:inverseOf sao:referenced_via .
 
+sao:related_to_terms a owl:ObjectProperty,
+        owl:SymmetricProperty .
+
 sao:renders_on_route a owl:ObjectProperty ;
     owl:inverseOf sao:route_renders_component .
 
@@ -706,6 +715,8 @@ sao:contains_spans a owl:ObjectProperty .
 
 sao:contains_statements a owl:ObjectProperty .
 
+sao:contains_terms a owl:ObjectProperty .
+
 sao:contains_test_cases a owl:ObjectProperty .
 
 sao:contains_unit_members a owl:ObjectProperty .
@@ -809,6 +820,8 @@ sao:has_endpoints a owl:ObjectProperty .
 sao:has_file_definitions a owl:ObjectProperty .
 
 sao:has_integrations a owl:ObjectProperty .
+
+sao:has_narrower_terms a owl:ObjectProperty .
 
 sao:has_ownership_annotations a owl:ObjectProperty .
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased proposal: glossary terms
+
+Additive. No existing class, property, constraint, or IRI changes. The ontology version is not bumped; whether this lands in 3.0.0 or a later minor version is a maintainer decision.
+
+- Add a `glossary` module with **Glossary** and **GlossaryTerm**, aligned to SKOS by subclass and subproperty (`skos:ConceptScheme`, `skos:Concept`, `prefLabel`, `altLabel`, `hiddenLabel`, `definition`, `inScheme`, `broader`, `narrower`, `related`).
+- Add `describes_entities` to bind a term to any **NamedEntity** it describes, other than another term.
+- Enforce SKOS label integrity in Core SHACL: at most one preferred label per language, and preferred, alternative, hidden, and short-code labels disjoint.
+- Add inverse axioms for glossary membership and broader/narrower terms, and a symmetric axiom for related terms. No axiom equates terms.
+- See [Glossary Terms](14-glossary.md).
+
 ## [3.0.0] - Unreleased candidate
 
 ### Breaking relationship changes

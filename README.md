@@ -9,7 +9,7 @@ A shared home for two complementary, interlinked RDF ontologies:
 
 Both are authored in Turtle, with RDFS vocabulary, SHACL validation, and optional OWL supplements. Their namespaces and ontology versions remain separate. The Python project version describes shared tooling; the ontology versions are recorded in [the catalog](ontologies/catalog.json) and their RDF metadata.
 
-SpecSpec's existing optional SAO bridge is retained for now. Its three link classes connect knowledge items to software entities. This repository reorganization does not change term meanings, IRIs, constraints, or inference axioms.
+SpecSpec's existing optional SAO bridge is retained for now. Its link classes connect knowledge items to software entities, and glossary terms to each other. This repository reorganization does not change term meanings, IRIs, constraints, or inference axioms.
 
 ## Repository layout
 

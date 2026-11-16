@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/02-code-structure.html">
+<meta name="description" content="Phase 2: Code Structure (Layer 3) · SAO: This phase populates SAO Layer 3 --- the direct structural representation of source code. It is the largest and most critical extraction phase: every subsequent…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Phase 2: Code Structure (Layer 3) · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Phase 2: Code Structure (Layer 3) · SAO: This phase populates SAO Layer 3 --- the direct structural representation of source code. It is the largest and most critical extraction phase: every subsequent…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/02-code-structure.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 2: Code Structure (Layer 3) · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Phase 2: Code Structure (Layer 3) · SAO: This phase populates SAO Layer 3 --- the direct structural representation of source code. It is the largest and most critical extraction phase: every subsequent…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Phase 2: Code Structure (Layer 3) · CoreStory Ontologies</title>
+<title>Phase 2: Code Structure (Layer 3) · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="phase-2-code-structure-layer-3">Phase 2: Code Structure (Layer 3)</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Phase 2: Code Structure (Layer 3)</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#containment-hierarchy">Containment hierarchy</a></li><li class="toc-level-2"><a href="#sub-phase-2a-encapsulation-units">Sub-phase 2a: Encapsulation Units</a></li><li class="toc-level-3"><a href="#required-attributes">Required attributes</a></li><li class="toc-level-3"><a href="#encapsulationtype-enum-33-values">EncapsulationType enum (33 values)</a></li><li class="toc-level-3"><a href="#required-relationships">Required relationships</a></li><li class="toc-level-3"><a href="#visibilitytype-enum">VisibilityType enum</a></li><li class="toc-level-3"><a href="#procedure">Procedure</a></li><li class="toc-level-3"><a href="#example">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2b-callable-units">Sub-phase 2b: Callable Units</a></li><li class="toc-level-3"><a href="#required-attributes_1">Required attributes</a></li><li class="toc-level-3"><a href="#callabletype-enum-53-values">CallableType enum (53 values)</a></li><li class="toc-level-3"><a href="#entrypointtype-enum">EntryPointType enum</a></li><li class="toc-level-3"><a href="#callablecategory-enum">CallableCategory enum</a></li><li class="toc-level-3"><a href="#required-relationships_1">Required relationships</a></li><li class="toc-level-3"><a href="#parameters">Parameters</a></li><li class="toc-level-3"><a href="#procedure_1">Procedure</a></li><li class="toc-level-3"><a href="#example_1">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2c-data-structures-and-data-elements">Sub-phase 2c: Data Structures and Data Elements</a></li><li class="toc-level-3"><a href="#datastructure-attributes">DataStructure attributes</a></li><li class="toc-level-3"><a href="#datastructuretype-enum-50-values">DataStructureType enum (50 values)</a></li><li class="toc-level-3"><a href="#datastructurecategory-enum">DataStructureCategory enum</a></li><li class="toc-level-3"><a href="#datastructure-relationships">DataStructure relationships</a></li><li class="toc-level-3"><a href="#dataelement-attributes">DataElement attributes</a></li><li class="toc-level-3"><a href="#dataelementcategory-enum">DataElementCategory enum</a></li><li class="toc-level-3"><a href="#dataelement-relationships">DataElement relationships</a></li><li class="toc-level-3"><a href="#typeexpression">TypeExpression</a></li><li class="toc-level-3"><a href="#typekind-enum">TypeKind enum</a></li><li class="toc-level-3"><a href="#procedure_2">Procedure</a></li><li class="toc-level-3"><a href="#example_2">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2d-definition-references">Sub-phase 2d: Definition References</a></li><li class="toc-level-3"><a href="#attributes">Attributes</a></li><li class="toc-level-3"><a href="#referencetype-enum">ReferenceType enum</a></li><li class="toc-level-3"><a href="#relationships">Relationships</a></li><li class="toc-level-3"><a href="#procedure_3">Procedure</a></li><li class="toc-level-3"><a href="#example_3">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2e-call-graph-controlflow">Sub-phase 2e: Call Graph (ControlFlow)</a></li><li class="toc-level-3"><a href="#attributes_1">Attributes</a></li><li class="toc-level-3"><a href="#controlflowtype-enum">ControlFlowType enum</a></li><li class="toc-level-3"><a href="#relationships_1">Relationships</a></li><li class="toc-level-3"><a href="#bidirectional-call-links">Bidirectional call links</a></li><li class="toc-level-3"><a href="#procedure_4">Procedure</a></li><li class="toc-level-3"><a href="#example_4">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2f-data-flow">Sub-phase 2f: Data Flow</a></li><li class="toc-level-3"><a href="#attributes_2">Attributes</a></li><li class="toc-level-3"><a href="#dataflowtype-enum">DataFlowType enum</a></li><li class="toc-level-3"><a href="#relationships_2">Relationships</a></li><li class="toc-level-3"><a href="#bidirectional-data-links">Bidirectional data links</a></li><li class="toc-level-3"><a href="#procedure_5">Procedure</a></li><li class="toc-level-3"><a href="#example_5">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2g-annotations">Sub-phase 2g: Annotations</a></li><li class="toc-level-3"><a href="#attributes_3">Attributes</a></li><li class="toc-level-3"><a href="#relationships_3">Relationships</a></li><li class="toc-level-3"><a href="#procedure_6">Procedure</a></li><li class="toc-level-3"><a href="#example_6">Example</a></li><li class="toc-level-2"><a href="#sub-phase-2h-platform-specific-extensions">Sub-phase 2h: Platform-Specific Extensions</a></li><li class="toc-level-3"><a href="#decision-tree">Decision tree</a></li><li class="toc-level-3"><a href="#mainframe-extensions">Mainframe extensions</a></li><li class="toc-level-3"><a href="#cc-and-rust-extensions">C/C++ and Rust extensions</a></li><li class="toc-level-3"><a href="#error-handling-extensions-all-languages">Error handling extensions (all languages)</a></li><li class="toc-level-2"><a href="#phase-2-checklist">Phase 2 Checklist</a></li><li class="toc-level-3"><a href="#common-pitfalls">Common pitfalls</a></li><li class="toc-level-2"><a href="#next-phase">Next phase</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="phase-2-code-structure-layer-3">Phase 2: Code Structure (Layer 3)</h1>
 <p>This phase populates SAO Layer 3 --- the direct structural representation of source code. It is the largest and most critical extraction phase: every subsequent phase depends on the code structure graph built here.</p>
 <p><strong>Confidence level:</strong> Deterministic. No inference is needed; this phase captures what the code literally says. AST parsing is the primary technique, achieving ~90% automation.</p>
 <p><strong>Input:</strong> Phase 1 outputs --- <strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong> instances.</p>
@@ -44,7 +60,7 @@
 <h2 id="sub-phase-2a-encapsulation-units">Sub-phase 2a: Encapsulation Units</h2>
 <p>Parse each <strong>CodeContainer</strong> using a language-appropriate AST parser and create an <strong>EncapsulationUnit</strong> for every class, module, program, package, trait, or interface found.</p>
 <h3 id="required-attributes">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -94,7 +110,7 @@
 <td>SHOULD set for source-level traceability.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="encapsulationtype-enum-33-values">EncapsulationType enum (33 values)</h3>
 <p><strong>Object-oriented:</strong>
 - <code>class</code>
@@ -136,7 +152,7 @@
 - <code>pli_package</code>
 - <code>assembler_csect</code></p>
 <h3 id="required-relationships">Required relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -181,7 +197,7 @@
 <td>Populated in sub-phase 2d.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="visibilitytype-enum">VisibilityType enum</h3>
 <ul>
 <li><code>public</code></li>
@@ -229,7 +245,7 @@ payroll_calc:
 <h2 id="sub-phase-2b-callable-units">Sub-phase 2b: Callable Units</h2>
 <p>For each <strong>EncapsulationUnit</strong>, extract every method, function, paragraph, procedure, or other invocable construct.</p>
 <h3 id="required-attributes_1">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -314,7 +330,7 @@ payroll_calc:
 <td>SHOULD set for source-level traceability.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="callabletype-enum-53-values">CallableType enum (53 values)</h3>
 <p><strong>Object-oriented methods:</strong>
 - <code>method</code>
@@ -393,7 +409,7 @@ payroll_calc:
 <li><code>main_entry</code></li>
 </ul>
 <h3 id="required-relationships_1">Required relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -433,11 +449,11 @@ payroll_calc:
 <td>Populated in sub-phase 2f.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="parameters">Parameters</h3>
 <p>For each parameter of a <strong>CallableUnit</strong>, create a <strong>Parameter</strong> instance.</p>
 <p><strong>Parameter</strong> inherits from <strong>DataElement</strong> and adds:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -482,7 +498,7 @@ payroll_calc:
 <td>SHOULD set when a default is declared.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link each <strong>Parameter</strong> back via <code>parameter_of</code> to its <strong>CallableUnit</strong>.</p>
 <h3 id="procedure_1">Procedure</h3>
 <ol>
@@ -541,7 +557,7 @@ calc_totals:
 <h2 id="sub-phase-2c-data-structures-and-data-elements">Sub-phase 2c: Data Structures and Data Elements</h2>
 <p>Extract struct/record/group declarations and their fields from each <strong>EncapsulationUnit</strong>.</p>
 <h3 id="datastructure-attributes">DataStructure attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -611,7 +627,7 @@ calc_totals:
 <td>SHOULD set.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="datastructuretype-enum-50-values">DataStructureType enum (50 values)</h3>
 <p><strong>Object-oriented:</strong>
 - <code>class_data</code>
@@ -681,7 +697,7 @@ calc_totals:
 <li><code>union</code></li>
 </ul>
 <h3 id="datastructure-relationships">DataStructure relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -711,10 +727,10 @@ calc_totals:
 <td>Inverse of <code>has_parent_structure</code>.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dataelement-attributes">DataElement attributes</h3>
 <p>For each field, variable, or constant within a <strong>DataStructure</strong> (or directly within an <strong>EncapsulationUnit</strong>), create a <strong>DataElement</strong>.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -774,7 +790,7 @@ calc_totals:
 <td>SHOULD set.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dataelementcategory-enum">DataElementCategory enum</h3>
 <ul>
 <li><code>field</code></li>
@@ -787,7 +803,7 @@ calc_totals:
 <li><code>temporary</code></li>
 </ul>
 <h3 id="dataelement-relationships">DataElement relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -822,10 +838,10 @@ calc_totals:
 <td>MAY set for structured type modeling.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="typeexpression">TypeExpression</h3>
 <p>For complex types (generics, unions, optional wrappers, function types), create a <strong>TypeExpression</strong>.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -870,7 +886,7 @@ calc_totals:
 <td>MAY set for pointer types (e.g., <code>raw</code>, <code>smart</code>, <code>weak</code>).</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="typekind-enum">TypeKind enum</h3>
 <ul>
 <li><code>primitive</code></li>
@@ -983,7 +999,7 @@ emp_salary:
 <h2 id="sub-phase-2d-definition-references">Sub-phase 2d: Definition References</h2>
 <p>Create a <strong>DefinitionReference</strong> for each import, include, COPY, using, or require statement.</p>
 <h3 id="attributes">Attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1018,7 +1034,7 @@ emp_salary:
 <td>MAY set to indicate the scope of the import.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="referencetype-enum">ReferenceType enum</h3>
 <ul>
 <li><code>import_module</code></li>
@@ -1028,7 +1044,7 @@ emp_salary:
 <li><code>implement</code></li>
 </ul>
 <h3 id="relationships">Relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1053,7 +1069,7 @@ emp_salary:
 <td>SHOULD set to the specific entities imported.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="procedure_3">Procedure</h3>
 <ol>
 <li>Walk each <strong>CodeContainer</strong>'s AST for import/include/COPY/using/require statements.</li>
@@ -1098,7 +1114,7 @@ import_java_util:
 <h2 id="sub-phase-2e-call-graph-controlflow">Sub-phase 2e: Call Graph (ControlFlow)</h2>
 <p>For each <strong>CallableUnit</strong>, identify what it calls and build the call graph using <strong>ControlFlow</strong> edges.</p>
 <h3 id="attributes_1">Attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1123,7 +1139,7 @@ import_java_util:
 <td>MAY set to the guard expression (e.g., <code>if user != null</code>).</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="controlflowtype-enum">ControlFlowType enum</h3>
 <ul>
 <li><code>call</code></li>
@@ -1135,7 +1151,7 @@ import_java_util:
 <li><code>yield</code></li>
 </ul>
 <h3 id="relationships_1">Relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1165,7 +1181,7 @@ import_java_util:
 <td>MAY set for statement-level precision.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="bidirectional-call-links">Bidirectional call links</h3>
 <p>In addition to <strong>ControlFlow</strong> edge entities, the extraction agent MUST also populate:</p>
 <ul>
@@ -1215,7 +1231,7 @@ create_order:
 <h2 id="sub-phase-2f-data-flow">Sub-phase 2f: Data Flow</h2>
 <p>For each <strong>CallableUnit</strong>, identify which <strong>DataElements</strong> it reads, writes, or transforms, and create <strong>DataFlow</strong> edges.</p>
 <h3 id="attributes_2">Attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1230,7 +1246,7 @@ create_order:
 <td>MUST set.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="dataflowtype-enum">DataFlowType enum</h3>
 <ul>
 <li><code>read</code></li>
@@ -1240,7 +1256,7 @@ create_order:
 <li><code>use</code></li>
 </ul>
 <h3 id="relationships_2">Relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1270,7 +1286,7 @@ create_order:
 <td>MAY set for statement-level precision.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="bidirectional-data-links">Bidirectional data links</h3>
 <p>The extraction agent MUST also populate:</p>
 <ul>
@@ -1321,7 +1337,7 @@ create_order:
 <h2 id="sub-phase-2g-annotations">Sub-phase 2g: Annotations</h2>
 <p>Extract decorators, attributes, annotations, and pragmas attached to code elements.</p>
 <h3 id="attributes_3">Attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1341,10 +1357,10 @@ create_order:
 <td>SHOULD set for annotation parameters/arguments.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="relationships_3">Relationships</h3>
 <p><strong>Annotation</strong> uses two global (multi-domain) slots:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Slot</th>
@@ -1364,7 +1380,7 @@ create_order:
 <td>MAY set when the annotation changes runtime behavior.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The inverse slot on target entities is <code>annotated_by</code>.</p>
 <h3 id="procedure_6">Procedure</h3>
 <ol>
@@ -1434,7 +1450,7 @@ derive_debug:
 <h3 id="mainframe-extensions">Mainframe extensions</h3>
 <h4 id="filedefinition-and-fileoperation">FileDefinition and FileOperation</h4>
 <p>Extract for every COBOL SELECT clause, PL/I DECLARE FILE, or equivalent file declaration.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1471,7 +1487,7 @@ derive_debug:
 <td>DD name or physical file name</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link <code>file_defined_in_container</code> to the <strong>CodeContainer</strong> and <code>used_by_callables</code> to the <strong>CallableUnits</strong> that perform I/O on the file.</p>
 <p>For each I/O verb (READ, WRITE, REWRITE, DELETE, OPEN, CLOSE), create a <strong>FileOperation</strong> linked to the <strong>FileDefinition</strong> via <code>operates_on_file</code> and to the <strong>CallableUnit</strong> via <code>performed_in_callable</code>.</p>
 <pre><code class="language-yaml">customer_file:
@@ -1495,7 +1511,7 @@ read_customer_op:
 </code></pre>
 <h4 id="screendefinition-and-screenfield">ScreenDefinition and ScreenField</h4>
 <p>Extract for CICS BMS map definitions, RPG display files, and similar character-mode UIs.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1516,7 +1532,7 @@ read_customer_op:
 <td>External map or display file name</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>For each field on the screen, create a <strong>ScreenField</strong> with <code>row</code>, <code>column</code>, <code>length</code>, <code>is_input</code>, <code>is_protected</code>, and <code>maps_to_data_element</code> linking to the corresponding <strong>DataElement</strong>.</p>
 <p>Link the <strong>ScreenDefinition</strong> to its <strong>EncapsulationUnit</strong> via <code>program_uses_screens</code>.</p>
 <pre><code class="language-yaml">inquiry_screen:
@@ -1576,7 +1592,7 @@ emp_file_alloc:
 </code></pre>
 <h4 id="ipcconnection">IPCConnection</h4>
 <p>Extract for CICS LINK/XCTL, MQ calls, shared memory references, or any inter-program communication.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1597,7 +1613,7 @@ emp_file_alloc:
 <td>Whether the IPC participates in a transaction boundary</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link <code>has_source_program</code> and <code>has_target_program</code> to <strong>EncapsulationUnit</strong> instances. Link <code>ipc_passes_data</code> to the <strong>DataStructure</strong> being exchanged (typically a COMMAREA or message structure).</p>
 <pre><code class="language-yaml">link_to_validation:
   a: IPCConnection
@@ -1613,7 +1629,7 @@ emp_file_alloc:
 <h3 id="cc-and-rust-extensions">C/C++ and Rust extensions</h3>
 <h4 id="preprocessordirective">PreprocessorDirective</h4>
 <p>Extract for <code>#include</code>, <code>#define</code>, <code>#ifdef</code>, <code>#pragma</code>, and similar constructs. Also applies to languages with compile-time metaprogramming (Rust <code>macro_rules!</code>, Lisp macros, etc.).</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1634,7 +1650,7 @@ emp_file_alloc:
 <td>Expanded text or transformation result</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link <code>directive_defined_in_container</code> to the <strong>CodeContainer</strong> and <code>directive_affects_encapsulation_units</code> / <code>directive_affects_callables</code> to the affected entities.</p>
 <pre><code class="language-yaml">debug_guard:
   a: PreprocessorDirective
@@ -1647,7 +1663,7 @@ emp_file_alloc:
 </code></pre>
 <h4 id="memorymodel-and-ownershipannotation">MemoryModel and OwnershipAnnotation</h4>
 <p>Extract one <strong>MemoryModel</strong> per language or module to describe the memory management strategy.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1668,9 +1684,9 @@ emp_file_alloc:
 <td>Whether unsafe/manual access is permitted</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>For Rust and C++ smart pointers, create <strong>OwnershipAnnotation</strong> instances on individual <strong>DataElements</strong>:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1691,7 +1707,7 @@ emp_file_alloc:
 <td>Named lifetime identifier (e.g., <code>'a</code> in Rust)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <pre><code class="language-yaml">rust_memory:
   a: MemoryModel
   name: RustOwnership
@@ -1711,7 +1727,7 @@ buffer_ownership:
 <h3 id="error-handling-extensions-all-languages">Error handling extensions (all languages)</h3>
 <h4 id="errormodel">ErrorModel</h4>
 <p>Create one <strong>ErrorModel</strong> per error handling paradigm observed in the codebase.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1728,11 +1744,11 @@ buffer_ownership:
 <td>Exception checkedness: <code>checked</code>, <code>unchecked</code>, <code>not_applicable</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link <code>modules_using_error_model</code> to the <strong>EncapsulationUnit</strong> instances that use this paradigm.</p>
 <h4 id="exceptiontype">ExceptionType</h4>
 <p>Create an <strong>ExceptionType</strong> for each declared exception or error type in the codebase.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1753,7 +1769,7 @@ buffer_ownership:
 <td>Parent in the exception hierarchy</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Link <code>raised_by_callables</code> and <code>handled_by_callables</code> to the relevant <strong>CallableUnit</strong> instances.</p>
 <pre><code class="language-yaml">java_errors:
   a: ErrorModel
@@ -1777,7 +1793,7 @@ order_not_found:
 <hr />
 <h2 id="phase-2-checklist">Phase 2 Checklist</h2>
 <p>Before proceeding to Phase 3, verify the following:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Check</th>
@@ -1842,7 +1858,7 @@ order_not_found:
 <td>No element has a null or missing type.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="common-pitfalls">Common pitfalls</h3>
 <ul>
 <li><strong>Missing nested types.</strong> Inner classes, companion objects, and anonymous classes are easily skipped. Ensure the AST walker recurses into nested type declarations.</li>
@@ -1853,7 +1869,8 @@ order_not_found:
 </ul>
 <hr />
 <h2 id="next-phase">Next phase</h2>
-<p><a href="03-architecture.html">Phase 3: Architecture (Layers 2/4)</a> --- infers <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, and <strong>Interface</strong> from the code structure graph built here.</p></main>
+<p><a href="03-architecture.html">Phase 3: Architecture (Layers 2/4)</a> --- infers <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, and <strong>Interface</strong> from the code structure graph built here.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

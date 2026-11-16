@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/start-here.html">
+<meta name="description" content="Before the graph: tell the system’s story: You do not need to know RDF to understand the idea. Start with a familiar problem: someone needs to change a system, but the code, requirements, and reasons for…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Before the graph: tell the system’s story · CoreStory Ontologies">
+<meta property="og:description" content="Before the graph: tell the system’s story: You do not need to know RDF to understand the idea. Start with a familiar problem: someone needs to change a system, but the code, requirements, and reasons for…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/start-here.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Before the graph: tell the system’s story · CoreStory Ontologies">
+<meta name="twitter:description" content="Before the graph: tell the system’s story: You do not need to know RDF to understand the idea. Start with a familiar problem: someone needs to change a system, but the code, requirements, and reasons for…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Before the graph: tell the system’s story · CoreStory Ontologies</title>
+
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../assets/styles/site.css">
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#search">Search</a><a href="../../index.html#downloads">Downloads</a><a href="../../source/index.html">Source</a></nav>
+</div></header>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../../guides/">Guides</a></li><li aria-current="page">Before the graph: tell the system’s story</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#one-system-different-questions">One system. Different questions.</a></li><li class="toc-level-2"><a href="#what-is-an-ontology-in-plain-language">What is an ontology, in plain language?</a></li><li class="toc-level-2"><a href="#why-two-ontologies">Why two ontologies?</a></li><li class="toc-level-2"><a href="#follow-one-behavior-reject-an-overdraft">Follow one behavior: reject an overdraft</a></li><li class="toc-level-2"><a href="#what-the-technical-layers-do">What the technical layers do</a></li><li class="toc-level-2"><a href="#your-first-useful-step">Your first useful step</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="before-the-graph-tell-the-systems-story">Before the graph: tell the system’s story</h1>
+<p>You do not need to know RDF to understand the idea. Start with a familiar problem: <strong>someone needs to change a system, but the code, requirements, and reasons for past decisions tell different parts of its story.</strong></p>
+<p>An ontology gives those parts shared names and explicit relationships. It helps you say which software, which requirement, which claim, and which evidence you mean. It does not make the story true merely by organizing it.</p>
+<h2 id="one-system-different-questions">One system. Different questions.</h2>
+<p>Imagine four people looking at the same change:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Reader</th>
+<th>The question they need answered</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An agent</td>
+<td>What must this change preserve, and what evidence should I inspect?</td>
+</tr>
+<tr>
+<td>A product manager</td>
+<td>What behavior do we require, and what has not been verified?</td>
+</tr>
+<tr>
+<td>An engineer</td>
+<td>Where is that behavior implemented, and what does the source show?</td>
+</tr>
+<tr>
+<td>An executive</td>
+<td>What decision is proposed, and what uncertainty remains?</td>
+</tr>
+</tbody>
+</table></div>
+<p>The goal is not four unrelated summaries. It is different explanations that return to the <strong>same identities, statements, and evidence</strong>. These are questions the model can help you organize—not a claim that this repository generates four product experiences.</p>
+<h2 id="what-is-an-ontology-in-plain-language">What is an ontology, in plain language?</h2>
+<p>Think of a shared map legend. A team agrees what counts as a road, a station, or a boundary, and how those things can connect. The legend does not survey the land; it gives people a consistent way to describe it.</p>
+<p>For software, the named things might be a system, a callable, a requirement, or a decision. A relationship says something specific: a claim cites a source anchor; an anchor belongs to a captured source state.</p>
+<p>A <strong>graph</strong> is those things and their connections. It need not look like a complicated network diagram. A table showing “this claim cites this source” already conveys the relationship.</p>
+<h2 id="why-two-ontologies">Why two ontologies?</h2>
+<p><strong>SAO—the Systems Abstraction Ontology—describes the software.</strong> Its vocabulary includes systems, modules, callables, domain concepts, and operating context.</p>
+<p><strong>SpecSpec—the Specification &amp; Evidence Ontology—describes statements about it.</strong> Its vocabulary includes requirements, claims, decisions, source evidence, and verification results.</p>
+<p>The distinction protects meaning:</p>
+<ul>
+<li>A method is not a requirement.</li>
+<li>A statement about behavior is not the behavior itself.</li>
+<li>A source citation is not proof that the statement is correct.</li>
+<li>A proposed decision is not an accepted decision.</li>
+</ul>
+<p>An optional bridge connects particular knowledge items to particular software entities. The models remain distinct, and SpecSpec can be used without SAO.</p>
+<h2 id="follow-one-behavior-reject-an-overdraft">Follow one behavior: reject an overdraft</h2>
+<p>The repository includes a <strong>synthetic example</strong>, not a customer case or an executed modernization. A COBOL excerpt and a proposed Java replacement both contain an amount-versus-balance guard. The graph keeps the following records separate:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Part of the story</th>
+<th>What the example records</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Observation</td>
+<td>The legacy excerpt displays a rejection when the requested amount exceeds the balance. The claim is marked <code>observed</code> and <code>unreviewed</code>.</td>
+</tr>
+<tr>
+<td>Requirement</td>
+<td>The replacement shall reject excessive withdrawals without reducing the balance. This is supplied intent, not an obligation automatically discovered in code.</td>
+</tr>
+<tr>
+<td>Decision</td>
+<td>Use a Java guard; the decision remains <code>proposed</code>.</td>
+</tr>
+<tr>
+<td>Implementation assertion</td>
+<td>An explicit link relates the requirement to the Java callable, with a separate descriptive claim as its basis.</td>
+</tr>
+<tr>
+<td>Evidence</td>
+<td>That Java claim cites an anchor at <code>Account.java:5–8</code>, within a captured source snapshot.</td>
+</tr>
+<tr>
+<td>Verification</td>
+<td>The behavioral comparison is <code>not_run</code>. It is not a pass.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Now ask the same questions from different seats. Product can inspect the required behavior. Engineering can inspect the guard. An agent can identify an unverified obligation. An executive can see that a decision is proposed and the comparison remains unrun.</p>
+<p><strong>The answer’s level of detail can change. Its evidence and status must not.</strong> A shorter executive explanation must not turn <code>not_run</code> into “verified.”</p>
+<p>Read the <a href="../examples/specspec/modernization/README.html">worked example</a> when you want the full source context, or follow the <a href="modeling-patterns.html">modeling patterns</a> to see the exact relationships.</p>
+<h2 id="what-the-technical-layers-do">What the technical layers do</h2>
+<p>You can learn these names when you need them:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Plain-language job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Turtle</td>
+<td>A text syntax for writing the graph.</td>
+</tr>
+<tr>
+<td>RDFS vocabulary</td>
+<td>Names the classes, properties, and class relationships.</td>
+</tr>
+<tr>
+<td>SHACL validation</td>
+<td>Checks whether supplied data meets the declared constraints.</td>
+</tr>
+<tr>
+<td>Optional OWL supplements</td>
+<td>Add declared reasoning relationships for consumers that choose to use them.</td>
+</tr>
+</tbody>
+</table></div>
+<p>Validation can catch a missing field or an invalid relationship endpoint. It cannot establish that a source really supports a claim, that a change is safe, or that two programs behave identically. Those need separate evidence and review.</p>
+<h2 id="your-first-useful-step">Your first useful step</h2>
+<p>Choose <strong>one behavior</strong>, not the whole estate. Write down what you observe, what you require, what decision is proposed, and what remains unchecked. Identify the source state behind each observation.</p>
+<p>Then choose a next step:</p>
+<ol>
+<li><strong>Understand the vocabulary:</strong> read the <a href="sao/README.html">SAO overview</a> and <a href="specspec/model.html">SpecSpec model notes</a>.</li>
+<li><strong>Inspect the example:</strong> follow the <a href="modeling-patterns.html">modeling patterns</a>, without installing anything.</li>
+<li><strong>Run a real check:</strong> use <a href="getting-started.html">getting started</a> to validate the bundled graph with Nix or uv.</li>
+</ol>
+<p>SAO <strong>3.0.0 is a candidate</strong>, and SpecSpec <strong>0.1.0 is a draft</strong>. The repository supplies models, validation tooling, and examples—not an automatic modernization service. See the <a href="../../source/ontologies/catalog.json">catalog</a> and <a href="specspec/model.html">model boundaries</a> before depending on a particular version.</p></article></div></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../source/LICENSE">Apache 2.0</a> · <a href="../../source/NOTICE">Notices</a> · <a href="../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../assets/site-search.js"></script>
+</body>
+</html>

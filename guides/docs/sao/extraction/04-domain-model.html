@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/04-domain-model.html">
+<meta name="description" content="Phase 4: Domain Model (Layer 5) · SAO: Input: Phase 2 outputs (DataStructure, DataElement) + Phase 3 outputs (BoundedContext, Module) Output: Aggregate, DomainEntity, ValueObject, Attribute,…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Phase 4: Domain Model (Layer 5) · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Phase 4: Domain Model (Layer 5) · SAO: Input: Phase 2 outputs (DataStructure, DataElement) + Phase 3 outputs (BoundedContext, Module) Output: Aggregate, DomainEntity, ValueObject, Attribute,…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/04-domain-model.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 4: Domain Model (Layer 5) · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Phase 4: Domain Model (Layer 5) · SAO: Input: Phase 2 outputs (DataStructure, DataElement) + Phase 3 outputs (BoundedContext, Module) Output: Aggregate, DomainEntity, ValueObject, Attribute,…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Phase 4: Domain Model (Layer 5) · CoreStory Ontologies</title>
+<title>Phase 4: Domain Model (Layer 5) · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="phase-4-domain-model-layer-5">Phase 4: Domain Model (Layer 5)</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Phase 4: Domain Model (Layer 5)</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-overview">1. Overview</a></li><li class="toc-level-3"><a href="#critical-bridge">Critical bridge</a></li><li class="toc-level-2"><a href="#2-step-1-classify-datastructures">2. Step 1: Classify DataStructures</a></li><li class="toc-level-3"><a href="#decision-tree">Decision tree</a></li><li class="toc-level-3"><a href="#signals-by-language">Signals by language</a></li><li class="toc-level-2"><a href="#3-step-2-create-domainentities-and-map-attributes">3. Step 2: Create DomainEntities and map Attributes</a></li><li class="toc-level-3"><a href="#required-attributes">Required attributes</a></li><li class="toc-level-3"><a href="#creating-attributes">Creating Attributes</a></li><li class="toc-level-3"><a href="#establishing-bridges">Establishing bridges</a></li><li class="toc-level-3"><a href="#yaml-example">YAML example</a></li><li class="toc-level-2"><a href="#4-step-3-create-valueobjects">4. Step 3: Create ValueObjects</a></li><li class="toc-level-3"><a href="#required-attributes_1">Required attributes</a></li><li class="toc-level-3"><a href="#common-value-object-patterns">Common value object patterns</a></li><li class="toc-level-3"><a href="#yaml-example_1">YAML example</a></li><li class="toc-level-2"><a href="#5-step-4-group-into-aggregates">5. Step 4: Group into Aggregates</a></li><li class="toc-level-3"><a href="#heuristics-for-identifying-aggregate-boundaries">Heuristics for identifying aggregate boundaries</a></li><li class="toc-level-3"><a href="#required-attributes_2">Required attributes</a></li><li class="toc-level-3"><a href="#linking-to-boundedcontext">Linking to BoundedContext</a></li><li class="toc-level-3"><a href="#yaml-example_2">YAML example</a></li><li class="toc-level-2"><a href="#6-step-5-extract-domainrelationships">6. Step 5: Extract DomainRelationships</a></li><li class="toc-level-3"><a href="#required-attributes_3">Required attributes</a></li><li class="toc-level-3"><a href="#sources-for-discovering-relationships">Sources for discovering relationships</a></li><li class="toc-level-3"><a href="#composition-vs-association">Composition vs. association</a></li><li class="toc-level-3"><a href="#yaml-example_3">YAML example</a></li><li class="toc-level-2"><a href="#7-step-6-extract-lifecycles-and-state-machines">7. Step 6: Extract Lifecycles and State Machines</a></li><li class="toc-level-3"><a href="#signals-for-state-machines">Signals for state machines</a></li><li class="toc-level-3"><a href="#creating-instances">Creating instances</a></li><li class="toc-level-3"><a href="#yaml-example_4">YAML example</a></li><li class="toc-level-2"><a href="#8-step-7-identify-datastores-and-collections">8. Step 7: Identify DataStores and Collections</a></li><li class="toc-level-3"><a href="#creating-datastore-instances">Creating DataStore instances</a></li><li class="toc-level-3"><a href="#creating-collection-instances">Creating Collection instances</a></li><li class="toc-level-3"><a href="#creating-schema-and-schemaversion">Creating Schema and SchemaVersion</a></li><li class="toc-level-3"><a href="#creating-databaseconstraint-and-databaseindex-instances">Creating DatabaseConstraint and DatabaseIndex instances</a></li><li class="toc-level-3"><a href="#dataclassification-and-retentionpolicy">DataClassification and RetentionPolicy</a></li><li class="toc-level-3"><a href="#linking-aggregates-to-stores">Linking aggregates to stores</a></li><li class="toc-level-3"><a href="#yaml-example_5">YAML example</a></li><li class="toc-level-2"><a href="#9-phase-4-checklist">9. Phase 4 Checklist</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="phase-4-domain-model-layer-5">Phase 4: Domain Model (Layer 5)</h1>
 <p><strong>Input:</strong> Phase 2 outputs (<strong>DataStructure</strong>, <strong>DataElement</strong>) + Phase 3 outputs (<strong>BoundedContext</strong>, <strong>Module</strong>)
 <strong>Output:</strong> <strong>Aggregate</strong>, <strong>DomainEntity</strong>, <strong>ValueObject</strong>, <strong>Attribute</strong>, <strong>DomainRelationship</strong>, <strong>Lifecycle</strong>, <strong>State</strong>, <strong>Transition</strong>, <strong>DataStore</strong>, <strong>Collection</strong>, <strong>Schema</strong>, <strong>SchemaVersion</strong>, <strong>DataClassification</strong>, <strong>RetentionPolicy</strong>, <strong>DatabaseConstraint</strong>, <strong>DatabaseIndex</strong></p>
 <hr />
@@ -51,7 +67,7 @@
 └─ Ambiguous → Flag for human review
 </code></pre>
 <h3 id="signals-by-language">Signals by language</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Signal</th>
@@ -96,12 +112,12 @@
 <td>ValueObject</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="3-step-2-create-domainentities-and-map-attributes">3. Step 2: Create DomainEntities and map Attributes</h2>
 <p>For each <strong>DataStructure</strong> classified as a domain entity, create a <strong>DomainEntity</strong> instance.</p>
 <h3 id="required-attributes">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -131,10 +147,10 @@
 <td>If the entity holds sensitive data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="creating-attributes">Creating Attributes</h3>
 <p>For each meaningful field (skip framework noise like serialization IDs), create an <strong>Attribute</strong>:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -184,7 +200,7 @@
 <td>MUST link to the originating element(s)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="establishing-bridges">Establishing bridges</h3>
 <p>The extraction agent MUST set both sides of every bridge:</p>
 <ol>
@@ -228,7 +244,7 @@
 <h2 id="4-step-3-create-valueobjects">4. Step 3: Create ValueObjects</h2>
 <p>For each <strong>DataStructure</strong> classified as a value object, create a <strong>ValueObject</strong> instance.</p>
 <h3 id="required-attributes_1">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -253,7 +269,7 @@
 <td>MUST link to the originating structure(s)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The inverse <code>DataStructure.maps_to_value_object</code> MUST also be set.</p>
 <h3 id="common-value-object-patterns">Common value object patterns</h3>
 <ul>
@@ -305,7 +321,7 @@
 <li><strong>Bounded context alignment</strong> -- aggregates SHOULD NOT cross <strong>BoundedContext</strong> boundaries</li>
 </ol>
 <h3 id="required-attributes_2">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -350,7 +366,7 @@
 <td>Parent bounded context from Phase 3</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="linking-to-boundedcontext">Linking to BoundedContext</h3>
 <p>Set <code>Aggregate.contained_in_bounded_context</code> to the <strong>BoundedContext</strong> identified in Phase 3. The inverse <code>BoundedContext.contains_aggregates</code> MUST also be set.</p>
 <h3 id="yaml-example_2">YAML example</h3>
@@ -372,7 +388,7 @@
 <h2 id="6-step-5-extract-domainrelationships">6. Step 5: Extract DomainRelationships</h2>
 <p>Create a <strong>DomainRelationship</strong> for each association between domain entities.</p>
 <h3 id="required-attributes_3">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -427,9 +443,9 @@
 <td>For <code>many_to_many</code>, the join table or entity name</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="sources-for-discovering-relationships">Sources for discovering relationships</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Source</th>
@@ -464,7 +480,7 @@
 <td><code>has_many :order_line_items</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="composition-vs-association">Composition vs. association</h3>
 <p>Set <code>is_composition</code> to <code>true</code> when:</p>
 <ul>
@@ -577,7 +593,7 @@
 <h2 id="8-step-7-identify-datastores-and-collections">8. Step 7: Identify DataStores and Collections</h2>
 <p>Create persistence infrastructure instances that capture where aggregates are stored.</p>
 <h3 id="creating-datastore-instances">Creating DataStore instances</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -607,11 +623,11 @@
 <td>Tables, collections, or buckets</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="store_type-permissible-values"><code>store_type</code> permissible values</h4>
 <p><code>relational_db</code>, <code>document_db</code>, <code>key_value_store</code>, <code>graph_db</code>, <code>time_series_db</code>, <code>object_storage</code>, <code>search_index</code>, <code>cache</code>, <code>message_broker</code>, <code>data_lake</code>, <code>vsam</code>, <code>flat_file</code>, <code>isam</code>, <code>dead_letter_queue</code></p>
 <h3 id="creating-collection-instances">Creating Collection instances</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -651,7 +667,7 @@
 <td>Data retention rules</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="creating-schema-and-schemaversion">Creating Schema and SchemaVersion</h3>
 <p>If DDL files or migration scripts exist, create a <strong>Schema</strong> with <code>schema_type</code> (one of: <code>table_schema</code>, <code>document_schema</code>, <code>event_schema</code>, <code>api_schema</code>, <code>message_schema</code>) and <code>definition</code> (the DDL or schema content). Add <strong>SchemaVersion</strong> instances to <code>has_versions</code> for each migration, setting <code>version</code>, <code>migration_script</code>, and <code>is_backward_compatible</code>.</p>
 <h3 id="creating-databaseconstraint-and-databaseindex-instances">Creating DatabaseConstraint and DatabaseIndex instances</h3>
@@ -746,7 +762,8 @@ RetentionPolicy:
 <li>[ ] <strong>DatabaseConstraint</strong> and <strong>DatabaseIndex</strong> instances capture schema-level metadata where DDL or migrations are available</li>
 <li>[ ] <strong>DataClassification</strong> and <strong>RetentionPolicy</strong> instances are created where data sensitivity or retention requirements are discoverable</li>
 <li>[ ] All bidirectional inverse links are set on both sides of every relationship</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

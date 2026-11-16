@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-3.html">
+<meta name="description" content="Layer 3: Component-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 3 (Component) -- the logical building blocks inside a deployable unit, their…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Layer 3: Component-Level Representation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Layer 3: Component-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 3 (Component) -- the logical building blocks inside a deployable unit, their…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-3.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Layer 3: Component-Level Representation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Layer 3: Component-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 3 (Component) -- the logical building blocks inside a deployable unit, their…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Layer 3: Component-Level Representation · CoreStory Ontologies</title>
+<title>Layer 3: Component-Level Representation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="layer-3-component-level-representation">Layer 3: Component-Level Representation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Layer 3: Component-Level Representation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#scope">Scope</a></li><li class="toc-level-2"><a href="#summary">Summary</a></li><li class="toc-level-2"><a href="#connections-to-adjacent-layers">Connections to Adjacent Layers</a></li><li class="toc-level-3"><a href="#downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</a></li><li class="toc-level-3"><a href="#upward-links-to-layer-2-container">Upward links to Layer 2 (Container)</a></li><li class="toc-level-2"><a href="#component-architecture-5-classes">Component Architecture (5 classes)</a></li><li class="toc-level-3"><a href="#1-component">1. Component</a></li><li class="toc-level-3"><a href="#2-operation">2. Operation</a></li><li class="toc-level-3"><a href="#3-capability">3. Capability</a></li><li class="toc-level-3"><a href="#4-feature">4. Feature</a></li><li class="toc-level-3"><a href="#5-uicomponent">5. UIComponent</a></li><li class="toc-level-2"><a href="#domain-model-7-classes">Domain Model (7 classes)</a></li><li class="toc-level-3"><a href="#6-aggregate">6. Aggregate</a></li><li class="toc-level-3"><a href="#7-domainentity">7. DomainEntity</a></li><li class="toc-level-3"><a href="#8-valueobject">8. ValueObject</a></li><li class="toc-level-3"><a href="#9-attribute">9. Attribute</a></li><li class="toc-level-3"><a href="#10-domainrelationship">10. DomainRelationship</a></li><li class="toc-level-3"><a href="#11-resource">11. Resource</a></li><li class="toc-level-3"><a href="#12-resourcetype">12. ResourceType</a></li><li class="toc-level-2"><a href="#lifecycle-3-classes">Lifecycle (3 classes)</a></li><li class="toc-level-3"><a href="#13-state">13. State</a></li><li class="toc-level-3"><a href="#14-transition">14. Transition</a></li><li class="toc-level-3"><a href="#15-lifecycle">15. Lifecycle</a></li><li class="toc-level-2"><a href="#behavior-and-workflow-11-classes">Behavior and Workflow (11 classes)</a></li><li class="toc-level-3"><a href="#16-action-abstract">16. Action (abstract)</a></li><li class="toc-level-3"><a href="#17-query">17. Query</a></li><li class="toc-level-3"><a href="#18-command">18. Command</a></li><li class="toc-level-3"><a href="#19-rule">19. Rule</a></li><li class="toc-level-3"><a href="#20-event">20. Event</a></li><li class="toc-level-3"><a href="#21-domainevent">21. DomainEvent</a></li><li class="toc-level-3"><a href="#22-integrationevent">22. IntegrationEvent</a></li><li class="toc-level-3"><a href="#23-subscription">23. Subscription</a></li><li class="toc-level-3"><a href="#24-workflow">24. Workflow</a></li><li class="toc-level-3"><a href="#25-step">25. Step</a></li><li class="toc-level-3"><a href="#26-transaction">26. Transaction</a></li><li class="toc-level-2"><a href="#authorization-and-policy-5-classes">Authorization and Policy (5 classes)</a></li><li class="toc-level-3"><a href="#27-role">27. Role</a></li><li class="toc-level-3"><a href="#28-permission">28. Permission</a></li><li class="toc-level-3"><a href="#29-policy">29. Policy</a></li><li class="toc-level-3"><a href="#30-scope">30. Scope</a></li><li class="toc-level-3"><a href="#31-constraint">31. Constraint</a></li><li class="toc-level-2"><a href="#supporting-structures-6-classes">Supporting Structures (6 classes)</a></li><li class="toc-level-3"><a href="#32-schema">32. Schema</a></li><li class="toc-level-3"><a href="#33-schemaversion">33. SchemaVersion</a></li><li class="toc-level-3"><a href="#34-testcase">34. TestCase</a></li><li class="toc-level-3"><a href="#35-annotation">35. Annotation</a></li><li class="toc-level-3"><a href="#36-definitionreference">36. DefinitionReference</a></li><li class="toc-level-3"><a href="#37-concurrencyprimitive">37. ConcurrencyPrimitive</a></li><li class="toc-level-2"><a href="#relationship-map">Relationship Map</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="layer-3-component-level-representation">Layer 3: Component-Level Representation</h1>
 <p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 3 (Component)</strong> -- the logical building blocks inside a deployable unit, their responsibilities, and relationships. This layer sits between the code (Layer 4) and the container/service boundary (Layer 2).</p>
 <p>Where Layer 4 answers "what does the source code look like?", Layer 3 answers "what are the logical parts of this application, what do they do, and how do they interact?"</p>
 <hr />
@@ -33,7 +49,7 @@
 <p>The one exception is <strong>UIComponent</strong>, which specifically models modern component-tree UI frameworks (React, Angular, Vue) -- with concepts like props, lazy loading, server rendering, route binding, state store management, and parent/child component hierarchies. Legacy terminal screens (CICS BMS maps, RPG display files, MFS formats) are a fundamentally different model -- fixed-grid character maps with positional fields compiled from source members -- and are fully captured at Layer 4 via ScreenDefinition/ScreenField. This creates a deliberate asymmetry: modern UI has representation at both Layer 3 (UIComponent as a logical building block) and Layer 4 (EncapsulationUnit for the source file), while legacy UI lives entirely at Layer 4 (ScreenDefinition as a compiled source artifact).</p>
 <hr />
 <h2 id="summary">Summary</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -304,13 +320,13 @@
 <td>12</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Total: 37 classes</strong> (including 4 subtypes: Query, Command, DomainEvent, IntegrationEvent that inherit from abstract parents).</p>
 <hr />
 <h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
 <h3 id="downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</h3>
 <p>These relationships connect Layer 3 concepts to their code-level implementations:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 3 class</th>
@@ -381,10 +397,10 @@
 <td>Code unit rendering this UI component</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="upward-links-to-layer-2-container">Upward links to Layer 2 (Container)</h3>
 <p>These relationships connect Layer 3 concepts to their container-level parents:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 3 class</th>
@@ -437,13 +453,13 @@
 <td>System enforcing this policy</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="component-architecture-5-classes">Component Architecture (5 classes)</h2>
 <h3 id="1-component">1. Component</h3>
 <p>A logical building block within a module or service. Components group related operations and encapsulate a coherent responsibility.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -472,9 +488,9 @@
 <td>Source path hint</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -570,12 +586,12 @@
 <td>Concurrency patterns</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="2-operation">2. Operation</h3>
 <p>A named, invocable unit of behavior exposed via a component's interface. This is the primary bridge between the API surface (what the system exposes) and the code (what implements it).</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -592,9 +608,9 @@
 <td>Possible error responses</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -655,14 +671,14 @@
 <td>Test cases</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="3-capability">3. Capability</h3>
 <p>A business capability that the system provides. Capabilities are realized by features and require specific permissions.</p>
 <p><strong>Attributes:</strong></p>
 <p><em>No additional attributes beyond NamedEntity.</em></p>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -702,12 +718,12 @@
 <td>Modules providing this (Layer 2)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="4-feature">4. Feature</h3>
 <p>A user-facing feature that can be toggled, access-controlled, and categorized.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -724,9 +740,9 @@
 <td><code>core</code>, <code>optional</code>, <code>experimental</code>, <code>deprecated</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -766,9 +782,9 @@
 <td>Roles with access</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>FeatureCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -793,12 +809,12 @@
 <td>Scheduled for removal</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="5-uicomponent">5. UIComponent</h3>
 <p>A UI component in a modern component-tree framework (React, Angular, Vue, Svelte). This class models the logical component hierarchy -- props, composition, routing, state management, lazy loading, and server rendering -- concepts specific to virtual-DOM and component-based architectures. It is <strong>not</strong> a general-purpose "screen" abstraction. Legacy terminal screens (CICS BMS maps, RPG display files) are fundamentally different -- fixed-grid character maps compiled from source -- and are modeled at Layer 4 via ScreenDefinition/ScreenField.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -857,9 +873,9 @@
 <td>Source path</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -906,9 +922,9 @@
 <td>Code implementation (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>UIComponentType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -957,13 +973,13 @@
 <td>Context/state provider</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="domain-model-7-classes">Domain Model (7 classes)</h2>
 <h3 id="6-aggregate">6. Aggregate</h3>
 <p>A cluster of domain entities treated as a single transactional unit. The fundamental consistency boundary in domain-driven design.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -980,9 +996,9 @@
 <td>Value objects within this aggregate (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1036,13 +1052,13 @@
 <td>Domain events produced</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="7-domainentity">7. DomainEntity</h3>
 <p>A uniquely identifiable object within the domain. Entities have identity, lifecycle, and mutable state.</p>
 <p><strong>Mixins:</strong> <code>Auditable</code> (adds audit tracking fields)</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1065,9 +1081,9 @@
 <td>Data classification (PII, PHI, PCI, etc.)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1142,12 +1158,12 @@
 <td>Relationships targeting this entity</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="8-valueobject">8. ValueObject</h3>
 <p>An immutable domain object defined entirely by its attributes, with no conceptual identity. Compared by value, not by ID.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1164,9 +1180,9 @@
 <td>Attributes defining this value object (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1185,12 +1201,12 @@
 <td>Code structures (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="9-attribute">9. Attribute</h3>
 <p>A named property of a domain entity or value object. This is the <em>domain-level</em> attribute (not the code-level DataElement, which lives at Layer 4).</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1237,9 +1253,9 @@
 <td>Data sensitivity (PII, PHI, PCI, PUBLIC, etc.)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1265,9 +1281,9 @@
 <td>Code-level fields (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>AttributeCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1296,12 +1312,12 @@
 <td>Not persisted</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="10-domainrelationship">10. DomainRelationship</h3>
 <p>A named, typed relationship between two domain entities with cardinality, navigability, and composition semantics. Introduced in SAO v2.0 (Section 26).</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1348,9 +1364,9 @@
 <td>Join table/entity for many-to-many</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1376,9 +1392,9 @@
 <td>Entity referenced</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Cardinality Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1403,14 +1419,14 @@
 <td>M:N</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="11-resource">11. Resource</h3>
 <p>A domain entity or value object exposed for external interaction -- the API representation (DTO) of a domain object.</p>
 <p><strong>Attributes:</strong></p>
 <p><em>No additional attributes beyond NamedEntity.</em></p>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1450,14 +1466,14 @@
 <td>Audit trail entries</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="12-resourcetype">12. ResourceType</h3>
 <p>A classification of resources sharing common structure, permissions, and schema.</p>
 <p><strong>Attributes:</strong></p>
 <p><em>No additional attributes beyond NamedEntity.</em></p>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1490,13 +1506,13 @@
 <td>Permissions governing access</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="lifecycle-3-classes">Lifecycle (3 classes)</h2>
 <h3 id="13-state">13. State</h3>
 <p>A discrete condition in an entity's lifecycle.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1519,9 +1535,9 @@
 <td>Whether this is a final state</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1568,14 +1584,14 @@
 <td>Lifecycle for which this is the start</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="14-transition">14. Transition</h3>
 <p>A valid movement between two states, with guards, triggers, and side effects.</p>
 <p><strong>Attributes:</strong></p>
 <p><em>No additional attributes beyond NamedEntity.</em></p>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1622,12 +1638,12 @@
 <td>Actions executed during transition</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="15-lifecycle">15. Lifecycle</h3>
 <p>The complete state machine for an entity type -- all states and valid transitions.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1650,9 +1666,9 @@
 <td>All transitions (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1678,13 +1694,13 @@
 <td>Entities following this lifecycle</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="behavior-and-workflow-11-classes">Behavior and Workflow (11 classes)</h2>
 <h3 id="16-action-abstract">16. Action (abstract)</h3>
 <p>An atomic operation that can be performed. Abstract base for Query and Command.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1701,9 +1717,9 @@
 <td><code>query</code>, <code>command</code>, <code>mutation</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1792,9 +1808,9 @@
 <td>Audit trail</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ActionCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1815,12 +1831,12 @@
 <td>Modifies data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="17-query">17. Query</h3>
 <p>A read-only action that retrieves data. Inherits all Action attributes and relationships.</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1843,12 +1859,12 @@
 <td>Fields to return</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="18-command">18. Command</h3>
 <p>An action that changes system state. Inherits all Action attributes and relationships.</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1871,9 +1887,9 @@
 <td>Key for idempotent execution</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>CommandType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1906,12 +1922,12 @@
 <td>Restore an archived entity</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="19-rule">19. Rule</h3>
 <p>A declarative constraint or trigger governing behavior. Rules validate attributes, enforce aggregate invariants, guard transitions, and validate actions.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1952,9 +1968,9 @@
 <td>Whether currently active</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2001,9 +2017,9 @@
 <td>Transitions guarded</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>RuleCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2032,12 +2048,12 @@
 <td>Event-driven automation</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="20-event">20. Event</h3>
 <p>A notification that something occurred in the system.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2060,9 +2076,9 @@
 <td>Correlation ID for tracing</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2116,9 +2132,9 @@
 <td>Subscriptions</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>EventCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2143,12 +2159,12 @@
 <td>Compliance/audit trail (UserLoggedIn, PermissionChanged)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="21-domainevent">21. DomainEvent</h3>
 <p>An event produced by an aggregate within a bounded context. Inherits all Event attributes and relationships.</p>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2167,12 +2183,12 @@
 <td>Source aggregate</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="22-integrationevent">22. IntegrationEvent</h3>
 <p>An event for cross-service communication. Inherits all Event attributes and relationships.</p>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2191,12 +2207,12 @@
 <td>Target services (Layer 2)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="23-subscription">23. Subscription</h3>
 <p>A registration to receive events of a certain type.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2219,9 +2235,9 @@
 <td>Push or pull delivery</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2254,12 +2270,12 @@
 <td>Delivery interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="24-workflow">24. Workflow</h3>
 <p>A coordinated sequence of actions achieving a business goal.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2282,9 +2298,9 @@
 <td>Ordered steps (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2303,9 +2319,9 @@
 <td>Events that start this workflow</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>WorkflowType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2334,12 +2350,12 @@
 <td>Centrally coordinated</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="25-step">25. Step</h3>
 <p>A discrete stage within a workflow.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2368,9 +2384,9 @@
 <td>Timeout</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2417,12 +2433,12 @@
 <td>Step this compensates for</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="26-transaction">26. Transaction</h3>
 <p>A unit of work with ACID or BASE guarantees.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2451,9 +2467,9 @@
 <td>Timeout</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2472,9 +2488,9 @@
 <td>Actions in this transaction</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>TransactionType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2499,13 +2515,13 @@
 <td>2PC protocol</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="authorization-and-policy-5-classes">Authorization and Policy (5 classes)</h2>
 <h3 id="27-role">27. Role</h3>
 <p>A collection of permissions that can be assigned to identities.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2522,9 +2538,9 @@
 <td>Whether this is a built-in system role</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2571,12 +2587,12 @@
 <td>Features accessible</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="28-permission">28. Permission</h3>
 <p>An atomic access grant connecting actions to resources, scoped and constrained.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2593,9 +2609,9 @@
 <td>Contextual constraints (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2649,12 +2665,12 @@
 <td>Policies evaluating this</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="29-policy">29. Policy</h3>
 <p>A rule set for access decisions, supporting multiple authorization models.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2683,9 +2699,9 @@
 <td>Evaluation priority</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2718,9 +2734,9 @@
 <td>Routes protected</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>PolicyType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2745,12 +2761,12 @@
 <td>Policy-Based Access Control</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="30-scope">30. Scope</h3>
 <p>A permission boundary defining where a permission applies.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2773,9 +2789,9 @@
 <td>Resource pattern (e.g., <code>orders/*</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2794,9 +2810,9 @@
 <td>Permissions bounded by this scope</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ScopeType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2825,12 +2841,12 @@
 <td>Scoped to a field within a resource</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="31-constraint">31. Constraint</h3>
 <p>A contextual restriction on a permission -- temporal, spatial, or attribute-based conditions.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2859,9 +2875,9 @@
 <td>Parameters for the expression</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ConstraintType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2890,14 +2906,14 @@
 <td>Rate limiting</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="supporting-structures-6-classes">Supporting Structures (6 classes)</h2>
 <h3 id="32-schema">32. Schema</h3>
 <p>A versioned data structure definition used by operations, resources, events, and messages.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2926,9 +2942,9 @@
 <td>Version history (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2989,9 +3005,9 @@
 <td>Records validated (Layer 2)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>SchemaType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3020,12 +3036,12 @@
 <td>Message schema</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="33-schemaversion">33. SchemaVersion</h3>
 <p>A specific version of a schema, with migration support.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3060,9 +3076,9 @@
 <td>Whether backward compatible</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3081,12 +3097,12 @@
 <td>Parent schema</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="34-testcase">34. TestCase</h3>
 <p>A test case targeting a callable unit or operation.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3145,9 +3161,9 @@
 <td>Assertions (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3180,12 +3196,12 @@
 <td>Operation tested</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="35-annotation">35. Annotation</h3>
 <p>A metadata annotation or decorator attached to code elements.</p>
 <p><strong>Global Slots:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Slot</th>
@@ -3211,9 +3227,9 @@
 <td>Code elements whose behavior is altered</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3236,12 +3252,12 @@
 <td>Annotation parameters</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="36-definitionreference">36. DefinitionReference</h3>
 <p>A reference from one code container to shared definitions -- imports, includes, COPY statements, using directives.</p>
 <p><strong>Global Slots:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Slot</th>
@@ -3260,9 +3276,9 @@
 <td>Symbols imported (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3303,9 +3319,9 @@
 <td>Import scope</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3331,12 +3347,12 @@
 <td>Target container (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="37-concurrencyprimitive">37. ConcurrencyPrimitive</h3>
 <p>A synchronization or concurrency primitive used by callables to protect data elements.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3371,9 +3387,9 @@
 <td>Source line</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3399,7 +3415,7 @@
 <td>Data elements guarded (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="relationship-map">Relationship Map</h2>
 <pre><code>                        ┌─────────── Layer 2 (Container) ───────────┐
@@ -3492,7 +3508,8 @@
                         │  CodeContainer, EncapsulationUnit, │
                         │  CallableUnit, DataStructure, ...  │
                         └───────────────────────────────────┘
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/03-actors-and-identity.html">
+<meta name="description" content="Section 2: Actors and Identity · SAO: This section defines entities and actors that interact with the system, along with their identity and organizational structures. v2.0 Note: In SAO v2.0, all…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Section 2: Actors and Identity · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Section 2: Actors and Identity · SAO: This section defines entities and actors that interact with the system, along with their identity and organizational structures. v2.0 Note: In SAO v2.0, all…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/03-actors-and-identity.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Section 2: Actors and Identity · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Section 2: Actors and Identity · SAO: This section defines entities and actors that interact with the system, along with their identity and organizational structures. v2.0 Note: In SAO v2.0, all…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Section 2: Actors and Identity · CoreStory Ontologies</title>
+<title>Section 2: Actors and Identity · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="section-2-actors-and-identity">Section 2: Actors and Identity</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Section 2: Actors and Identity</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#core-concepts">Core Concepts</a></li><li class="toc-level-3"><a href="#actor">Actor</a></li><li class="toc-level-3"><a href="#identity">Identity</a></li><li class="toc-level-3"><a href="#credential">Credential</a></li><li class="toc-level-3"><a href="#tenant">Tenant</a></li><li class="toc-level-3"><a href="#organization">Organization</a></li><li class="toc-level-2"><a href="#identity-and-access-management-patterns">Identity and Access Management Patterns</a></li><li class="toc-level-3"><a href="#single-sign-on-sso">Single Sign-On (SSO)</a></li><li class="toc-level-3"><a href="#federated-identity">Federated Identity</a></li><li class="toc-level-3"><a href="#service-to-service-authentication">Service-to-Service Authentication</a></li><li class="toc-level-3"><a href="#identity-lifecycle-management">Identity Lifecycle Management</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-3"><a href="#identity-management">Identity Management</a></li><li class="toc-level-3"><a href="#credential-management">Credential Management</a></li><li class="toc-level-3"><a href="#tenant-management">Tenant Management</a></li><li class="toc-level-3"><a href="#organization-management">Organization Management</a></li><li class="toc-level-2"><a href="#security-considerations">Security Considerations</a></li><li class="toc-level-3"><a href="#authentication">Authentication</a></li><li class="toc-level-3"><a href="#authorization">Authorization</a></li><li class="toc-level-3"><a href="#compliance">Compliance</a></li><li class="toc-level-2"><a href="#relationships-with-other-sections">Relationships with Other Sections</a></li><li class="toc-level-2"><a href="#common-patterns-and-examples">Common Patterns and Examples</a></li><li class="toc-level-3"><a href="#user-registration-flow">User Registration Flow</a></li><li class="toc-level-3"><a href="#service-account-creation">Service Account Creation</a></li><li class="toc-level-3"><a href="#multi-tenant-user-onboarding">Multi-Tenant User Onboarding</a></li><li class="toc-level-3"><a href="#external-identity-federation">External Identity Federation</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="section-2-actors-and-identity">Section 2: Actors and Identity</h1>
 <p>This section defines entities and actors that interact with the system, along with their identity and organizational structures.</p>
 <blockquote>
 <p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships are now defined directly on classes rather than referencing global <code>slots:</code> for single-domain relationships.</p>
@@ -288,7 +304,8 @@ Organizations can be used with organizational scopes to inherit permissions down
 3. System creates or links Identity using external ID
 4. System creates OAUTH Credential
 5. User is authenticated and assigned appropriate Roles
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

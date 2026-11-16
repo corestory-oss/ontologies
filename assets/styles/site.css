@@ -538,3 +538,253 @@ blockquote {
   flex-direction:column;
   align-items:flex-start
 }
+
+/* Developer discovery extends the existing brand, not the Garden UI. */
+.start-section {
+  max-width:74ch;
+  padding-bottom:12px
+}
+
+.start-section h2,.site-search h2 {
+  font-size:clamp(1.7rem,3vw,2.25rem)
+}
+
+.site-search {
+  border-top:1px solid var(--line);
+  padding:32px 0;
+  margin:20px 0
+}
+
+.site-search label {
+  display:block;
+  font-size:15px;
+  font-weight:500;
+  margin:16px 0 8px
+}
+
+.search-controls {
+  display:flex;
+  gap:10px;
+  max-width:850px
+}
+
+.site-search input,.site-search button {
+  font:inherit;
+  font-size:16px;
+  min-height:44px;
+  border:1px solid var(--muted);
+  border-radius:3px;
+  padding:10px 14px;
+  color:var(--ink)
+}
+
+.site-search input {
+  flex:1;
+  min-width:0;
+  background:var(--paper);
+  caret-color:var(--forest)
+}
+
+.site-search input::placeholder {
+  color:var(--muted);
+  opacity:1
+}
+
+.site-search button {
+  cursor:pointer;
+  background:#f2f5f2
+}
+
+.site-search button[type="submit"] {
+  background:var(--gold);
+  border-color:#b27d00
+}
+
+.site-search button:hover {
+  border-color:var(--ink)
+}
+
+.site-search button:disabled {
+  cursor:wait;
+  color:var(--muted)
+}
+
+input:focus-visible,button:focus-visible,summary:focus-visible,.table-scroll:focus-visible {
+  outline:3px solid #b27d00;
+  outline-offset:4px
+}
+
+.search-help,.search-status {
+  font-size:14px;
+  color:var(--muted);
+  max-width:74ch;
+  margin:10px 0
+}
+
+.search-status {
+  min-height:1.7em
+}
+
+.search-results {
+  list-style:none;
+  padding:0;
+  margin:0;
+  max-width:850px
+}
+
+.search-results li {
+  border-top:1px solid var(--line);
+  padding:18px 0
+}
+
+.search-results a {
+  font-weight:500;
+  overflow-wrap:anywhere
+}
+
+.search-results p {
+  margin:6px 0 0;
+  font-size:15px;
+  max-width:74ch;
+  overflow-wrap:anywhere
+}
+
+.search-results .search-result-context {
+  font-size:12px;
+  color:var(--muted)
+}
+
+.guide .page-content {
+  max-width:1240px
+}
+
+.breadcrumbs {
+  font-size:14px;
+  margin-bottom:28px
+}
+
+.breadcrumbs ol {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  list-style:none;
+  padding:0
+}
+
+.breadcrumbs li+li::before {
+  content:'/';
+  color:var(--muted);
+  margin-right:8px
+}
+
+.breadcrumbs li {
+  overflow-wrap:anywhere
+}
+
+.guide-layout {
+  display:grid;
+  grid-template-columns:210px minmax(0,1fr);
+  gap:40px;
+  align-items:start
+}
+
+.guide-sidebar {
+  position:sticky;
+  top:24px;
+  font-size:14px;
+  line-height:1.5
+}
+
+.guide-toc summary {
+  font-weight:500;
+  cursor:pointer;
+  padding:10px 0
+}
+
+.guide-toc nav {
+  max-height:70vh;
+  overflow:auto;
+  padding:4px 8px 8px 4px;
+  scrollbar-color:var(--muted) #f2f5f2
+}
+
+.guide-toc ul {
+  margin:0;
+  padding:0;
+  list-style:none
+}
+
+.guide-toc a {
+  display:block;
+  padding:5px 0;
+  overflow-wrap:anywhere
+}
+
+.guide-toc .toc-level-3 {
+  margin-left:16px;
+  font-size:13px
+}
+
+.guide-article {
+  min-width:0;
+  max-width:74ch;
+  overflow-wrap:anywhere
+}
+
+.guide-article:only-child {
+  grid-column:1 / -1
+}
+
+.guide-article h1 {
+  font-size:clamp(2.4rem,4.5vw,3.5rem)
+}
+
+.guide-article h2 {
+  margin-top:1.5em;
+  font-size:2rem
+}
+
+.guide-article h3 {
+  margin-top:1.5em;
+  font-size:1.6rem
+}
+
+.table-scroll {
+  overflow-x:auto;
+  margin:24px 0
+}
+
+.guide-article table th:first-child,.guide-article table td:first-child {
+  min-width:8rem
+}
+
+.guide-article pre {
+  max-width:100%
+}
+
+@media(max-width:1000px) {
+  .guide-layout {
+    grid-template-columns:minmax(0,1fr);
+    gap:28px
+  }
+  .guide-sidebar {
+    position:static;
+    border-block:1px solid var(--line)
+  }
+  .guide-toc nav {
+    max-height:12rem
+  }
+}
+
+@media(max-width:540px) {
+  .search-controls {
+    flex-wrap:wrap
+  }
+  .search-controls input {
+    flex-basis:100%
+  }
+  .site-header nav {
+    column-gap:18px;
+    row-gap:10px
+  }
+}

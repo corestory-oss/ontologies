@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/guide.html">
+<meta name="description" content="Systems Abstraction Ontology: A Guide · SAO: Author: Charath Ranganathan CoreStory, Inc. Version 1.0.0 · April 2026 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships LinkML Schema ·…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Systems Abstraction Ontology: A Guide · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Systems Abstraction Ontology: A Guide · SAO: Author: Charath Ranganathan CoreStory, Inc. Version 1.0.0 · April 2026 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships LinkML Schema ·…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/guide.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Systems Abstraction Ontology: A Guide · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Systems Abstraction Ontology: A Guide · SAO: Author: Charath Ranganathan CoreStory, Inc. Version 1.0.0 · April 2026 147 classes · 102 enums · 970 attributes · 214 bidirectional relationships LinkML Schema ·…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Systems Abstraction Ontology: A Guide · CoreStory Ontologies</title>
+<title>Systems Abstraction Ontology: A Guide · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="systems-abstraction-ontology-a-guide">Systems Abstraction Ontology: A Guide</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Systems Abstraction Ontology: A Guide</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#table-of-contents">Table of Contents</a></li><li class="toc-level-2"><a href="#1-introduction">1. Introduction</a></li><li class="toc-level-2"><a href="#2-sao-at-a-glance">2. SAO at a Glance</a></li><li class="toc-level-2"><a href="#3-the-six-conceptual-layers">3. The Six Conceptual Layers</a></li><li class="toc-level-2"><a href="#4-layer-3-code-structure-the-foundation">4. Layer 3: Code Structure — The Foundation</a></li><li class="toc-level-3"><a href="#41-the-core-containment-hierarchy">4.1 The Core Containment Hierarchy</a></li><li class="toc-level-3"><a href="#42-behavioral-edges">4.2 Behavioral Edges</a></li><li class="toc-level-3"><a href="#43-internal-code-structure">4.3 Internal Code Structure</a></li><li class="toc-level-3"><a href="#44-platform-specific-extensions-sections-1828">4.4 Platform-Specific Extensions (Sections 18–28)</a></li><li class="toc-level-2"><a href="#5-layer-4-architecture-integration-the-system-map">5. Layer 4: Architecture &amp; Integration — The System Map</a></li><li class="toc-level-3"><a href="#51-the-architectural-containment-hierarchy">5.1 The Architectural Containment Hierarchy</a></li><li class="toc-level-3"><a href="#52-services-and-interfaces">5.2 Services and Interfaces</a></li><li class="toc-level-3"><a href="#53-integration-cluster">5.3 Integration Cluster</a></li><li class="toc-level-2"><a href="#6-layer-5-domain-model-the-business-entities">6. Layer 5: Domain Model — The Business Entities</a></li><li class="toc-level-3"><a href="#61-aggregates-entities-and-value-objects">6.1 Aggregates, Entities, and Value Objects</a></li><li class="toc-level-3"><a href="#62-lifecycle-and-state-machines">6.2 Lifecycle and State Machines</a></li><li class="toc-level-3"><a href="#63-data-persistence-layer-section-6">6.3 Data Persistence Layer (Section 6)</a></li><li class="toc-level-2"><a href="#7-layer-6-business-intent-behavior-rules-and-purpose">7. Layer 6: Business Intent — Behavior, Rules, and Purpose</a></li><li class="toc-level-3"><a href="#71-actors-section-2">7.1 Actors (Section 2)</a></li><li class="toc-level-3"><a href="#72-behavior-section-5">7.2 Behavior (Section 5)</a></li><li class="toc-level-3"><a href="#73-rules">7.3 Rules</a></li><li class="toc-level-3"><a href="#74-events">7.4 Events</a></li><li class="toc-level-3"><a href="#75-capability-and-feature">7.5 Capability and Feature</a></li><li class="toc-level-2"><a href="#8-cross-cutting-concerns">8. Cross-Cutting Concerns</a></li><li class="toc-level-3"><a href="#81-authorization-and-policy-section-3">8.1 Authorization and Policy (Section 3)</a></li><li class="toc-level-3"><a href="#82-deployment-and-operations-section-8">8.2 Deployment and Operations (Section 8)</a></li><li class="toc-level-3"><a href="#83-observability-section-9">8.3 Observability (Section 9)</a></li><li class="toc-level-3"><a href="#84-governance-and-compliance-section-10">8.4 Governance and Compliance (Section 10)</a></li><li class="toc-level-3"><a href="#85-testing-section-11">8.5 Testing (Section 11)</a></li><li class="toc-level-3"><a href="#86-uifrontend-section-12">8.6 UI/Frontend (Section 12)</a></li><li class="toc-level-3"><a href="#87-build-cicd-and-dependencies-sections-1314">8.7 Build, CI/CD, and Dependencies (Sections 13–14)</a></li><li class="toc-level-3"><a href="#88-advanced-sections-1517">8.8 Advanced Sections (15–17)</a></li><li class="toc-level-3"><a href="#89-knowledge-artifacts-section-30">8.9 Knowledge Artifacts (Section 30)</a></li><li class="toc-level-2"><a href="#9-section-index">9. Section Index</a></li><li class="toc-level-2"><a href="#10-the-glue-bidirectional-relationships">10. The Glue: Bidirectional Relationships</a></li><li class="toc-level-3"><a href="#101-key-cross-layer-bridges">10.1 Key Cross-Layer Bridges</a></li><li class="toc-level-2"><a href="#11-base-classes-and-mixins">11. Base Classes and Mixins</a></li><li class="toc-level-2"><a href="#12-reading-the-sao-effectively">12. Reading the SAO Effectively</a></li><li class="toc-level-2"><a href="#appendix-a-complete-class-inventory-147-classes">Appendix A: Complete Class Inventory (147 classes)</a></li><li class="toc-level-3"><a href="#base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</a></li><li class="toc-level-3"><a href="#layer-3-code-structure-33-classes">Layer 3: Code structure (33 classes)</a></li><li class="toc-level-3"><a href="#layer-4-architecture-and-integration-19-classes">Layer 4: Architecture and integration (19 classes)</a></li><li class="toc-level-3"><a href="#layer-5-domain-model-17-classes">Layer 5: Domain model (17 classes)</a></li><li class="toc-level-3"><a href="#layer-6-business-intent-17-classes">Layer 6: Business intent (17 classes)</a></li><li class="toc-level-3"><a href="#cross-cutting-security-governance-quality-knowledge-31-classes">Cross-cutting: Security, governance, quality, knowledge (31 classes)</a></li><li class="toc-level-3"><a href="#cross-cutting-runtime-ops-infrastructure-26-classes">Cross-cutting: Runtime, ops, infrastructure (26 classes)</a></li><li class="toc-level-2"><a href="#appendix-b-complete-enumeration-reference-102-enums">Appendix B: Complete Enumeration Reference (102 enums)</a></li><li class="toc-level-3"><a href="#structural">Structural</a></li><li class="toc-level-3"><a href="#actors-and-identity">Actors and identity</a></li><li class="toc-level-3"><a href="#authorization">Authorization</a></li><li class="toc-level-3"><a href="#domain-modeling">Domain modeling</a></li><li class="toc-level-3"><a href="#data-management">Data management</a></li><li class="toc-level-3"><a href="#deployment-and-operations">Deployment and operations</a></li><li class="toc-level-3"><a href="#observability">Observability</a></li><li class="toc-level-3"><a href="#governance">Governance</a></li><li class="toc-level-3"><a href="#code-structure">Code structure</a></li><li class="toc-level-3"><a href="#testing">Testing</a></li><li class="toc-level-3"><a href="#uifrontend">UI/Frontend</a></li><li class="toc-level-3"><a href="#build-and-cicd">Build and CI/CD</a></li><li class="toc-level-3"><a href="#dependency-management">Dependency management</a></li><li class="toc-level-3"><a href="#concurrency">Concurrency</a></li><li class="toc-level-3"><a href="#mldata-pipelines">ML/Data pipelines</a></li><li class="toc-level-3"><a href="#infrastructure-as-code">Infrastructure as Code</a></li><li class="toc-level-3"><a href="#type-system">Type system</a></li><li class="toc-level-3"><a href="#error-handling">Error handling</a></li><li class="toc-level-3"><a href="#file-io">File I/O</a></li><li class="toc-level-3"><a href="#screenterminal">Screen/Terminal</a></li><li class="toc-level-3"><a href="#job-control">Job control</a></li><li class="toc-level-3"><a href="#ipc">IPC</a></li><li class="toc-level-3"><a href="#preprocessor">Preprocessor</a></li><li class="toc-level-3"><a href="#memoryownership">Memory/Ownership</a></li><li class="toc-level-3"><a href="#database-schema">Database schema</a></li><li class="toc-level-3"><a href="#architectural-patterns">Architectural patterns</a></li><li class="toc-level-3"><a href="#knowledge-artifacts">Knowledge artifacts</a></li><li class="toc-level-3"><a href="#programming-language">Programming language</a></li><li class="toc-level-2"><a href="#appendix-c-complete-bidirectional-relationship-pairs-226-rows">Appendix C: Complete Bidirectional Relationship Pairs (226 rows)</a></li><li class="toc-level-3"><a href="#layer-3-code-structure-73-pairs">Layer 3: Code structure (73 pairs)</a></li><li class="toc-level-3"><a href="#layer-4-architecture-and-integration-47-pairs">Layer 4: Architecture and integration (47 pairs)</a></li><li class="toc-level-3"><a href="#layer-5-domain-model-41-pairs">Layer 5: Domain model (41 pairs)</a></li><li class="toc-level-3"><a href="#layer-6-business-intent-25-pairs">Layer 6: Business intent (25 pairs)</a></li><li class="toc-level-3"><a href="#cross-cutting-security-governance-quality-knowledge-22-pairs">Cross-cutting: Security, governance, quality, knowledge (22 pairs)</a></li><li class="toc-level-3"><a href="#cross-cutting-runtime-ops-infrastructure-18-pairs">Cross-cutting: Runtime, ops, infrastructure (18 pairs)</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="systems-abstraction-ontology-a-guide">Systems Abstraction Ontology: A Guide</h1>
 <p><strong>Author:</strong> Charath Ranganathan<br />
 <strong>CoreStory, Inc.</strong><br />
 Version 1.0.0 · April 2026<br />
@@ -75,7 +91,7 @@ LinkML Schema · Apache 2.0 License</p>
 </blockquote>
 <hr />
 <h2 id="2-sao-at-a-glance">2. SAO at a Glance</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Metric</th>
@@ -115,11 +131,11 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Numbered thematic groupings</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="3-the-six-conceptual-layers">3. The Six Conceptual Layers</h2>
 <p>The SAO's 147 classes organize into six layers of ascending abstraction, plus cross-cutting concerns that attach at every level.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer</th>
@@ -166,14 +182,14 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Mixed: parsing + inference</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Each layer consumes the outputs of the layer below it. Layer 3 is the foundation — everything else depends on it. The key insight is that layers 3 and 4 are largely structural (you can derive them from code organization and dependency graphs), while layers 5 and 6 require semantic understanding (recognizing business meaning in code patterns).</p>
 <hr />
 <h2 id="4-layer-3-code-structure-the-foundation">4. Layer 3: Code Structure — The Foundation</h2>
 <p>When CoreStory ingests a codebase, these are the classes populated directly from parsing source files. No inference is needed — this layer is a structured representation of what the code literally says.</p>
 <h3 id="41-the-core-containment-hierarchy">4.1 The Core Containment Hierarchy</h3>
 <p>The code structure is modeled as a four-level containment hierarchy: <strong>StorageLocation</strong> (a directory or PDS library) contains <strong>CodeContainers</strong> (source files), which contain <strong>EncapsulationUnits</strong> (classes, COBOL programs, Rust modules), which contain <strong>CallableUnits</strong> (methods, functions, paragraphs) and <strong>DataStructures</strong> (structs, records, group items), which in turn contain <strong>DataElements</strong> (fields, variables).</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -218,7 +234,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Method parameter with direction and passing mechanism</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="42-behavioral-edges">4.2 Behavioral Edges</h3>
 <p>The power of this layer is in the edges between nodes. These are first-class entities that capture how execution and data flow through the code:</p>
 <ul>
@@ -269,7 +285,7 @@ LinkML Schema · Apache 2.0 License</p>
 <p>Supporting classes include <strong>DefinitionReference</strong> (imports, includes, COBOL COPY statements, inheritance declarations), <strong>Annotation</strong> (Java annotations, Python decorators, C# attributes, COBOL compiler directives), and <strong>TypeExpression</strong> (a recursive type model for generics, unions, pointers, function types across all languages).</p>
 <h3 id="44-platform-specific-extensions-sections-1828">4.4 Platform-Specific Extensions (Sections 18–28)</h3>
 <p>The SAO extends its code-level model with specialized classes for platform-specific constructs. These are particularly important for mainframe modernization:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -344,7 +360,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Language as first-class entity with paradigms, type system, GC, preprocessor support</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p><strong>Key design decision: enum-typed, not subclassed.</strong> <code>EncapsulationUnit</code> is abstract, but there is no <code>CobolProgram</code> or <code>JavaClass</code> subclass. Instead, the <code>encapsulation_type</code> enum (33 values) captures what kind of thing it is. Similarly, <code>CallableUnit</code> uses a <code>callable_type</code> enum (53 values) from "method" to "paragraph" to "coroutine." This keeps the relationship graph uniform across languages, making cross-language analysis possible.</p>
 </blockquote>
@@ -353,7 +369,7 @@ LinkML Schema · Apache 2.0 License</p>
 <p>This layer models how the codebase is organized as a running system — the services, modules, components, and how they connect to each other and to the outside world.</p>
 <h3 id="51-the-architectural-containment-hierarchy">5.1 The Architectural Containment Hierarchy</h3>
 <p>The containment at this layer is: <strong>System</strong> → <strong>BoundedContext</strong> → <strong>Module</strong> → <strong>Component</strong>. This maps directly to Domain-Driven Design (DDD) concepts.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -388,7 +404,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Service class, repository, controller group</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>A <strong>BoundedContext</strong> carries a <code>ubiquitous_language</code> attribute (the key terms used within it), a <code>context_map_relationship</code> (Customer-Supplier, Partnership, etc.), and upstream/downstream relationships to other contexts. This captures the DDD context map.</p>
 <h3 id="52-services-and-interfaces">5.2 Services and Interfaces</h3>
 <p>A <strong>Service</strong> is an independently deployable runtime unit (microservice, monolith, serverless function, CICS transaction, batch program). It runs a <strong>Module</strong>, exposes <strong>Endpoints</strong> (with path, method, protocol, port), and connects to other services.</p>
@@ -445,7 +461,7 @@ LinkML Schema · Apache 2.0 License</p>
 <h2 id="6-layer-5-domain-model-the-business-entities">6. Layer 5: Domain Model — The Business Entities</h2>
 <p>This is the DDD layer. It models the business things the system manages — the entities, their attributes, relationships, and how they persist.</p>
 <h3 id="61-aggregates-entities-and-value-objects">6.1 Aggregates, Entities, and Value Objects</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -486,7 +502,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Order has many OrderLines</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>An <strong>Aggregate</strong> has a root <strong>DomainEntity</strong> (the one you address directly), may contain additional entities and value objects, is enforced by invariant <strong>Rules</strong>, persisted in <strong>DataStores</strong>, contained in a <strong>BoundedContext</strong>, and produces <strong>DomainEvents</strong> when its state changes.</p>
 <p>A <strong>DomainRelationship</strong> captures cardinality (<code>one_to_one</code>, <code>one_to_many</code>, <code>many_to_many</code>), navigability, composition (lifecycle dependency), the foreign key field implementing it, and any join entity for many-to-many relationships. This is what gets projected into ERD diagrams.</p>
 <h3 id="62-lifecycle-and-state-machines">6.2 Lifecycle and State Machines</h3>
@@ -565,7 +581,7 @@ LinkML Schema · Apache 2.0 License</p>
 <li><code>oauth</code></li>
 </ul>
 <h3 id="72-behavior-section-5">7.2 Behavior (Section 5)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -610,7 +626,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Type: <code>local</code>, <code>distributed</code>, <code>saga</code>, <code>two_phase_commit</code>; isolation level, timeout</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The key relationship chain is: <strong>Actor</strong> → <strong>Action</strong> → <strong>Resource</strong>. <strong>Actors</strong> perform <strong>Actions</strong> (<strong>Queries</strong> or <strong>Commands</strong>). <strong>Actions</strong> target <strong>Resources</strong> (exposed domain entities). <strong>Actions</strong> are allowed by <strong>Permissions</strong>, validated by <strong>Rules</strong>, executed within <strong>Transactions</strong>, and recorded in <strong>AuditEntries</strong>. <strong>Operations</strong> orchestrate <strong>Actions</strong> and are implemented by <strong>CallableUnits</strong>.</p>
 <h3 id="73-rules">7.3 Rules</h3>
 <p><strong>Rule</strong> is a central class with five categories. Each <strong>Rule</strong> has a condition, action expression, priority, and active flag.</p>
@@ -842,7 +858,7 @@ LinkML Schema · Apache 2.0 License</p>
 <p>Critically, <strong>KnowledgeArtifact</strong> has <code>documents_*</code> relationships pointing to <strong>System</strong>, <strong>BoundedContext</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>Service</strong>, <strong>Aggregate</strong>, <strong>DomainEntity</strong>, and <strong>Integration</strong>. The SAO tracks its own output: generated specifications are themselves <strong>KnowledgeArtifact</strong> instances, linked back to the entities they describe.</p>
 <hr />
 <h2 id="9-section-index">9. Section Index</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer</th>
@@ -875,12 +891,12 @@ LinkML Schema · Apache 2.0 License</p>
 <td>8 (Deployment/Ops), 9 (Observability), 15 (Concurrency), 16 (ML/Data Pipelines), 17 (Infrastructure as Code)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="10-the-glue-bidirectional-relationships">10. The Glue: Bidirectional Relationships</h2>
 <p>The SAO has 214 bidirectional relationship pairs. Every relationship has an explicit inverse, so you can traverse the graph in either direction.</p>
 <h3 id="101-key-cross-layer-bridges">10.1 Key Cross-Layer Bridges</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Bridge</th>
@@ -930,11 +946,11 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Documentation to everything it describes</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The complete list is in <a href="#appendix-c-complete-bidirectional-relationship-pairs-226-rows">Appendix C</a>.</p>
 <hr />
 <h2 id="11-base-classes-and-mixins">11. Base Classes and Mixins</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -975,7 +991,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>ExecutionEnvironmentDirective</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="12-reading-the-sao-effectively">12. Reading the SAO Effectively</h2>
 <p>When working with the SAO, keep these principles in mind:</p>
@@ -1001,7 +1017,7 @@ LinkML Schema · Apache 2.0 License</p>
 <h2 id="appendix-a-complete-class-inventory-147-classes">Appendix A: Complete Class Inventory (147 classes)</h2>
 <p>All 147 classes organized by conceptual layer. See <a href="#3-the-six-conceptual-layers">Section 3</a> for layer definitions.</p>
 <h3 id="base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1036,9 +1052,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>Mixin for entities requiring audit trails</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-3-code-structure-33-classes">Layer 3: Code structure (33 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1247,9 +1263,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>A programming language with its paradigms, type system, and runtime characteristics</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-4-architecture-and-integration-19-classes">Layer 4: Architecture and integration (19 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1374,9 +1390,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>A resilience pattern preventing cascade failures</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-5-domain-model-17-classes">Layer 5: Domain model (17 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1489,9 +1505,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>The origin, transformation history, and movement of data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-6-business-intent-17-classes">Layer 6: Business intent (17 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1604,9 +1620,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>A unit of work with ACID or BASE guarantees</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cross-cutting-security-governance-quality-knowledge-31-classes">Cross-cutting: Security, governance, quality, knowledge (31 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1803,9 +1819,9 @@ LinkML Schema · Apache 2.0 License</p>
 <td>A knowledge artifact that documents some aspect of the system</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cross-cutting-runtime-ops-infrastructure-26-classes">Cross-cutting: Runtime, ops, infrastructure (26 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1972,7 +1988,7 @@ LinkML Schema · Apache 2.0 License</p>
 <td>A reusable module of IaC definitions.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="appendix-b-complete-enumeration-reference-102-enums">Appendix B: Complete Enumeration Reference (102 enums)</h2>
 <p>All 102 enumerations with their 804 permissible values, organized by topic. See <a href="#44-platform-specific-extensions-sections-1828">Section 4.4</a> for context on code-structure enums and <a href="#72-behavior-section-5">Section 7.2</a> for behavior enums.</p>
@@ -2215,7 +2231,7 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <p><strong>Note on the count:</strong> This appendix lists 226 rows, while the summary in Section 2 counts 214 symmetric pairs. The difference arises from two factors: (1) 16 rows here are polymorphic expansions — attributes like <code>annotates_element</code>, <code>imports_symbols</code>, <code>defined_in_container</code>, and <code>contains_callable_units</code> use <code>any_of</code> ranges targeting multiple classes, so one logical relationship is expanded into separate rows per target class even though only one side declares the <code>inverse:</code> in the schema; (2) the Section 2 total includes 4 global slot pairs that are not listed in this appendix.</p>
 </blockquote>
 <h3 id="layer-3-code-structure-73-pairs">Layer 3: Code structure (73 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -2664,9 +2680,9 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>contains_locations</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-4-architecture-and-integration-47-pairs">Layer 4: Architecture and integration (47 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -2959,9 +2975,9 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>part_of_ui</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-5-domain-model-41-pairs">Layer 5: Domain model (41 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -3218,9 +3234,9 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>triggers_transitions</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="layer-6-business-intent-25-pairs">Layer 6: Business intent (25 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -3381,9 +3397,9 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>triggers_workflows</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cross-cutting-security-governance-quality-knowledge-22-pairs">Cross-cutting: Security, governance, quality, knowledge (22 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -3526,9 +3542,9 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>route_renders_component</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cross-cutting-runtime-ops-infrastructure-18-pairs">Cross-cutting: Runtime, ops, infrastructure (18 pairs)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class A</th>
@@ -3647,7 +3663,8 @@ Values (7): <code>object_oriented</code>, <code>procedural</code>, <code>functio
 <td><code>belongs_to_trace</code></td>
 </tr>
 </tbody>
-</table></main>
+</table></div></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/04-authorization-and-policy.html">
+<meta name="description" content="Section 3: Authorization and Policy · SAO: This section defines the authorization model including roles, permissions, policies, scopes, and constraints. v2.0 Note: In SAO v2.0, all single-use relationship…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Section 3: Authorization and Policy · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Section 3: Authorization and Policy · SAO: This section defines the authorization model including roles, permissions, policies, scopes, and constraints. v2.0 Note: In SAO v2.0, all single-use relationship…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/04-authorization-and-policy.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Section 3: Authorization and Policy · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Section 3: Authorization and Policy · SAO: This section defines the authorization model including roles, permissions, policies, scopes, and constraints. v2.0 Note: In SAO v2.0, all single-use relationship…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Section 3: Authorization and Policy · CoreStory Ontologies</title>
+<title>Section 3: Authorization and Policy · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="section-3-authorization-and-policy">Section 3: Authorization and Policy</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Section 3: Authorization and Policy</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#core-concepts">Core Concepts</a></li><li class="toc-level-3"><a href="#role">Role</a></li><li class="toc-level-3"><a href="#permission">Permission</a></li><li class="toc-level-3"><a href="#policy">Policy</a></li><li class="toc-level-3"><a href="#scope">Scope</a></li><li class="toc-level-3"><a href="#constraint">Constraint</a></li><li class="toc-level-2"><a href="#authorization-patterns">Authorization Patterns</a></li><li class="toc-level-3"><a href="#simple-rbac">Simple RBAC</a></li><li class="toc-level-3"><a href="#rbac-with-constraints">RBAC with Constraints</a></li><li class="toc-level-3"><a href="#abac-with-policies">ABAC with Policies</a></li><li class="toc-level-3"><a href="#rebac-relationship-based">REBAC (Relationship-Based)</a></li><li class="toc-level-3"><a href="#hierarchical-rbac">Hierarchical RBAC</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-3"><a href="#permission-design">Permission Design</a></li><li class="toc-level-3"><a href="#role-design">Role Design</a></li><li class="toc-level-3"><a href="#policy-design">Policy Design</a></li><li class="toc-level-3"><a href="#scope-management">Scope Management</a></li><li class="toc-level-3"><a href="#constraint-implementation">Constraint Implementation</a></li><li class="toc-level-2"><a href="#security-considerations">Security Considerations</a></li><li class="toc-level-3"><a href="#authorization-bypass-prevention">Authorization Bypass Prevention</a></li><li class="toc-level-3"><a href="#privilege-escalation-prevention">Privilege Escalation Prevention</a></li><li class="toc-level-3"><a href="#performance-and-scalability">Performance and Scalability</a></li><li class="toc-level-3"><a href="#compliance">Compliance</a></li><li class="toc-level-2"><a href="#relationships-with-other-sections">Relationships with Other Sections</a></li><li class="toc-level-2"><a href="#common-authorization-scenarios">Common Authorization Scenarios</a></li><li class="toc-level-3"><a href="#document-editing-system">Document Editing System</a></li><li class="toc-level-3"><a href="#healthcare-system-hipaa-compliance">Healthcare System (HIPAA Compliance)</a></li><li class="toc-level-3"><a href="#multi-tenant-saas-platform">Multi-Tenant SaaS Platform</a></li><li class="toc-level-3"><a href="#collaborative-platform-rebac">Collaborative Platform (REBAC)</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="section-3-authorization-and-policy">Section 3: Authorization and Policy</h1>
 <p>This section defines the authorization model including roles, permissions, policies, scopes, and constraints.</p>
 <blockquote>
 <p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Relationships and back-references are now defined directly on classes rather than referencing global <code>slots:</code> for single-domain relationships.</p>
@@ -382,7 +398,8 @@ Permissions derived from relationships:
   - Owner: read, write, delete, share
   - Collaborator: read, write
   - Group Member: read (if group has access)
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

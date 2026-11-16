@@ -3,23 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/migration-3.0.html">
+<meta name="description" content="SAO 3.0.0 candidate: relationship redesign: This is a tentative, unreleased major-version bump. It changes the RDF relationship contract and graph validation. It is not a published release or a claim that all…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="SAO 3.0.0 candidate: relationship redesign · CoreStory Ontologies">
+<meta property="og:description" content="SAO 3.0.0 candidate: relationship redesign: This is a tentative, unreleased major-version bump. It changes the RDF relationship contract and graph validation. It is not a published release or a claim that all…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/migration-3.0.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SAO 3.0.0 candidate: relationship redesign · CoreStory Ontologies">
+<meta name="twitter:description" content="SAO 3.0.0 candidate: relationship redesign: This is a tentative, unreleased major-version bump. It changes the RDF relationship contract and graph validation. It is not a published release or a claim that all…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>SAO 3.0.0 candidate: relationship redesign · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="sao-300-candidate-relationship-redesign">SAO 3.0.0 candidate: relationship redesign</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">SAO 3.0.0 candidate: relationship redesign</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#generic-relationships">Generic relationships</a></li><li class="toc-level-2"><a href="#participant-roles-remain-distinct">Participant roles remain distinct</a></li><li class="toc-level-2"><a href="#typed-unit-membership">Typed unit membership</a></li><li class="toc-level-2"><a href="#data-and-producer-migration">Data and producer migration</a></li><li class="toc-level-2"><a href="#verification">Verification</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="sao-300-candidate-relationship-redesign">SAO 3.0.0 candidate: relationship redesign</h1>
 <p>This is a tentative, unreleased major-version bump. It changes the RDF relationship contract and graph validation. It is not a published release or a claim that all LinkML semantics have been migrated. The ontology namespace and class IRIs stay unchanged.</p>
 <h2 id="generic-relationships">Generic relationships</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Forward predicate</th>
@@ -54,11 +70,11 @@
 <td>EncapsulationUnit → CallableUnit, DataStructure, or DataElement (including subclasses)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>SHACL keeps the class pairings specific. For example, Contract cannot have a SchemaVersion merely because both use <code>has_versions</code>. No common version, entry, resource, or constraint superclass is introduced to achieve this.</p>
 <p>The reverse <code>constrains</code> relation remains single-valued on DatabaseConstraint, preserving its existing collection ownership. Authorization Constraint may constrain multiple Permissions; no exclusive ownership is assumed. Existing single-value and required constraints elsewhere are preserved.</p>
 <h2 id="participant-roles-remain-distinct">Participant roles remain distinct</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relation</th>
@@ -83,14 +99,14 @@
 <td>FileOperation <code>performed_in_callable</code> CallableUnit</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Subscriber versus subscribed-to interface, and operated-on file versus performing callable, remain different roles. They are not inferred from one vague inverse relation.</p>
 <h2 id="typed-unit-membership">Typed unit membership</h2>
 <p><code>contains_callable_units</code>, <code>contains_data_structures</code>, and new <code>unit_contains_data_elements</code> are subproperties of <code>contains_unit_members</code>. Their asserted edges imply generic membership and thus the <code>contained_in_unit</code> inverse.</p>
 <p><code>unit_contains_data_elements</code> is also a subproperty of <code>contains_data_elements</code>. Generic <code>contains_data_elements</code> remains valid on EncapsulationUnit and DataStructure, but is not globally a subproperty of unit membership: a structure's field must not make the structure an encapsulation unit. Use the new unit-specific predicate when asserting direct unit data membership and expecting its inverse entailment. The broader predicate remains a useful projection, not a complete substitute for the unit-specific assertion.</p>
 <p>Generic membership does not automatically populate the type-specific indexes. For example, <code>contained_in_unit</code> on a DataElement yields <code>contains_unit_members</code>, not <code>contains_callable_units</code>.</p>
 <h2 id="data-and-producer-migration">Data and producer migration</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Old predicate</th>
@@ -135,7 +151,7 @@
 <td>Prefer <code>unit_contains_data_elements</code>; structure containment stays <code>contains_data_elements</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Update internal extraction predicates, query templates, graph fixtures, and stored edges. Do not choose a role replacement from an untyped or ambiguously typed subject without resolving its intended role. No automatic rewrite is performed by loading the ontology.</p>
 <p>Nine replaced predicates retain only retirement metadata (<code>owl:deprecated true</code>) for identification and migration diagnostics. They have no compatibility aliases, inverses, or class/range semantics in the new contract. SHACL explicitly rejects their use even though the overall profile remains open. This prevents an old graph from appearing conformant merely because its replaced edges were ignored.</p>
 <p>Do not reuse old specific inverse IRIs as aliases for the generic inverse: that would reintroduce the original cross-type inference problem. Original 2.1.0 YAML, legacy examples, and the inverse audit remain historical baselines and are not relabeled 3.0.0.</p>
@@ -146,7 +162,8 @@ uv run python scripts/validate_axioms.py
 uv run python scripts/validate_rdf.py
 uv run python -m unittest discover -s tests
 </code></pre>
-<p>Version 3.0.0 is proposed in the RDF and project metadata for review. No release tag, package publication, or CDN deployment is created by this change.</p></main>
+<p>Version 3.0.0 is proposed in the RDF and project metadata for review. No release tag, package publication, or CDN deployment is created by this change.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

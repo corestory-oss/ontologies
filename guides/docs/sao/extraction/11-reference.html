@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/11-reference.html">
+<meta name="description" content="11. Reference Material · SAO: SAO Extraction Playbook -- Appendix This appendix consolidates the reference tables, decision trees, and taxonomies referenced throughout the extraction playbook.…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="11. Reference Material · SAO · CoreStory Ontologies">
+<meta property="og:description" content="11. Reference Material · SAO: SAO Extraction Playbook -- Appendix This appendix consolidates the reference tables, decision trees, and taxonomies referenced throughout the extraction playbook.…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/11-reference.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="11. Reference Material · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="11. Reference Material · SAO: SAO Extraction Playbook -- Appendix This appendix consolidates the reference tables, decision trees, and taxonomies referenced throughout the extraction playbook.…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>11. Reference Material · CoreStory Ontologies</title>
+<title>11. Reference Material · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="11-reference-material">11. Reference Material</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">11. Reference Material</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#111-extraction-technique-reference">11.1 Extraction Technique Reference</a></li><li class="toc-level-2"><a href="#112-sao-class-checklist-by-extraction-phase">11.2 SAO Class Checklist by Extraction Phase</a></li><li class="toc-level-3"><a href="#base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</a></li><li class="toc-level-3"><a href="#phase-1-inventory-6-classes">Phase 1 -- Inventory (6 classes)</a></li><li class="toc-level-3"><a href="#phase-2-code-structure-27-classes">Phase 2 -- Code Structure (27 classes)</a></li><li class="toc-level-3"><a href="#phase-3-architecture-and-integration-20-classes">Phase 3 -- Architecture and Integration (20 classes)</a></li><li class="toc-level-3"><a href="#phase-4-domain-model-18-classes">Phase 4 -- Domain Model (18 classes)</a></li><li class="toc-level-3"><a href="#phase-5-business-intent-18-classes">Phase 5 -- Business Intent (18 classes)</a></li><li class="toc-level-3"><a href="#phase-6-cross-cutting-concerns-54-classes">Phase 6 -- Cross-Cutting Concerns (54 classes)</a></li><li class="toc-level-2"><a href="#113-decision-trees">11.3 Decision Trees</a></li><li class="toc-level-3"><a href="#decision-tree-1-datastructure-classification">Decision Tree 1: DataStructure Classification</a></li><li class="toc-level-3"><a href="#decision-tree-2-boundedcontext-boundary-identification">Decision Tree 2: BoundedContext Boundary Identification</a></li><li class="toc-level-3"><a href="#decision-tree-3-platform-extension-applicability">Decision Tree 3: Platform Extension Applicability</a></li><li class="toc-level-3"><a href="#decision-tree-4-rule-vs-workflow-vs-implementation-detail">Decision Tree 4: Rule vs. Workflow vs. Implementation Detail</a></li><li class="toc-level-2"><a href="#114-confidence-taxonomy">11.4 Confidence Taxonomy</a></li><li class="toc-level-3"><a href="#applying-the-taxonomy">Applying the taxonomy</a></li><li class="toc-level-3"><a href="#confidence-by-extraction-technique">Confidence by extraction technique</a></li><li class="toc-level-2"><a href="#115-quick-reference-required-attributes-summary">11.5 Quick-Reference: Required Attributes Summary</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="11-reference-material">11. Reference Material</h1>
 <blockquote>
 <p>SAO Extraction Playbook -- Appendix</p>
 </blockquote>
@@ -28,7 +44,7 @@ during any extraction phase.</p>
 <p>Each row maps a concrete technique to the SAO classes it populates. The
 <em>Automation level</em> column indicates how much of the work a tool can do
 without human judgment.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Technique</th>
@@ -147,7 +163,7 @@ without human judgment.</p>
 <td>Manual</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Reading the table.</strong> A technique tagged <em>High</em> can run unattended and its
 output can be trusted without review. <em>Medium</em> outputs SHOULD be spot-checked.
 <em>Low</em> and <em>Manual</em> outputs MUST be reviewed by a domain expert before they are
@@ -164,7 +180,7 @@ from <strong>NamedEntity</strong> (except <strong>Metadata</strong>, <strong>Ver
 which are standalone).</p>
 <h3 id="base-classes-and-mixins-4-classes">Base classes and mixins (4 classes)</h3>
 <p>These are not extracted directly; they provide inherited structure.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -194,9 +210,9 @@ which are standalone).</p>
 <td>Mixin for auditable entities</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-1-inventory-6-classes">Phase 1 -- Inventory (6 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -236,9 +252,9 @@ which are standalone).</p>
 <td>From CVE databases / <code>npm audit</code> / Snyk</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-2-code-structure-27-classes">Phase 2 -- Code Structure (27 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -383,9 +399,9 @@ which are standalone).</p>
 <td>Rust lifetimes, C++ smart pointers</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-3-architecture-and-integration-20-classes">Phase 3 -- Architecture and Integration (20 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -495,9 +511,9 @@ which are standalone).</p>
 <td>Unit of data exchanged in integration</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-4-domain-model-18-classes">Phase 4 -- Domain Model (18 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -597,9 +613,9 @@ which are standalone).</p>
 <td>Origin and transformation history</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-5-business-intent-18-classes">Phase 5 -- Business Intent (18 classes)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -704,10 +720,10 @@ which are standalone).</p>
 <td>User-facing manifestation of capabilities</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="phase-6-cross-cutting-concerns-54-classes">Phase 6 -- Cross-Cutting Concerns (54 classes)</h3>
 <h4 id="security-and-identity-9-classes">Security and identity (9 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -762,9 +778,9 @@ which are standalone).</p>
 <td>Condition for authorization</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="governance-and-compliance-5-classes">Governance and compliance (5 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -799,9 +815,9 @@ which are standalone).</p>
 <td>Documentation artifact</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="audit-2-classes">Audit (2 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -821,9 +837,9 @@ which are standalone).</p>
 <td>Single record in an audit log</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="testing-4-classes">Testing (4 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -853,9 +869,9 @@ which are standalone).</p>
 <td>Coverage metrics for a component</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="uifrontend-4-classes">UI/Frontend (4 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -885,9 +901,9 @@ which are standalone).</p>
 <td>Frontend state management container</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="build-cicd-4-classes">Build, CI/CD (4 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -917,9 +933,9 @@ which are standalone).</p>
 <td>Registry for storing artifacts</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="deployment-and-operations-7-classes">Deployment and operations (7 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -964,9 +980,9 @@ which are standalone).</p>
 <td>Probe verifying service availability</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="observability-7-classes">Observability (7 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1011,9 +1027,9 @@ which are standalone).</p>
 <td>Tracked degradation or outage</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="concurrency-2-classes">Concurrency (2 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1033,9 +1049,9 @@ which are standalone).</p>
 <td>Actor model, CSP, thread pool</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="mlai-5-classes">ML/AI (5 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1075,9 +1091,9 @@ which are standalone).</p>
 <td>Discrete step in a data pipeline</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h4 id="infrastructure-as-code-3-classes">Infrastructure as Code (3 classes)</h4>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1102,7 +1118,7 @@ which are standalone).</p>
 <td>Reusable module of IaC definitions</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Total: 4 base + 6 + 27 + 20 + 18 + 18 + 54 = 147 classes.</strong></p>
 <hr />
 <h2 id="113-decision-trees">11.3 Decision Trees</h2>
@@ -1196,7 +1212,7 @@ a developer would care, it is an implementation detail.</p>
 <p>Every extracted entity SHOULD be mentally tagged with one of the following
 confidence levels. This drives review prioritization: higher-layer entities
 (inferential, manual) get reviewed first.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Level</th>
@@ -1231,7 +1247,7 @@ confidence levels. This drives review prioritization: higher-layer entities
 <td>Mandatory</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="applying-the-taxonomy">Applying the taxonomy</h3>
 <ol>
 <li><strong>During extraction:</strong> tag each entity with its confidence level as you
@@ -1244,7 +1260,7 @@ confidence levels. This drives review prioritization: higher-layer entities
    <em>heuristic</em> or <em>deterministic</em> as appropriate.</li>
 </ol>
 <h3 id="confidence-by-extraction-technique">Confidence by extraction technique</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Technique</th>
@@ -1325,13 +1341,13 @@ confidence levels. This drives review prioritization: higher-layer entities
 <td>Manual</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="115-quick-reference-required-attributes-summary">11.5 Quick-Reference: Required Attributes Summary</h2>
 <p>The following classes have attributes marked <code>required: true</code> beyond the
 universal <code>id</code> and <code>name</code> inherited from <strong>NamedEntity</strong>. If a class is not
 listed here, only <code>id</code> and <code>name</code> are mandatory.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -1504,10 +1520,11 @@ listed here, only <code>id</code> and <code>name</code> are mandatory.</p>
 <td><code>component_type</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <p><em>End of reference appendix. Return to <a href="00-overview.html">00-overview.md</a> for the
-playbook table of contents.</em></p></main>
+playbook table of contents.</em></p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

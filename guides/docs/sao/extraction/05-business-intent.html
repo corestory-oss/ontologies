@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/05-business-intent.html">
+<meta name="description" content="Phase 5: Business Intent · SAO: Input: All prior phase outputs (Phases 1--4) + documentation + domain knowledge Output: HumanActor, SystemActor, Operation, Query, Command, Rule, DomainEvent,…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Phase 5: Business Intent · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Phase 5: Business Intent · SAO: Input: All prior phase outputs (Phases 1--4) + documentation + domain knowledge Output: HumanActor, SystemActor, Operation, Query, Command, Rule, DomainEvent,…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/05-business-intent.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 5: Business Intent · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Phase 5: Business Intent · SAO: Input: All prior phase outputs (Phases 1--4) + documentation + domain knowledge Output: HumanActor, SystemActor, Operation, Query, Command, Rule, DomainEvent,…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Phase 5: Business Intent · CoreStory Ontologies</title>
+<title>Phase 5: Business Intent · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="phase-5-business-intent">Phase 5: Business Intent</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Phase 5: Business Intent</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-overview">1. Overview</a></li><li class="toc-level-2"><a href="#2-step-1-identify-actors">2. Step 1: Identify Actors</a></li><li class="toc-level-3"><a href="#humanactor">HumanActor</a></li><li class="toc-level-3"><a href="#systemactor">SystemActor</a></li><li class="toc-level-3"><a href="#linking-actors-to-identities">Linking Actors to Identities</a></li><li class="toc-level-2"><a href="#3-step-2-extract-operations">3. Step 2: Extract Operations</a></li><li class="toc-level-3"><a href="#required-attributes">Required attributes</a></li><li class="toc-level-3"><a href="#key-relationships">Key relationships</a></li><li class="toc-level-2"><a href="#4-step-3-classify-actions-as-queries-or-commands">4. Step 3: Classify Actions as Queries or Commands</a></li><li class="toc-level-3"><a href="#common-attributes-inherited-from-action">Common attributes (inherited from Action)</a></li><li class="toc-level-3"><a href="#query">Query</a></li><li class="toc-level-3"><a href="#command">Command</a></li><li class="toc-level-3"><a href="#classification-heuristic">Classification heuristic</a></li><li class="toc-level-2"><a href="#5-step-4-extract-rules">5. Step 4: Extract Rules</a></li><li class="toc-level-3"><a href="#required-attributes_1">Required attributes</a></li><li class="toc-level-3"><a href="#key-relationships_1">Key relationships</a></li><li class="toc-level-3"><a href="#rule-categories-explained">Rule categories explained</a></li><li class="toc-level-2"><a href="#6-step-5-extract-events">6. Step 5: Extract Events</a></li><li class="toc-level-3"><a href="#common-attributes-inherited-from-event">Common attributes (inherited from Event)</a></li><li class="toc-level-3"><a href="#domainevent">DomainEvent</a></li><li class="toc-level-3"><a href="#integrationevent">IntegrationEvent</a></li><li class="toc-level-3"><a href="#subscription">Subscription</a></li><li class="toc-level-3"><a href="#message">Message</a></li><li class="toc-level-2"><a href="#7-step-6-extract-workflows">7. Step 6: Extract Workflows</a></li><li class="toc-level-3"><a href="#workflow-attributes">Workflow attributes</a></li><li class="toc-level-3"><a href="#step-attributes">Step attributes</a></li><li class="toc-level-3"><a href="#transaction">Transaction</a></li><li class="toc-level-3"><a href="#compensation-steps-for-sagas">Compensation steps for sagas</a></li><li class="toc-level-2"><a href="#8-step-7-synthesize-capabilities-and-features">8. Step 7: Synthesize Capabilities and Features</a></li><li class="toc-level-3"><a href="#capability">Capability</a></li><li class="toc-level-3"><a href="#feature">Feature</a></li><li class="toc-level-2"><a href="#9-phase-5-checklist">9. Phase 5 Checklist</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="phase-5-business-intent">Phase 5: Business Intent</h1>
 <p><strong>Input:</strong> All prior phase outputs (Phases 1--4) + documentation + domain knowledge
 <strong>Output:</strong> <strong>HumanActor</strong>, <strong>SystemActor</strong>, <strong>Operation</strong>, <strong>Query</strong>, <strong>Command</strong>, <strong>Rule</strong>, <strong>DomainEvent</strong>, <strong>IntegrationEvent</strong>, <strong>Subscription</strong>, <strong>Workflow</strong>, <strong>Step</strong>, <strong>Transaction</strong>, <strong>Capability</strong>, <strong>Feature</strong>, <strong>Message</strong></p>
 <hr />
@@ -82,7 +98,7 @@
 <h2 id="3-step-2-extract-operations">3. Step 2: Extract Operations</h2>
 <p>Create an <strong>Operation</strong> for each named, invocable business action exposed via an interface. An <strong>Operation</strong> bridges the gap between a user-visible action and the code that implements it.</p>
 <h3 id="required-attributes">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -107,7 +123,7 @@
 <td>Reference to the output <strong>Schema</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="key-relationships">Key relationships</h3>
 <ul>
 <li><code>Operation.implemented_by_callables</code> -- MUST link to one or more <strong>CallableUnit</strong> instances from Phase 2. This is the essential bridge from business intent to code.</li>
@@ -135,7 +151,7 @@
 <h2 id="4-step-3-classify-actions-as-queries-or-commands">4. Step 3: Classify Actions as Queries or Commands</h2>
 <p><strong>Action</strong> is an abstract class with two concrete subtypes: <strong>Query</strong> (read-only) and <strong>Command</strong> (state-changing). The extraction agent MUST classify every business action into one of these subtypes.</p>
 <h3 id="common-attributes-inherited-from-action">Common attributes (inherited from Action)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -168,10 +184,10 @@
 <td><strong>Transaction</strong> context for this action</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="query">Query</h3>
 <p>A read-only action that retrieves data without side effects.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -188,7 +204,7 @@
 <td>Fields to return</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <pre><code class="language-yaml">- Query:
     name: SearchProducts
     description: Search product catalog by keyword and category
@@ -207,7 +223,7 @@
 </code></pre>
 <h3 id="command">Command</h3>
 <p>An action that changes system state.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -224,7 +240,7 @@
 <td>Key for idempotent execution</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <pre><code class="language-yaml">- Command:
     name: CreateOrder
     description: Creates a new order from the customer's cart
@@ -241,7 +257,7 @@
       - OrderCreated
 </code></pre>
 <h3 id="classification-heuristic">Classification heuristic</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Signal</th>
@@ -282,13 +298,13 @@
 <td><strong>Command</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>When a method both reads and writes (e.g., <code>transferFunds</code>), classify it as a <strong>Command</strong> with <code>category</code> set to <code>mutation</code>.</p>
 <hr />
 <h2 id="5-step-4-extract-rules">5. Step 4: Extract Rules</h2>
 <p>Create a <strong>Rule</strong> for each validation constraint, business policy, guard clause, or derivation logic.</p>
 <h3 id="required-attributes_1">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -321,7 +337,7 @@
 <td>Whether the rule is currently active</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="key-relationships_1">Key relationships</h3>
 <ul>
 <li><code>Rule.validates_actions</code> -- which <strong>Action</strong> instances this rule validates</li>
@@ -331,7 +347,7 @@
 <li><code>Rule.enforces_aggregate_invariants</code> -- which <strong>Aggregate</strong> instances this rule protects</li>
 </ul>
 <h3 id="rule-categories-explained">Rule categories explained</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Category</th>
@@ -366,7 +382,7 @@
 <td>"When order ships, send email", "When inventory low, alert"</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Sources:</strong> validation annotations (<code>@NotNull</code>, <code>@Size</code>, <code>@Valid</code>), if/throw patterns, guard clauses, policy service methods, COBOL paragraph-level condition checks (IF/EVALUATE), database constraints.</p>
 <pre><code class="language-yaml">- Rule:
     name: MinimumOrderAmountRule
@@ -394,7 +410,7 @@
 <h2 id="6-step-5-extract-events">6. Step 5: Extract Events</h2>
 <p><strong>Event</strong> is the base class for notifications that something occurred. The extraction agent MUST use its concrete subtypes: <strong>DomainEvent</strong> and <strong>IntegrationEvent</strong>.</p>
 <h3 id="common-attributes-inherited-from-event">Common attributes (inherited from Event)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -423,7 +439,7 @@
 <td><strong>Component</strong> that produces the event</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="domainevent">DomainEvent</h3>
 <p>A significant occurrence within a bounded context, produced by an <strong>Aggregate</strong>.</p>
 <ul>
@@ -455,7 +471,7 @@
 </code></pre>
 <h3 id="subscription">Subscription</h3>
 <p>Create a <strong>Subscription</strong> for each event consumer registration.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -488,7 +504,7 @@
 <td><strong>EventInterface</strong> for delivery</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <pre><code class="language-yaml">- Subscription:
     name: BillingOrderShippedSubscription
     filter: &quot;event.type = 'OrderShippedNotification'&quot;
@@ -509,7 +525,7 @@
 <h2 id="7-step-6-extract-workflows">7. Step 6: Extract Workflows</h2>
 <p>Create a <strong>Workflow</strong> for each multi-step business process that coordinates multiple actions toward a business goal.</p>
 <h3 id="workflow-attributes">Workflow attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -534,9 +550,9 @@
 <td><strong>Event</strong> instances that start the workflow</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="step-attributes">Step attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -573,10 +589,10 @@
 <td>Compensating <strong>Step</strong> for saga rollback</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="transaction">Transaction</h3>
 <p>Create a <strong>Transaction</strong> for each transaction boundary encountered.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -605,7 +621,7 @@
 <td><strong>Action</strong> instances within this transaction</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Sources:</strong> saga implementations, orchestration engines (Temporal, Camunda, Step Functions), multi-step handler methods, COBOL paragraph sequences with EXEC CICS SYNCPOINT, Spring <code>@Transactional</code> boundaries, database transaction blocks.</p>
 <pre><code class="language-yaml">- Workflow:
     name: OrderFulfillmentSaga
@@ -668,7 +684,7 @@
 <p><strong>Capability</strong> and <strong>Feature</strong> represent the highest level of abstraction in SAO. They describe what the system can do and how users experience it.</p>
 <h3 id="capability">Capability</h3>
 <p>A discrete business or technical ability the system provides.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -701,10 +717,10 @@
 <td><strong>Feature</strong> instances this capability enables</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="feature">Feature</h3>
 <p>A user-facing manifestation of one or more capabilities.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -737,7 +753,7 @@
 <td><strong>Role</strong> instances that can access this feature</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Sources:</strong> product documentation, feature flag configurations (LaunchDarkly, Unleash, <code>@FeatureToggle</code>), capability-oriented package structure, marketing materials, user stories.</p>
 <pre><code class="language-yaml">- Capability:
     name: OrderManagement
@@ -797,7 +813,8 @@
 <li>[ ] <strong>Transactions defined.</strong> Transaction boundaries captured as <strong>Transaction</strong> instances with <code>transaction_type</code> and <code>isolation_level</code>.</li>
 <li>[ ] <strong>Capabilities and Features synthesized.</strong> System abilities captured as <strong>Capability</strong> instances; user-facing features captured as <strong>Feature</strong> instances with appropriate <code>category</code>.</li>
 <li>[ ] <strong>Human review flagged.</strong> All entities produced in this phase are marked for domain expert validation.</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

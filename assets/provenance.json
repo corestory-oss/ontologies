@@ -2,6 +2,11 @@
   "brand_source": "https://app.notion.com/p/24fb12d93cb280f2a0dfc8aa8e14d18e",
   "files": [
     {
+      "path": "ontology-social.png",
+      "source": "Rendered by web/social-card/generate.py using the unmodified official gold wordmark and bundled Roboto fonts; reference-library identity, not release or deployment evidence.",
+      "sha256": "7b643a519103ae2045d9d3812657e94eb7355377d159a2eb32b77ca2afb33d28"
+    },
+    {
       "path": "brand/corestory-logo-black.svg",
       "source": "CoreStory media kit / 2. Logo + Symbol.zip / 2. Logo + Symbol/1. Logo/1. Digital/SVG/CoreStory-Logo-Pos-Black-RGB.svg",
       "sha256": "703497c7a4d0629f230638f1fc9117868e9b110965a401afd5b9ce4bcce7da1d"

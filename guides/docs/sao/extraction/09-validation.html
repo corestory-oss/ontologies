@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/09-validation.html">
+<meta name="description" content="Validation · SAO: Input: Complete extraction outputs from all 8 phases (Phases 1--8) Output: Validated SAO instance, gap report, coverage metrics 1. Overview Validation is the…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Validation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Validation · SAO: Input: Complete extraction outputs from all 8 phases (Phases 1--8) Output: Validated SAO instance, gap report, coverage metrics 1. Overview Validation is the…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/09-validation.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Validation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Validation · SAO: Input: Complete extraction outputs from all 8 phases (Phases 1--8) Output: Validated SAO instance, gap report, coverage metrics 1. Overview Validation is the…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Validation · CoreStory Ontologies</title>
+<title>Validation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="validation">Validation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Validation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-overview">1. Overview</a></li><li class="toc-level-2"><a href="#2-structural-validation">2. Structural Validation</a></li><li class="toc-level-3"><a href="#21-running-linkml-validate">2.1 Running linkml-validate</a></li><li class="toc-level-3"><a href="#22-common-errors-and-fixes">2.2 Common Errors and Fixes</a></li><li class="toc-level-3"><a href="#23-incremental-validation">2.3 Incremental Validation</a></li><li class="toc-level-2"><a href="#3-relational-validation">3. Relational Validation</a></li><li class="toc-level-3"><a href="#31-bidirectional-symmetry">3.1 Bidirectional Symmetry</a></li><li class="toc-level-3"><a href="#32-referential-integrity">3.2 Referential Integrity</a></li><li class="toc-level-3"><a href="#33-required-relationships">3.3 Required Relationships</a></li><li class="toc-level-2"><a href="#4-completeness-checks">4. Completeness Checks</a></li><li class="toc-level-3"><a href="#41-containment-chain-completeness">4.1 Containment Chain Completeness</a></li><li class="toc-level-3"><a href="#42-domain-model-completeness">4.2 Domain Model Completeness</a></li><li class="toc-level-3"><a href="#43-business-intent-completeness">4.3 Business Intent Completeness</a></li><li class="toc-level-3"><a href="#44-cross-cutting-completeness">4.4 Cross-Cutting Completeness</a></li><li class="toc-level-2"><a href="#5-coverage-metrics">5. Coverage Metrics</a></li><li class="toc-level-3"><a href="#51-file-coverage">5.1 File Coverage</a></li><li class="toc-level-3"><a href="#52-class-instantiation">5.2 Class Instantiation</a></li><li class="toc-level-3"><a href="#53-relationship-density">5.3 Relationship Density</a></li><li class="toc-level-3"><a href="#54-bridge-coverage">5.4 Bridge Coverage</a></li><li class="toc-level-3"><a href="#55-coverage-summary-report">5.5 Coverage Summary Report</a></li><li class="toc-level-2"><a href="#6-semantic-validation">6. Semantic Validation</a></li><li class="toc-level-3"><a href="#61-domain-model-review">6.1 Domain Model Review</a></li><li class="toc-level-3"><a href="#62-business-intent-review">6.2 Business Intent Review</a></li><li class="toc-level-3"><a href="#63-architecture-review">6.3 Architecture Review</a></li><li class="toc-level-3"><a href="#64-flagging-confidence-levels">6.4 Flagging Confidence Levels</a></li><li class="toc-level-2"><a href="#7-iteration-and-gap-filling">7. Iteration and Gap-Filling</a></li><li class="toc-level-3"><a href="#71-common-gap-patterns">7.1 Common Gap Patterns</a></li><li class="toc-level-3"><a href="#72-iterative-workflow">7.2 Iterative Workflow</a></li><li class="toc-level-3"><a href="#73-when-to-stop">7.3 When to Stop</a></li><li class="toc-level-2"><a href="#8-validation-checklist">8. Validation Checklist</a></li><li class="toc-level-3"><a href="#structural">Structural</a></li><li class="toc-level-3"><a href="#relational">Relational</a></li><li class="toc-level-3"><a href="#completeness">Completeness</a></li><li class="toc-level-3"><a href="#bridges">Bridges</a></li><li class="toc-level-3"><a href="#semantic">Semantic</a></li><li class="toc-level-3"><a href="#reporting">Reporting</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="validation">Validation</h1>
 <p><strong>Input:</strong> Complete extraction outputs from all 8 phases (Phases 1--8)
 <strong>Output:</strong> Validated SAO instance, gap report, coverage metrics</p>
 <hr />
@@ -113,7 +129,7 @@ linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
 </ol>
 <h3 id="33-required-relationships">3.3 Required Relationships</h3>
 <p>Certain relationships are essential for a coherent SAO instance. The following table lists relationships that MUST or SHOULD be populated for key classes:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -232,7 +248,7 @@ linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
 <td>SHOULD</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>An entity missing a MUST relationship is an extraction error that MUST be corrected. An entity missing a SHOULD relationship SHOULD be investigated -- it may indicate a gap in extraction or a legitimate case where the relationship does not apply.</p>
 <hr />
 <h2 id="4-completeness-checks">4. Completeness Checks</h2>
@@ -276,7 +292,7 @@ linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
 <p><strong>Definition:</strong> The percentage of source files in scope that have a <strong>CodeContainer</strong> with at least one <strong>EncapsulationUnit</strong> parsed from them.</p>
 <pre><code>file_coverage = (files_with_encapsulation_units / total_source_files) * 100
 </code></pre>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Threshold</th>
@@ -297,14 +313,14 @@ linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
 <td>Needs work -- significant portions of the codebase are missing</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Files legitimately excluded from encapsulation unit parsing (config files, static assets, data files) SHOULD be documented but not counted against coverage.</p>
 <h3 id="52-class-instantiation">5.2 Class Instantiation</h3>
 <p><strong>Definition:</strong> The percentage of the 147 SAO classes that have at least one instance in the extraction output.</p>
 <pre><code>class_instantiation = (classes_with_instances / 147) * 100
 </code></pre>
 <p>Not all 147 classes will apply to every codebase. A typical extraction SHOULD instantiate 60--80% of classes. Classes that are not instantiated SHOULD be reviewed to confirm they genuinely do not apply, rather than being overlooked.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Threshold</th>
@@ -325,7 +341,7 @@ linkml-validate -s legacy/sao/sao.yml phases1-2-output.yaml
 <td>May indicate gaps -- verify against codebase characteristics</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="53-relationship-density">5.3 Relationship Density</h3>
 <p><strong>Definition:</strong> The average number of populated relationship attributes per entity instance.</p>
 <pre><code>relationship_density = total_populated_relationships / total_entity_instances
@@ -470,7 +486,8 @@ Unused classes:  47 (reviewed — not applicable to this codebase)
 <li>[ ] Coverage report generated (Section 5.5)</li>
 <li>[ ] Gap report generated and all critical gaps addressed</li>
 <li>[ ] Remaining known limitations documented</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

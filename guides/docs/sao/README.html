@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/README.html">
+<meta name="description" content="Systems Abstraction Ontology (SAO) · SAO: A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Systems Abstraction Ontology (SAO) · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Systems Abstraction Ontology (SAO) · SAO: A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/README.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Systems Abstraction Ontology (SAO) · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Systems Abstraction Ontology (SAO) · SAO: A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Systems Abstraction Ontology (SAO) · CoreStory Ontologies</title>
+<title>Systems Abstraction Ontology (SAO) · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="systems-abstraction-ontology-sao">Systems Abstraction Ontology (SAO)</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Systems Abstraction Ontology (SAO)</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#key-features">Key Features</a></li><li class="toc-level-2"><a href="#documentation">Documentation</a></li><li class="toc-level-3"><a href="#section-deep-dives">Section deep dives</a></li><li class="toc-level-3"><a href="#other-resources">Other resources</a></li><li class="toc-level-2"><a href="#getting-started">Getting Started</a></li><li class="toc-level-3"><a href="#turtle-source-workflow">Turtle source workflow</a></li><li class="toc-level-3"><a href="#legacy-baseline-validation">Legacy baseline validation</a></li><li class="toc-level-2"><a href="#legacy-linkml-layout">Legacy LinkML layout</a></li><li class="toc-level-2"><a href="#examples">Examples</a></li><li class="toc-level-3"><a href="#simple-e-commerce-system">Simple E-Commerce System</a></li><li class="toc-level-3"><a href="#order-aggregate">Order Aggregate</a></li><li class="toc-level-3"><a href="#integration-with-external-service">Integration with External Service</a></li><li class="toc-level-3"><a href="#schema-namespace">Schema namespace</a></li><li class="toc-level-2"><a href="#technical-details">Technical Details</a></li><li class="toc-level-2"><a href="#version-history">Version History</a></li><li class="toc-level-3"><a href="#version-300-candidate-unreleased">Version 3.0.0 (Candidate, unreleased)</a></li><li class="toc-level-3"><a href="#version-210-legacy-baseline">Version 2.1.0 (Legacy baseline)</a></li><li class="toc-level-3"><a href="#version-200">Version 2.0.0</a></li><li class="toc-level-3"><a href="#version-100">Version 1.0.0</a></li><li class="toc-level-3"><a href="#roadmap">Roadmap</a></li><li class="toc-level-2"><a href="#contributing">Contributing</a></li><li class="toc-level-2"><a href="#license">License</a></li><li class="toc-level-2"><a href="#references">References</a></li><li class="toc-level-2"><a href="#citation">Citation</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="systems-abstraction-ontology-sao">Systems Abstraction Ontology (SAO)</h1>
 <p>A comprehensive, language-agnostic ontology for modeling software systems — from individual lines of code to business capabilities, from COBOL copybooks to Kubernetes deployments.</p>
 <p>SAO describes software systems—their structure, behavior, domain concepts, and
 operating context—including libraries, services, batch programs, and applications.</p>
@@ -47,7 +63,7 @@ operating context—including libraries, services, batch programs, and applicati
 <p>The guide reflects the retained LinkML baseline; use the migration notes for current relationship names.</p>
 <p><strong>Start here:</strong> <a href="guide.html">The SAO Guide</a> — a layered walkthrough of all 147 classes organized by abstraction level, from code structure to business intent.</p>
 <h3 id="section-deep-dives">Section deep dives</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Doc</th>
@@ -122,11 +138,11 @@ operating context—including libraries, services, batch programs, and applicati
 <td>TypeExpression, ErrorModel, FileDefinition, JobDefinition, IPC, etc.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="other-resources">Other resources</h3>
 <ul>
 <li><a href="../../../source/docs/sao/c4/index.html">C4 Model Mapping</a> — SAO classes mapped to C4 architecture layers (<a href="c4/layer-1.html">Layer 1</a>, <a href="c4/layer-2.html">Layer 2</a>, <a href="c4/layer-3.html">Layer 3</a>, <a href="c4/layer-4.html">Layer 4</a>)</li>
-<li><a href="whitepaper.html">Whitepaper</a> — "Beyond Grep and Vector Search: The Case for Ontology-driven Extraction of Software Requirements"</li>
+<li>Whitepaper (not included in this public snapshot) — "Beyond Grep and Vector Search: The Case for Ontology-driven Extraction of Software Requirements"</li>
 </ul>
 <h2 id="getting-started">Getting Started</h2>
 <ol>
@@ -295,7 +311,8 @@ Licensed under the Apache License, Version 2.0.
 </code></pre>
 <hr />
 <p><strong>Last Updated</strong>: 2026-10-14
-<strong>Ontology Version</strong>: 3.0.0 candidate</p></main>
+<strong>Ontology Version</strong>: 3.0.0 candidate</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

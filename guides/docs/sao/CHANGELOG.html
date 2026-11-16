@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/CHANGELOG.html">
+<meta name="description" content="Changelog · SAO: [3.0.0] - Unreleased candidate Breaking relationship changes Introduce generic version_of, entry_in, uses, constrains, and contains_unit_members relationships with…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Changelog · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Changelog · SAO: [3.0.0] - Unreleased candidate Breaking relationship changes Introduce generic version_of, entry_in, uses, constrains, and contains_unit_members relationships with…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/CHANGELOG.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Changelog · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Changelog · SAO: [3.0.0] - Unreleased candidate Breaking relationship changes Introduce generic version_of, entry_in, uses, constrains, and contains_unit_members relationships with…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Changelog · CoreStory Ontologies</title>
+<title>Changelog · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="changelog">Changelog</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Changelog</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#300-unreleased-candidate">[3.0.0] - Unreleased candidate</a></li><li class="toc-level-3"><a href="#breaking-relationship-changes">Breaking relationship changes</a></li><li class="toc-level-3"><a href="#earlier-migration-milestones">Earlier migration milestones</a></li><li class="toc-level-3"><a href="#earlier-release-preparation">Earlier release preparation</a></li><li class="toc-level-2"><a href="#210-2026-04-18">[2.1.0] - 2026-04-18</a></li><li class="toc-level-3"><a href="#rename-rule">Rename rule</a></li><li class="toc-level-3"><a href="#removed">Removed</a></li><li class="toc-level-3"><a href="#changed-forward-attribute-renames">Changed — forward attribute renames</a></li><li class="toc-level-3"><a href="#added">Added</a></li><li class="toc-level-3"><a href="#fixed">Fixed</a></li><li class="toc-level-3"><a href="#migration-guide">Migration guide</a></li><li class="toc-level-3"><a href="#documentation">Documentation</a></li><li class="toc-level-2"><a href="#200">[2.0.0]</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="changelog">Changelog</h1>
 <h2 id="300-unreleased-candidate">[3.0.0] - Unreleased candidate</h2>
 <h3 id="breaking-relationship-changes">Breaking relationship changes</h3>
 <ul>
@@ -68,7 +84,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h3 id="removed">Removed</h3>
 <p>Four v2.0-migration-leftover attributes that duplicated newer relationships:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -98,10 +114,10 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <td><code>contains_spans</code> (renamed from <code>trace_spans</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="changed-forward-attribute-renames">Changed — forward attribute renames</h3>
 <p>Simple-collection attributes (renamed to <code>has_*</code> or <code>contains_*</code>):</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -356,9 +372,9 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <td><code>has_steps</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Tree/role/directional attributes (renamed to <code>has_*</code> for uniformity):</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Class</th>
@@ -528,7 +544,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <td><code>has_child_ui_components</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="added">Added</h3>
 <ul>
 <li>New inverse relationships on target classes for a subset of the renamed
@@ -568,7 +584,8 @@ sweep is tracked as a follow-up.</p>
   not maintain a changelog. Key v2.0 work: inlining single-use relationship
   slots as class attributes, code-structure layer expansion, and introduction
   of the bidirectional-relationship pattern that v2.1 generalizes.</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-2.html">
+<meta name="description" content="Layer 2: Container-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 2 (Container) -- the deployable services, data stores, interfaces, pipelines, and operational…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Layer 2: Container-Level Representation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Layer 2: Container-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 2 (Container) -- the deployable services, data stores, interfaces, pipelines, and operational…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-2.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Layer 2: Container-Level Representation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Layer 2: Container-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 2 (Container) -- the deployable services, data stores, interfaces, pipelines, and operational…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Layer 2: Container-Level Representation · CoreStory Ontologies</title>
+<title>Layer 2: Container-Level Representation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="layer-2-container-level-representation">Layer 2: Container-Level Representation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Layer 2: Container-Level Representation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#scope">Scope</a></li><li class="toc-level-2"><a href="#summary">Summary</a></li><li class="toc-level-2"><a href="#connections-to-adjacent-layers">Connections to Adjacent Layers</a></li><li class="toc-level-3"><a href="#upward-links-to-layer-1-system-context">Upward links to Layer 1 (System Context)</a></li><li class="toc-level-3"><a href="#downward-links-to-layer-3-component">Downward links to Layer 3 (Component)</a></li><li class="toc-level-3"><a href="#intra-layer-links-within-layer-2">Intra-layer links (within Layer 2)</a></li><li class="toc-level-3"><a href="#downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</a></li><li class="toc-level-2"><a href="#a-structural-5-classes">A. Structural (5 classes)</a></li><li class="toc-level-3"><a href="#1-boundedcontext">1. BoundedContext</a></li><li class="toc-level-3"><a href="#2-module">2. Module</a></li><li class="toc-level-3"><a href="#3-service">3. Service</a></li><li class="toc-level-3"><a href="#4-interface-abstract">4. Interface (abstract)</a></li><li class="toc-level-3"><a href="#5-dependency">5. Dependency</a></li><li class="toc-level-2"><a href="#b-interfaces-endpoints-6-classes">B. Interfaces &amp; Endpoints (6 classes)</a></li><li class="toc-level-3"><a href="#6-userinterface">6. UserInterface</a></li><li class="toc-level-3"><a href="#7-programmaticinterface">7. ProgrammaticInterface</a></li><li class="toc-level-3"><a href="#8-eventinterface">8. EventInterface</a></li><li class="toc-level-3"><a href="#9-screen">9. Screen</a></li><li class="toc-level-3"><a href="#10-endpoint">10. Endpoint</a></li><li class="toc-level-3"><a href="#11-route">11. Route</a></li><li class="toc-level-2"><a href="#c-data-management-10-classes">C. Data Management (10 classes)</a></li><li class="toc-level-3"><a href="#12-datastore">12. DataStore</a></li><li class="toc-level-3"><a href="#13-collection">13. Collection</a></li><li class="toc-level-3"><a href="#14-record">14. Record</a></li><li class="toc-level-3"><a href="#15-dataclassification">15. DataClassification</a></li><li class="toc-level-3"><a href="#16-retentionpolicy">16. RetentionPolicy</a></li><li class="toc-level-3"><a href="#17-datalineage">17. DataLineage</a></li><li class="toc-level-3"><a href="#18-auditlog">18. AuditLog</a></li><li class="toc-level-3"><a href="#19-auditentry">19. AuditEntry</a></li><li class="toc-level-3"><a href="#20-databaseconstraint">20. DatabaseConstraint</a></li><li class="toc-level-3"><a href="#21-databaseindex">21. DatabaseIndex</a></li><li class="toc-level-2"><a href="#d-integration-6-classes">D. Integration (6 classes)</a></li><li class="toc-level-3"><a href="#22-integration">22. Integration</a></li><li class="toc-level-3"><a href="#23-message">23. Message</a></li><li class="toc-level-3"><a href="#24-contract">24. Contract</a></li><li class="toc-level-3"><a href="#25-contractversion">25. ContractVersion</a></li><li class="toc-level-3"><a href="#26-adapter">26. Adapter</a></li><li class="toc-level-3"><a href="#27-circuitbreaker">27. CircuitBreaker</a></li><li class="toc-level-2"><a href="#e-deployment-runtime-6-classes">E. Deployment &amp; Runtime (6 classes)</a></li><li class="toc-level-3"><a href="#28-environment">28. Environment</a></li><li class="toc-level-3"><a href="#29-deployment">29. Deployment</a></li><li class="toc-level-3"><a href="#30-deploymentunit">30. DeploymentUnit</a></li><li class="toc-level-3"><a href="#31-configuration">31. Configuration</a></li><li class="toc-level-3"><a href="#32-infrastructure">32. Infrastructure</a></li><li class="toc-level-3"><a href="#33-release">33. Release</a></li><li class="toc-level-2"><a href="#f-observability-9-classes">F. Observability (9 classes)</a></li><li class="toc-level-3"><a href="#34-metric">34. Metric</a></li><li class="toc-level-3"><a href="#35-log">35. Log</a></li><li class="toc-level-3"><a href="#36-logentry">36. LogEntry</a></li><li class="toc-level-3"><a href="#37-trace">37. Trace</a></li><li class="toc-level-3"><a href="#38-span">38. Span</a></li><li class="toc-level-3"><a href="#39-alert">39. Alert</a></li><li class="toc-level-3"><a href="#40-alertrule">40. AlertRule</a></li><li class="toc-level-3"><a href="#41-incident">41. Incident</a></li><li class="toc-level-3"><a href="#42-healthcheck">42. HealthCheck</a></li><li class="toc-level-2"><a href="#g-build-cicd-4-classes">G. Build &amp; CI/CD (4 classes)</a></li><li class="toc-level-3"><a href="#43-buildpipeline">43. BuildPipeline</a></li><li class="toc-level-3"><a href="#44-pipelinestage">44. PipelineStage</a></li><li class="toc-level-3"><a href="#45-buildartifact">45. BuildArtifact</a></li><li class="toc-level-3"><a href="#46-artifactregistry">46. ArtifactRegistry</a></li><li class="toc-level-2"><a href="#h-dependency-management-3-classes">H. Dependency Management (3 classes)</a></li><li class="toc-level-3"><a href="#47-packagemanager">47. PackageManager</a></li><li class="toc-level-3"><a href="#48-packagedependency">48. PackageDependency</a></li><li class="toc-level-3"><a href="#49-knownvulnerability">49. KnownVulnerability</a></li><li class="toc-level-2"><a href="#i-infrastructure-as-code-3-classes">I. Infrastructure as Code (3 classes)</a></li><li class="toc-level-3"><a href="#50-iacdefinition">50. IaCDefinition</a></li><li class="toc-level-3"><a href="#51-iacmodule">51. IaCModule</a></li><li class="toc-level-3"><a href="#52-iacresource">52. IaCResource</a></li><li class="toc-level-2"><a href="#j-ml-data-pipelines-6-classes">J. ML &amp; Data Pipelines (6 classes)</a></li><li class="toc-level-3"><a href="#53-datapipeline">53. DataPipeline</a></li><li class="toc-level-3"><a href="#54-datapipelinestep">54. DataPipelineStep</a></li><li class="toc-level-3"><a href="#55-dataset">55. Dataset</a></li><li class="toc-level-3"><a href="#56-mlmodel">56. MLModel</a></li><li class="toc-level-3"><a href="#57-mlmodelmetric">57. MLModelMetric</a></li><li class="toc-level-3"><a href="#58-featurestore">58. FeatureStore</a></li><li class="toc-level-2"><a href="#k-testing-3-classes">K. Testing (3 classes)</a></li><li class="toc-level-3"><a href="#59-testsuite">59. TestSuite</a></li><li class="toc-level-3"><a href="#60-testcoverage">60. TestCoverage</a></li><li class="toc-level-3"><a href="#61-testassertion">61. TestAssertion</a></li><li class="toc-level-2"><a href="#l-frontend-supporting-3-classes">L. Frontend Supporting (3 classes)</a></li><li class="toc-level-3"><a href="#62-statestore">62. StateStore</a></li><li class="toc-level-3"><a href="#63-uiproperty">63. UIProperty</a></li><li class="toc-level-3"><a href="#64-concurrencypattern">64. ConcurrencyPattern</a></li><li class="toc-level-2"><a href="#relationship-map">Relationship Map</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="layer-2-container-level-representation">Layer 2: Container-Level Representation</h1>
 <p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 2 (Container)</strong> -- the deployable services, data stores, interfaces, pipelines, and operational infrastructure that compose a system. This layer sits between the system context (Layer 1) and the component internals (Layer 3).</p>
 <p>Where Layer 1 answers "what systems exist and how do they interact?", Layer 2 answers "what are the running parts of this system -- its services, databases, message brokers, build pipelines, and how are they deployed, monitored, and integrated?"</p>
 <hr />
@@ -43,7 +59,7 @@
 </blockquote>
 <hr />
 <h2 id="summary">Summary</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -503,13 +519,13 @@
 <td>15</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Total: 64 classes</strong> (including 3 Interface subtypes, 1 Component subtype, and 1 Rule subtype that inherit from parents).</p>
 <hr />
 <h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
 <h3 id="upward-links-to-layer-1-system-context">Upward links to Layer 1 (System Context)</h3>
 <p>These relationships connect Layer 2 concepts to system-context entities:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 2 class</th>
@@ -544,13 +560,13 @@
 <td>System exposing this interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <blockquote>
 <p><strong>Note:</strong> <strong>Policy</strong> (Layer 3) also has an upward link to Layer 1 via <code>enforced_by_system</code> → <strong>System</strong>. It is documented in the Layer 3 cross-layer section rather than here, since Policy is not a Layer 2 class.</p>
 </blockquote>
 <h3 id="downward-links-to-layer-3-component">Downward links to Layer 3 (Component)</h3>
 <p>These relationships connect Layer 2 concepts to their component-level internals:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 2 class</th>
@@ -627,9 +643,9 @@
 <td>Operations served by this endpoint</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="intra-layer-links-within-layer-2">Intra-layer links (within Layer 2)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 2 class</th>
@@ -652,9 +668,9 @@
 <td>Services running this module</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="downward-links-to-layer-4-code">Downward links to Layer 4 (Code)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 2 class</th>
@@ -677,13 +693,13 @@
 <td>Code units implementing this contract</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="a-structural-5-classes">A. Structural (5 classes)</h2>
 <h3 id="1-boundedcontext">1. BoundedContext</h3>
 <p>A semantic boundary within which a domain model applies consistently. Corresponds to the DDD bounded context concept.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -706,9 +722,9 @@
 <td>Relationship pattern (e.g., Customer-Supplier, Partnership)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -755,13 +771,13 @@
 <td>Aggregates within this context (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="2-module">2. Module</h3>
 <p>A deployable, cohesive unit of functionality within a bounded context.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -784,9 +800,9 @@
 <td>Features required for this module</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -882,12 +898,12 @@
 <td>Package dependencies</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="3-service">3. Service</h3>
 <p>An independently deployable runtime unit.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -904,9 +920,9 @@
 <td>Kind of service</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -981,9 +997,9 @@
 <td>Incidents affecting this service</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ServiceType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1028,12 +1044,12 @@
 <td>Stored procedure exposed as service</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="4-interface-abstract">4. Interface (abstract)</h3>
 <p>A contract-defined boundary through which interaction occurs. Abstract base for UserInterface, ProgrammaticInterface, and EventInterface.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1062,9 +1078,9 @@
 <td>Rate limit (requests per unit time)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1090,9 +1106,9 @@
 <td>System exposing this interface (Layer 1)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>InterfaceCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1113,12 +1129,12 @@
 <td>Event-driven interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="5-dependency">5. Dependency</h3>
 <p>A lightweight dependency reference between components or services. Typically inlined within Module or Component.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1153,9 +1169,9 @@
 <td>Whether optional</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DependencyType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1180,13 +1196,13 @@
 <td>Development-only dependency</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="b-interfaces-endpoints-6-classes">B. Interfaces &amp; Endpoints (6 classes)</h2>
 <h3 id="6-userinterface">6. UserInterface</h3>
 <p>A user-facing interface. Inherits all Interface attributes and relationships.</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1209,9 +1225,9 @@
 <td>Screens in this interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1230,9 +1246,9 @@
 <td>Screens in this interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>UserInterfaceType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1257,12 +1273,12 @@
 <td>Command-line interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="7-programmaticinterface">7. ProgrammaticInterface</h3>
 <p>A machine-to-machine interface. Inherits all Interface attributes and relationships.</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1285,9 +1301,9 @@
 <td>Base URL</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1306,9 +1322,9 @@
 <td>Endpoints in this interface (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>APIType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1337,12 +1353,12 @@
 <td>SOAP API</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="8-eventinterface">8. EventInterface</h3>
 <p>An event-driven interface. Inherits all Interface attributes and relationships.</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1365,9 +1381,9 @@
 <td>Topic names</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1386,9 +1402,9 @@
 <td>Subscriptions to this interface (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>EventInterfaceType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1413,12 +1429,12 @@
 <td>Publish/subscribe</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="9-screen">9. Screen</h3>
 <p>A single screen or view in a user interface.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1435,9 +1451,9 @@
 <td>URL route or path</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1463,12 +1479,12 @@
 <td>Operations accessible from this screen (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="10-endpoint">10. Endpoint</h3>
 <p>A specific addressable entry point on a service.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1509,9 +1525,9 @@
 <td>Port number</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1537,9 +1553,9 @@
 <td>Parent programmatic interface</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ProtocolType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1608,12 +1624,12 @@
 <td>Shared memory</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="11-route">11. Route</h3>
 <p>A navigation route or URL path in a frontend application.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1654,9 +1670,9 @@
 <td>Whether authentication is required</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1696,9 +1712,9 @@
 <td>Policies guarding this route (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>RouteType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1731,13 +1747,13 @@
 <td>Guarded/protected route</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="c-data-management-10-classes">C. Data Management (10 classes)</h2>
 <h3 id="12-datastore">12. DataStore</h3>
 <p>A persistence mechanism.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1766,9 +1782,9 @@
 <td>Collections within this store (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1815,9 +1831,9 @@
 <td>File definitions mapped to this store (Layer 4)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DataStoreType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1882,12 +1898,12 @@
 <td>Dead letter queue</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="13-collection">13. Collection</h3>
 <p>A logical grouping of records (table, collection, bucket).</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1904,9 +1920,9 @@
 <td>Index definitions as strings (<strong>deprecated</strong> -- use <code>has_indexes</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1960,12 +1976,12 @@
 <td>Database indexes (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="14-record">14. Record</h3>
 <p>A single persisted instance of data.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1982,9 +1998,9 @@
 <td>Data sensitivity classifications</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2024,12 +2040,12 @@
 <td>Lineage entries where this record is a source</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="15-dataclassification">15. DataClassification</h3>
 <p>A sensitivity or handling category for data.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2058,9 +2074,9 @@
 <td>Whether encryption is required</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DataClassificationType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2097,12 +2113,12 @@
 <td>Payment Card Industry data</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="16-retentionpolicy">16. RetentionPolicy</h3>
 <p>Rules governing data lifecycle and deletion.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2131,9 +2147,9 @@
 <td>Deletion strategy</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2166,12 +2182,12 @@
 <td>Audit logs governed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="17-datalineage">17. DataLineage</h3>
 <p>The origin, transformation history, and movement of data.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2194,9 +2210,9 @@
 <td>Transformation descriptions</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2222,12 +2238,12 @@
 <td>Record tracked</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="18-auditlog">18. AuditLog</h3>
 <p>A tamper-evident record of system activities.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2244,9 +2260,9 @@
 <td>Entries (legacy attribute)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2272,12 +2288,12 @@
 <td>Audit entries</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="19-auditentry">19. AuditEntry</h3>
 <p>A single record within an audit log.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2306,9 +2322,9 @@
 <td>Additional details</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2348,12 +2364,12 @@
 <td>Resource affected (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="20-databaseconstraint">20. DatabaseConstraint</h3>
 <p>A constraint on a database table/collection. Typically inlined within Collection.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2394,9 +2410,9 @@
 <td>Expression (for CHECK constraints)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2415,9 +2431,9 @@
 <td>Parent collection</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DatabaseConstraintType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2446,12 +2462,12 @@
 <td>Not-null constraint</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="21-databaseindex">21. DatabaseIndex</h3>
 <p>An index on a database table/collection. Typically inlined within Collection.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2492,9 +2508,9 @@
 <td>Filter for partial indexes</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2513,9 +2529,9 @@
 <td>Parent collection</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>IndexType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2540,13 +2556,13 @@
 <td>Full-text index</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="d-integration-6-classes">D. Integration (6 classes)</h2>
 <h3 id="22-integration">22. Integration</h3>
 <p>A configured connection to an external system.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2575,9 +2591,9 @@
 <td>Messages exchanged (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2624,9 +2640,9 @@
 <td>Parent system (Layer 1)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>IntegrationType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2647,12 +2663,12 @@
 <td>Bidirectional integration</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="23-message">23. Message</h3>
 <p>A unit of data exchanged in integration. Typically inlined within Integration.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2669,9 +2685,9 @@
 <td>Kind of message</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2697,9 +2713,9 @@
 <td>Contract validating this message</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>MessageType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2732,13 +2748,13 @@
 <td>Query message</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="24-contract">24. Contract</h3>
 <p>A formal specification of integration behavior.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2767,9 +2783,9 @@
 <td>Version history (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2809,9 +2825,9 @@
 <td>Integrations governed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ContractType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2848,12 +2864,12 @@
 <td>WSDL (SOAP)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="25-contractversion">25. ContractVersion</h3>
 <p>A specific iteration of a contract. Typically inlined within Contract.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2882,9 +2898,9 @@
 <td>Breaking changes in this version</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2903,7 +2919,7 @@
 <td>Parent contract</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="26-adapter">26. Adapter</h3>
 <p>A component that translates between system and external protocols.</p>
@@ -2911,7 +2927,7 @@
 <p><strong>Inherits all Component attributes and relationships from Layer 3.</strong> Adapter extends Component (<code>is_a: Component</code>), so it has <code>component_type</code>, <code>language</code>, <code>source_location</code>, <code>contained_in_module</code>, <code>exposes_operations</code>, <code>emits_events</code>, <code>dependencies</code>, <code>implemented_by_code</code>, <code>tested_by_suites</code>, <code>has_coverage</code>, <code>emits_metrics</code>, <code>generates_logs</code>, <code>emits_metric</code>, <code>component_serves_model</code>, and <code>component_uses_concurrency_pattern</code> -- all inherited.</p>
 </blockquote>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2940,9 +2956,9 @@
 <td>Transformation logic description</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2961,12 +2977,12 @@
 <td>Integrations using this adapter</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="27-circuitbreaker">27. CircuitBreaker</h3>
 <p>A resilience pattern preventing cascade failures.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2995,9 +3011,9 @@
 <td>Requests allowed in half-open state</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3016,13 +3032,13 @@
 <td>Integrations protected</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="e-deployment-runtime-6-classes">E. Deployment &amp; Runtime (6 classes)</h2>
 <h3 id="28-environment">28. Environment</h3>
 <p>A runtime context with specific configuration.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3039,9 +3055,9 @@
 <td>Kind of environment</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3081,9 +3097,9 @@
 <td>Pipelines deploying to this environment</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>EnvironmentType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3112,12 +3128,12 @@
 <td>Disaster Recovery</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="29-deployment">29. Deployment</h3>
 <p>An instance of a service running in an environment.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3134,9 +3150,9 @@
 <td>Number of replicas</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3183,12 +3199,12 @@
 <td>Release being deployed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="30-deploymentunit">30. DeploymentUnit</h3>
 <p>The packaged artifact being deployed.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3217,9 +3233,9 @@
 <td>Integrity checksum</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3238,9 +3254,9 @@
 <td>Deployments using this unit</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DeploymentUnitType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3269,12 +3285,12 @@
 <td>Software package</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="31-configuration">31. Configuration</h3>
 <p>Runtime parameters for a deployment.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3309,9 +3325,9 @@
 <td>Configuration source</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3344,9 +3360,9 @@
 <td>Deployments configured</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ConfigurationType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3375,12 +3391,12 @@
 <td>Remote configuration</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="32-infrastructure">32. Infrastructure</h3>
 <p>The underlying compute, storage, and network resources.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3415,9 +3431,9 @@
 <td>Resource specifications</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3450,9 +3466,9 @@
 <td>IaC definitions provisioning this</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>InfrastructureType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3497,13 +3513,13 @@
 <td>Service mesh control plane (Istio, Linkerd, etc.)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="33-release">33. Release</h3>
 <p>A versioned, deployable package of changes.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3532,9 +3548,9 @@
 <td>Artifacts in this release</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3553,13 +3569,13 @@
 <td>Deployments of this release</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="f-observability-9-classes">F. Observability (9 classes)</h2>
 <h3 id="34-metric">34. Metric</h3>
 <p>A quantitative measurement over time.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3588,9 +3604,9 @@
 <td>Metric labels/dimensions</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3616,9 +3632,9 @@
 <td>Alert rules monitoring this metric</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>MetricType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3643,12 +3659,12 @@
 <td>Quantile summary</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="35-log">35. Log</h3>
 <p>A timestamped record of discrete events.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3671,9 +3687,9 @@
 <td>Entries (legacy attribute)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3699,9 +3715,9 @@
 <td>Log entries</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>LogType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3734,12 +3750,12 @@
 <td>Debug log</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="36-logentry">36. LogEntry</h3>
 <p>A single record within a log. Typically inlined within Log.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3774,9 +3790,9 @@
 <td>Contextual information</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3795,12 +3811,12 @@
 <td>Parent log</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="37-trace">37. Trace</h3>
 <p>A causal chain of operations across services.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3823,9 +3839,9 @@
 <td>Spans in this trace (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3851,12 +3867,12 @@
 <td>All spans</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="38-span">38. Span</h3>
 <p>A single unit of work within a trace. Typically inlined within Trace.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3903,9 +3919,9 @@
 <td>Span attributes/tags</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3945,12 +3961,12 @@
 <td>Trace where this is root</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="39-alert">39. Alert</h3>
 <p>A notification triggered by metric thresholds or anomalies.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3985,9 +4001,9 @@
 <td>When resolved</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4013,7 +4029,7 @@
 <td>Incidents escalated to</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="40-alertrule">40. AlertRule</h3>
 <p>The condition that triggers an alert.</p>
@@ -4021,7 +4037,7 @@
 <p><strong>Inherits all Rule attributes and relationships from Layer 3.</strong> AlertRule extends Rule (<code>is_a: Rule</code>), so it has <code>category</code> (RuleCategory), <code>condition</code>, <code>action</code>, <code>priority</code>, <code>is_active</code>, <code>validates_attributes</code>, <code>enforces_aggregate_invariants</code>, <code>governs_domain_entities</code>, <code>validates_actions</code>, and <code>guards_transitions</code> -- all inherited.</p>
 </blockquote>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4056,9 +4072,9 @@
 <td>Notification channels</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4084,12 +4100,12 @@
 <td>Alerts triggered</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="41-incident">41. Incident</h3>
 <p>A tracked degradation or outage event.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4136,9 +4152,9 @@
 <td>Post-mortem document URL</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4164,12 +4180,12 @@
 <td>Services affected</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="42-healthcheck">42. HealthCheck</h3>
 <p>A probe verifying service availability. Typically inlined within Service.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4216,9 +4232,9 @@
 <td>Consecutive failures before unhealthy</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>HealthCheckType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4243,13 +4259,13 @@
 <td>Has the service finished starting?</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="g-build-cicd-4-classes">G. Build &amp; CI/CD (4 classes)</h2>
 <h3 id="43-buildpipeline">43. BuildPipeline</h3>
 <p>A CI/CD pipeline that automates build, test, and deployment processes.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4308,9 +4324,9 @@
 <td>Whether stages can run in parallel</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4350,9 +4366,9 @@
 <td>IaC definitions used</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>PipelineType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4389,12 +4405,12 @@
 <td>Validation pipeline</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="44-pipelinestage">44. PipelineStage</h3>
 <p>A discrete stage within a CI/CD pipeline. Typically inlined within BuildPipeline.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4453,9 +4469,9 @@
 <td>Whether manual approval is required</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>PipelineStageType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4508,13 +4524,13 @@
 <td>Send notifications</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="45-buildartifact">45. BuildArtifact</h3>
 <p>An artifact produced by a build pipeline.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4555,9 +4571,9 @@
 <td>Build number or identifier</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4583,9 +4599,9 @@
 <td>Registry storing this artifact</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ArtifactType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4626,12 +4642,12 @@
 <td>Mainframe load module</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="46-artifactregistry">46. ArtifactRegistry</h3>
 <p>A registry or repository for storing build artifacts.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4660,9 +4676,9 @@
 <td>Whether the registry is private</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4681,13 +4697,13 @@
 <td>Artifacts stored</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="h-dependency-management-3-classes">H. Dependency Management (3 classes)</h2>
 <h3 id="47-packagemanager">47. PackageManager</h3>
 <p>A package/dependency management tool.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4722,9 +4738,9 @@
 <td>Package registry URL</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4743,9 +4759,9 @@
 <td>Modules managed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>PackageManagerType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4798,12 +4814,12 @@
 <td>No package manager</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="48-packagedependency">48. PackageDependency</h3>
 <p>A declared dependency on an external package or library.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4856,9 +4872,9 @@
 <td>Known vulnerabilities (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4891,9 +4907,9 @@
 <td>Packages depending on this transitively</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DependencyScope Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -4926,12 +4942,12 @@
 <td>Provided by runtime</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="49-knownvulnerability">49. KnownVulnerability</h3>
 <p>A known security vulnerability in a dependency. Typically inlined within PackageDependency.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4978,9 +4994,9 @@
 <td>Security advisory URL</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>VulnerabilitySeverity Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5009,14 +5025,14 @@
 <td>No severity / informational</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="i-infrastructure-as-code-3-classes">I. Infrastructure as Code (3 classes)</h2>
 <h3 id="50-iacdefinition">50. IaCDefinition</h3>
 <p>An infrastructure-as-code definition that declaratively specifies infrastructure resources.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5051,9 +5067,9 @@
 <td>Resources defined (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5079,9 +5095,9 @@
 <td>Pipelines using this definition</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>IaCToolType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5134,12 +5150,12 @@
 <td>AWS/Azure CDK</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="51-iacmodule">51. IaCModule</h3>
 <p>A reusable module of IaC definitions.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5174,12 +5190,12 @@
 <td>Resources within this module (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="52-iacresource">52. IaCResource</h3>
 <p>A single infrastructure resource defined in code. Typically inlined within IaCDefinition or IaCModule.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5220,9 +5236,9 @@
 <td>Whether Terraform/IaC manages lifecycle</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>IaCResourceType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5271,13 +5287,13 @@
 <td>Secret management resource</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="j-ml-data-pipelines-6-classes">J. ML &amp; Data Pipelines (6 classes)</h2>
 <h3 id="53-datapipeline">53. DataPipeline</h3>
 <p>A data processing pipeline for ETL, feature engineering, or model training.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5318,9 +5334,9 @@
 <td>Pipeline steps (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5353,9 +5369,9 @@
 <td>Datasets used</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DataPipelineType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5392,12 +5408,12 @@
 <td>Data quality checks</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="54-datapipelinestep">54. DataPipelineStep</h3>
 <p>A discrete step within a data pipeline. Typically inlined within DataPipeline.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5444,9 +5460,9 @@
 <td>Output schema</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DataPipelineStepType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5499,13 +5515,13 @@
 <td>Deploy trained model</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="55-dataset">55. Dataset</h3>
 <p>A dataset used for training, evaluation, or inference.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5546,9 +5562,9 @@
 <td>Data classification</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5567,13 +5583,13 @@
 <td>Pipelines using this dataset</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="56-mlmodel">56. MLModel</h3>
 <p>A machine learning model defined, trained, or served by the system.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code></p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5626,9 +5642,9 @@
 <td>Performance metrics (inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5661,9 +5677,9 @@
 <td>Feature stores used</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>MLModelType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5712,12 +5728,12 @@
 <td>Anomaly detection model</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="57-mlmodelmetric">57. MLModelMetric</h3>
 <p>A performance metric for an ML model. Typically inlined within MLModel.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5746,12 +5762,12 @@
 <td>Evaluation dataset name</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="58-featurestore">58. FeatureStore</h3>
 <p>A centralized store for computed ML features.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5780,9 +5796,9 @@
 <td>Number of features</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5801,13 +5817,13 @@
 <td>Models using this feature store</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="k-testing-3-classes">K. Testing (3 classes)</h2>
 <h3 id="59-testsuite">59. TestSuite</h3>
 <p>A collection of related test cases.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -5866,9 +5882,9 @@
 <td>Total execution time in milliseconds</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -5901,9 +5917,9 @@
 <td>Module tested</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>TestSuiteType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -5948,12 +5964,12 @@
 <td>Contract tests</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="60-testcoverage">60. TestCoverage</h3>
 <p>Code coverage metrics for a component or module.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -6000,9 +6016,9 @@
 <td>Coverage tool (Istanbul, JaCoCo, etc.)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -6028,12 +6044,12 @@
 <td>Module measured</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="61-testassertion">61. TestAssertion</h3>
 <p>An individual assertion within a test case. Typically inlined within TestCase.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -6062,9 +6078,9 @@
 <td>Source line number</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>AssertionType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -6105,13 +6121,13 @@
 <td>Custom assertion</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="l-frontend-supporting-3-classes">L. Frontend Supporting (3 classes)</h2>
 <h3 id="62-statestore">62. StateStore</h3>
 <p>A frontend state management store or container.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -6152,9 +6168,9 @@
 <td>Selector names</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -6173,9 +6189,9 @@
 <td>UI components managed (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>StateManagementType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -6208,12 +6224,12 @@
 <td>Form state management</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="63-uiproperty">63. UIProperty</h3>
 <p>A property (prop) passed to a UI component. Typically inlined within UIComponent.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -6248,12 +6264,12 @@
 <td>Whether the prop is reactive</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="64-concurrencypattern">64. ConcurrencyPattern</h3>
 <p>A high-level concurrency pattern used in the system.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -6288,9 +6304,9 @@
 <td>Shared resources</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -6309,9 +6325,9 @@
 <td>Components using this pattern (Layer 3)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ConcurrencyPatternType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -6360,7 +6376,7 @@
 <td>Communicating Sequential Processes</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="relationship-map">Relationship Map</h2>
 <pre><code>                        ┌──────────── Layer 1 (System Context) ─────────────┐
@@ -6468,7 +6484,8 @@
                         │  Component, Aggregate, DomainEntity,   │
                         │  Operation, Rule, Event, Workflow, ... │
                         └───────────────────────────────────────┘
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

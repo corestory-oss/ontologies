@@ -1,6 +1,8 @@
 # Nix builds and static documentation
 
-The public commands are Nix commands. Python remains the implementation language, but a normal build does not invoke uv, pip, or a local virtual environment.
+**Repository access required.** These maintainer commands require an authorized, complete checkout, including `flake.nix`, `flake.lock`, `nix/`, and website build assets. The browsable public source collection is a reference subset, not that checkout. To validate a downloaded example without repository access, use [Getting started](getting-started.md).
+
+The repository build commands use Nix. Python remains the implementation language, but a normal build does not invoke uv, pip, or a local virtual environment.
 
 ## The everyday commands
 
@@ -42,9 +44,13 @@ Nix fetches declared dependencies, then runs ordinary builds in its build enviro
 
 For Git-based flakes, new files must be added with `git add` before Nix sees them. Staging is sufficient; a commit is not required. A dirty-tree warning while developing is expected and does not mean the build failed. `result` and `.direnv/` are local outputs ignored by Git.
 
-## Static hosting and Cloudflare
+## Static hosting
 
 Deploy the **contents of `result/`**, preserving directory layout. Cloudflare Pages can host this as a plain static site; no application server, database, Worker, Python, uv or Nix is needed at runtime. A Cloudflare build can also be skipped when an already-built artifact or `site` branch supplies those files.
+
+The intended public identity is `https://ontologies.corestory.ai`. Canonical URLs and social metadata name that origin; they do not prove it is deployed. The site is a reference library with no analytics or lead collection. Hosting, DNS, TLS, security headers, and public social-preview validation require separate deployment verification.
+
+Serve `healthz` as a static response and use `404.html` with HTTP 404 for unknown paths. Do not use a successful homepage fallback. `robots.txt` allows crawling; `sitemap.xml` lists canonical HTML pages except the error page. Normal pages use relative links for root or subpath hosting. For a subpath build, pass `--base-path /ontologies/` to `scripts/build_site.py` so deep error-page recovery links use the same prefix. The default is `/`.
 
 Garden renders term-reference pages in the visitor's browser using the bundled dataset. Existing Markdown guides are pre-rendered into HTML under `guides/`. The explorer uses fragment links such as `#spec:Requirement`, so those links do not need server-side routing. All browser assets and datasets are served from the same static site. Telemetry and feedback are disabled.
 
@@ -59,16 +65,22 @@ The dataset is plain JSON. Its URL includes a SHA-256 content hash so changed on
 ```text
 index.html              # CoreStory Ontologies introduction
 reference/              # Combined Garden browser and its dataset
+sao/, specspec/         # HTML namespace entries with explicit RDF downloads
 guides/                 # Rendered Markdown guides and examples
 dist/                   # Turtle distributions
 assets/                 # Brand assets, fonts, CSS and pinned Garden runtime
-source/                 # Files linked as downloads from the guides
+source/                 # Browsable public source, including LICENSE and NOTICE
+search-index.json       # Local term and guide discovery
 snapshot.json           # Ontology versions and input hashes
+robots.txt, sitemap.xml # Public crawl policy and canonical page inventory
+healthz, 404.html        # Static health response and noindex error body
 _headers                # Static hosting headers
 publication.json        # Exact source commit (added when preparing site)
 ```
 
-The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain `/sao/` and `/specspec/`; moving the browser to `/reference/` does not rename terms. Existing root-fragment Garden bookmarks redirect to the new browser location.
+The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain `/sao/` and `/specspec/`; moving the browser to `/reference/` does not rename terms. Namespace entries are HTML, not RDF content-negotiation endpoints. Individual term paths are not generated; use Garden fragments or explicit Turtle downloads. Existing root-fragment Garden bookmarks redirect to the browser location.
+
+The public source collection copies only the exact, reviewed paths in `web/public-source-manifest.json`; directory names do not grant publication permission. The build also publishes that inventory as `source-manifest.json`. New nested files require explicit review, and symlinks are refused. The confidential whitepaper and its equivalent Markdown source are withheld without modifying the repository originals. Other reviewed guides remain available. LICENSE and NOTICE are preserved byte-for-byte. The builder creates directory indexes rather than relying on server directory listing; the collection is not a complete build checkout.
 
 The publication process is local: start from committed `main`, run `nix flake check` and `nix build`, populate a separate `site` checkout with the complete output (removing files left over from earlier builds), record the source commit, then commit and push `site` with ordinary fast-forward history. Never merge `site` into `main` or hand-edit generated HTML. The command performs the checks, build and local branch update; pushing remains an explicit separate step:
 

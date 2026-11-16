@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/00-overview.html">
+<meta name="description" content="SAO Extraction Playbook: Overview: This document series is a step-by-step playbook for decomposing any software codebase into SAO-conformant YAML. It covers modern cloud-native applications, legacy…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="SAO Extraction Playbook: Overview · CoreStory Ontologies">
+<meta property="og:description" content="SAO Extraction Playbook: Overview: This document series is a step-by-step playbook for decomposing any software codebase into SAO-conformant YAML. It covers modern cloud-native applications, legacy…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/00-overview.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SAO Extraction Playbook: Overview · CoreStory Ontologies">
+<meta name="twitter:description" content="SAO Extraction Playbook: Overview: This document series is a step-by-step playbook for decomposing any software codebase into SAO-conformant YAML. It covers modern cloud-native applications, legacy…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>SAO Extraction Playbook: Overview · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="sao-extraction-playbook-overview">SAO Extraction Playbook: Overview</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">SAO Extraction Playbook: Overview</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#how-to-use-this-series">How to use this series</a></li><li class="toc-level-2"><a href="#prerequisites-and-inputs">Prerequisites and inputs</a></li><li class="toc-level-3"><a href="#required-inputs">Required inputs</a></li><li class="toc-level-3"><a href="#strongly-recommended-inputs">Strongly recommended inputs</a></li><li class="toc-level-3"><a href="#optional-inputs-if-available">Optional inputs (if available)</a></li><li class="toc-level-3"><a href="#identification-checklist">Identification checklist</a></li><li class="toc-level-3"><a href="#tools-needed">Tools needed</a></li><li class="toc-level-2"><a href="#extraction-philosophy">Extraction philosophy</a></li><li class="toc-level-3"><a href="#bottom-up-then-top-down">Bottom-up, then top-down</a></li><li class="toc-level-3"><a href="#confidence-gradient">Confidence gradient</a></li><li class="toc-level-3"><a href="#incremental-extraction">Incremental extraction</a></li><li class="toc-level-3"><a href="#idempotency">Idempotency</a></li><li class="toc-level-2"><a href="#phase-dependency-map">Phase dependency map</a></li><li class="toc-level-3"><a href="#phase-summary-table">Phase summary table</a></li><li class="toc-level-2"><a href="#document-index">Document index</a></li><li class="toc-level-2"><a href="#relationship-to-other-sao-documentation">Relationship to other SAO documentation</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="sao-extraction-playbook-overview">SAO Extraction Playbook: Overview</h1>
 <p>This document series is a step-by-step playbook for decomposing any software codebase into SAO-conformant YAML. It covers modern cloud-native applications, legacy mainframe systems, and everything in between.</p>
 <h2 id="how-to-use-this-series">How to use this series</h2>
 <p><strong>Audience.</strong> These documents are written for both software engineers performing manual extraction and LLM agents (e.g., Claude Code) performing automated extraction. The term "extraction agent" refers to whoever or whatever is performing the work.</p>
@@ -37,7 +53,7 @@
 <h2 id="prerequisites-and-inputs">Prerequisites and inputs</h2>
 <p>Before starting extraction, gather the following:</p>
 <h3 id="required-inputs">Required inputs</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Input</th>
@@ -58,9 +74,9 @@
 <td><code>package-lock.json</code>, <code>Cargo.lock</code>, <code>poetry.lock</code>, etc.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="strongly-recommended-inputs">Strongly recommended inputs</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Input</th>
@@ -93,9 +109,9 @@
 <td>Terraform, CloudFormation, Pulumi</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="optional-inputs-if-available">Optional inputs (if available)</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Input</th>
@@ -116,7 +132,7 @@
 <td>Test files, coverage reports</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="identification-checklist">Identification checklist</h3>
 <p>Before extraction begins, identify and record:</p>
 <ol>
@@ -128,7 +144,7 @@
 <li><strong>Architectural style</strong> if apparent (monolith, microservices, modular monolith, mainframe batch/online)</li>
 </ol>
 <h3 id="tools-needed">Tools needed</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Tool category</th>
@@ -158,7 +174,7 @@
 <td>All phases</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="extraction-philosophy">Extraction philosophy</h2>
 <h3 id="bottom-up-then-top-down">Bottom-up, then top-down</h3>
@@ -169,7 +185,7 @@
 </blockquote>
 <h3 id="confidence-gradient">Confidence gradient</h3>
 <p>Each extraction phase operates at a different confidence level:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Confidence</th>
@@ -199,7 +215,7 @@
 <td>Parts of Phases 5-6</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>When populating SAO instances, the extraction agent SHOULD be aware of which confidence level applies and flag inferential results for human review.</p>
 <h3 id="incremental-extraction">Incremental extraction</h3>
 <p>You do not need to extract everything at once. Start with a single bounded context or module, complete it through all phases, then expand. This approach:</p>
@@ -238,7 +254,7 @@ Phase 8: System Context (Layer 1) ◄──────────────�
   Validation (doc 09)
 </code></pre>
 <h3 id="phase-summary-table">Phase summary table</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Phase</th>
@@ -315,11 +331,11 @@ Phase 8: System Context (Layer 1) ◄──────────────�
 <td>Finalized <strong>System</strong> with all top-level links</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>After all phases: <a href="09-validation.html">Validation</a> | <a href="10-worked-example.html">Worked Example</a> | <a href="11-reference.html">Reference</a></p>
 <hr />
 <h2 id="document-index">Document index</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Doc</th>
@@ -389,10 +405,10 @@ Phase 8: System Context (Layer 1) ◄──────────────�
 <td>Technique table, class checklist, decision trees</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="relationship-to-other-sao-documentation">Relationship to other SAO documentation</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Document</th>
@@ -417,12 +433,13 @@ Phase 8: System Context (Layer 1) ◄──────────────�
 <td>When you need attribute-level detail for a specific section</td>
 </tr>
 <tr>
-<td><a href="../whitepaper.html">Whitepaper</a></td>
+<td>Whitepaper (not included in this public snapshot)</td>
 <td>Theoretical grounding for ontology-based extraction</td>
 <td>Background reading on why this approach works</td>
 </tr>
 </tbody>
-</table></main>
+</table></div></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/specspec/README.html">
+<meta name="description" content="SpecSpec: Specification &amp; Evidence Ontology Part of the CoreStory Ontologies repository. Run commands from the repository root. SpecSpec is an RDF vocabulary for…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="SpecSpec · CoreStory Ontologies">
+<meta property="og:description" content="SpecSpec: Specification &amp; Evidence Ontology Part of the CoreStory Ontologies repository. Run commands from the repository root. SpecSpec is an RDF vocabulary for…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/specspec/README.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SpecSpec · CoreStory Ontologies">
+<meta name="twitter:description" content="SpecSpec: Specification &amp; Evidence Ontology Part of the CoreStory Ontologies repository. Run commands from the repository root. SpecSpec is an RDF vocabulary for…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>SpecSpec · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="specspec">SpecSpec</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">SpecSpec</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#authoritative-sources">Authoritative sources</a></li><li class="toc-level-2"><a href="#important-distinctions">Important distinctions</a></li><li class="toc-level-2"><a href="#build-and-validate">Build and validate</a></li><li class="toc-level-2"><a href="#scope-and-next-decisions">Scope and next decisions</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="specspec">SpecSpec</h1>
 <p><strong>Specification &amp; Evidence Ontology</strong></p>
 <p>Part of the <a href="../../README.html">CoreStory Ontologies repository</a>. Run commands from the repository root.</p>
 <p>SpecSpec is an RDF vocabulary for requirements, scenarios, decisions, descriptive claims, and the evidence supporting them. Its namespace is <code>https://ontologies.corestory.ai/specspec/</code> (<code>spec:</code>).</p>
@@ -24,7 +40,7 @@
 <p>This is a <strong>0.1.0 modeling draft</strong>. It does not yet implement document importers, renderers, or a modernization engine. The namespace is a proposed identifier space; this checkout does not configure hosting or CDN publication.</p>
 <h2 id="authoritative-sources">Authoritative sources</h2>
 <p>Edit the modular Turtle files under <code>ontologies/specspec/</code>. The layout follows SAO: RDFS vocabulary, SHACL validation, and an optional OWL supplement are separate layers. LinkML is no longer required.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Directory</th>
@@ -65,7 +81,7 @@
 <td>Migration preservation and validation regression tests</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Vocabulary and shape modules cover common identity/provenance, specifications, decisions, evidence, representations and the graph envelope. Graph rules live in <code>ontologies/specspec/shapes/rules.ttl</code>.</p>
 <p>The assembled core products are <code>dist/specspec.ttl</code>, <code>dist/specspec.shacl.ttl</code> and <code>dist/specspec.owl.ttl</code>. They are build outputs; edit their sources and rebuild. The three corresponding <code>specspec-sao.*ttl</code> products contain <strong>only the optional bridge layer</strong> and are loaded alongside the core. Core SpecSpec has no SAO dependency, and the bridge does not copy or modify SAO definitions.</p>
 <h2 id="important-distinctions">Important distinctions</h2>
@@ -103,7 +119,8 @@ uv run python -m unittest discover -s tests
 <p>The old SpecSpec document convention is a reference for stable IDs and evidence chains, not a required output format. Existing formats can be views of this graph. Initial mappings are illustrative, not certified adapters.</p>
 <p>KnowledgeArtifact and governance classes have not been removed from SAO or migrated wholesale. <code>SpecificationArtifact</code> remains a distinct draft term for document representations; its eventual relationship to SAO's <code>KnowledgeArtifact</code> needs agreement. Compliance-specific requirements, controls, and risk assessments need a separate modeling pass.</p>
 <p>Before stabilizing: review class boundaries, decide bridge coverage and release pinning, choose representation adapters, and define provenance/review policies. Specifications and sources have their own revisions; the ontology version describes the vocabulary. SAO and SpecSpec are intended for open-source release; hosting and release hardening remain separate work.</p>
-<p>Copyright © 2026 CoreStory, Inc. Licensed under <a href="../../../source/LICENSE">Apache License 2.0</a>.</p></main>
+<p>Copyright © 2026 CoreStory, Inc. Licensed under <a href="../../../source/LICENSE">Apache License 2.0</a>.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

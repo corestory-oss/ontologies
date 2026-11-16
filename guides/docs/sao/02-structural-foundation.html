@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/02-structural-foundation.html">
+<meta name="description" content="Section 1: Structural Foundation · SAO: This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components. v2.0…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Section 1: Structural Foundation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Section 1: Structural Foundation · SAO: This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components. v2.0…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/02-structural-foundation.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Section 1: Structural Foundation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Section 1: Structural Foundation · SAO: This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components. v2.0…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Section 1: Structural Foundation · CoreStory Ontologies</title>
+<title>Section 1: Structural Foundation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="section-1-structural-foundation">Section 1: Structural Foundation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Section 1: Structural Foundation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#core-concepts">Core Concepts</a></li><li class="toc-level-3"><a href="#system">System</a></li><li class="toc-level-3"><a href="#boundedcontext">BoundedContext</a></li><li class="toc-level-3"><a href="#module">Module</a></li><li class="toc-level-3"><a href="#component">Component</a></li><li class="toc-level-3"><a href="#capability">Capability</a></li><li class="toc-level-3"><a href="#feature">Feature</a></li><li class="toc-level-3"><a href="#interface">Interface</a></li><li class="toc-level-3"><a href="#screen">Screen</a></li><li class="toc-level-3"><a href="#service">Service</a></li><li class="toc-level-3"><a href="#endpoint">Endpoint</a></li><li class="toc-level-3"><a href="#dependency">Dependency</a></li><li class="toc-level-2"><a href="#architectural-patterns">Architectural Patterns</a></li><li class="toc-level-3"><a href="#layered-architecture">Layered Architecture</a></li><li class="toc-level-3"><a href="#microservices-architecture">Microservices Architecture</a></li><li class="toc-level-3"><a href="#domain-driven-design">Domain-Driven Design</a></li><li class="toc-level-3"><a href="#modular-monolith">Modular Monolith</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-2"><a href="#relationships-with-other-sections">Relationships with Other Sections</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="section-1-structural-foundation">Section 1: Structural Foundation</h1>
 <p>This section defines the core structural elements of a software system, providing the hierarchical organization from system down to individual components.</p>
 <blockquote>
 <p><strong>v2.0 Note</strong>: In SAO v2.0, all single-use relationship slots have been inlined as class attributes. Classes no longer reference global <code>slots:</code> for single-domain relationships. Back-reference attributes are now defined directly on the relevant classes.</p>
@@ -323,7 +339,8 @@
 <li><strong>Section 8 (Deployment)</strong>: Services are deployed as deployment units</li>
 <li><strong>Section 9 (Observability)</strong>: Components emit metrics and logs</li>
 <li><strong>Section 10 (Governance)</strong>: Systems must comply with requirements</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

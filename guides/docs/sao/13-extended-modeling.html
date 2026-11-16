@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/13-extended-modeling.html">
+<meta name="description" content="Extended Modeling (Sections 18-28) · SAO: This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL,…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Extended Modeling (Sections 18-28) · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Extended Modeling (Sections 18-28) · SAO: This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL,…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/13-extended-modeling.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Extended Modeling (Sections 18-28) · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Extended Modeling (Sections 18-28) · SAO: This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL,…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Extended Modeling (Sections 18-28) · CoreStory Ontologies</title>
+<title>Extended Modeling (Sections 18-28) · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="extended-modeling-sections-18-28">Extended Modeling (Sections 18-28)</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Extended Modeling (Sections 18-28)</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#section-18-type-system-modeling">Section 18: Type System Modeling</a></li><li class="toc-level-3"><a href="#typeexpression">TypeExpression</a></li><li class="toc-level-3"><a href="#typekind-enum">TypeKind Enum</a></li><li class="toc-level-2"><a href="#section-19-error-handling-model">Section 19: Error Handling Model</a></li><li class="toc-level-3"><a href="#errormodel">ErrorModel</a></li><li class="toc-level-3"><a href="#exceptiontype">ExceptionType</a></li><li class="toc-level-3"><a href="#errorhandlingstrategy-enum">ErrorHandlingStrategy Enum</a></li><li class="toc-level-3"><a href="#exceptioncheckedness-enum">ExceptionCheckedness Enum</a></li><li class="toc-level-2"><a href="#section-20-file-io-definitions">Section 20: File I/O Definitions</a></li><li class="toc-level-3"><a href="#filedefinition">FileDefinition</a></li><li class="toc-level-3"><a href="#fileoperation">FileOperation</a></li><li class="toc-level-3"><a href="#fileorganization-enum">FileOrganization Enum</a></li><li class="toc-level-3"><a href="#fileaccessmode-enum">FileAccessMode Enum</a></li><li class="toc-level-3"><a href="#recordformat-enum">RecordFormat Enum</a></li><li class="toc-level-3"><a href="#fileoperationtype-enum">FileOperationType Enum</a></li><li class="toc-level-2"><a href="#section-21-screenterminal-interaction">Section 21: Screen/Terminal Interaction</a></li><li class="toc-level-3"><a href="#screendefinition">ScreenDefinition</a></li><li class="toc-level-3"><a href="#screenfield">ScreenField</a></li><li class="toc-level-3"><a href="#screentype-enum">ScreenType Enum</a></li><li class="toc-level-2"><a href="#section-22-job-control-batch-orchestration">Section 22: Job Control / Batch Orchestration</a></li><li class="toc-level-3"><a href="#jobdefinition">JobDefinition</a></li><li class="toc-level-3"><a href="#jobstep">JobStep</a></li><li class="toc-level-3"><a href="#datasetallocation">DatasetAllocation</a></li><li class="toc-level-3"><a href="#jobsteptype-enum">JobStepType Enum</a></li><li class="toc-level-3"><a href="#datasetdisposition-enum">DatasetDisposition Enum</a></li><li class="toc-level-2"><a href="#section-23-inter-process-communication">Section 23: Inter-Process Communication</a></li><li class="toc-level-3"><a href="#ipcconnection">IPCConnection</a></li><li class="toc-level-3"><a href="#ipcmechanism-enum">IPCMechanism Enum</a></li><li class="toc-level-2"><a href="#section-24-preprocessor-metaprogramming">Section 24: Preprocessor / Metaprogramming</a></li><li class="toc-level-3"><a href="#preprocessordirective">PreprocessorDirective</a></li><li class="toc-level-3"><a href="#metaprogrammingtype-enum">MetaprogrammingType Enum</a></li><li class="toc-level-2"><a href="#section-25-memory-ownership-model">Section 25: Memory / Ownership Model</a></li><li class="toc-level-3"><a href="#memorymodel">MemoryModel</a></li><li class="toc-level-3"><a href="#ownershipannotation">OwnershipAnnotation</a></li><li class="toc-level-3"><a href="#ownershipmodel-enum">OwnershipModel Enum</a></li><li class="toc-level-3"><a href="#lifetimescope-enum">LifetimeScope Enum</a></li><li class="toc-level-2"><a href="#section-26-domain-entity-relationships">Section 26: Domain Entity Relationships</a></li><li class="toc-level-3"><a href="#domainrelationship">DomainRelationship</a></li><li class="toc-level-2"><a href="#section-27-database-schema-objects">Section 27: Database Schema Objects</a></li><li class="toc-level-3"><a href="#databaseconstraint">DatabaseConstraint</a></li><li class="toc-level-3"><a href="#databaseindex">DatabaseIndex</a></li><li class="toc-level-3"><a href="#databaseconstrainttype-enum">DatabaseConstraintType Enum</a></li><li class="toc-level-3"><a href="#indextype-enum">IndexType Enum</a></li><li class="toc-level-2"><a href="#section-28-programming-language-as-first-class-entity">Section 28: Programming Language as First-Class Entity</a></li><li class="toc-level-3"><a href="#programminglanguage">ProgrammingLanguage</a></li><li class="toc-level-3"><a href="#programmingparadigm-enum">ProgrammingParadigm Enum</a></li><li class="toc-level-2"><a href="#cross-section-relationships">Cross-Section Relationships</a></li><li class="toc-level-3"><a href="#connections-to-existing-classes">Connections to Existing Classes</a></li><li class="toc-level-3"><a href="#connections-between-new-sections">Connections Between New Sections</a></li><li class="toc-level-2"><a href="#deprecation-summary">Deprecation Summary</a></li><li class="toc-level-2"><a href="#usage-patterns">Usage Patterns</a></li><li class="toc-level-3"><a href="#cross-language-type-analysis">Cross-Language Type Analysis</a></li><li class="toc-level-3"><a href="#batch-job-impact-analysis">Batch Job Impact Analysis</a></li><li class="toc-level-3"><a href="#ipc-dependency-graph">IPC Dependency Graph</a></li><li class="toc-level-3"><a href="#language-scoped-queries">Language-Scoped Queries</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="extended-modeling-sections-18-28">Extended Modeling (Sections 18-28)</h1>
 <p>This document covers the extended modeling sections introduced in SAO v2.0.0. These sections extend the ontology to represent software systems -- legacy (COBOL, RPG, Assembler, PL/I), recent legacy (C#, Java), and modern (Python, Go, Rust).</p>
 <blockquote>
 <p><strong>v2.0 Note</strong>: Sections 18-28 are entirely new in SAO v2.0.0. They introduce first-class modeling for type systems, error handling, file I/O, screen definitions, batch orchestration, inter-process communication, preprocessor constructs, memory models, domain relationships, database schema objects, and programming languages. Several of these sections deprecate older string-based attributes in favor of typed object references.</p>
@@ -95,7 +111,7 @@
       base_type: number
 </code></pre>
 <h3 id="typekind-enum">TypeKind Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -156,7 +172,7 @@
 <td>Opaque/unknown type</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-19-error-handling-model">Section 19: Error Handling Model</h2>
 <p>Models language-level error handling paradigms.</p>
@@ -213,7 +229,7 @@ file_not_found:
   parent_exception: io_exception
 </code></pre>
 <h3 id="errorhandlingstrategy-enum">ErrorHandlingStrategy Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -246,9 +262,9 @@ file_not_found:
 <td>Monadic error handling (Haskell)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="exceptioncheckedness-enum">ExceptionCheckedness Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -269,7 +285,7 @@ file_not_found:
 <td>Language does not use exception-based error handling</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-20-file-io-definitions">Section 20: File I/O Definitions</h2>
 <p>Models file-based I/O for COBOL, mainframe VSAM, and general file processing systems.</p>
@@ -334,7 +350,7 @@ file_not_found:
   performed_in_callable: process_customers_paragraph
 </code></pre>
 <h3 id="fileorganization-enum">FileOrganization Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -383,9 +399,9 @@ file_not_found:
 <td>Heap/unstructured file</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="fileaccessmode-enum">FileAccessMode Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -406,9 +422,9 @@ file_not_found:
 <td>Both sequential and random access</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="recordformat-enum">RecordFormat Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -437,9 +453,9 @@ file_not_found:
 <td>Stream-oriented (no record boundaries)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="fileoperationtype-enum">FileOperationType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -484,7 +500,7 @@ file_not_found:
 <td>Merge files</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-21-screenterminal-interaction">Section 21: Screen/Terminal Interaction</h2>
 <p>Models character-mode UI definitions for CICS BMS maps, RPG display files, and TUI applications.</p>
@@ -539,7 +555,7 @@ file_not_found:
   maps_to_data_element: customer_name_element
 </code></pre>
 <h3 id="screentype-enum">ScreenType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -568,7 +584,7 @@ file_not_found:
 <td>Form-based terminal interaction</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-22-job-control-batch-orchestration">Section 22: Job Control / Batch Orchestration</h2>
 <p>Models batch job definitions for JCL, schedulers, and batch workflows.</p>
@@ -645,7 +661,7 @@ file_not_found:
   maps_to_file_definition: customer_master
 </code></pre>
 <h3 id="jobsteptype-enum">JobStepType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -678,9 +694,9 @@ file_not_found:
 <td>Conditional execution step</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="datasetdisposition-enum">DatasetDisposition Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -717,7 +733,7 @@ file_not_found:
 <td>Pass the dataset to the next step</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-23-inter-process-communication">Section 23: Inter-Process Communication</h2>
 <p>Models IPC mechanisms including CICS LINK/XCTL, shared memory, pipes, RMI, CORBA, and more.</p>
@@ -755,7 +771,7 @@ file_not_found:
   ipc_target_program: log_filter
 </code></pre>
 <h3 id="ipcmechanism-enum">IPCMechanism Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -832,7 +848,7 @@ file_not_found:
 <td>Event bus communication</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-24-preprocessor-metaprogramming">Section 24: Preprocessor / Metaprogramming</h2>
 <p>Models preprocessor directives, macros, and metaprogramming constructs.</p>
@@ -866,7 +882,7 @@ file_not_found:
   directive_defined_in_container: payroll_source
 </code></pre>
 <h3 id="metaprogrammingtype-enum">MetaprogrammingType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -911,7 +927,7 @@ file_not_found:
 <td>External code generator</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-25-memory-ownership-model">Section 25: Memory / Ownership Model</h2>
 <p>Models memory management and ownership semantics.</p>
@@ -961,7 +977,7 @@ java_gc:
   annotates_data_element: config_reference
 </code></pre>
 <h3 id="ownershipmodel-enum">OwnershipModel Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1006,9 +1022,9 @@ java_gc:
 <td>Stack-allocated with automatic cleanup</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="lifetimescope-enum">LifetimeScope Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1037,7 +1053,7 @@ java_gc:
 <td>Lives on the heap until explicitly freed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-26-domain-entity-relationships">Section 26: Domain Entity Relationships</h2>
 <p>Provides named, typed relationships between domain entities. Wires the previously orphaned <code>Cardinality</code> enum into the domain model.</p>
@@ -1056,7 +1072,7 @@ java_gc:
 - <strong>source_entity</strong> / <strong>outgoing_relationships</strong> &lt;-&gt; <code>DomainEntity</code>: The entity that owns or originates the relationship
 - <strong>target_entity</strong> / <strong>incoming_relationships</strong> &lt;-&gt; <code>DomainEntity</code>: The entity referenced by the relationship</p>
 <p><strong>Uses Existing Cardinality Enum</strong>:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1081,7 +1097,7 @@ java_gc:
 <td>Many-to-many relationship</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Example:</strong></p>
 <pre><code class="language-yaml">order_has_line_items:
   a: DomainRelationship
@@ -1171,7 +1187,7 @@ order_search_idx:
   index_on_collection: orders_table
 </code></pre>
 <h3 id="databaseconstrainttype-enum">DatabaseConstraintType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1200,9 +1216,9 @@ order_search_idx:
 <td>Not-null constraint</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="indextype-enum">IndexType Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1227,7 +1243,7 @@ order_search_idx:
 <td>Full-text search index</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="section-28-programming-language-as-first-class-entity">Section 28: Programming Language as First-Class Entity</h2>
 <p>Replaces bare string fields with a queryable language entity.</p>
@@ -1279,7 +1295,7 @@ java_language:
   default_memory_model: java_gc
 </code></pre>
 <h3 id="programmingparadigm-enum">ProgrammingParadigm Enum</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1316,12 +1332,12 @@ java_language:
 <td>Supports multiple paradigms</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="cross-section-relationships">Cross-Section Relationships</h2>
 <p>The following diagram summarizes how the new sections connect to existing SAO classes and to each other.</p>
 <h3 id="connections-to-existing-classes">Connections to Existing Classes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>New Class</th>
@@ -1481,9 +1497,9 @@ java_language:
 <td><code>has_default_memory_model</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="connections-between-new-sections">Connections Between New Sections</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Source Section</th>
@@ -1518,11 +1534,11 @@ java_language:
 <td><code>operates_on_file</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="deprecation-summary">Deprecation Summary</h2>
 <p>The following table lists all attributes deprecated by Sections 18-28, along with their replacements.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Deprecated Attribute</th>
@@ -1583,7 +1599,7 @@ java_language:
 <td>28</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>All deprecated attributes remain in the schema for backward compatibility. New models should use the replacement attributes exclusively.</p>
 <hr />
 <h2 id="usage-patterns">Usage Patterns</h2>
@@ -1633,7 +1649,8 @@ SELECT ?module ?memory_model WHERE {
 <li><strong>Annotate ownership in Rust/C++</strong>: Use <code>OwnershipAnnotation</code> to track borrow relationships and lifetime constraints on data elements.</li>
 <li><strong>Define screen-to-data mappings</strong>: Link <code>ScreenField</code> to <code>DataElement</code> to trace user input through the program.</li>
 <li><strong>Model constraints and indexes as objects</strong>: Use <code>DatabaseConstraint</code> and <code>DatabaseIndex</code> instead of string arrays to enable schema comparison and migration analysis.</li>
-</ol></main>
+</ol></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/specspec/model.html">
+<meta name="description" content="Model notes and boundaries · SpecSpec: Statements and software SAO describes software structure and behavior. SpecSpec describes statements, obligations, decisions, and evidence about software. A…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Model notes and boundaries · SpecSpec · CoreStory Ontologies">
+<meta property="og:description" content="Model notes and boundaries · SpecSpec: Statements and software SAO describes software structure and behavior. SpecSpec describes statements, obligations, decisions, and evidence about software. A…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/specspec/model.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Model notes and boundaries · SpecSpec · CoreStory Ontologies">
+<meta name="twitter:description" content="Model notes and boundaries · SpecSpec: Statements and software SAO describes software structure and behavior. SpecSpec describes statements, obligations, decisions, and evidence about software. A…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Model notes and boundaries · CoreStory Ontologies</title>
+<title>Model notes and boundaries · SpecSpec · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="model-notes-and-boundaries">Model notes and boundaries</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Model notes and boundaries</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#statements-and-software">Statements and software</a></li><li class="toc-level-2"><a href="#evidence-and-identity">Evidence and identity</a></li><li class="toc-level-2"><a href="#document-representations">Document representations</a></li><li class="toc-level-2"><a href="#optional-bridge">Optional bridge</a></li><li class="toc-level-2"><a href="#draft-constraints-and-limits">Draft constraints and limits</a></li><li class="toc-level-2"><a href="#rdfs-shacl-and-owl-layers">RDFS, SHACL and OWL layers</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="model-notes-and-boundaries">Model notes and boundaries</h1>
 <h2 id="statements-and-software">Statements and software</h2>
 <p>SAO describes software structure and behavior. SpecSpec describes statements, obligations, decisions, and evidence about software. A normative requirement and a descriptive statement that the software implements it are separate nodes.</p>
 <p>A requirement inherits Claim so it carries statement-level provenance, review, and support. It restricts <code>statement_mode</code> to <code>normative</code>. A general Claim may be descriptive, normative, or hypothetical. AcceptanceCriterion has the same normative restriction.</p>
@@ -39,7 +55,8 @@
 <p>Stabilization questions include evidence-link qualification, review history, inference activities with multiple conclusions, versioned knowledge identities, transformation plans, governance-specific classes, and external graph validation. No current field implies universal behavioral equivalence or automatic acceptance.</p>
 <h2 id="rdfs-shacl-and-owl-layers">RDFS, SHACL and OWL layers</h2>
 <p><code>ontologies/specspec/vocabulary/</code> defines the vocabulary in RDFS. Reused predicates have class-specific usage constraints in SHACL. A property with several intended domains or ranges uses <code>schema:domainIncludes</code> or <code>schema:rangeIncludes</code> annotations; multiple <code>rdfs:domain</code> statements would infer membership in every domain. An annotation does not enforce a constraint. SHACL is the validation contract.</p>
-<p><code>ontologies/specspec/axioms/</code> supplies optional OWL object/datatype property declarations. This draft has no declared inverses, transitivity or disjointness. The conversion does not invent them. Loading the OWL supplement does not replace SHACL validation or establish that claims are true.</p></main>
+<p><code>ontologies/specspec/axioms/</code> supplies optional OWL object/datatype property declarations. This draft has no declared inverses, transitivity or disjointness. The conversion does not invent them. Loading the OWL supplement does not replace SHACL validation or establish that claims are true.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

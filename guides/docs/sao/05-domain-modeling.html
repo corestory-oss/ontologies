@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/05-domain-modeling.html">
+<meta name="description" content="Section 4: Domain Modeling · SAO: This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles. v2.0 Note —…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Section 4: Domain Modeling · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Section 4: Domain Modeling · SAO: This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles. v2.0 Note —…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/05-domain-modeling.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Section 4: Domain Modeling · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Section 4: Domain Modeling · SAO: This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles. v2.0 Note —…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Section 4: Domain Modeling · CoreStory Ontologies</title>
+<title>Section 4: Domain Modeling · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="section-4-domain-modeling">Section 4: Domain Modeling</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Section 4: Domain Modeling</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#core-concepts">Core Concepts</a></li><li class="toc-level-3"><a href="#aggregate">Aggregate</a></li><li class="toc-level-3"><a href="#domainentity">DomainEntity</a></li><li class="toc-level-3"><a href="#domainrelationship-v20">DomainRelationship (v2.0)</a></li><li class="toc-level-3"><a href="#valueobject">ValueObject</a></li><li class="toc-level-3"><a href="#attribute">Attribute</a></li><li class="toc-level-3"><a href="#resource">Resource</a></li><li class="toc-level-3"><a href="#resourcetype">ResourceType</a></li><li class="toc-level-3"><a href="#state">State</a></li><li class="toc-level-3"><a href="#transition">Transition</a></li><li class="toc-level-3"><a href="#lifecycle">Lifecycle</a></li><li class="toc-level-2"><a href="#domain-driven-design-patterns">Domain-Driven Design Patterns</a></li><li class="toc-level-3"><a href="#aggregates">Aggregates</a></li><li class="toc-level-3"><a href="#entities-vs-value-objects">Entities vs Value Objects</a></li><li class="toc-level-3"><a href="#domain-events">Domain Events</a></li><li class="toc-level-3"><a href="#repositories">Repositories</a></li><li class="toc-level-3"><a href="#domain-services">Domain Services</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-3"><a href="#aggregate-design">Aggregate Design</a></li><li class="toc-level-3"><a href="#entity-design">Entity Design</a></li><li class="toc-level-3"><a href="#value-object-design">Value Object Design</a></li><li class="toc-level-3"><a href="#state-machine-design">State Machine Design</a></li><li class="toc-level-2"><a href="#relationships-with-other-sections">Relationships with Other Sections</a></li><li class="toc-level-2"><a href="#example-e-commerce-order-aggregate">Example: E-Commerce Order Aggregate</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="section-4-domain-modeling">Section 4: Domain Modeling</h1>
 <p>This section defines domain-driven design concepts including aggregates, entities, value objects, attributes, resources, states, and lifecycles.</p>
 <blockquote>
 <p><strong>v2.0 Note — Inlining Change</strong>: In SAO v2.0, many previously string-based cross-references have been replaced with direct object references (inlined relationships). Classes in this section now carry explicit back-reference attributes that make the bidirectional links between ontology concepts navigable from either side.</p>
@@ -384,7 +400,8 @@ Side effects that occur during the transition (e.g., send email, update inventor
     - OrderShipped
     - OrderDelivered
     - OrderCancelled
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

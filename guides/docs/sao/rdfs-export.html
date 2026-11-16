@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/rdfs-export.html">
+<meta name="description" content="RDFS Turtle export · SAO: dist/sao.ttl is an assembled distribution of the editable RDFS vocabulary sources. It describes the ontology, not a populated software graph.…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="RDFS Turtle export · SAO · CoreStory Ontologies">
+<meta property="og:description" content="RDFS Turtle export · SAO: dist/sao.ttl is an assembled distribution of the editable RDFS vocabulary sources. It describes the ontology, not a populated software graph.…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/rdfs-export.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RDFS Turtle export · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="RDFS Turtle export · SAO: dist/sao.ttl is an assembled distribution of the editable RDFS vocabulary sources. It describes the ontology, not a populated software graph.…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>RDFS Turtle export · CoreStory Ontologies</title>
+<title>RDFS Turtle export · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="rdfs-turtle-export">RDFS Turtle export</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">RDFS Turtle export</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#modular-sources-and-distribution">Modular sources and distribution</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="rdfs-turtle-export">RDFS Turtle export</h1>
 <p><a href="../../../source/dist/sao.ttl"><code>dist/sao.ttl</code></a> is an assembled distribution of the editable RDFS vocabulary sources. It describes the ontology, not a populated software graph. <code>ontologies/sao/vocabulary/*.ttl</code> are now editable source. LinkML remains a legacy baseline during migration.</p>
 <pre><code class="language-sh">uv run python scripts/build_rdf.py
 uv run python scripts/build_rdf.py --check
@@ -39,7 +55,8 @@ graph = Graph()
 for filename in manifest[&quot;files&quot;]:
     graph.parse(root / filename, format=&quot;turtle&quot;)
 </code></pre>
-<p>The assembly equals <code>dist/sao.ttl</code>. Both distributions are generated artifacts; edit their source topic files instead. Initial shape nodes and enum list cells have stable named IRIs; standard anonymous Turtle shapes are also supported by assembly comparisons.</p></main>
+<p>The assembly equals <code>dist/sao.ttl</code>. Both distributions are generated artifacts; edit their source topic files instead. Initial shape nodes and enum list cells have stable named IRIs; standard anonymous Turtle shapes are also supported by assembly comparisons.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/07-data-management.html">
+<meta name="description" content="Section 6: Data Management · SAO: This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging. v2.0 Note: In SAO v2.0.0,…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Section 6: Data Management · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Section 6: Data Management · SAO: This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging. v2.0 Note: In SAO v2.0.0,…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/07-data-management.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Section 6: Data Management · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Section 6: Data Management · SAO: This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging. v2.0 Note: In SAO v2.0.0,…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Section 6: Data Management · CoreStory Ontologies</title>
+<title>Section 6: Data Management · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="section-6-data-management">Section 6: Data Management</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Section 6: Data Management</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#core-concepts">Core Concepts</a></li><li class="toc-level-3"><a href="#datastore">DataStore</a></li><li class="toc-level-3"><a href="#collection">Collection</a></li><li class="toc-level-3"><a href="#record">Record</a></li><li class="toc-level-3"><a href="#schema">Schema</a></li><li class="toc-level-3"><a href="#schemaversion">SchemaVersion</a></li><li class="toc-level-3"><a href="#dataclassification">DataClassification</a></li><li class="toc-level-3"><a href="#retentionpolicy">RetentionPolicy</a></li><li class="toc-level-3"><a href="#datalineage">DataLineage</a></li><li class="toc-level-3"><a href="#auditlog">AuditLog</a></li><li class="toc-level-3"><a href="#auditentry">AuditEntry</a></li><li class="toc-level-2"><a href="#data-management-patterns">Data Management Patterns</a></li><li class="toc-level-3"><a href="#polyglot-persistence">Polyglot Persistence</a></li><li class="toc-level-3"><a href="#cqrs-command-query-responsibility-segregation">CQRS (Command Query Responsibility Segregation)</a></li><li class="toc-level-3"><a href="#event-sourcing">Event Sourcing</a></li><li class="toc-level-3"><a href="#data-lake-pattern">Data Lake Pattern</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-3"><a href="#schema-management">Schema Management</a></li><li class="toc-level-3"><a href="#data-classification">Data Classification</a></li><li class="toc-level-3"><a href="#retention-and-archival">Retention and Archival</a></li><li class="toc-level-3"><a href="#audit-logging">Audit Logging</a></li><li class="toc-level-3"><a href="#data-lineage">Data Lineage</a></li><li class="toc-level-2"><a href="#relationships-with-other-sections">Relationships with Other Sections</a></li><li class="toc-level-2"><a href="#example-e-commerce-data-architecture">Example: E-Commerce Data Architecture</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="section-6-data-management">Section 6: Data Management</h1>
 <p>This section defines data stores, collections, records, schemas, data classification, retention policies, data lineage, and audit logging.</p>
 <blockquote>
 <p><strong>v2.0 Note</strong>: In SAO v2.0.0, many cross-entity relationships are now inlined directly on the owning class rather than declared as standalone slot references. Classes such as <code>Schema</code>, <code>DataStore</code>, and <code>RetentionPolicy</code> gain back-reference attributes that make navigating the ontology more explicit. Additionally, <code>SchemaVersion</code> and <code>AuditEntry</code> have been restructured from subclass inheritance to composition (they are now <code>is_a: NamedEntity</code> with explicit reference attributes back to their parent).</p>
@@ -336,7 +352,8 @@ Data Lineage Example:
     -&gt; ProductDB (transactional storage)
     -&gt; ProductSearch (indexed for search)
     -&gt; AnalyticsDB (for reporting)
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

@@ -3,27 +3,43 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/inverse-relationships.html">
+<meta name="description" content="Inverse relationship audit and OWL supplement · SAO: ontologies/sao/axioms/relationships.ttl is editable source for the optional inverse supplement. dist/sao.owl.ttl is its assembled distribution, not a replacement…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Inverse relationship audit and OWL supplement · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Inverse relationship audit and OWL supplement · SAO: ontologies/sao/axioms/relationships.ttl is editable source for the optional inverse supplement. dist/sao.owl.ttl is its assembled distribution, not a replacement…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/inverse-relationships.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inverse relationship audit and OWL supplement · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Inverse relationship audit and OWL supplement · SAO: ontologies/sao/axioms/relationships.ttl is editable source for the optional inverse supplement. dist/sao.owl.ttl is its assembled distribution, not a replacement…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Inverse relationship audit and OWL supplement · CoreStory Ontologies</title>
+<title>Inverse relationship audit and OWL supplement · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="inverse-relationship-audit-and-owl-supplement">Inverse relationship audit and OWL supplement</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Inverse relationship audit and OWL supplement</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#what-was-carried-over">What was carried over</a></li><li class="toc-level-2"><a href="#seven-historical-groups-resolved-in-the-300-candidate">Seven historical groups (resolved in the 3.0.0 candidate)</a></li><li class="toc-level-2"><a href="#validation-and-inference">Validation and inference</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="inverse-relationship-audit-and-owl-supplement">Inverse relationship audit and OWL supplement</h1>
 <p><code>ontologies/sao/axioms/relationships.ttl</code> is editable source for the optional inverse supplement. <code>dist/sao.owl.ttl</code> is its assembled distribution, not a replacement for <code>dist/sao.ttl</code>. Load the vocabulary plus supplement using <code>ontologies/sao/manifests/reasoning.json</code>, or load the two complete distributions into one graph. There are no <code>owl:imports</code> and no automatic network fetches.</p>
 <h2 id="what-was-carried-over">What was carried over</h2>
 <p>The retained SAO 2.1.0 baseline contains 536 contextual inverse declarations across 435 property IRIs. This includes inherited uses and declared global slots. The audit resolves names against both global and class-local properties and checks that endpoints exist in the Turtle vocabulary. It checks reciprocal uniqueness, resource-valued ranges, all uses of each property (including uses with no local inverse declaration), and whether the inverse on each range class can point back to the declaring class under the named class hierarchy.</p>
 <p>208 pairs pass these checks. Each is emitted once as <code>owl:inverseOf</code>, with both endpoints declared <code>owl:ObjectProperty</code>. OWL inverse relationships are symmetric: one axiom supports inference in both directions. The supplement contains 627 triples, including metadata. This is a declaration-consistency check, not a proof of arbitrary graph conformance.</p>
 <p>No declared inverse name was missing when resolved against the complete property vocabulary. The earlier standard SHACL generator error involved a class-local property that its lookup did not resolve, rather than a missing RDF property.</p>
 <h2 id="seven-historical-groups-resolved-in-the-300-candidate">Seven historical groups (resolved in the 3.0.0 candidate)</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Shared property</th>
@@ -68,7 +84,7 @@
 <td>The forward slot is also used by DataStructure and DataElement (inherited by Parameter), but the reverse slot accepts CallableUnit. Decide the intended containment relations.</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>The initial audit withheld all 19 properties participating in these groups. The 3.0.0 candidate now resolves the groups using five generic inverse relationships and two role-specific splits; see <a href="migration-3.0.html">migration-3.0.md</a>. The table above records the original decision points. Adding several global inverse axioms for one shared property would entail equivalence between the competing inverse properties. Class-local intended meanings cannot be recovered merely by applying global <code>owl:inverseOf</code> axioms.</p>
 <p>The detailed declarations, class contexts, and reasons are in <a href="../../../source/docs/sao/inverse-audit.json">inverse-audit.json</a>. This report is a historical migration snapshot. Normal builds do not regenerate the editable OWL source from LinkML.</p>
 <h2 id="validation-and-inference">Validation and inference</h2>
@@ -78,7 +94,8 @@ uv run python -m unittest discover -s tests
 </code></pre>
 <p>The check reads the current Turtle shapes to ensure all class-local ranges can participate in the inverse, checks that inverse endpoints exist, the supplement retains uniquely paired partners, and the reasoning manifest assembles precisely the vocabulary plus axioms. Regression tests use an actual OWL-RL reasoner to infer the reverse edge for every accepted pair in both directions. They also test that retired predicates have no inverse entailments and that role-specific edges do not cross.</p>
 <p>The SHACL validator continues to run without OWL materialization. Enabling inference before validation can change conformance results, particularly where required reverse relationships become inferred instead of explicitly supplied. Loading <code>dist/sao.owl.ttl</code> alone does not execute reasoning; a consumer must invoke a suitable reasoner.</p>
-<p>See the <a href="https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties">OWL 2 property axiom specification</a> for inverse semantics. The historical declaration audit remains unchanged as provenance. The current authored supplement contains 217 inverse pairs; its redesign is an explicit modeling change rather than a new automatic export from the baseline.</p></main>
+<p>See the <a href="https://www.w3.org/TR/owl2-syntax/#Inverse_Object_Properties">OWL 2 property axiom specification</a> for inverse semantics. The historical declaration audit remains unchanged as provenance. The current authored supplement contains 217 inverse pairs; its redesign is an explicit modeling change rather than a new automatic export from the baseline.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

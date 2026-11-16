@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/modeling-patterns.html">
+<meta name="description" content="Modeling patterns: Keep software, observations, obligations, implementation assertions, and verification results distinct. The modernization fixture shows how to connect them without…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Modeling patterns · CoreStory Ontologies">
+<meta property="og:description" content="Modeling patterns: Keep software, observations, obligations, implementation assertions, and verification results distinct. The modernization fixture shows how to connect them without…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/modeling-patterns.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modeling patterns · CoreStory Ontologies">
+<meta name="twitter:description" content="Modeling patterns: Keep software, observations, obligations, implementation assertions, and verification results distinct. The modernization fixture shows how to connect them without…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Modeling patterns · CoreStory Ontologies</title>
+
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../assets/styles/site.css">
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#search">Search</a><a href="../../index.html#downloads">Downloads</a><a href="../../source/index.html">Source</a></nav>
+</div></header>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../../guides/">Guides</a></li><li aria-current="page">Modeling patterns</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-separate-an-observation-from-an-obligation">1. Separate an observation from an obligation</a></li><li class="toc-level-2"><a href="#2-anchor-a-claim-to-a-captured-source-state">2. Anchor a claim to a captured source state</a></li><li class="toc-level-2"><a href="#3-link-an-implementation-assertion-to-a-callable">3. Link an implementation assertion to a callable</a></li><li class="toc-level-2"><a href="#4-record-the-decision-and-its-remaining-uncertainty">4. Record the decision and its remaining uncertainty</a></li><li class="toc-level-2"><a href="#5-keep-a-scenario-and-its-document-representation-distinct">5. Keep a scenario and its document representation distinct</a></li><li class="toc-level-2"><a href="#6-leave-an-unexecuted-check-as-not_run">6. Leave an unexecuted check as not_run</a></li><li class="toc-level-2"><a href="#trace-the-relationships-with-a-query">Trace the relationships with a query</a></li><li class="toc-level-2"><a href="#when-adapting-the-fixture">When adapting the fixture</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="modeling-patterns">Modeling patterns</h1>
+<p>Keep software, observations, obligations, implementation assertions, and verification results distinct. The <a href="../examples/specspec/modernization/README.html">modernization fixture</a> shows how to connect them without treating an observed guard as a requirement or a proposed replacement as verified software.</p>
+<p><strong>Every source, agent, and result in this example is synthetic.</strong> The COBOL and Java files are illustrative excerpts, not complete executable modernization targets. The recorded behavioral comparison is <code>not_run</code>; graph validation does not change that outcome.</p>
+<p>The patterns below use the existing <a href="../../source/examples/specspec/modernization/graph.ttl">SpecSpec graph</a>, <a href="../../source/examples/specspec/modernization/sao-links.ttl">bridge links</a>, and <a href="../../source/examples/ecosystem/software.ttl">SAO software instance</a>. <code>demo:</code> abbreviates <code>urn:specspec:demo:</code>. Turtle excerpts show selected triples from those files, <strong>not standalone conforming graphs</strong>. Validate the complete fixture from the repository root:</p>
+<pre><code class="language-sh">nix develop -c python scripts/validate_rdf.py --ontology ecosystem
+</code></pre>
+<p>This passes with 242 data triples and checks the local evidence fixtures. It applies both ontology profiles and the bridge shapes without executing the sample programs.</p>
+<h2 id="1-separate-an-observation-from-an-obligation">1. Separate an observation from an obligation</h2>
+<p>The fixture gives observed behavior and intended behavior different identities:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Node</th>
+<th>Class</th>
+<th>Mode and origin</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>demo:legacy-behavior</code></td>
+<td><strong>Claim</strong></td>
+<td><code>descriptive</code>, <code>observed</code></td>
+<td>Describes the COBOL rejection branch in the excerpt</td>
+</tr>
+<tr>
+<td><code>demo:no-overdraft</code></td>
+<td><strong>Requirement</strong></td>
+<td><code>normative</code>, <code>supplied</code></td>
+<td>Requires the replacement to reject excessive withdrawals without reducing the balance</td>
+</tr>
+<tr>
+<td><code>demo:modern-behavior</code></td>
+<td><strong>Claim</strong></td>
+<td><code>descriptive</code>, <code>observed</code></td>
+<td>Describes the Java guard throwing before an updated balance is returned</td>
+</tr>
+<tr>
+<td><code>demo:overdraft-criterion</code></td>
+<td><strong>AcceptanceCriterion</strong></td>
+<td><code>normative</code>, <code>supplied</code></td>
+<td>States the expected rejection and unchanged balance for the example scenario</td>
+</tr>
+</tbody>
+</table></div>
+<p>Both observed claims have <code>spec:review_status "unreviewed"</code>. Observed origin records how a claim arose; it is not an approval or a truth value.</p>
+<pre><code class="language-turtle">@prefix spec: &lt;https://ontologies.corestory.ai/specspec/&gt; .
+@prefix demo: &lt;urn:specspec:demo:&gt; .
+
+# Selected relationships; required metadata remains in graph.ttl.
+demo:legacy-behavior a spec:Claim ;
+    spec:origin &quot;observed&quot; ;
+    spec:statement_mode &quot;descriptive&quot; ;
+    spec:supporting_anchors demo:legacy-guard .
+
+demo:no-overdraft a spec:Requirement ;
+    spec:origin &quot;supplied&quot; ;
+    spec:statement_mode &quot;normative&quot; ;
+    spec:derived_from_claims demo:legacy-behavior ;
+    spec:acceptance_criteria demo:overdraft-criterion .
+</code></pre>
+<p><code>spec:derived_from_claims</code> preserves the premise behind the requirement; it does not automatically turn an observation into an obligation. The fixture separately records the supplied normative statement and its author. Requirements inherit <strong>Claim</strong>, but their <code>statement_mode</code> must be <code>normative</code>.</p>
+<p><strong>Use this pattern when:</strong> documenting behavior that a team may preserve, change, or reject. Keep the source observation even when the intended behavior differs.</p>
+<h2 id="2-anchor-a-claim-to-a-captured-source-state">2. Anchor a claim to a captured source state</h2>
+<p>Follow the legacy claim's evidence chain:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Relationship</th>
+<th>Fixture value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>demo:legacy-behavior</code> → <code>spec:supporting_anchors</code></td>
+<td><code>demo:legacy-guard</code></td>
+</tr>
+<tr>
+<td><code>demo:legacy-guard</code> → <code>spec:snapshot</code></td>
+<td><code>demo:legacy-snapshot</code></td>
+</tr>
+<tr>
+<td>Anchor location</td>
+<td><code>spec:path "withdraw.cbl"</code>, <code>spec:line_start 8</code>, <code>spec:line_end 12</code></td>
+</tr>
+<tr>
+<td>Snapshot revision</td>
+<td><code>spec:revision</code> contains the SHA-256 digest of the local fixture</td>
+</tr>
+<tr>
+<td>Local source mapping</td>
+<td><code>sources.json</code> maps the snapshot IRI to <code>source/withdraw.cbl</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>An <strong>EvidenceAnchor</strong> locates a region within a <strong>SourceSnapshot</strong>. Line coordinates are one-based and inclusive. A filename or moving branch name alone is not an immutable source state. The Java claim has a separate anchor, snapshot, and digest; it refers to lines 5–8 of <a href="../../source/examples/specspec/modernization/source/Account.java">Account.java</a>, not the COBOL snapshot.</p>
+<p>The <a href="../../source/examples/specspec/modernization/sources.json">source manifest</a> lets the validator compare the local bytes with <code>spec:revision</code>, check anchor paths, and check that anchors stay within the source. The <code>example.org</code> source identifiers are not fetched. These checks do not assess whether a cited passage adequately supports the claim.</p>
+<p>Provenance has its own nodes: the observed claims point through <code>spec:generated_by</code> to <code>demo:extract</code>, a <strong>SpecActivity</strong>. That activity records <code>spec:input_snapshots</code>, <code>spec:performed_by</code>, and <code>spec:tool_version</code>. The fixture's extractor is a synthetic <strong>SpecAgent</strong>, not evidence that this repository includes an extraction engine.</p>
+<p><strong>Use this pattern when:</strong> retaining a reviewable trail from a statement to the exact source state and the activity that produced it.</p>
+<h2 id="3-link-an-implementation-assertion-to-a-callable">3. Link an implementation assertion to a callable</h2>
+<p>A requirement is not a software method. The optional bridge gives the implementation assertion its own node and records a descriptive basis claim:</p>
+<pre><code class="language-turtle">@prefix sao: &lt;https://ontologies.corestory.ai/sao/&gt; .
+@prefix spec: &lt;https://ontologies.corestory.ai/specspec/&gt; .
+@prefix specsao: &lt;https://ontologies.corestory.ai/specspec/sao/&gt; .
+@prefix demo: &lt;urn:specspec:demo:&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+demo:implementation-link a specsao:RequirementImplementationLink ;
+    spec:id &quot;urn:specspec:demo:implementation-link&quot;^^xsd:anyURI ;
+    spec:title &quot;Proposed Java grounding&quot;^^xsd:string ;
+    specsao:requirement demo:no-overdraft ;
+    specsao:callable &lt;urn:specspec:demo:software:withdraw&gt; ;
+    specsao:basis_claim demo:modern-behavior .
+
+&lt;urn:specspec:demo:software:withdraw&gt; a sao:CallableUnit ;
+    sao:id &quot;urn:specspec:demo:software:withdraw&quot; ;
+    sao:name &quot;Account.withdraw&quot; ;
+    sao:callable_type &quot;method&quot; .
+</code></pre>
+<p>The bridge requires a <strong>Requirement</strong>, a <strong>CallableUnit</strong>, and a descriptive <strong>Claim</strong> as endpoints. In this fixture, the basis claim is still unreviewed and the link's title says “Proposed Java grounding.” A valid link records the assertion and its offered support; it does not prove that the callable satisfies the obligation.</p>
+<p>The <a href="../../source/examples/specspec/modernization/sao-links.ttl">bridge-only file</a> declares only the callable's RDF type. The ecosystem fixture adds <code>sao:id</code>, <code>sao:name</code>, and <code>sao:callable_type</code>, allowing the complete SAO shapes to run. Check that software instance independently with:</p>
+<pre><code class="language-sh">nix develop -c python scripts/validate_rdf.py --ontology sao \
+  examples/ecosystem/software.ttl
+</code></pre>
+<p>This passes with 4 data triples. It checks the graph's callable fields, not the Java method's behavior.</p>
+<p>Choose the bridge class that matches your assertion:</p>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Bridge class</th>
+<th>Relationship</th>
+<th>Boundary</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SoftwareSubjectLink</strong></td>
+<td><code>specsao:subject</code> → knowledge item; <code>specsao:software_entity</code> → SAO <strong>NamedEntity</strong></td>
+<td>A mention is not an implementation claim</td>
+</tr>
+<tr>
+<td><strong>RequirementImplementationLink</strong></td>
+<td><code>specsao:requirement</code> → requirement; <code>specsao:callable</code> → callable; <code>specsao:basis_claim</code> → descriptive claim</td>
+<td>The current implementation target is <strong>CallableUnit</strong>, not an arbitrary component URI</td>
+</tr>
+<tr>
+<td><strong>VerificationTestLink</strong></td>
+<td><code>specsao:result</code> → verification result; <code>specsao:test_case</code> → SAO <strong>TestCase</strong></td>
+<td>A test definition is distinct from a check's result</td>
+</tr>
+</tbody>
+</table></div>
+<p>Only <strong>RequirementImplementationLink</strong> is instantiated in this fixture. See <a href="specspec/model.html#optional-bridge">bridge boundaries</a> before adding other link types to your data.</p>
+<h2 id="4-record-the-decision-and-its-remaining-uncertainty">4. Record the decision and its remaining uncertainty</h2>
+<p><code>demo:modernization-decision</code> is a <strong>Decision</strong> with <code>spec:status "proposed"</code>. It:</p>
+<ul>
+<li>addresses <code>demo:no-overdraft</code> through <code>spec:addresses_requirements</code>;</li>
+<li>lists <code>demo:java-option</code> and <code>demo:unchanged-option</code> through <code>spec:options</code>;</li>
+<li>names <code>demo:java-option</code> through <code>spec:chosen_option</code>;</li>
+<li>cites <code>demo:rationale</code> through <code>spec:rationale_claims</code>;</li>
+<li>retains <code>demo:scope-gap</code> through <code>spec:consequence_claims</code>.</li>
+</ul>
+<p>The chosen option must belong to the listed options. A selected option does not make a proposed decision accepted or an implementation verified.</p>
+<p>The rationale states supplied intent to preserve the guard. The separate <code>demo:scope-gap</code> claim has <code>spec:origin "inferred"</code>, cites both behavior claims through <code>spec:derived_from_claims</code>, and warns that matching guards does not establish equivalence of input domains, numeric precision, side effects, or transactions. Keep such limits as addressable claims rather than dropping them when producing a specification document.</p>
+<h2 id="5-keep-a-scenario-and-its-document-representation-distinct">5. Keep a scenario and its document representation distinct</h2>
+<p><code>demo:excessive-withdrawal</code> is a <strong>Scenario</strong> that links to:</p>
+<ul>
+<li>the requirement through <code>spec:illustrates_requirements</code>;</li>
+<li><code>demo:request-step</code> through <code>spec:steps</code>;</li>
+<li>the acceptance criterion through <code>spec:outcomes</code>.</li>
+</ul>
+<p>The step requests 150.00 against a balance of 100.00. Its <code>spec:position 1</code> supplies ordering; Turtle triple order does not. The criterion states that rejection shall leave the balance at 100.00 and records a proposed <code>spec:verification_method</code>. These are scenario and acceptance statements, not executed test results.</p>
+<p><code>demo:spec-document</code> is a <strong>SpecificationArtifact</strong>. Its <code>spec:represents</code> links point to the target specification, requirement, and scenario. <code>demo:requirement-fragment</code>, an <strong>ArtifactFragment</strong>, points to that artifact through <code>spec:artifact</code> and uses <code>spec:selector</code> to identify a section. Neither the document nor its section is the <strong>CallableUnit</strong>.</p>
+<p>The artifact's <strong>RepresentationProfile</strong> identifies an OpenSpec document convention. This is an illustrative mapping, not an implemented importer, renderer, or certified round trip. See <a href="specspec/format-mappings.html">format mappings</a>.</p>
+<h2 id="6-leave-an-unexecuted-check-as-not_run">6. Leave an unexecuted check as <code>not_run</code></h2>
+<p>The complete result record in the fixture is:</p>
+<pre><code class="language-turtle">@prefix spec: &lt;https://ontologies.corestory.ai/specspec/&gt; .
+@prefix demo: &lt;urn:specspec:demo:&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+
+demo:comparison-result a spec:VerificationResult ;
+    spec:activity demo:check ;
+    spec:checked_snapshot demo:modern-snapshot ;
+    spec:checks_claim demo:no-overdraft ;
+    spec:id &quot;urn:specspec:demo:comparison-result&quot;^^xsd:anyURI ;
+    spec:outcome &quot;not_run&quot; ;
+    spec:result_anchors demo:report-anchor ;
+    spec:title &quot;Behavioral comparison pending&quot;^^xsd:string .
+</code></pre>
+<p><code>demo:check</code> records the planned verification activity and both input snapshots. The <a href="../../source/examples/specspec/modernization/source/check-report.txt">report fixture</a> explicitly says that behavioral comparison has not been executed. Validating this record checks its structure and supporting local fixture integrity; it cannot promote <code>not_run</code> to <code>passed</code>.</p>
+<p>For a real check, record the actual activity, checked source state, scoped outcome, and result evidence. A passing result applies to that check and snapshot, not to universal behavioral equivalence.</p>
+<h2 id="trace-the-relationships-with-a-query">Trace the relationships with a query</h2>
+<p>This runnable query follows the requirement back to its source anchor and reads the comparison's recorded outcome. It reads the checked-in graph without inference or network access:</p>
+<pre><code class="language-sh">nix develop -c python - &lt;&lt;'PY'
+from rdflib import Graph
+
+graph = Graph().parse(&quot;examples/specspec/modernization/graph.ttl&quot;, format=&quot;turtle&quot;)
+rows = graph.query(&quot;&quot;&quot;
+PREFIX spec: &lt;https://ontologies.corestory.ai/specspec/&gt;
+PREFIX demo: &lt;urn:specspec:demo:&gt;
+SELECT ?path ?start ?end ?outcome WHERE {
+  demo:no-overdraft spec:derived_from_claims/spec:supporting_anchors ?anchor .
+  ?anchor spec:path ?path ; spec:line_start ?start ; spec:line_end ?end .
+  demo:comparison-result spec:checks_claim demo:no-overdraft ;
+                         spec:outcome ?outcome .
+}
+&quot;&quot;&quot;)
+for row in rows:
+    print(f&quot;{row.path}:{row.start}-{row.end}; comparison={row.outcome}&quot;)
+PY
+</code></pre>
+<p>The query prints:</p>
+<pre><code class="language-text">withdraw.cbl:8-12; comparison=not_run
+</code></pre>
+<h2 id="when-adapting-the-fixture">When adapting the fixture</h2>
+<ul>
+<li>Give each SpecSpec knowledge record its own subject IRI and matching <code>spec:id</code> URI literal. Keep document, software, claim, and result identities separate. SAO retains its own literal <code>sao:id</code> convention; do not assume the same identity constraint applies to both models.</li>
+<li>Link records by RDF references and include the typed endpoint data needed for the selected profile. The fixture's <strong>SpecificationGraph</strong> envelope links its collections; it does not replace individual node metadata.</li>
+<li>Preserve supplied intent, review status, evidence revisions, and uncertainty. Replacing an implementation assertion is not a reason to rewrite the source observation.</li>
+<li>Run the relevant validation profile and source checks, then review evidence adequacy and behavior separately. Both models remain candidate/draft; these patterns add no new classes or semantics.</li>
+</ul>
+<p>See <a href="getting-started.html">getting started</a> for profile selection and <a href="specspec/model.html">SpecSpec model notes</a> for the full constraint boundaries.</p></article></div></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../source/LICENSE">Apache 2.0</a> · <a href="../../source/NOTICE">Notices</a> · <a href="../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../assets/site-search.js"></script>
+</body>
+</html>

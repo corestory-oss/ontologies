@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/repository-layout.html">
+<meta name="description" content="Shared repository layout: The checkout remains named sao/ for now. Its directory name and GitHub repository name are independent of ontology namespaces, so a later rename to ontologies/ does…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Shared repository layout · CoreStory Ontologies">
+<meta property="og:description" content="Shared repository layout: The checkout remains named sao/ for now. Its directory name and GitHub repository name are independent of ontology namespaces, so a later rename to ontologies/ does…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/repository-layout.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shared repository layout · CoreStory Ontologies">
+<meta name="twitter:description" content="Shared repository layout: The checkout remains named sao/ for now. Its directory name and GitHub repository name are independent of ontology namespaces, so a later rename to ontologies/ does…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>Shared repository layout · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#search">Search</a><a href="../../index.html#downloads">Downloads</a><a href="../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="shared-repository-layout">Shared repository layout</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../../guides/">Guides</a></li><li aria-current="page">Shared repository layout</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#reorganization-verification">Reorganization verification</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="shared-repository-layout">Shared repository layout</h1>
 <p>The checkout remains named <code>sao/</code> for now. Its directory name and GitHub repository name are independent of ontology namespaces, so a later rename to <code>ontologies/</code> does not require changing any term IRI.</p>
 <p>The former SAO <code>rdf/</code> tree is now <code>ontologies/sao/</code>. The former sibling SpecSpec <code>rdf/</code> tree was copied to <code>ontologies/specspec/</code>. Both keep their manifests, vocabulary/shapes/axioms boundaries, and authored Turtle unchanged. The sibling checkout was left intact as a migration reference; it is no longer a dependency of this repository.</p>
 <p>SAO's documentation and examples moved to <code>docs/sao/</code> and <code>examples/sao/</code>; SpecSpec's equivalents live beside them. RDF tests are namespaced under <code>tests/sao/</code> and <code>tests/specspec/</code>, and shared composition tests live at <code>tests/</code> level. Shared command-line entry points call namespaced validators under <code>scripts/validators/</code>, avoiding collisions between previously identical script names.</p>
@@ -25,7 +41,8 @@
 <p>The combined example composes the existing SpecSpec graph, bridge links, and a small SAO callable record. It passes both complete SHACL profiles on one graph, rather than merely checking external endpoint types. Independent profiles remain available.</p>
 <p>This is a packaging and layout change. It does not merge namespaces, change modeled concepts, introduce inference rules, remove the current bridge, publish a site, or establish a final ecosystem release policy. Source graph equivalence and existing regression tests guard that boundary.</p>
 <h2 id="reorganization-verification">Reorganization verification</h2>
-<p><a href="../../source/docs/reorganization-report.json">The verification report</a> records graph-equivalent assembly of all ten existing manifests, including SAO's reasoning manifest. All 85 authored Turtle source files and 33 retained legacy schema files are byte-identical to their former locations. The ordinary RDF suite also checks composition failures and a build after changing the checkout directory name.</p></main>
+<p><a href="../../source/docs/reorganization-report.json">The verification report</a> records graph-equivalent assembly of all ten existing manifests, including SAO's reasoning manifest. All 85 authored Turtle source files and 33 retained legacy schema files are byte-identical to their former locations. The ordinary RDF suite also checks composition failures and a build after changing the checkout directory name.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../source/LICENSE">Apache 2.0</a> · <a href="../../source/NOTICE">Notices</a> · <a href="../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../assets/site-search.js"></script>
 </body>
 </html>

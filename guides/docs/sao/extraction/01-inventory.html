@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/01-inventory.html">
+<meta name="description" content="Phase 1: Inventory and Language Identification · SAO: Input: Raw repository (source tree, build manifests, lock files) Output: StorageLocation hierarchy, skeletal CodeContainer instances, ProgrammingLanguage instances,…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Phase 1: Inventory and Language Identification · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Phase 1: Inventory and Language Identification · SAO: Input: Raw repository (source tree, build manifests, lock files) Output: StorageLocation hierarchy, skeletal CodeContainer instances, ProgrammingLanguage instances,…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/01-inventory.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 1: Inventory and Language Identification · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Phase 1: Inventory and Language Identification · SAO: Input: Raw repository (source tree, build manifests, lock files) Output: StorageLocation hierarchy, skeletal CodeContainer instances, ProgrammingLanguage instances,…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Phase 1: Inventory and Language Identification · CoreStory Ontologies</title>
+<title>Phase 1: Inventory and Language Identification · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="phase-1-inventory-and-language-identification">Phase 1: Inventory and Language Identification</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Phase 1: Inventory and Language Identification</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-overview">1. Overview</a></li><li class="toc-level-2"><a href="#2-step-1-build-the-storagelocation-hierarchy">2. Step 1: Build the StorageLocation hierarchy</a></li><li class="toc-level-3"><a href="#required-attributes">Required attributes</a></li><li class="toc-level-3"><a href="#location_type-permissible-values">location_type permissible values</a></li><li class="toc-level-3"><a href="#establishing-the-hierarchy">Establishing the hierarchy</a></li><li class="toc-level-3"><a href="#module-mapping">Module mapping</a></li><li class="toc-level-3"><a href="#directories-to-skip">Directories to skip</a></li><li class="toc-level-2"><a href="#3-step-2-create-codecontainer-instances">3. Step 2: Create CodeContainer instances</a></li><li class="toc-level-3"><a href="#required-and-recommended-attributes">Required and recommended attributes</a></li><li class="toc-level-3"><a href="#container_type-permissible-values">container_type permissible values</a></li><li class="toc-level-3"><a href="#extension-to-type-mapping-heuristic">Extension-to-type mapping heuristic</a></li><li class="toc-level-3"><a href="#linking-to-storagelocation">Linking to StorageLocation</a></li><li class="toc-level-3"><a href="#linking-to-language">Linking to language</a></li><li class="toc-level-2"><a href="#4-step-3-identify-programming-languages">4. Step 3: Identify programming languages</a></li><li class="toc-level-3"><a href="#attributes">Attributes</a></li><li class="toc-level-3"><a href="#paradigms-permissible-values">paradigms permissible values</a></li><li class="toc-level-3"><a href="#common-language-profiles">Common language profiles</a></li><li class="toc-level-3"><a href="#linking-containers-to-languages">Linking containers to languages</a></li><li class="toc-level-2"><a href="#5-step-4-parse-dependency-manifests">5. Step 4: Parse dependency manifests</a></li><li class="toc-level-3"><a href="#identifying-manifests">Identifying manifests</a></li><li class="toc-level-3"><a href="#packagemanager-attributes">PackageManager attributes</a></li><li class="toc-level-3"><a href="#packagedependency-attributes">PackageDependency attributes</a></li><li class="toc-level-3"><a href="#scope-permissible-values">scope permissible values</a></li><li class="toc-level-3"><a href="#scope-mapping-from-ecosystems">Scope mapping from ecosystems</a></li><li class="toc-level-3"><a href="#linking-dependencies">Linking dependencies</a></li><li class="toc-level-2"><a href="#6-yaml-output-example">6. YAML output example</a></li><li class="toc-level-2"><a href="#7-checklist">7. Checklist</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="phase-1-inventory-and-language-identification">Phase 1: Inventory and Language Identification</h1>
 <p><strong>Input:</strong> Raw repository (source tree, build manifests, lock files)
 <strong>Output:</strong> <strong>StorageLocation</strong> hierarchy, skeletal <strong>CodeContainer</strong> instances, <strong>ProgrammingLanguage</strong> instances, <strong>PackageManager</strong>, <strong>PackageDependency</strong></p>
 <hr />
@@ -28,7 +44,7 @@
 <h2 id="2-step-1-build-the-storagelocation-hierarchy">2. Step 1: Build the StorageLocation hierarchy</h2>
 <p>Walk the repository file tree top-down. For each directory (or platform-equivalent namespace/package), create a <strong>StorageLocation</strong> instance.</p>
 <h3 id="required-attributes">Required attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -53,7 +69,7 @@
 <td>One of the permissible values below</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="location_type-permissible-values"><code>location_type</code> permissible values</h3>
 <ul>
 <li><code>directory</code> -- standard filesystem directory</li>
@@ -82,7 +98,7 @@
 <h2 id="3-step-2-create-codecontainer-instances">3. Step 2: Create CodeContainer instances</h2>
 <p>For each source file in the repository, create a <strong>CodeContainer</strong> instance. Non-source files (binary assets, images, fonts) SHOULD be excluded unless they are relevant to the application's structure (e.g., compiled protobuf files).</p>
 <h3 id="required-and-recommended-attributes">Required and recommended attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -129,7 +145,7 @@
 <td>Character encoding (e.g., <code>utf-8</code>, <code>ebcdic</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="container_type-permissible-values"><code>container_type</code> permissible values</h3>
 <ul>
 <li><code>source_file</code> -- standard source code file</li>
@@ -148,7 +164,7 @@
 </ul>
 <h3 id="extension-to-type-mapping-heuristic">Extension-to-type mapping heuristic</h3>
 <p>The extraction agent SHOULD use file extensions to assign <code>container_type</code>. The following table covers common cases:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Extensions</th>
@@ -205,7 +221,7 @@
 <td><code>cl_source</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>When a file extension is ambiguous (e.g., <code>.json</code> could be configuration or schema), the extraction agent SHOULD default to <code>configuration</code> and let later phases reclassify.</p>
 <h3 id="linking-to-storagelocation">Linking to StorageLocation</h3>
 <p>Each <strong>CodeContainer</strong> MUST set <code>contained_in_storage_location</code> to reference the <strong>StorageLocation</strong> for the directory that contains it. The inverse attribute <code>contains_containers</code> on the <strong>StorageLocation</strong> MUST also be populated.</p>
@@ -215,7 +231,7 @@
 <h2 id="4-step-3-identify-programming-languages">4. Step 3: Identify programming languages</h2>
 <p>Scan the <strong>CodeContainer</strong> instances created in Step 2. For each distinct programming language found, create a single <strong>ProgrammingLanguage</strong> instance.</p>
 <h3 id="attributes">Attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -255,7 +271,7 @@
 <td>Year the language was first released (optional)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="paradigms-permissible-values"><code>paradigms</code> permissible values</h3>
 <ul>
 <li><code>object_oriented</code></li>
@@ -267,7 +283,7 @@
 <li><code>multi_paradigm</code></li>
 </ul>
 <h3 id="common-language-profiles">Common language profiles</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Language</th>
@@ -335,7 +351,7 @@
 <td><code>true</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="linking-containers-to-languages">Linking containers to languages</h3>
 <p>After creating all <strong>ProgrammingLanguage</strong> instances, iterate over every <strong>CodeContainer</strong> and set <code>written_in_language</code> to the appropriate language based on file extension. The inverse attribute <code>language_used_by_containers</code> on the <strong>ProgrammingLanguage</strong> instance lists all containers using that language.</p>
 <p>Configuration files, schema definitions, and other non-source containers MAY have <code>written_in_language</code> left empty, or MAY reference a markup/data language if one has been created (e.g., a YAML language instance).</p>
@@ -343,7 +359,7 @@
 <h2 id="5-step-4-parse-dependency-manifests">5. Step 4: Parse dependency manifests</h2>
 <p>Identify build and dependency manifest files in the repository. For each package manager detected, create a <strong>PackageManager</strong> instance; for each declared dependency, create a <strong>PackageDependency</strong> instance.</p>
 <h3 id="identifying-manifests">Identifying manifests</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Manifest file</th>
@@ -392,9 +408,9 @@
 <td><code>conan</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="packagemanager-attributes">PackageManager attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -429,9 +445,9 @@
 <td>Package registry URL (e.g., <code>https://registry.npmjs.org</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="packagedependency-attributes">PackageDependency attributes</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -476,7 +492,7 @@
 <td>SPDX license identifier if known (e.g., <code>MIT</code>, <code>Apache-2.0</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="scope-permissible-values"><code>scope</code> permissible values</h3>
 <ul>
 <li><code>production</code> -- required at runtime</li>
@@ -487,7 +503,7 @@
 <li><code>provided</code> -- expected to be provided by the runtime environment</li>
 </ul>
 <h3 id="scope-mapping-from-ecosystems">Scope mapping from ecosystems</h3>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Ecosystem</th>
@@ -528,7 +544,7 @@
 <td><code>[dev-dependencies]</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="linking-dependencies">Linking dependencies</h3>
 <p><strong>PackageDependency</strong> links to a <strong>Module</strong> via <code>dependency_of_module</code>, and <strong>PackageManager</strong> links to a <strong>Module</strong> via <code>manages_dependencies_for_module</code>. In Phase 1, if a <strong>Module</strong> has not yet been created (modules are identified in Phase 3), the extraction agent SHOULD defer these links and record the association for later stitching.</p>
 <p>For transitive dependencies (from lock files), set <code>is_direct</code> to <code>false</code> and use <code>has_transitive_dependencies</code> / <code>transitive_dependency_of</code> to establish the dependency graph between <strong>PackageDependency</strong> instances.</p>
@@ -661,7 +677,8 @@ package_dependencies:
 <li>[ ] All direct dependencies are captured as <strong>PackageDependency</strong> instances with <code>package_name</code>, <code>version_constraint</code>, and <code>scope</code></li>
 <li>[ ] No files from excluded directories (<code>node_modules</code>, <code>.git</code>, <code>vendor</code>, etc.) are included</li>
 </ul>
-<p>When all items pass, proceed to <a href="02-code-structure.html">Phase 2: Code Structure</a>.</p></main>
+<p>When all items pass, proceed to <a href="02-code-structure.html">Phase 2: Code Structure</a>.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

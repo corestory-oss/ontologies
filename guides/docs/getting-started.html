@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/getting-started.html">
+<meta name="description" content="Getting started: Choose SAO to describe software, SpecSpec to describe requirements and evidence, or ecosystem to validate a graph that connects both. Start with the published…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Getting started · CoreStory Ontologies">
+<meta property="og:description" content="Getting started: Choose SAO to describe software, SpecSpec to describe requirements and evidence, or ecosystem to validate a graph that connects both. Start with the published…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/getting-started.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Getting started · CoreStory Ontologies">
+<meta name="twitter:description" content="Getting started: Choose SAO to describe software, SpecSpec to describe requirements and evidence, or ecosystem to validate a graph that connects both. Start with the published…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
+<title>Getting started · CoreStory Ontologies</title>
+
+<link rel="icon" type="image/svg+xml" href="../../assets/brand/corestory-symbol-black.svg">
+<link rel="stylesheet" href="../../assets/styles/site.css">
+</head>
+<body class="guide">
+<a class="skip-link" href="#content">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#search">Search</a><a href="../../index.html#downloads">Downloads</a><a href="../../source/index.html">Source</a></nav>
+</div></header>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../../guides/">Guides</a></li><li aria-current="page">Getting started</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#choose-a-profile">Choose a profile</a></li><li class="toc-level-2"><a href="#run-a-public-example-no-checkout-required">Run a public example — no checkout required</a></li><li class="toc-level-2"><a href="#run-all-repository-fixtures-repository-access-required">Run all repository fixtures — repository access required</a></li><li class="toc-level-2"><a href="#validate-one-graph-repository-access-required">Validate one graph — repository access required</a></li><li class="toc-level-3"><a href="#use-the-narrower-bridge-check-deliberately">Use the narrower bridge check deliberately</a></li><li class="toc-level-2"><a href="#keep-the-three-layers-separate">Keep the three layers separate</a></li><li class="toc-level-2"><a href="#read-failures-and-check-your-checkout-repository-access-required">Read failures and check your checkout — repository access required</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="getting-started">Getting started</h1>
+<p>Choose <strong>SAO</strong> to describe software, <strong>SpecSpec</strong> to describe requirements and evidence, or <strong>ecosystem</strong> to validate a graph that connects both. Start with the published Turtle example below; no repository access, extractor, application server, or source-program execution is required.</p>
+<p><strong>New to the idea?</strong> Read <a href="start-here.html">Before the graph: tell the system’s story</a> first. It explains the purpose and example without commands or RDF prerequisites.</p>
+<h2 id="choose-a-profile">Choose a profile</h2>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Repository profile</th>
+<th>Use it for</th>
+<th>What the repository validator loads</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sao</code></td>
+<td>Systems, components, callables, data, and operating context</td>
+<td>SAO vocabulary and SHACL shapes</td>
+</tr>
+<tr>
+<td><code>specspec</code></td>
+<td>Claims, requirements, scenarios, decisions, source snapshots, and verification results</td>
+<td>SpecSpec core vocabulary and shapes, including SHACL-SPARQL rules; no SAO dependency</td>
+</tr>
+<tr>
+<td><code>ecosystem</code></td>
+<td>SpecSpec knowledge linked to SAO software entities</td>
+<td>Both vocabularies, both complete SHACL profiles, and the current SpecSpec–SAO bridge</td>
+</tr>
+</tbody>
+</table></div>
+<p>SAO is a <strong>3.0.0 candidate, unreleased</strong>. SpecSpec is a <strong>0.1.0 modeling draft</strong>. Their namespaces and versions remain separate; <code>ecosystem</code> is a validation profile, not a third ontology. See the <a href="../../source/ontologies/catalog.json">catalog</a>, <a href="sao/README.html">SAO overview</a>, and <a href="specspec/README.html">SpecSpec overview</a>. Retain the downloaded files together, or pin a repository revision when you have access; these models are not stable releases.</p>
+<h2 id="run-a-public-example-no-checkout-required">Run a public example — no checkout required</h2>
+<p>Install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> and have <code>curl</code> available. Run this in a writable directory that does not already contain <code>ontology-quickstart</code>. It downloads the SAO vocabulary, its complete SHACL profile, a minimal System instance, and their license notices as individual files. There is no ZIP and no private checkout dependency. The first <code>uv</code> invocation may download Python and packages.</p>
+<!-- public-quickstart:start -->
+
+<pre><code class="language-sh">set -eu
+SITE_BASE=&quot;${SITE_BASE:-https://ontologies.corestory.ai}&quot;
+mkdir ontology-quickstart
+cd ontology-quickstart
+curl --fail --silent --show-error &quot;$SITE_BASE/dist/sao.ttl&quot; -o sao.ttl
+curl --fail --silent --show-error &quot;$SITE_BASE/dist/sao.shacl.ttl&quot; -o sao.shacl.ttl
+curl --fail --silent --show-error &quot;$SITE_BASE/source/examples/sao/rdf/system.ttl&quot; -o system.ttl
+curl --fail --silent --show-error &quot;$SITE_BASE/source/LICENSE&quot; -o LICENSE
+curl --fail --silent --show-error &quot;$SITE_BASE/source/NOTICE&quot; -o NOTICE
+uv tool run --from pyshacl==0.30.1 pyshacl \
+  --metashacl --inference none --ont-graph sao.ttl --shacl sao.shacl.ttl system.ttl
+</code></pre>
+<!-- public-quickstart:end -->
+
+<p>Expected output:</p>
+<pre><code class="language-text">Validation Report
+Conforms: True
+</code></pre>
+<p>This pins pySHACL to the repository lock's <code>0.30.1</code> version, not its transitive dependencies. It meta-validates the shapes and checks the example with <code>inference="none"</code>; it does not load optional OWL axioms. To check your own SAO data, replace <code>system.ttl</code> in the final command. Give instance nodes explicit SAO RDF types: generic pySHACL can report a vacuous pass when no shapes target your data. Unlike the repository wrapper, this command does not reject that case automatically or check evidence digests and anchors.</p>
+<p>The default URL names this site's intended public origin. When testing a candidate or a mounted preview, export <code>SITE_BASE</code> to its origin and mount path, without a trailing slash, before running the same block. A download failure exits before validation; do not replace a missing file with an HTML page or assume the origin is already deployed.</p>
+<h2 id="run-all-repository-fixtures-repository-access-required">Run all repository fixtures — repository access required</h2>
+<p>The rest of the repository commands require an authorized, complete checkout. This site's browsable source collection is a reviewed reference subset, <strong>not</strong> a runnable build checkout: it omits the project environment, Nix build definitions, and website build assets. Do not run <code>nix develop</code> or <code>uv sync</code> inside a downloaded source directory.</p>
+<p>From the complete repository root, use Git and Nix with flake support. Nix supplies the Python/RDF tools; the first invocation may download dependencies. See <a href="nix-and-publishing.html">Nix setup and command meanings (repository access required)</a>.</p>
+<pre><code class="language-sh">nix develop -c python scripts/validate_rdf.py
+</code></pre>
+<p>With no data path or profile, this checks all three bundled examples. The validator output is:</p>
+<pre><code class="language-text">sao: SHACL meta-validation and conformance pass (3 data triples).
+specspec: SHACL meta-validation and conformance pass (232 data triples).
+ecosystem: SHACL meta-validation and conformance pass (242 data triples).
+</code></pre>
+<p>The SpecSpec and ecosystem defaults also check the synthetic local source fixtures: SHA-256 revisions, source paths, and anchor bounds. They do not execute the COBOL or Java excerpts. The example's behavioral comparison remains <code>not_run</code>.</p>
+<p>If you use Python tooling without Nix, install <a href="https://docs.astral.sh/uv/getting-started/installation/">uv</a> and use the locked environment instead:</p>
+<pre><code class="language-sh">uv sync --locked
+uv run --locked python scripts/validate_rdf.py
+</code></pre>
+<p>The project requires Python 3.13 or later. The ordinary RDF workflow does not need the optional legacy LinkML dependency group.</p>
+<h2 id="validate-one-graph-repository-access-required">Validate one graph — repository access required</h2>
+<p>These commands use real files in this repository:</p>
+<pre><code class="language-sh"># A minimal SAO System instance.
+nix develop -c python scripts/validate_rdf.py --ontology sao \
+  examples/sao/rdf/system.ttl
+
+# SpecSpec claims and requirements, plus local evidence integrity checks.
+nix develop -c python scripts/validate_rdf.py --ontology specspec \
+  --sources examples/specspec/modernization/sources.json \
+  examples/specspec/modernization/graph.ttl
+
+# Compose and validate the bundled software, knowledge, and bridge data.
+nix develop -c python scripts/validate_rdf.py --ontology ecosystem
+</code></pre>
+<p>For your own graph, replace the sample data path and select a profile explicitly. To validate your own combined Turtle file, append its path to the ecosystem command. Without a data path, ecosystem assembles the files in the <a href="../../source/examples/ecosystem/manifest.json">example manifest</a>; it does not scan your checkout for graphs.</p>
+<p><strong>Supplying a data path does not automatically enable source-file checks</strong>, even when the path names the bundled SpecSpec example. Supply <code>--sources</code> when you want them. The <a href="../../source/examples/specspec/modernization/sources.json">fixture manifest</a> maps snapshot IRIs to files relative to the manifest's directory. Those files must stay within that directory, and their SHA-256 digests must match the graph's <code>spec:revision</code> values. The checker reads these local files; it does not fetch the graph's <code>source_uri</code> URLs.</p>
+<p>The validator reads editable ontology sources, not <code>dist/</code>, except when you explicitly supply a distribution as an argument. Give instance nodes explicit RDF types; the CLI refuses a graph with no explicitly typed nodes recognized by the selected profile.</p>
+<h3 id="use-the-narrower-bridge-check-deliberately">Use the narrower bridge check deliberately</h3>
+<p>If you have a SpecSpec graph and only a small manifest of software identities and types, use:</p>
+<pre><code class="language-sh">nix develop -c python scripts/validate_rdf.py --ontology specspec \
+  --sao-vocabulary dist/sao.ttl \
+  --bridge-data examples/specspec/modernization/sao-links.ttl
+</code></pre>
+<p>This checks the default SpecSpec graph and bridge link endpoint types. Its output explicitly says: <code>Bridge endpoint types checked; full SAO instance shapes were not applied.</code> It is not a substitute for ecosystem validation. The <a href="../examples/ecosystem/README.html">combined example</a> adds the required SAO fields so both full profiles can run against one graph.</p>
+<h2 id="keep-the-three-layers-separate">Keep the three layers separate</h2>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Purpose</th>
+<th>Example distributions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>RDFS vocabulary</td>
+<td>Defines classes, predicates, descriptions, and class hierarchies. Domain/range statements describe entailments, not required fields.</td>
+<td><a href="../../source/dist/sao.ttl">sao.ttl</a>, <a href="../../source/dist/specspec.ttl">specspec.ttl</a></td>
+</tr>
+<tr>
+<td>SHACL</td>
+<td>Checks instance constraints such as required properties, value types, allowed values, and typed references. SpecSpec also uses SHACL-SPARQL graph rules.</td>
+<td><a href="../../source/dist/sao.shacl.ttl">sao.shacl.ttl</a>, <a href="../../source/dist/specspec.shacl.ttl">specspec.shacl.ttl</a></td>
+</tr>
+<tr>
+<td>Optional OWL</td>
+<td>Supplies SAO inverse axioms and SpecSpec property declarations for consumers that choose to use them. It does not replace SHACL.</td>
+<td><a href="../../source/dist/sao.owl.ttl">sao.owl.ttl</a>, <a href="../../source/dist/specspec.owl.ttl">specspec.owl.ttl</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>The <a href="../../source/dist/specspec-sao.ttl">bridge vocabulary</a>, <a href="../../source/dist/specspec-sao.shacl.ttl">bridge shapes</a>, and <a href="../../source/dist/specspec-sao.owl.ttl">bridge OWL declarations</a> contain only the integration layer; load them alongside the relevant core files. Loading a bridge distribution alone does not load either ontology. The tooling uses explicit local manifests, not automatic network imports.</p>
+<p>SHACL validation uses the vocabulary's class hierarchy but runs with <code>inference="none"</code>; it does not materialize optional OWL inferences. A SHACL Core-only processor cannot run every SpecSpec rule.</p>
+<p><strong>Conformance is not truth.</strong> A pass says the supplied graph meets the applied constraints. It does not establish extraction completeness, evidence adequacy, correct implementation, or behavioral equivalence. Digest and anchor checks establish local fixture integrity, not the truth of a claim about those bytes. See <a href="specspec/model.html">SpecSpec model boundaries</a> and <a href="sao/turtle-migration.html">SAO validation limits</a>.</p>
+<h2 id="read-failures-and-check-your-checkout-repository-access-required">Read failures and check your checkout — repository access required</h2>
+<ul>
+<li>A SHACL failure exits nonzero and reports the affected node, property or rule. Compare it with the selected profile's shapes; adding OWL reasoning is not a fix for missing required data.</li>
+<li>A missing profile for a supplied data file is a CLI error. Choose <code>sao</code>, <code>specspec</code>, or <code>ecosystem</code>.</li>
+<li>A fixture digest, path, or anchor error means the graph and local evidence files disagree. Inspect the source revision and anchor before changing either.</li>
+</ul>
+<p>These read-only checks help distinguish graph errors from repository drift:</p>
+<pre><code class="language-sh">nix develop -c python scripts/build_rdf.py --check
+nix develop -c python scripts/validate_axioms.py
+nix develop -c python -m unittest discover -s tests
+</code></pre>
+<p>The first checks that committed distributions match their editable sources. The second checks the ontology supplements; it does not verify your software. The third runs the regression suite.</p>
+<p>Continue with <a href="modeling-patterns.html">modeling patterns</a> for the overdraft example. For current SAO relationship names, consult the <a href="sao/migration-3.0.html">3.0.0 migration notes</a>: many longer SAO guides describe the retained LinkML baseline. For contribution rules, see <a href="../CONTRIBUTING.html">CONTRIBUTING.md</a>.</p></article></div></main>
+<footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../source/LICENSE">Apache 2.0</a> · <a href="../../source/NOTICE">Notices</a> · <a href="../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../assets/site-search.js"></script>
+</body>
+</html>

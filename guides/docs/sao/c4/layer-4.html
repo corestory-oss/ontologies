@@ -3,25 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-4.html">
+<meta name="description" content="Layer 4: Code-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 4 (Code) -- a faithful, close-to-code representation of a software codebase as written:…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Layer 4: Code-Level Representation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Layer 4: Code-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 4 (Code) -- a faithful, close-to-code representation of a software codebase as written:…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-4.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Layer 4: Code-Level Representation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Layer 4: Code-Level Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 4 (Code) -- a faithful, close-to-code representation of a software codebase as written:…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Layer 4: Code-Level Representation · CoreStory Ontologies</title>
+<title>Layer 4: Code-Level Representation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="layer-4-code-level-representation">Layer 4: Code-Level Representation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Layer 4: Code-Level Representation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#summary">Summary</a></li><li class="toc-level-2"><a href="#base-class-namedentity">Base Class: NamedEntity</a></li><li class="toc-level-2"><a href="#shared-core-9-classes">Shared Core (9 classes)</a></li><li class="toc-level-3"><a href="#1-codecontainer">1. CodeContainer</a></li><li class="toc-level-3"><a href="#2-storagelocation">2. StorageLocation</a></li><li class="toc-level-3"><a href="#3-encapsulationunit">3. EncapsulationUnit</a></li><li class="toc-level-3"><a href="#4-callableunit">4. CallableUnit</a></li><li class="toc-level-3"><a href="#5-datastructure">5. DataStructure</a></li><li class="toc-level-3"><a href="#6-dataelement">6. DataElement</a></li><li class="toc-level-3"><a href="#7-parameter">7. Parameter</a></li><li class="toc-level-3"><a href="#8-controlflow">8. ControlFlow</a></li><li class="toc-level-3"><a href="#9-dataflow">9. DataFlow</a></li><li class="toc-level-2"><a href="#modern-only-classes-3-classes">Modern-Only Classes (3 classes)</a></li><li class="toc-level-3"><a href="#10-typeexpression">10. TypeExpression</a></li><li class="toc-level-3"><a href="#11-exceptiontype">11. ExceptionType</a></li><li class="toc-level-3"><a href="#12-operation">12. Operation</a></li><li class="toc-level-2"><a href="#legacy-only-classes-9-classes">Legacy-Only Classes (9 classes)</a></li><li class="toc-level-3"><a href="#13-filedefinition">13. FileDefinition</a></li><li class="toc-level-3"><a href="#14-fileoperation">14. FileOperation</a></li><li class="toc-level-3"><a href="#15-screendefinition">15. ScreenDefinition</a></li><li class="toc-level-3"><a href="#16-screenfield">16. ScreenField</a></li><li class="toc-level-3"><a href="#17-jobdefinition">17. JobDefinition</a></li><li class="toc-level-3"><a href="#18-jobstep">18. JobStep</a></li><li class="toc-level-3"><a href="#19-datasetallocation">19. DatasetAllocation</a></li><li class="toc-level-3"><a href="#20-ipcconnection">20. IPCConnection</a></li><li class="toc-level-3"><a href="#21-preprocessordirective">21. PreprocessorDirective</a></li><li class="toc-level-2"><a href="#shared-supporting-enums">Shared Supporting Enums</a></li><li class="toc-level-2"><a href="#relationship-map">Relationship Map</a></li><li class="toc-level-2"><a href="#supporting-classes-8-classes">Supporting Classes (8 classes)</a></li><li class="toc-level-3"><a href="#22-codeblock">22. CodeBlock</a></li><li class="toc-level-3"><a href="#23-statement">23. Statement</a></li><li class="toc-level-3"><a href="#24-programminglanguage">24. ProgrammingLanguage</a></li><li class="toc-level-3"><a href="#25-errormodel">25. ErrorModel</a></li><li class="toc-level-3"><a href="#26-memorymodel">26. MemoryModel</a></li><li class="toc-level-3"><a href="#27-ownershipannotation">27. OwnershipAnnotation</a></li><li class="toc-level-3"><a href="#28-platformextension-abstract">28. PlatformExtension (abstract)</a></li><li class="toc-level-3"><a href="#29-executionenvironmentdirective">29. ExecutionEnvironmentDirective</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="layer-4-code-level-representation">Layer 4: Code-Level Representation</h1>
 <p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 4 (Code)</strong> -- a faithful, close-to-code representation of a software codebase <strong>as written</strong>: source files, their internal structure, and the relationships between code elements. It does not cover architectural abstractions (Components, BoundedContexts), runtime behavior (Deployments, Environments), or operational concerns (Observability, Compliance). The document covers 21 primary classes and 8 supporting classes (29 total).</p>
 <p>Two profiles are defined: <strong>Modern</strong> (OOP, functional, and multi-paradigm languages) and <strong>Legacy</strong> (COBOL, RPG, PL/I, Assembler, and other procedural/mainframe languages). The profiles share a common core and diverge where the programming models differ.</p>
 <hr />
 <h2 id="summary">Summary</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -274,12 +290,12 @@
 <td>12</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Primary classes: Modern 12, Legacy 18, Shared core 9. Supporting classes: 8 (shared across both profiles).</p>
 <hr />
 <h2 id="base-class-namedentity">Base Class: NamedEntity</h2>
 <p>All classes in this layer inherit from <code>NamedEntity</code>, which provides:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -320,7 +336,7 @@
 <td>Inline metadata (created_at, updated_at, created_by, version)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><code>CodeContainer</code> additionally implements the <code>Versionable</code> mixin, which adds <code>version</code> (SemanticVersion), <code>effective_from</code>, <code>effective_to</code>, and <code>is_current</code>.</p>
 <hr />
 <h2 id="shared-core-9-classes">Shared Core (9 classes)</h2>
@@ -328,7 +344,7 @@
 <h3 id="1-codecontainer">1. CodeContainer</h3>
 <p>A physical container of source code -- a file, library member, or other storage unit.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -381,9 +397,9 @@
 <td>Content hash for change detection</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -493,9 +509,9 @@
 <td>Preprocessor directives (Legacy)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>CodeContainerType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -570,12 +586,12 @@
 <td>Legacy</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="2-storagelocation">2. StorageLocation</h3>
 <p>A logical or physical location for storing code containers.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -598,9 +614,9 @@
 <td>Kind of location</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -640,9 +656,9 @@
 <td>Architectural module (Layer 2+)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>StorageLocationType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -671,12 +687,12 @@
 <td>Modern</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="3-encapsulationunit">3. EncapsulationUnit</h3>
 <p>A logical boundary that groups related code and data. This is the cornerstone of SAO's paradigm-agnostic design -- a single class represents Java classes, Python modules, COBOL programs, Haskell modules, and more.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -741,9 +757,9 @@
 <td>Ending line in source</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -888,10 +904,10 @@
 <td>UI component link</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>EncapsulationType Enum (33 values):</strong></p>
 <p><em>Object-Oriented (Modern):</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -928,9 +944,9 @@
 <td>Singleton pattern</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Procedural / Functional (Modern):</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -971,9 +987,9 @@
 <td>JavaScript/prototype-based object</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Web / Application (Modern):</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1002,9 +1018,9 @@
 <td>Composite structure</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Database:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1029,9 +1045,9 @@
 <td>Database view definition</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Mainframe / Legacy:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1072,13 +1088,13 @@
 <td>Assembler control section (CSECT)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>| <code>other</code> | Catch-all |</p>
 <hr />
 <h3 id="4-callableunit">4. CallableUnit</h3>
 <p>A named, invocable unit of code. Paradigm-agnostic representation of methods, functions, paragraphs, procedures, lambdas, and more.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1191,9 +1207,9 @@
 <td>Cyclomatic complexity or similar metric</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1352,10 +1368,10 @@
 <td>Preprocessor (Legacy)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>CallableType Enum (53 values):</strong></p>
 <p><em>Object-Oriented:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1408,9 +1424,9 @@
 <td>Virtual/overridable method</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Procedural:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1455,9 +1471,9 @@
 <td>Assembler entry point</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Functional:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1486,9 +1502,9 @@
 <td>Functor</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Event Handling:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1513,9 +1529,9 @@
 <td>Signal handler</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Database:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1540,9 +1556,9 @@
 <td>Database cursor</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Concurrency:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1571,9 +1587,9 @@
 <td>Task/future</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Testing:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1594,9 +1610,9 @@
 <td>Mock function</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><em>Other:</em></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1653,9 +1669,9 @@
 <td>Catch-all</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>EntryPointType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1684,12 +1700,12 @@
 <td>API endpoint handler</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="5-datastructure">5. DataStructure</h3>
 <p>A composite data type grouping related data elements.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1778,9 +1794,9 @@
 <td>Ending line</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1876,7 +1892,7 @@
 <td>IPC data passing (Legacy)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DataStructureType Enum (50 values):</strong></p>
 <p><em>Object-Oriented:</em>
 <code>class_data</code>, <code>inner_class</code>, <code>anonymous_class</code></p>
@@ -1900,7 +1916,7 @@
 <h3 id="6-dataelement">6. DataElement</h3>
 <p>An individual data field, variable, or constant.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1971,9 +1987,9 @@
 <td>Source line number</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2055,12 +2071,12 @@
 <td>Concurrency guards</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="7-parameter">7. Parameter</h3>
 <p>An input/output parameter for a callable unit. Inherits from <code>DataElement</code> (all DataElement attributes and relationships apply).</p>
 <p><strong>Additional Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2089,9 +2105,9 @@
 <td><code>by_value</code>, <code>by_reference</code>, <code>by_name</code>, <code>by_result</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Additional Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2117,12 +2133,12 @@
 <td>Structured type (Modern)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="8-controlflow">8. ControlFlow</h3>
 <p>Control flow between code elements -- calls, branches, jumps.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2151,9 +2167,9 @@
 <td>Condition expression</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2193,12 +2209,12 @@
 <td>Target statement (fine-grained)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="9-dataflow">9. DataFlow</h3>
 <p>Data flow between code elements -- reads, writes, assignments.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2215,9 +2231,9 @@
 <td><code>read</code>, <code>write</code>, <code>modify</code>, <code>define</code>, <code>use</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2257,14 +2273,14 @@
 <td>Statement where flow occurs</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="modern-only-classes-3-classes">Modern-Only Classes (3 classes)</h2>
 <p>These classes are included in the Modern profile but not the Legacy profile.</p>
 <h3 id="10-typeexpression">10. TypeExpression</h3>
 <p>A recursive type model for expressing complex types (generics, unions, pointers, function types) across all languages. Replaces flat <code>data_type</code> strings.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2317,9 +2333,9 @@
 <td>Pointer behavior (<code>raw</code>, <code>smart</code>, <code>weak</code>, <code>unique</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2352,9 +2368,9 @@
 <td>Callables returning this type</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>TypeKind Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2415,12 +2431,12 @@
 <td>Opaque/unknown</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="11-exceptiontype">11. ExceptionType</h3>
 <p>A declared exception or error type with hierarchy support.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2443,9 +2459,9 @@
 <td>Whether compiler-enforced</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2485,12 +2501,12 @@
 <td>Callables that catch this</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="12-operation">12. Operation</h3>
 <p>A named, invocable unit of behavior exposed via an interface. This bridges the code layer to the API surface -- it marks a <code>CallableUnit</code> as an externally visible endpoint.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2507,9 +2523,9 @@
 <td>Possible error responses</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2570,14 +2586,14 @@
 <td>Tests</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="legacy-only-classes-9-classes">Legacy-Only Classes (9 classes)</h2>
 <p>These classes are included in the Legacy profile but not the Modern profile. They model file I/O, terminal screens, batch job control, inter-process communication, and preprocessor constructs that are central to mainframe and procedural codebases.</p>
 <h3 id="13-filedefinition">13. FileDefinition</h3>
 <p>A file defined for I/O in a program -- corresponds to a COBOL <code>SELECT</code>/<code>FD</code>, VSAM dataset definition, or similar construct.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2636,9 +2652,9 @@
 <td>External/DD name or system filename</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2685,9 +2701,9 @@
 <td>JCL DD mappings</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>FileOrganization Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2736,9 +2752,9 @@
 <td>Heap/unstructured file</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>FileAccessMode Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2759,9 +2775,9 @@
 <td>Both sequential and random</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>RecordFormat Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2790,12 +2806,12 @@
 <td>Stream-oriented (no record boundaries)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="14-fileoperation">14. FileOperation</h3>
 <p>An individual I/O operation on a file definition -- a single READ, WRITE, REWRITE, DELETE, etc.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2818,9 +2834,9 @@
 <td>Error handling (e.g., <code>AT END SET EOF TO TRUE</code>)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2846,9 +2862,9 @@
 <td>Callable performing the I/O</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>FileOperationType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2893,12 +2909,12 @@
 <td>Merge files</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="15-screendefinition">15. ScreenDefinition</h3>
 <p>A terminal screen or map definition -- BMS maps (CICS), RPG display files, MFS formats, or TUI screens.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -2933,9 +2949,9 @@
 <td>External map or display file name</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -2968,9 +2984,9 @@
 <td>Source container</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ScreenType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -2999,12 +3015,12 @@
 <td>Form-based terminal interaction</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="16-screenfield">16. ScreenField</h3>
 <p>An individual field on a terminal screen definition.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3057,9 +3073,9 @@
 <td>Default display value</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3085,12 +3101,12 @@
 <td>Data element this field maps to</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="17-jobdefinition">17. JobDefinition</h3>
 <p>A batch job definition -- JCL JOB statement, scheduler entry, or cron job.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3125,9 +3141,9 @@
 <td>Schedule or trigger criteria</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3160,12 +3176,12 @@
 <td>Downstream dependents</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="18-jobstep">18. JobStep</h3>
 <p>A single step within a batch job -- JCL EXEC statement or equivalent.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3200,9 +3216,9 @@
 <td>Memory region allocation</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3235,9 +3251,9 @@
 <td>Dataset allocations (DD statements)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>JobStepType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3270,12 +3286,12 @@
 <td>Conditional execution step</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="19-datasetallocation">19. DatasetAllocation</h3>
 <p>A dataset allocation within a job step -- JCL DD statement or equivalent.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3322,9 +3338,9 @@
 <td>Record format (shared enum with FileDefinition)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3350,9 +3366,9 @@
 <td>Logical file this DD maps to</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>DatasetDisposition Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3389,12 +3405,12 @@
 <td>Pass to next step</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="20-ipcconnection">20. IPCConnection</h3>
 <p>A communication link between two programs or processes at runtime.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3423,9 +3439,9 @@
 <td>Whether IPC participates in a transaction boundary</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3458,9 +3474,9 @@
 <td>Data structures passed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>IPCMechanism Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3529,12 +3545,12 @@
 <td>REST API call between processes</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="21-preprocessordirective">21. PreprocessorDirective</h3>
 <p>A preprocessor directive, macro, or metaprogramming construct that modifies code before or during compilation.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3563,9 +3579,9 @@
 <td>Expanded or generated code</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3598,9 +3614,9 @@
 <td>Callables affected</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>MetaprogrammingType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -3645,7 +3661,7 @@
 <td>External code generator</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="shared-supporting-enums">Shared Supporting Enums</h2>
 <p>These enums are used across both profiles.</p>
@@ -3720,7 +3736,7 @@ JobDefinition [Legacy]
 <h3 id="22-codeblock">22. CodeBlock</h3>
 <p>A logical grouping of statements within a callable unit -- conditionals, loops, try-catch blocks, synchronized sections.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3749,9 +3765,9 @@ JobDefinition [Legacy]
 <td>Ending line</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3791,13 +3807,13 @@ JobDefinition [Legacy]
 <td>Child blocks (nesting)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>CodeBlockType Enum:</strong> <code>sequential</code>, <code>conditional</code>, <code>loop</code>, <code>try_catch</code>, <code>transaction</code>, <code>critical_section</code>, <code>scope</code></p>
 <hr />
 <h3 id="23-statement">23. Statement</h3>
 <p>A single executable instruction or declaration.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3832,9 +3848,9 @@ JobDefinition [Legacy]
 <td>Source text of statement</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3874,13 +3890,13 @@ JobDefinition [Legacy]
 <td>Control transfer target</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>StatementCategory Enum:</strong> <code>declaration</code>, <code>assignment</code>, <code>invocation</code>, <code>control_transfer</code>, <code>io_operation</code>, <code>data_manipulation</code>, <code>transaction_control</code>, <code>exception_handling</code></p>
 <hr />
 <h3 id="24-programminglanguage">24. ProgrammingLanguage</h3>
 <p>A programming language modeled as a first-class entity, replacing bare string fields. Enables structured cross-language analysis.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3921,9 +3937,9 @@ JobDefinition [Legacy]
 <td>Year first released</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -3956,13 +3972,13 @@ JobDefinition [Legacy]
 <td>Default memory management model</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ProgrammingParadigm Enum:</strong> <code>object_oriented</code>, <code>procedural</code>, <code>functional</code>, <code>logic</code>, <code>concatenative</code>, <code>data_driven</code>, <code>multi_paradigm</code></p>
 <hr />
 <h3 id="25-errormodel">25. ErrorModel</h3>
 <p>Describes how a module or language handles errors.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -3985,9 +4001,9 @@ JobDefinition [Legacy]
 <td>Whether exceptions are checked or unchecked</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4013,14 +4029,14 @@ JobDefinition [Legacy]
 <td>Languages using this as default</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ErrorHandlingStrategy Enum:</strong> <code>exception_based</code>, <code>return_value_based</code>, <code>condition_based</code>, <code>error_code_based</code>, <code>panic_recover</code>, <code>monadic</code></p>
 <p><strong>ExceptionCheckedness Enum:</strong> <code>checked</code>, <code>unchecked</code>, <code>not_applicable</code></p>
 <hr />
 <h3 id="26-memorymodel">26. MemoryModel</h3>
 <p>Describes the memory management strategy for a module or language.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4049,9 +4065,9 @@ JobDefinition [Legacy]
 <td>Whether unsafe/manual memory access is allowed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4077,13 +4093,13 @@ JobDefinition [Legacy]
 <td>Languages using this as default</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>OwnershipModel Enum:</strong> <code>owned</code>, <code>borrowed_shared</code>, <code>borrowed_mutable</code>, <code>moved</code>, <code>copied</code>, <code>reference_counted</code>, <code>garbage_collected</code>, <code>manual</code>, <code>stack_allocated</code></p>
 <hr />
 <h3 id="27-ownershipannotation">27. OwnershipAnnotation</h3>
 <p>An ownership or lifetime annotation on a specific data element. Primarily for Rust and C++ codebases.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4112,9 +4128,9 @@ JobDefinition [Legacy]
 <td>Named lifetime identifier (e.g., <code>'a</code> in Rust)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4133,13 +4149,13 @@ JobDefinition [Legacy]
 <td>Data element this applies to</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>LifetimeScope Enum:</strong> <code>static_lifetime</code>, <code>function_scope</code>, <code>block_scope</code>, <code>named_lifetime</code>, <code>heap_lifetime</code></p>
 <hr />
 <h3 id="28-platformextension-abstract">28. PlatformExtension (abstract)</h3>
 <p>Abstract base class for platform-specific extensions.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4156,13 +4172,13 @@ JobDefinition [Legacy]
 <td>Platform identifier</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="29-executionenvironmentdirective">29. ExecutionEnvironmentDirective</h3>
 <p>Platform-specific execution directives -- Docker Compose, Kubernetes manifests, Makefiles, shell scripts, and build files.</p>
 <p><strong>Inherits from:</strong> PlatformExtension (adds <code>platform</code> attribute)</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -4185,9 +4201,9 @@ JobDefinition [Legacy]
 <td>Configuration content</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -4220,7 +4236,8 @@ JobDefinition [Legacy]
 <td>Resources allocated (Layer 2)</td>
 </tr>
 </tbody>
-</table></main>
+</table></div></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

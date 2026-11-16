@@ -3,21 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/nix-and-publishing.html">
+<meta name="description" content="Nix builds and static documentation: Repository access required. These maintainer commands require an authorized, complete checkout, including flake.nix, flake.lock, nix/, and website build assets. The…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Nix builds and static documentation · CoreStory Ontologies">
+<meta property="og:description" content="Nix builds and static documentation: Repository access required. These maintainer commands require an authorized, complete checkout, including flake.nix, flake.lock, nix/, and website build assets. The…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/nix-and-publishing.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nix builds and static documentation · CoreStory Ontologies">
+<meta name="twitter:description" content="Nix builds and static documentation: Repository access required. These maintainer commands require an authorized, complete checkout, including flake.nix, flake.lock, nix/, and website build assets. The…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
 <title>Nix builds and static documentation · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../index.html" aria-label="CoreStory Ontologies home"><img src="../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../reference/">Explore</a><a href="../../guides/">Guides</a><a href="../../index.html#search">Search</a><a href="../../index.html#downloads">Downloads</a><a href="../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="nix-builds-and-static-documentation">Nix builds and static documentation</h1>
-<p>The public commands are Nix commands. Python remains the implementation language, but a normal build does not invoke uv, pip, or a local virtual environment.</p>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../index.html">Home</a></li><li><a href="../../guides/">Guides</a></li><li aria-current="page">Nix builds and static documentation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#the-everyday-commands">The everyday commands</a></li><li class="toc-level-2"><a href="#direnv-and-the-development-shell">direnv and the development shell</a></li><li class="toc-level-2"><a href="#what-the-nix-files-mean">What the Nix files mean</a></li><li class="toc-level-2"><a href="#static-hosting">Static hosting</a></li><li class="toc-level-3"><a href="#main-and-site-branches">Main and site branches</a></li><li class="toc-level-2"><a href="#reproducibility-and-scope">Reproducibility and scope</a></li><li class="toc-level-2"><a href="#evaluation-cache-contention-and-binary-caches">Evaluation-cache contention and binary caches</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="nix-builds-and-static-documentation">Nix builds and static documentation</h1>
+<p><strong>Repository access required.</strong> These maintainer commands require an authorized, complete checkout, including <code>flake.nix</code>, <code>flake.lock</code>, <code>nix/</code>, and website build assets. The browsable public source collection is a reference subset, not that checkout. To validate a downloaded example without repository access, use <a href="getting-started.html">Getting started</a>.</p>
+<p>The repository build commands use Nix. Python remains the implementation language, but a normal build does not invoke uv, pip, or a local virtual environment.</p>
 <h2 id="the-everyday-commands">The everyday commands</h2>
 <pre><code class="language-sh">nix build                     # Build static documentation; result/ points to it
 nix run .#preview             # Build and serve it locally; Ctrl-C stops it
@@ -44,8 +61,10 @@ nix run .#prepare-site        # Populate local site from committed main; never p
 </ul>
 <p>Nix fetches declared dependencies, then runs ordinary builds in its build environment. Build scripts do not download packages or browser assets themselves. On subsequent runs, Nix can reuse outputs when the relevant inputs have not changed.</p>
 <p>For Git-based flakes, new files must be added with <code>git add</code> before Nix sees them. Staging is sufficient; a commit is not required. A dirty-tree warning while developing is expected and does not mean the build failed. <code>result</code> and <code>.direnv/</code> are local outputs ignored by Git.</p>
-<h2 id="static-hosting-and-cloudflare">Static hosting and Cloudflare</h2>
+<h2 id="static-hosting">Static hosting</h2>
 <p>Deploy the <strong>contents of <code>result/</code></strong>, preserving directory layout. Cloudflare Pages can host this as a plain static site; no application server, database, Worker, Python, uv or Nix is needed at runtime. A Cloudflare build can also be skipped when an already-built artifact or <code>site</code> branch supplies those files.</p>
+<p>The intended public identity is <code>https://ontologies.corestory.ai</code>. Canonical URLs and social metadata name that origin; they do not prove it is deployed. The site is a reference library with no analytics or lead collection. Hosting, DNS, TLS, security headers, and public social-preview validation require separate deployment verification.</p>
+<p>Serve <code>healthz</code> as a static response and use <code>404.html</code> with HTTP 404 for unknown paths. Do not use a successful homepage fallback. <code>robots.txt</code> allows crawling; <code>sitemap.xml</code> lists canonical HTML pages except the error page. Normal pages use relative links for root or subpath hosting. For a subpath build, pass <code>--base-path /ontologies/</code> to <code>scripts/build_site.py</code> so deep error-page recovery links use the same prefix. The default is <code>/</code>.</p>
 <p>Garden renders term-reference pages in the visitor's browser using the bundled dataset. Existing Markdown guides are pre-rendered into HTML under <code>guides/</code>. The explorer uses fragment links such as <code>#spec:Requirement</code>, so those links do not need server-side routing. All browser assets and datasets are served from the same static site. Telemetry and feedback are disabled.</p>
 <p>The dataset is plain JSON. Its URL includes a SHA-256 content hash so changed ontology data cannot reuse an older browser cache entry. Normal CDN gzip/Brotli transport compression is handled by the browser; the application does not rely on special <code>.gz</code> response headers or server decompression behavior. <code>_headers</code> supplies a small set of static Cloudflare Pages headers.</p>
 <h3 id="main-and-site-branches">Main and site branches</h3>
@@ -53,15 +72,20 @@ nix run .#prepare-site        # Populate local site from committed main; never p
 <p><code>site</code> is the publication branch. Its repository root is exactly the contents of the completed static build:</p>
 <pre><code class="language-text">index.html              # CoreStory Ontologies introduction
 reference/              # Combined Garden browser and its dataset
+sao/, specspec/         # HTML namespace entries with explicit RDF downloads
 guides/                 # Rendered Markdown guides and examples
 dist/                   # Turtle distributions
 assets/                 # Brand assets, fonts, CSS and pinned Garden runtime
-source/                 # Files linked as downloads from the guides
+source/                 # Browsable public source, including LICENSE and NOTICE
+search-index.json       # Local term and guide discovery
 snapshot.json           # Ontology versions and input hashes
+robots.txt, sitemap.xml # Public crawl policy and canonical page inventory
+healthz, 404.html        # Static health response and noindex error body
 _headers                # Static hosting headers
 publication.json        # Exact source commit (added when preparing site)
 </code></pre>
-<p>The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain <code>/sao/</code> and <code>/specspec/</code>; moving the browser to <code>/reference/</code> does not rename terms. Existing root-fragment Garden bookmarks redirect to the new browser location.</p>
+<p>The homepage versions come from the ontology catalog, rather than a second version declaration in the website copy. Ontology namespace IRIs remain <code>/sao/</code> and <code>/specspec/</code>; moving the browser to <code>/reference/</code> does not rename terms. Namespace entries are HTML, not RDF content-negotiation endpoints. Individual term paths are not generated; use Garden fragments or explicit Turtle downloads. Existing root-fragment Garden bookmarks redirect to the browser location.</p>
+<p>The public source collection copies only the exact, reviewed paths in <code>web/public-source-manifest.json</code>; directory names do not grant publication permission. The build also publishes that inventory as <code>source-manifest.json</code>. New nested files require explicit review, and symlinks are refused. The confidential whitepaper and its equivalent Markdown source are withheld without modifying the repository originals. Other reviewed guides remain available. LICENSE and NOTICE are preserved byte-for-byte. The builder creates directory indexes rather than relying on server directory listing; the collection is not a complete build checkout.</p>
 <p>The publication process is local: start from committed <code>main</code>, run <code>nix flake check</code> and <code>nix build</code>, populate a separate <code>site</code> checkout with the complete output (removing files left over from earlier builds), record the source commit, then commit and push <code>site</code> with ordinary fast-forward history. Never merge <code>site</code> into <code>main</code> or hand-edit generated HTML. The command performs the checks, build and local branch update; pushing remains an explicit separate step:</p>
 <pre><code class="language-sh">nix run .#prepare-site
 # Review the new branch; your source checkout stays where it is.
@@ -80,7 +104,8 @@ git push origin site
 <p>The Garden runtime is third-party software fetched from its official distribution, retaining its built-in attribution. The asset manifest records the source and exact bytes; those assets are not relicensed by this repository's Apache license. The local-preview bootstrap adaptations are documented in <code>web/README.md</code>.</p>
 <h2 id="evaluation-cache-contention-and-binary-caches">Evaluation-cache contention and binary caches</h2>
 <p>A dirty-tree warning is expected during development. If Nix/Lix reports that its SQLite evaluation cache is busy, retry with <code>nix build --option eval-cache false</code>. This bypasses the evaluation cache for that invocation; it does not disable binary substitutions or rebuild every dependency. Check the exit status and the <code>result/</code> symlink to confirm the build succeeded. No cache files need to be deleted.</p>
-<p>A Cachix cache stores completed build outputs and can speed up reuse between CI and developers. It is separate from the local SQLite evaluation cache, so adding Cachix is not a fix for that lock message. This flake works without an ontology-specific Cachix cache. Cache configuration and CI credentials can be added once a cache is chosen; no private Plot cache configuration has been copied here.</p></main>
+<p>A Cachix cache stores completed build outputs and can speed up reuse between CI and developers. It is separate from the local SQLite evaluation cache, so adding Cachix is not a fix for that lock message. This flake works without an ontology-specific Cachix cache. Cache configuration and CI credentials can be added once a cache is chosen; no private Plot cache configuration has been copied here.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../source/LICENSE">Apache 2.0</a> · <a href="../../source/NOTICE">Notices</a> · <a href="../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../assets/site-search.js"></script>
 </body>
 </html>

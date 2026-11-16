@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/03-architecture.html">
+<meta name="description" content="Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO: This phase bridges the physical code structure extracted in Phases 1-2 to logical architectural concepts. It maps directories to Modules, groups them into…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO: This phase bridges the physical code structure extracted in Phases 1-2 to logical architectural concepts. It maps directories to Modules, groups them into…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/03-architecture.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO: This phase bridges the physical code structure extracted in Phases 1-2 to logical architectural concepts. It maps directories to Modules, groups them into…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Phase 3: Architecture and Integration (Layers 2 &amp; 4) · CoreStory Ontologies</title>
+<title>Phase 3: Architecture and Integration (Layers 2 &amp; 4) · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="phase-3-architecture-and-integration-layers-2-4">Phase 3: Architecture and Integration (Layers 2 &amp; 4)</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Phase 3: Architecture and Integration (Layers 2 &amp; 4)</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#step-1-create-the-system-instance">Step 1: Create the System instance</a></li><li class="toc-level-2"><a href="#step-2-map-storagelocations-to-modules">Step 2: Map StorageLocations to Modules</a></li><li class="toc-level-3"><a href="#heuristic-what-constitutes-a-module">Heuristic: what constitutes a Module?</a></li><li class="toc-level-3"><a href="#required-attributes">Required attributes</a></li><li class="toc-level-3"><a href="#establishing-the-bridge">Establishing the bridge</a></li><li class="toc-level-3"><a href="#module-dependencies">Module dependencies</a></li><li class="toc-level-3"><a href="#optional-enrichment">Optional enrichment</a></li><li class="toc-level-2"><a href="#step-3-group-modules-into-boundedcontexts">Step 3: Group Modules into BoundedContexts</a></li><li class="toc-level-3"><a href="#decision-tree-for-identifying-bounded-context-boundaries">Decision tree for identifying bounded context boundaries</a></li><li class="toc-level-3"><a href="#required-attributes_1">Required attributes</a></li><li class="toc-level-3"><a href="#recommended-attributes">Recommended attributes</a></li><li class="toc-level-3"><a href="#system-level-link">System-level link</a></li><li class="toc-level-2"><a href="#step-4-identify-components-within-modules">Step 4: Identify Components within Modules</a></li><li class="toc-level-3"><a href="#heuristic-what-constitutes-a-component">Heuristic: what constitutes a Component?</a></li><li class="toc-level-3"><a href="#required-attributes_2">Required attributes</a></li><li class="toc-level-3"><a href="#establishing-the-bridge_1">Establishing the bridge</a></li><li class="toc-level-3"><a href="#module-level-link">Module-level link</a></li><li class="toc-level-2"><a href="#step-5-extract-services">Step 5: Extract Services</a></li><li class="toc-level-3"><a href="#where-to-find-services">Where to find services</a></li><li class="toc-level-3"><a href="#required-attributes_3">Required attributes</a></li><li class="toc-level-3"><a href="#recommended-attributes_1">Recommended attributes</a></li><li class="toc-level-3"><a href="#module-level-inverse">Module-level inverse</a></li><li class="toc-level-2"><a href="#step-6-extract-interfaces-and-endpoints">Step 6: Extract Interfaces and Endpoints</a></li><li class="toc-level-3"><a href="#userinterface">UserInterface</a></li><li class="toc-level-3"><a href="#programmaticinterface">ProgrammaticInterface</a></li><li class="toc-level-3"><a href="#eventinterface">EventInterface</a></li><li class="toc-level-3"><a href="#linking-interfaces">Linking interfaces</a></li><li class="toc-level-2"><a href="#step-7-identify-external-systems-and-integrations">Step 7: Identify External Systems and Integrations</a></li><li class="toc-level-3"><a href="#identifying-external-systems">Identifying external systems</a></li><li class="toc-level-3"><a href="#required-externalsystem-attributes">Required ExternalSystem attributes</a></li><li class="toc-level-3"><a href="#optional-externalsystem-attributes">Optional ExternalSystem attributes</a></li><li class="toc-level-3"><a href="#creating-integrations">Creating Integrations</a></li><li class="toc-level-3"><a href="#optional-supporting-entities">Optional supporting entities</a></li><li class="toc-level-3"><a href="#system-level-link_1">System-level link</a></li><li class="toc-level-2"><a href="#capabilities-and-features">Capabilities and Features</a></li><li class="toc-level-2"><a href="#phase-3-checklist">Phase 3 Checklist</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="phase-3-architecture-and-integration-layers-2-4">Phase 3: Architecture and Integration (Layers 2 &amp; 4)</h1>
 <p>This phase bridges the physical code structure extracted in Phases 1-2 to logical architectural concepts. It maps directories to <strong>Modules</strong>, groups them into <strong>BoundedContexts</strong>, identifies <strong>Components</strong> and <strong>Services</strong>, extracts <strong>Interfaces</strong> and <strong>Endpoints</strong>, and documents <strong>ExternalSystem</strong> connections.</p>
 <p><strong>Automation level</strong>: 60-70%. Module and service identification can be largely automated from build manifests and deployment configs. Bounded context identification requires judgment and is the most subjective step in the entire extraction process.</p>
 <p><strong>Input</strong>: Phase 1 outputs (<strong>StorageLocation</strong>, <strong>CodeContainer</strong>, <strong>ProgrammingLanguage</strong>) + Phase 2 outputs (<strong>EncapsulationUnit</strong>, <strong>CallableUnit</strong>, <strong>DataStructure</strong>, <strong>DefinitionReference</strong>) + build manifests + deployment configs + documentation</p>
@@ -506,7 +522,8 @@ features:
 <li>[ ] Module dependencies (<code>depends_on_module</code>) are captured from Phase 2 import analysis</li>
 <li>[ ] All inverse relationships are set (both sides of every bridge)</li>
 <li>[ ] Bounded context assignments are flagged for human review</li>
-</ul></main>
+</ul></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

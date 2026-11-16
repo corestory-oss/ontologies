@@ -3,22 +3,38 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/README.html">
+<meta name="description" content="CoreStory Ontologies · Repository guide: A shared home for two complementary, interlinked RDF ontologies: Ontology Scope Namespace Current version SAO — Systems Abstraction Ontology Software structures and…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="CoreStory Ontologies · Repository guide · CoreStory Ontologies">
+<meta property="og:description" content="CoreStory Ontologies · Repository guide: A shared home for two complementary, interlinked RDF ontologies: Ontology Scope Namespace Current version SAO — Systems Abstraction Ontology Software structures and…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/README.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CoreStory Ontologies · Repository guide · CoreStory Ontologies">
+<meta name="twitter:description" content="CoreStory Ontologies · Repository guide: A shared home for two complementary, interlinked RDF ontologies: Ontology Scope Namespace Current version SAO — Systems Abstraction Ontology Software structures and…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>CoreStory Ontologies</title>
+<title>CoreStory Ontologies · Repository guide · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../index.html" aria-label="CoreStory Ontologies home"><img src="../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../reference/">Explore</a><a href="../guides/">Guides</a><a href="../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../reference/">Explore</a><a href="../guides/">Guides</a><a href="../index.html#search">Search</a><a href="../index.html#downloads">Downloads</a><a href="../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="corestory-ontologies">CoreStory Ontologies</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../index.html">Home</a></li><li><a href="../guides/">Guides</a></li><li aria-current="page">CoreStory Ontologies</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#repository-layout">Repository layout</a></li><li class="toc-level-2"><a href="#build-check-and-preview">Build, check and preview</a></li><li class="toc-level-2"><a href="#distribution-files">Distribution files</a></li><li class="toc-level-2"><a href="#legacy-baseline">Legacy baseline</a></li><li class="toc-level-2"><a href="#license">License</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="corestory-ontologies">CoreStory Ontologies</h1>
 <p>A shared home for two complementary, interlinked RDF ontologies:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Ontology</th>
@@ -41,7 +57,7 @@
 <td>0.1.0 draft</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>Both are authored in Turtle, with RDFS vocabulary, SHACL validation, and optional OWL supplements. Their namespaces and ontology versions remain separate. The Python project version describes shared tooling; the ontology versions are recorded in <a href="../source/ontologies/catalog.json">the catalog</a> and their RDF metadata.</p>
 <p>SpecSpec's existing optional SAO bridge is retained for now. Its three link classes connect knowledge items to software entities. This repository reorganization does not change term meanings, IRIs, constraints, or inference axioms.</p>
 <h2 id="repository-layout">Repository layout</h2>
@@ -102,7 +118,8 @@ nix develop -c python scripts/validate_rdf.py --ontology ecosystem path/to/combi
 <p>SAO's retained LinkML 2.1.0 baseline lives under <a href="legacy/sao/README.html">legacy/sao/</a>. LinkML is an optional dependency group, isolated from the ordinary RDF build, tests, and validation. It remains available for historical migration checks. SpecSpec has no active LinkML source.</p>
 <p>See <a href="CONTRIBUTING.html">CONTRIBUTING.md</a>, <a href="docs/repository-layout.html">the repository layout notes</a>, and <a href="examples/ecosystem/README.html">the ecosystem example</a>.</p>
 <h2 id="license">License</h2>
-<p>Copyright CoreStory, Inc. Both ontologies, documentation, and examples are licensed under <a href="../source/LICENSE">Apache License 2.0</a>. See <a href="../source/NOTICE">NOTICE</a> for preserved attribution.</p></main>
+<p>Copyright CoreStory, Inc. Both ontologies, documentation, and examples are licensed under <a href="../source/LICENSE">Apache License 2.0</a>. See <a href="../source/NOTICE">NOTICE</a> for preserved attribution.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../source/LICENSE">Apache 2.0</a> · <a href="../source/NOTICE">Notices</a> · <a href="../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../assets/site-search.js"></script>
 </body>
 </html>

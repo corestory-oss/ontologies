@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/extraction/10-worked-example.html">
+<meta name="description" content="Worked Example: Order Service · SAO: This document walks a small Python/Flask order service through all eight extraction phases, showing the SAO YAML output growing at each step. The goal is to…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Worked Example: Order Service · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Worked Example: Order Service · SAO: This document walks a small Python/Flask order service through all eight extraction phases, showing the SAO YAML output growing at each step. The goal is to…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/extraction/10-worked-example.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Worked Example: Order Service · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Worked Example: Order Service · SAO: This document walks a small Python/Flask order service through all eight extraction phases, showing the SAO YAML output growing at each step. The goal is to…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Worked Example: Order Service · CoreStory Ontologies</title>
+<title>Worked Example: Order Service · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="worked-example-order-service">Worked Example: Order Service</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Worked Example: Order Service</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#1-the-example-codebase">1. The Example Codebase</a></li><li class="toc-level-3"><a href="#apppy-flask-application-entry-point">app.py -- Flask application entry point</a></li><li class="toc-level-3"><a href="#modelspy-sqlalchemy-models">models.py -- SQLAlchemy models</a></li><li class="toc-level-3"><a href="#servicespy-business-logic">services.py -- Business logic</a></li><li class="toc-level-3"><a href="#requirementstxt-and-dockerfile">requirements.txt and Dockerfile</a></li><li class="toc-level-2"><a href="#2-phase-1-inventory">2. Phase 1: Inventory</a></li><li class="toc-level-2"><a href="#3-phase-2-code-structure">3. Phase 2: Code Structure</a></li><li class="toc-level-2"><a href="#4-phase-3-architecture">4. Phase 3: Architecture</a></li><li class="toc-level-2"><a href="#5-phase-4-domain-model">5. Phase 4: Domain Model</a></li><li class="toc-level-2"><a href="#6-phase-5-business-intent">6. Phase 5: Business Intent</a></li><li class="toc-level-2"><a href="#7-phase-6-cross-cutting-concerns-brief">7. Phase 6: Cross-Cutting Concerns (Brief)</a></li><li class="toc-level-2"><a href="#8-phase-7-bridge-stitching">8. Phase 7: Bridge Stitching</a></li><li class="toc-level-2"><a href="#9-phase-8-system-context">9. Phase 8: System Context</a></li><li class="toc-level-2"><a href="#10-complete-extraction-summary">10. Complete Extraction Summary</a></li><li class="toc-level-3"><a href="#key-observations">Key observations</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="worked-example-order-service">Worked Example: Order Service</h1>
 <p>This document walks a small Python/Flask order service through all eight extraction phases, showing the SAO YAML output growing at each step. The goal is to demonstrate the end-to-end process on a concrete codebase small enough to fit in a single document.</p>
 <hr />
 <h2 id="1-the-example-codebase">1. The Example Codebase</h2>
@@ -748,7 +764,7 @@ test_suites:
 <hr />
 <h2 id="8-phase-7-bridge-stitching">8. Phase 7: Bridge Stitching</h2>
 <p>Phase 7 verifies all eight cross-layer bridges. No new entities are created; only missing links are filled.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -816,7 +832,7 @@ test_suites:
 <td>Pass</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p>All eight bridges verified. The graph is fully connected from <strong>Environment</strong> down through <strong>Deployment</strong>, <strong>Service</strong>, <strong>Module</strong>, <strong>Component</strong>, <strong>EncapsulationUnit</strong>, <strong>DataStructure</strong>, <strong>DomainEntity</strong>, and up through <strong>Aggregate</strong>, <strong>BoundedContext</strong>, to <strong>System</strong>.</p>
 <hr />
 <h2 id="9-phase-8-system-context">9. Phase 8: System Context</h2>
@@ -848,7 +864,7 @@ systems:
 <hr />
 <h2 id="10-complete-extraction-summary">10. Complete Extraction Summary</h2>
 <p>The full extraction is the union of all YAML blocks shown in Phases 1-8 above. The following table summarizes the instance counts.</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Phase</th>
@@ -893,14 +909,15 @@ systems:
 <td><strong>77</strong></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="key-observations">Key observations</h3>
 <ol>
 <li>Even a five-file codebase produces 77 SAO instances across 37 distinct classes. Real applications will produce thousands.</li>
 <li>The bridges are what make the extraction valuable. Without them, the 77 instances would be seven isolated clusters. With them, every instance is reachable from the <strong>System</strong> root.</li>
 <li>The YAML is additive: each phase appends new instance blocks and backlinks without modifying earlier outputs. This makes incremental extraction and review practical.</li>
 <li>Phase 2 (Code Structure) produces the most instances by count, but Phase 4 (Domain Model) and Phase 5 (Business Intent) add the most semantic value.</li>
-</ol></main>
+</ol></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

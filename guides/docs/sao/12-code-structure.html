@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/12-code-structure.html">
+<meta name="description" content="Code Structure · SAO: The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Code Structure · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Code Structure · SAO: The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/12-code-structure.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Code Structure · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Code Structure · SAO: The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Code Structure · CoreStory Ontologies</title>
+<title>Code Structure · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../reference/">Explore</a><a href="../../../guides/">Guides</a><a href="../../../index.html#search">Search</a><a href="../../../index.html#downloads">Downloads</a><a href="../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="code-structure">Code Structure</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../index.html">Home</a></li><li><a href="../../../guides/">Guides</a></li><li aria-current="page">Code Structure</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#overview">Overview</a></li><li class="toc-level-2"><a href="#design-philosophy-paradigm-agnosticism">Design Philosophy: Paradigm Agnosticism</a></li><li class="toc-level-3"><a href="#example-mappings">Example Mappings</a></li><li class="toc-level-2"><a href="#physical-code-structure">Physical Code Structure</a></li><li class="toc-level-3"><a href="#codecontainer">CodeContainer</a></li><li class="toc-level-3"><a href="#storagelocation">StorageLocation</a></li><li class="toc-level-2"><a href="#logical-code-structure">Logical Code Structure</a></li><li class="toc-level-3"><a href="#encapsulationunit">EncapsulationUnit</a></li><li class="toc-level-3"><a href="#callableunit">CallableUnit</a></li><li class="toc-level-3"><a href="#datastructure">DataStructure</a></li><li class="toc-level-3"><a href="#dataelement">DataElement</a></li><li class="toc-level-3"><a href="#parameter">Parameter</a></li><li class="toc-level-2"><a href="#semantic-code-structure">Semantic Code Structure</a></li><li class="toc-level-3"><a href="#codeblock">CodeBlock</a></li><li class="toc-level-3"><a href="#statement">Statement</a></li><li class="toc-level-3"><a href="#controlflow">ControlFlow</a></li><li class="toc-level-3"><a href="#dataflow">DataFlow</a></li><li class="toc-level-2"><a href="#mapping-to-architecture">Mapping to Architecture</a></li><li class="toc-level-3"><a href="#component-implementation">Component Implementation</a></li><li class="toc-level-3"><a href="#operation-implementation">Operation Implementation</a></li><li class="toc-level-3"><a href="#domain-entity-mapping">Domain Entity Mapping</a></li><li class="toc-level-2"><a href="#cross-paradigm-examples">Cross-Paradigm Examples</a></li><li class="toc-level-3"><a href="#modern-java-microservice">Modern Java Microservice</a></li><li class="toc-level-3"><a href="#cobol-mainframe-application">COBOL Mainframe Application</a></li><li class="toc-level-3"><a href="#python-script">Python Script</a></li><li class="toc-level-3"><a href="#sql-stored-procedure">SQL Stored Procedure</a></li><li class="toc-level-2"><a href="#supporting-enumerations">Supporting Enumerations</a></li><li class="toc-level-3"><a href="#additional-type-enumerations">Additional Type Enumerations</a></li><li class="toc-level-2"><a href="#usage-patterns">Usage Patterns</a></li><li class="toc-level-3"><a href="#tracing-implementation">Tracing Implementation</a></li><li class="toc-level-3"><a href="#call-graph-analysis">Call Graph Analysis</a></li><li class="toc-level-3"><a href="#cross-reference-analysis">Cross-Reference Analysis</a></li><li class="toc-level-2"><a href="#best-practices">Best Practices</a></li><li class="toc-level-2"><a href="#integration-with-other-layers">Integration with Other Layers</a></li><li class="toc-level-2"><a href="#new-sections-in-v20">New Sections in v2.0</a></li><li class="toc-level-3"><a href="#type-system-modeling-section-18">Type System Modeling (Section 18)</a></li><li class="toc-level-3"><a href="#error-handling-model-section-19">Error Handling Model (Section 19)</a></li><li class="toc-level-3"><a href="#file-io-definitions-section-20">File I/O Definitions (Section 20)</a></li><li class="toc-level-3"><a href="#screen-terminal-interaction-section-21">Screen / Terminal Interaction (Section 21)</a></li><li class="toc-level-3"><a href="#job-control-batch-orchestration-section-22">Job Control / Batch Orchestration (Section 22)</a></li><li class="toc-level-3"><a href="#inter-process-communication-section-23">Inter-Process Communication (Section 23)</a></li><li class="toc-level-3"><a href="#preprocessor-metaprogramming-section-24">Preprocessor / Metaprogramming (Section 24)</a></li><li class="toc-level-3"><a href="#memory-ownership-model-section-25">Memory / Ownership Model (Section 25)</a></li><li class="toc-level-3"><a href="#database-schema-objects-section-27">Database Schema Objects (Section 27)</a></li><li class="toc-level-3"><a href="#programming-language-section-28">Programming Language (Section 28)</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="code-structure">Code Structure</h1>
 <p>The Code Structure layer provides a paradigm-agnostic framework for modeling software systems at the implementation level. This layer bridges the gap between architectural concepts (Components, Operations) and the actual source code that implements them, supporting both modern and legacy systems.</p>
 <blockquote>
 <p><strong>v2.0 Note:</strong> In SAO v2.0, all single-use relationship slots have been inlined as class attributes on their owning classes. Only approximately 20 multi-domain slots remain as global relationships: <code>defined_in_container</code>, <code>contained_in_unit</code>, <code>contains_data_elements</code>, <code>implements_component</code>, <code>implemented_by_code</code>, <code>annotates_element</code>, <code>annotated_by</code>, <code>affects_behavior_of</code>, <code>imports_symbols</code>, and <code>imported_via</code>.</p>
@@ -883,7 +899,8 @@ SELECT ?caller WHERE {
 - Connected to CodeContainer via <code>written_in_language</code> (replaces <code>format</code> string)
 - Connected to ErrorModel
 - Connected to MemoryModel</p>
-<p>This code structure model provides complete traceability from high-level architecture down to individual lines of code, supporting analysis, documentation, and transformation across any programming paradigm.</p></main>
+<p>This code structure model provides complete traceability from high-level architecture down to individual lines of code, supporting analysis, documentation, and transformation across any programming paradigm.</p></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../source/LICENSE">Apache 2.0</a> · <a href="../../../source/NOTICE">Notices</a> · <a href="../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../assets/site-search.js"></script>
 </body>
 </html>

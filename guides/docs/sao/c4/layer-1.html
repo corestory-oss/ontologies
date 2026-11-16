@@ -3,20 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="CoreStory&#x27;s shared vocabularies for software structures, specifications, and evidence.">
+<link rel="canonical" href="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-1.html">
+<meta name="description" content="Layer 1: System Context Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 1 (System Context) -- the outermost zoom level, where the system is viewed as a black box.…">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CoreStory Ontologies">
+<meta property="og:title" content="Layer 1: System Context Representation · SAO · CoreStory Ontologies">
+<meta property="og:description" content="Layer 1: System Context Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 1 (System Context) -- the outermost zoom level, where the system is viewed as a black box.…">
+<meta property="og:url" content="https://ontologies.corestory.ai/guides/docs/sao/c4/layer-1.html">
+<meta property="og:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Layer 1: System Context Representation · SAO · CoreStory Ontologies">
+<meta name="twitter:description" content="Layer 1: System Context Representation · SAO: This document defines the SAO v2.0 classes that correspond to C4 Level 1 (System Context) -- the outermost zoom level, where the system is viewed as a black box.…">
+<meta name="twitter:image" content="https://ontologies.corestory.ai/assets/ontology-social.png">
+<meta name="twitter:image:alt" content="CoreStory Ontologies reference library: SAO software structures and SpecSpec specification and evidence.">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'">
-<title>Layer 1: System Context Representation · CoreStory Ontologies</title>
+<title>Layer 1: System Context Representation · SAO · CoreStory Ontologies</title>
+
 <link rel="icon" type="image/svg+xml" href="../../../../assets/brand/corestory-symbol-black.svg">
 <link rel="stylesheet" href="../../../../assets/styles/site.css">
-
 </head>
 <body class="guide">
 <a class="skip-link" href="#content">Skip to content</a>
 <header class="site-header"><div class="header-inner">
 <a class="brand" href="../../../../index.html" aria-label="CoreStory Ontologies home"><img src="../../../../assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory"><span>ONTOLOGIES</span></a>
-<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#downloads">Downloads</a><a href="https://github.com/corestory-oss/ontologies">GitHub ↗</a></nav>
+<nav aria-label="Main navigation"><a href="../../../../reference/">Explore</a><a href="../../../../guides/">Guides</a><a href="../../../../index.html#search">Search</a><a href="../../../../index.html#downloads">Downloads</a><a href="../../../../source/index.html">Source</a></nav>
 </div></header>
-<main id="content" class="page-content"><h1 id="layer-1-system-context-representation">Layer 1: System Context Representation</h1>
+<main id="content" class="page-content"><nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="../../../../index.html">Home</a></li><li><a href="../../../../guides/">Guides</a></li><li aria-current="page">Layer 1: System Context Representation</li></ol></nav><div class="guide-layout"><aside class="guide-sidebar"><details class="guide-toc" open><summary>On this page</summary><nav aria-label="On this page"><ul><li class="toc-level-2"><a href="#scope">Scope</a></li><li class="toc-level-2"><a href="#summary">Summary</a></li><li class="toc-level-2"><a href="#connections-to-adjacent-layers">Connections to Adjacent Layers</a></li><li class="toc-level-3"><a href="#downward-links-to-layer-2-container">Downward links to Layer 2 (Container)</a></li><li class="toc-level-3"><a href="#cross-layer-links-to-layer-3-component">Cross-layer links to Layer 3 (Component)</a></li><li class="toc-level-2"><a href="#system-1-class">System (1 class)</a></li><li class="toc-level-3"><a href="#1-system">1. System</a></li><li class="toc-level-2"><a href="#actors-identity-6-classes">Actors &amp; Identity (6 classes)</a></li><li class="toc-level-3"><a href="#2-actor-abstract">2. Actor (abstract)</a></li><li class="toc-level-3"><a href="#3-humanactor">3. HumanActor</a></li><li class="toc-level-3"><a href="#4-systemactor">4. SystemActor</a></li><li class="toc-level-3"><a href="#5-identity">5. Identity</a></li><li class="toc-level-3"><a href="#6-credential">6. Credential</a></li><li class="toc-level-3"><a href="#7-organization">7. Organization</a></li><li class="toc-level-2"><a href="#multi-tenancy-1-class">Multi-tenancy (1 class)</a></li><li class="toc-level-3"><a href="#8-tenant">8. Tenant</a></li><li class="toc-level-2"><a href="#external-systems-1-class">External Systems (1 class)</a></li><li class="toc-level-3"><a href="#9-externalsystem">9. ExternalSystem</a></li><li class="toc-level-2"><a href="#compliance-governance-4-classes">Compliance &amp; Governance (4 classes)</a></li><li class="toc-level-3"><a href="#10-compliancerequirement">10. ComplianceRequirement</a></li><li class="toc-level-3"><a href="#11-control">11. Control</a></li><li class="toc-level-3"><a href="#12-evidence">12. Evidence</a></li><li class="toc-level-3"><a href="#13-riskassessment">13. RiskAssessment</a></li><li class="toc-level-2"><a href="#relationship-map">Relationship Map</a></li></ul></nav></details></aside><article class="guide-article"><h1 id="layer-1-system-context-representation">Layer 1: System Context Representation</h1>
 <p>This document defines the SAO v2.0 classes that correspond to <strong>C4 Level 1 (System Context)</strong> -- the outermost zoom level, where the system is viewed as a black box. Layer 1 answers the big-picture questions: what is this system, who uses it (actors), what sits outside it (external systems), and how is it governed (compliance and risk).</p>
 <p>Where Layer 2 answers "what containers and services make up the system?", Layer 1 answers "what is the system, who interacts with it, and what rules constrain it?"</p>
 <hr />
@@ -32,7 +48,7 @@
 <p>Layer 1 is <strong>paradigm-agnostic</strong>. These concepts apply equally to a legacy mainframe CICS system, a monolithic Java EE application, and a modern cloud-native microservices platform. Every software system has actors who use it, external systems it depends on, and governance constraints it must satisfy. The differences in how these concepts are realized emerge at Layer 2 (containers) and below.</p>
 <hr />
 <h2 id="summary">Summary</h2>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>#</th>
@@ -135,13 +151,13 @@
 <td>10</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Total: 13 classes</strong> (including 2 subtypes: HumanActor and SystemActor that inherit from the abstract Actor).</p>
 <hr />
 <h2 id="connections-to-adjacent-layers">Connections to Adjacent Layers</h2>
 <h3 id="downward-links-to-layer-2-container">Downward links to Layer 2 (Container)</h3>
 <p>These relationships connect Layer 1 concepts to the internal structure of the system:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 1 class</th>
@@ -188,10 +204,10 @@
 <td>Integrations connecting to this external system</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <h3 id="cross-layer-links-to-layer-3-component">Cross-layer links to Layer 3 (Component)</h3>
 <p>These relationships connect Layer 1 concepts to component-level and behavioral abstractions:</p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Layer 1 class</th>
@@ -226,14 +242,14 @@
 <td>Event subscriptions registered by this actor</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="system-1-class">System (1 class)</h2>
 <h3 id="1-system">1. System</h3>
 <p>Top-level container representing a software product, platform, or application. This is the root node of the entire SAO model -- everything else is contained within or connected to a System.</p>
 <p><strong>Mixins:</strong> <code>Versionable</code> (adds <code>version</code>, <code>effective_from</code>, <code>effective_to</code>, <code>is_current</code>)</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -298,9 +314,9 @@
 <td>Whether this is the current version (from Versionable)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -354,13 +370,13 @@
 <td>Interfaces exposed to external consumers (Layer 2)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="actors-identity-6-classes">Actors &amp; Identity (6 classes)</h2>
 <h3 id="2-actor-abstract">2. Actor (abstract)</h3>
 <p>Any entity that can initiate actions. This is the abstract base class for HumanActor and SystemActor -- it is never instantiated directly. Actors have identities, perform actions, own controls, and subscribe to events.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -407,9 +423,9 @@
 <td><code>human</code> or <code>system</code></td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -463,9 +479,9 @@
 <td>Evidence verified by this actor</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ActorCategory Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -482,12 +498,12 @@
 <td>An automated system or agent</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="3-humanactor">3. HumanActor</h3>
 <p>A human user of the system. Inherits all attributes and relationships from Actor.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -510,11 +526,11 @@
 <td>Email address</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
 <p><em>Inherits all relationships from Actor.</em></p>
 <p><strong>HumanActorType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -543,12 +559,12 @@
 <td>Compliance or security auditor</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="4-systemactor">4. SystemActor</h3>
 <p>A system or automated actor. Inherits all attributes and relationships from Actor.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -571,11 +587,11 @@
 <td>Service account identifier</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
 <p><em>Inherits all relationships from Actor.</em></p>
 <p><strong>SystemActorType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -604,12 +620,12 @@
 <td>A message-driven trigger</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="5-identity">5. Identity</h3>
 <p>A verified representation of an actor. An actor may have multiple identities (e.g., one per tenant, one per authentication provider). Identities hold credentials, are assigned roles, and belong to tenants and organizations.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -656,9 +672,9 @@
 <td>Freeform identity type label</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -705,12 +721,12 @@
 <td>Actor this identity represents</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="6-credential">6. Credential</h3>
 <p>Authentication material proving an identity claim. Credentials are inlined within Identity (not standalone top-level entities).</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -769,11 +785,11 @@
 <td>Whether the credential is currently active</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
 <p><em>No outgoing relationships. Credentials are inlined within Identity via <code>credentials</code>.</em></p>
 <p><strong>CredentialType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -810,12 +826,12 @@
 <td>OAuth 2.0 authentication flow</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="7-organization">7. Organization</h3>
 <p>A logical grouping of users and resources within a tenant. Organizations can form hierarchies via parent/child relationships.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -856,9 +872,9 @@
 <td>Created/updated timestamps and version (from NamedEntity, inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -891,13 +907,13 @@
 <td>Identities belonging to this organization</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="multi-tenancy-1-class">Multi-tenancy (1 class)</h2>
 <h3 id="8-tenant">8. Tenant</h3>
 <p>An organizational boundary for multi-tenant systems. Tenants contain organizations, identities, and tenant-specific configuration.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -938,9 +954,9 @@
 <td>Created/updated timestamps and version (from NamedEntity, inline)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -973,13 +989,13 @@
 <td>Identities scoped to this tenant</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="external-systems-1-class">External Systems (1 class)</h2>
 <h3 id="9-externalsystem">9. ExternalSystem</h3>
 <p>A system outside this system's boundary. External systems are integrated via Integration objects and classified by type.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1044,9 +1060,9 @@
 <td>Link to external system documentation</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1065,9 +1081,9 @@
 <td>Integrations connecting to this system (Layer 2)</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ExternalSystemType Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1092,13 +1108,13 @@
 <td>SaaS application</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="compliance-governance-4-classes">Compliance &amp; Governance (4 classes)</h2>
 <h3 id="10-compliancerequirement">10. ComplianceRequirement</h3>
 <p>A regulatory or policy obligation that the system must satisfy. Requirements reference a compliance framework, contain controls, and apply to one or more systems.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1151,9 +1167,9 @@
 <td>Date the requirement takes effect</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1179,9 +1195,9 @@
 <td>Systems subject to this requirement</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>ComplianceFramework Enum:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Value</th>
@@ -1222,12 +1238,12 @@
 <td>Federal Risk and Authorization Management Program</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="11-control">11. Control</h3>
 <p>A measure implementing a compliance requirement. Controls are owned by actors, produce evidence, and mitigate risks.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1286,9 +1302,9 @@
 <td>How often the control is executed (e.g., "daily", "continuous")</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1321,12 +1337,12 @@
 <td>Risk assessments this control mitigates</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="12-evidence">12. Evidence</h3>
 <p>Proof that a control is operating effectively. Evidence is collected at a point in time, references an artifact, and may be verified by an actor.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1385,9 +1401,9 @@
 <td>URI to the evidence artifact</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1406,12 +1422,12 @@
 <td>Actor who verified this evidence</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h3 id="13-riskassessment">13. RiskAssessment</h3>
 <p>An evaluation of threats and vulnerabilities affecting the system. Risk assessments are linked to the system they evaluate and the controls that mitigate identified risks.</p>
 <p><strong>Attributes:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Attribute</th>
@@ -1482,9 +1498,9 @@
 <td>Risk remaining after controls are applied</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <p><strong>Relationships:</strong></p>
-<table>
+<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>
 <thead>
 <tr>
 <th>Relationship</th>
@@ -1510,7 +1526,7 @@
 <td>System being assessed</td>
 </tr>
 </tbody>
-</table>
+</table></div>
 <hr />
 <h2 id="relationship-map">Relationship Map</h2>
 <pre><code>                        ┌──────────────────────────────────────────────┐
@@ -1590,7 +1606,8 @@
                         │  Policy, Role, Action, Subscription,   │
                         │  Component, Aggregate, Workflow, ...   │
                         └───────────────────────────────────────┘
-</code></pre></main>
+</code></pre></article></div></main>
 <footer class="site-footer"><div><strong>CoreStory Ontologies</strong><p>Shared vocabulary for software, specifications, and evidence.</p></div><div><a href="../../../../source/LICENSE">Apache 2.0</a> · <a href="../../../../source/NOTICE">Notices</a> · <a href="../../../../snapshot.json">Source snapshot</a><p>© CoreStory, Inc. · <a href="https://corestory.ai">corestory.ai ↗</a></p></div></footer>
+<script defer src="../../../../assets/site-search.js"></script>
 </body>
 </html>

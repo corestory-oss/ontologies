@@ -146,6 +146,57 @@ async function checkUiQueryLength() {
   }
   assert.equal(fetches, 1);
 }
+function checkVideoActivation() {
+  const script = fs.readFileSync(require.resolve('../web/assets/guide-video.js'), 'utf8');
+  const element = () => ({
+    hidden: true, children: [], attrs: {}, listeners: {}, textContent: '',
+    addEventListener(type, listener) { this.listeners[type] = listener; },
+    setAttribute(name, value) { this.attrs[name] = value; },
+    replaceChildren(...children) { this.children = children; },
+    focus() { this.focused = true; },
+  });
+  for (const broken of [false, true]) {
+    const button = element(), stage = element(), status = element();
+    const controls = {'[data-video-load]': button, '[data-video-stage]': stage, '[data-video-status]': status};
+    const created = [];
+    const document = {
+      querySelector: () => ({querySelector: selector => controls[selector]}),
+      createElement(tag) {
+        if (broken) throw Error('DOM unavailable');
+        const node = {...element(), tag}; created.push(node); return node;
+      },
+    };
+    const refuse = () => { throw Error('No network API or timer is needed by the video facade'); };
+    vm.runInNewContext(script, {document, fetch: refuse, XMLHttpRequest: refuse, Image: refuse,
+      setTimeout: refuse, setInterval: refuse});
+    assert.equal(button.hidden, false);
+    assert.equal(created.length, 0, 'no iframe or remote image before activation');
+    assert.deepEqual(Object.keys(button.listeners), ['click'], 'native click covers mouse, Enter, and Space');
+    button.listeners.click();
+    if (broken) {
+      assert.match(status.textContent, /could not be loaded/i);
+      assert.match(status.textContent, /YouTube link below/);
+      assert.equal(created.length, 0);
+      continue;
+    }
+    assert.equal(created.length, 1);
+    const frame = created[0];
+    assert.equal(frame.tag, 'iframe');
+    assert.equal(frame.attrs.src, 'https://www.youtube-nocookie.com/embed/gQVNWIBSrEY?autoplay=0');
+    assert.equal(frame.attrs.title, 'Tell the CoreStory of your system - Ontologies Explainer');
+    assert.equal(frame.attrs.referrerpolicy, 'strict-origin-when-cross-origin');
+    assert.equal(frame.attrs.allow, 'encrypted-media; picture-in-picture; fullscreen');
+    assert.equal(frame.focused, true);
+    assert.deepEqual(stage.children, [frame]);
+    assert.match(status.textContent, /If it does not appear or play/);
+    assert.match(status.textContent, /YouTube link below/);
+    button.listeners.click();
+    assert.equal(created.length, 1, 'repeated activation cannot create another frame');
+  }
+  vm.runInNewContext(script, {document: {querySelector: () => null}});
+  console.log('Video facade: no pre-click requests, exact embed/title/referrer, focus, no autoplay, duplicate guard and failure fallback pass.');
+}
+checkVideoActivation();
 checkUiQueryLength().then(() => {
   console.log(`Search matcher: ${terms.length} real exact IRIs rank first; case/literal identity, missing/malformed IRIs, ` +
     'matcher/UI query length, generic notation, prefixes, headings, empty states, Unicode and unsafe URLs pass.');

@@ -53,6 +53,19 @@ def render_guide(text, target, source):
     body = body.replace('<table>', '<div class="table-scroll" role="region" aria-label="Scrollable table" tabindex="0"><table>')
     body = body.replace('</table>', '</table></div>')
     root = posixpath.relpath(".", target.parent.as_posix()) + "/"
+    extra_head = ""
+    if source == "docs/start-here.md":
+        marker = "<!-- corestory-explainer -->"
+        if target.as_posix() != "guides/docs/start-here.html" or body.count(marker) != 1:
+            raise ValueError("Beginner guide must have one explainer at its approved route")
+        body = body.replace(marker, '<div class="explainer-video" data-explainer-video>'
+                            '<div id="explainer-player" class="video-stage" data-video-stage>'
+                            f'<img src="{root}assets/brand/corestory-logo-gold.svg" width="172" height="60" alt="CoreStory">'
+                            '<button type="button" aria-describedby="explainer-privacy" '
+                            'aria-controls="explainer-player" data-video-load hidden>Load YouTube player</button>'
+                            '</div><p class="video-status" role="status" aria-live="polite" '
+                            'data-video-status></p></div>')
+        extra_head = f'<script defer src="{root}assets/guide-video.js"></script>'
     breadcrumbs = ('<nav class="breadcrumbs" aria-label="Breadcrumb"><ol>'
                    f'<li><a href="{root}index.html">Home</a></li>'
                    f'<li><a href="{root}guides/">Guides</a></li>'
@@ -76,7 +89,7 @@ def render_guide(text, target, source):
         title += " · " + scope
     description = title + ": " + excerpt(record["description"], 165)
     return render_page(title, body, root + "index.html", target=target,
-                       description=description), record
+                       description=description, extra_head=extra_head), record
 
 
 def render_page(title, body, home, *, target, description, page_class="guide", extra_head="", noindex=False):
@@ -88,6 +101,8 @@ def render_page(title, body, home, *, target, description, page_class="guide", e
     return template.substitute(title=escape(document_title), body=body, root=root,
                                page_class=escape(page_class, quote=True),
                                extra_head=extra_head,
+                               frame_src=("; frame-src https://www.youtube-nocookie.com"
+                                          if str(target) == "guides/docs/start-here.html" else ""),
                                publication_head=publication_head(document_title, description, target, noindex=noindex))
 
 
@@ -183,7 +198,9 @@ def guides(output, manifest=None):
             used.add(path)
             title = next((line.lstrip("# ") for line in path.read_text().splitlines() if line.startswith("# ")), path.stem)
             href = escape(posixpath.relpath(target.as_posix(), "guides"), quote=True)
-            links.append((relative, f'<li><a href="{href}">{escape(title)}</a></li>'))
+            video = (f' · <a href="{href}#watch-the-explainer">Watch the explainer</a>'
+                     if relative == "docs/start-here.md" else "")
+            links.append((relative, f'<li><a href="{href}">{escape(title)}</a>{video}</li>'))
         if isinstance(prefix, tuple):
             links.sort(key=lambda item: prefix.index(item[0]))
         sections.append(f'<h2>{escape(label)}</h2><ul class="guide-index">' + "".join(link for _, link in links) + '</ul>')

@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Contracts for local search, guide navigation and build-time discovery checks."""
 import hashlib
+from html.parser import HTMLParser
 import json
 from pathlib import Path
 import shutil
@@ -17,6 +18,19 @@ from scripts.check_site import Links, check_search
 from scripts.site_publication import source_manifest
 from scripts.site_projection import SAO, SPEC, compact, project
 from scripts.site_search import excerpt, plain_text, search_index, serialize_index
+
+
+class Elements(HTMLParser):
+    def __init__(self, html):
+        super().__init__()
+        self.nodes = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        self.nodes.append((tag, dict(attrs)))
+
+    def select(self, tag):
+        return [attrs for name, attrs in self.nodes if name == tag]
 
 
 class SearchTests(unittest.TestCase):
@@ -144,6 +158,14 @@ class GuideNavigationTests(unittest.TestCase):
         html, _ = render_guide('# Data\n\n| A | B |\n|---|---|\n| C | D |', Path('guides/test.html'), 'test.md')
         self.assertIn('aria-label="Scrollable table" tabindex="0"><table>', html)
 
+    def test_explainer_requires_one_marker_and_approved_route(self):
+        for text, target in [('# Missing', 'guides/docs/start-here.html'),
+                             ('<!-- corestory-explainer -->\n\n<!-- corestory-explainer -->',
+                              'guides/docs/start-here.html'),
+                             ('<!-- corestory-explainer -->', 'guides/other.html')]:
+            with self.subTest(text=text, target=target), self.assertRaisesRegex(ValueError, 'one explainer'):
+                render_guide(text, Path(target), 'docs/start-here.md')
+
 
 class GuideBuildTests(unittest.TestCase):
     @classmethod
@@ -182,8 +204,55 @@ class GuideBuildTests(unittest.TestCase):
         parser = Links()
         parser.feed(section)
         self.assertEqual(parser.targets, [
-            'docs/start-here.html', 'docs/getting-started.html', 'docs/modeling-patterns.html',
+            'docs/start-here.html', 'docs/start-here.html#watch-the-explainer',
+            'docs/getting-started.html', 'docs/modeling-patterns.html',
         ])
+
+    def test_explainer_initial_markup_is_local_accessible_and_searchable(self):
+        html = (self.output / 'guides/docs/start-here.html').read_text()
+        parser = Elements(html)
+        self.assertEqual(parser.select('iframe'), [])
+        buttons = [attrs for attrs in parser.select('button') if 'data-video-load' in attrs]
+        self.assertEqual(len(buttons), 1)
+        self.assertEqual(buttons[0]['type'], 'button')
+        self.assertIn('hidden', buttons[0], 'no inert button when JavaScript is off')
+        ids = {attrs['id'] for _, attrs in parser.nodes if 'id' in attrs}
+        self.assertIn(buttons[0]['aria-describedby'], ids)
+        self.assertIn(buttons[0]['aria-controls'], ids)
+        self.assertIn('watch-the-explainer', ids)
+        self.assertEqual(sum(attrs.get('href') == 'https://youtu.be/gQVNWIBSrEY'
+                             for attrs in parser.select('a')), 1)
+        self.assertIn('If the player is unavailable or JavaScript is off', html)
+        self.assertIn('YouTube may collect usage data', html)
+        self.assertEqual([attrs['src'] for attrs in parser.select('script')],
+                         ['../../assets/guide-video.js', '../../assets/site-search.js'])
+        for tag, attrs in parser.nodes:
+            with self.subTest(tag=tag, attrs=attrs):
+                self.assertFalse(any(key.startswith('on') for key in attrs))
+                self.assertNotIn(attrs.get('rel'), ('preconnect', 'dns-prefetch', 'prefetch'))
+                for name in ('src', 'srcset', 'poster', 'data'):
+                    self.assertNotIn('://', attrs.get(name, ''))
+                    self.assertFalse(attrs.get(name, '').startswith('//'))
+        record = next(record for record in self.records if record['id'] == 'docs/start-here.md')
+        self.assertIn({'id': 'watch-the-explainer', 'title': 'Watch the explainer', 'level': 2},
+                      record['headings'])
+        self.assertIn('Tell the CoreStory of your system - Ontologies Explainer', record['text'])
+        self.assertNotIn('corestory-explainer', record['text'])
+
+    def test_only_beginner_guide_gets_frame_permission_and_video_script(self):
+        default = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'"
+        checked = 0
+        for path in self.output.rglob('*.html'):
+            parser = Elements(path.read_text())
+            csp = [attrs['content'] for attrs in parser.select('meta')
+                   if attrs.get('http-equiv') == 'Content-Security-Policy']
+            video = path.relative_to(self.output).as_posix() == 'guides/docs/start-here.html'
+            with self.subTest(path=path.relative_to(self.output)):
+                self.assertEqual(csp, [default + ('; frame-src https://www.youtube-nocookie.com' if video else '')])
+                self.assertEqual(sum(attrs.get('src', '').endswith('/guide-video.js')
+                                     for attrs in parser.select('script')), int(video))
+            checked += 1
+        self.assertGreater(checked, len(self.records))
 
     def test_search_integrity_and_all_guide_anchors(self):
         failures = []

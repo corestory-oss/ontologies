@@ -4,6 +4,16 @@ You do not need to know RDF to understand the idea. Start with a familiar proble
 
 An ontology gives those parts shared names and explicit relationships. It helps you say which software, which requirement, which claim, and which evidence you mean. It does not make the story true merely by organizing it.
 
+## Watch the explainer
+
+**Tell the CoreStory of your system - Ontologies Explainer** · CoreStory
+
+<p id="explainer-privacy">Loading the player connects to YouTube and shares your IP address and this site’s origin. YouTube may collect usage data. No YouTube content loads until you choose to load the player or follow the link below.</p>
+
+<!-- corestory-explainer -->
+
+[Watch on YouTube](https://youtu.be/gQVNWIBSrEY). If the player is unavailable or JavaScript is off, use this link. The written guide continues below.
+
 ## One system. Different questions.
 
 Imagine four people looking at the same change:

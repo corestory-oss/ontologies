@@ -1,6 +1,7 @@
 # Generated distribution; edit ontologies/specspec/, then run scripts/build_rdf.py.
 # Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix sao: <https://ontologies.corestory.ai/sao/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix spec: <https://ontologies.corestory.ai/specspec/> .
@@ -38,6 +39,20 @@ specsaosh:SoftwareSubjectLinkShape a sh:NodeShape ;
         specsh:title_25c7106d ;
     sh:targetClass specsao:SoftwareSubjectLink .
 
+specsaosh:TermMappingLinkShape a sh:NodeShape ;
+    sh:nodeKind sh:IRI ;
+    sh:property specsaosh:TermMappingLink_mapping_relation,
+        specsaosh:TermMappingLink_matched_term,
+        specsaosh:TermMappingLink_term,
+        specsaosh:basis_claim_077cbbea,
+        specsh:authored_by_7ded2f76,
+        specsh:created_at_d87477cd,
+        specsh:description_af58a6e1,
+        specsh:id_8a63fba6,
+        specsh:supersedes_9d6dbe3f,
+        specsh:title_25c7106d ;
+    sh:targetClass specsao:TermMappingLink .
+
 specsaosh:VerificationTestLinkShape a sh:NodeShape ;
     sh:nodeKind sh:IRI ;
     sh:property specsaosh:result_1306e03e,
@@ -56,12 +71,30 @@ specsaosh:DescriptiveBasisConstraint a sh:SPARQLConstraint ;
 PREFIX specsao: <https://ontologies.corestory.ai/specspec/sao/>
 SELECT $this WHERE { $this specsao:basis_claim ?claim . FILTER NOT EXISTS { ?claim spec:statement_mode "descriptive" } }""" .
 
-specsaosh:basis_claim_077cbbea a sh:PropertyShape ;
-    sh:class spec:Claim ;
+specsaosh:TermMappingLink_mapping_relation a sh:PropertyShape ;
+    sh:in specsaosh:TermMappingRelationValues ;
     sh:maxCount 1 ;
     sh:minCount 1 ;
-    sh:name "basis_claim" ;
-    sh:path specsao:basis_claim .
+    sh:name "mapping_relation" ;
+    sh:path specsao:mapping_relation .
+
+specsaosh:TermMappingLink_matched_term a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "matched_term" ;
+    sh:path specsao:matched_term .
+
+specsaosh:TermMappingLink_term a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:disjoint specsao:matched_term ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "term" ;
+    sh:path specsao:term .
+
+specsaosh:TermMappingRelationValues rdf:first "exact_match" ;
+    rdf:rest ( "close_match" "broad_match" "narrow_match" "related_match" ) .
 
 specsaosh:callable_6305d261 a sh:PropertyShape ;
     sh:class sao:CallableUnit ;
@@ -104,3 +137,10 @@ specsaosh:test_case_730ab0a5 a sh:PropertyShape ;
     sh:minCount 1 ;
     sh:name "test_case" ;
     sh:path specsao:test_case .
+
+specsaosh:basis_claim_077cbbea a sh:PropertyShape ;
+    sh:class spec:Claim ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:name "basis_claim" ;
+    sh:path specsao:basis_claim .

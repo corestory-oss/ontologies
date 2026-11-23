@@ -1,0 +1,118 @@
+# Editable RDFS vocabulary source. Assemble distributions with scripts/build_rdf.py.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+sao:Glossary a rdfs:Class ;
+    rdfs:label "Glossary" ;
+    rdfs:comment "A curated set of business terms maintained by one owner, such as a department, data-governance team, or bounded context. The glossary is the scope in which its terms' labels and definitions apply." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf skos:ConceptScheme,
+        sao:NamedEntity ;
+    skos:note "Corresponds to a SKOS concept scheme and to a glossary or domain in data-catalog tools. Two glossaries may use the same label for different meanings." .
+
+sao:GlossaryTerm a rdfs:Class ;
+    rdfs:label "GlossaryTerm" ;
+    rdfs:comment "A business term defined in one glossary, with its preferred label, synonyms, short codes, and the system entities it describes. Its identity is the term node, not its label: two terms with the same label are distinct unless explicitly mapped." ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:subClassOf skos:Concept,
+        sao:NamedEntity ;
+    skos:note "Binding a term to the data elements, rules, or capabilities it describes is what lets consumers tell same-word, same-meaning terms from same-word, different-meaning terms." .
+
+sao:alternative_labels a rdf:Property ;
+    rdfs:label "alternative_labels" ;
+    rdfs:comment "Synonyms: other labels used for the same meaning within this term's glossary." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf skos:altLabel .
+
+sao:contained_in_glossary a rdf:Property ;
+    rdfs:label "contained_in_glossary" ;
+    rdfs:comment "The glossary that defines this term and scopes its labels." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:Glossary ;
+    rdfs:subPropertyOf skos:inScheme .
+
+sao:contains_terms a rdf:Property ;
+    rdfs:label "contains_terms" ;
+    rdfs:comment "Terms defined in this glossary." ;
+    rdfs:domain sao:Glossary ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:GlossaryTerm .
+
+sao:describes_entities a rdf:Property ;
+    rdfs:label "describes_entities" ;
+    rdfs:comment "System entities this term describes, such as a DataElement, Rule, Capability, or DomainEntity. A binding states what the term refers to; it does not make the term and the entity the same node." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:NamedEntity .
+
+sao:has_broader_terms a rdf:Property ;
+    rdfs:label "has_broader_terms" ;
+    rdfs:comment "More general terms in the same glossary." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:GlossaryTerm ;
+    rdfs:subPropertyOf skos:broader .
+
+sao:has_narrower_terms a rdf:Property ;
+    rdfs:label "has_narrower_terms" ;
+    rdfs:comment "More specific terms in the same glossary." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:GlossaryTerm ;
+    rdfs:subPropertyOf skos:narrower .
+
+sao:hidden_labels a rdf:Property ;
+    rdfs:label "hidden_labels" ;
+    rdfs:comment "Labels useful for search but not for display, such as common misspellings or legacy field spellings." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf skos:hiddenLabel .
+
+sao:preferred_label a rdf:Property ;
+    rdfs:label "preferred_label" ;
+    rdfs:comment "The glossary's preferred display label for the term, at most one per language." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf skos:prefLabel .
+
+sao:related_to_terms a rdf:Property ;
+    rdfs:label "related_to_terms" ;
+    rdfs:comment "Associated terms in the same glossary that are neither broader nor narrower." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:GlossaryTerm ;
+    rdfs:subPropertyOf skos:related .
+
+sao:scoped_to_bounded_context a rdf:Property ;
+    rdfs:label "scoped_to_bounded_context" ;
+    rdfs:comment "The bounded context whose language this glossary records, when it has one. Complements the free-text `ubiquitous_language` on BoundedContext." ;
+    rdfs:domain sao:Glossary ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range sao:BoundedContext .
+
+sao:short_codes a rdf:Property ;
+    rdfs:label "short_codes" ;
+    rdfs:comment "Abbreviations or codes used for the term, such as a field-name prefix or report code. A shared short code is not evidence that two terms mean the same thing." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range xsd:string ;
+    rdfs:subPropertyOf skos:altLabel .
+
+sao:term_definition a rdf:Property ;
+    rdfs:label "term_definition" ;
+    rdfs:comment "The glossary's statement of what the term means." ;
+    rdfs:domain sao:GlossaryTerm ;
+    rdfs:isDefinedBy sao: ;
+    rdfs:range rdfs:Literal ;
+    rdfs:subPropertyOf skos:definition .
+

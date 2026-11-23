@@ -15,6 +15,7 @@
     "vocabulary/domain.ttl",
     "vocabulary/error-handling.ttl",
     "vocabulary/file-io.ttl",
+    "vocabulary/glossary.ttl",
     "vocabulary/governance.ttl",
     "vocabulary/identity.ttl",
     "vocabulary/infrastructure.ttl",

@@ -1,0 +1,220 @@
+# Editable SHACL source for glossary terms and their bindings.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix saosh: <https://ontologies.corestory.ai/sao/shapes/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+saosh:GlossaryShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/Glossary/contains_terms>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/description>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/id>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/name>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/scoped_to_bounded_context>,
+        <https://ontologies.corestory.ai/sao/shapes/Glossary/tags> ;
+    sh:targetClass sao:Glossary .
+
+saosh:GlossaryTermShape a sh:NodeShape ;
+    sh:closed false ;
+    sh:property <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/contained_in_glossary>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/describes_entities>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/description>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/has_broader_terms>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/has_narrower_terms>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/id>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/metadata>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/name>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/related_to_terms>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/short_codes>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/tags>,
+        <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition> ;
+    sh:targetClass sao:GlossaryTerm .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/contains_terms> a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:description "Terms defined in this glossary." ;
+    sh:path sao:contains_terms .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/scoped_to_bounded_context> a sh:PropertyShape ;
+    sh:class sao:BoundedContext ;
+    sh:description "Bounded context whose language this glossary records." ;
+    sh:maxCount 1 ;
+    sh:path sao:scoped_to_bounded_context .
+
+<https://ontologies.corestory.ai/sao/shapes/Glossary/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels> a sh:PropertyShape ;
+    sh:description "Synonyms within this glossary; never equal to the preferred label or a hidden label." ;
+    sh:disjoint sao:hidden_labels ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternatives> ;
+    sh:path sao:alternative_labels .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternative/0> sh:datatype xsd:string .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternative/1> sh:datatype rdf:langString .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/alternative_labels/alternative/1> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/contained_in_glossary> a sh:PropertyShape ;
+    sh:class sao:Glossary ;
+    sh:description "Defining glossary (required, single)." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:contained_in_glossary .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/describes_entities> a sh:PropertyShape ;
+    sh:class sao:NamedEntity ;
+    sh:description "System entities this term describes; another glossary term is not a valid target." ;
+    sh:not <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/describes_entities/not-a-term> ;
+    sh:path sao:describes_entities .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/describes_entities/not-a-term> sh:class sao:GlossaryTerm .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/description> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Free-text description." ;
+    sh:maxCount 1 ;
+    sh:path sao:description .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/has_broader_terms> a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:description "More general terms in the same glossary." ;
+    sh:disjoint sao:has_narrower_terms ;
+    sh:path sao:has_broader_terms .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/has_narrower_terms> a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:description "More specific terms in the same glossary." ;
+    sh:path sao:has_narrower_terms .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels> a sh:PropertyShape ;
+    sh:description "Search-only labels such as misspellings." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternatives> ;
+    sh:path sao:hidden_labels .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternative/0> sh:datatype xsd:string .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternative/1> sh:datatype rdf:langString .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/hidden_labels/alternative/1> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/id> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Unique identifier." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:id .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/metadata> a sh:PropertyShape ;
+    sh:class sao:Metadata ;
+    sh:description "Created/updated timestamps and version." ;
+    sh:maxCount 1 ;
+    sh:path sao:metadata .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/name> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Human-readable name." ;
+    sh:maxCount 1 ;
+    sh:minCount 1 ;
+    sh:path sao:name .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label> a sh:PropertyShape ;
+    sh:description "Preferred display label (required); at most one per language and at most one without a language tag." ;
+    sh:disjoint sao:alternative_labels,
+        sao:hidden_labels,
+        sao:short_codes ;
+    sh:minCount 1 ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternatives> ;
+    sh:path sao:preferred_label ;
+    sh:qualifiedMaxCount 1 ;
+    sh:qualifiedValueShape <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/untagged> ;
+    sh:uniqueLang true .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternative/0> sh:datatype xsd:string .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternative/1> sh:datatype rdf:langString .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/alternative/1> ;
+    rdf:rest () .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/preferred_label/untagged> sh:datatype xsd:string .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/related_to_terms> a sh:PropertyShape ;
+    sh:class sao:GlossaryTerm ;
+    sh:description "Associated terms in the same glossary." ;
+    sh:path sao:related_to_terms .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/short_codes> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Abbreviations or codes used for the term; not evidence of sameness." ;
+    sh:disjoint sao:hidden_labels ;
+    sh:path sao:short_codes .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/tags> a sh:PropertyShape ;
+    sh:datatype xsd:string ;
+    sh:description "Freeform tags." ;
+    sh:path sao:tags .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition> a sh:PropertyShape ;
+    sh:description "What the term means in this glossary; at most one per language." ;
+    sh:or <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternatives> ;
+    sh:path sao:term_definition ;
+    sh:uniqueLang true .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternative/0> sh:datatype xsd:string .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternative/1> sh:datatype rdf:langString .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternatives> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternative/0> ;
+    rdf:rest <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternatives/cell/1> .
+
+<https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternatives/cell/1> rdf:first <https://ontologies.corestory.ai/sao/shapes/GlossaryTerm/term_definition/alternative/1> ;
+    rdf:rest () .
+

@@ -51,6 +51,7 @@ The guide reflects the retained LinkML baseline; use the migration notes for cur
 | [11 Governance and Compliance](11-governance-and-compliance.md) | Compliance | ComplianceRequirement, Control, Evidence, RiskAssessment |
 | [12 Code Structure](12-code-structure.md) | Code modeling | CodeContainer, EncapsulationUnit, CallableUnit, DataStructure |
 | [13 Extended Modeling](13-extended-modeling.md) | Sections 18–28 | TypeExpression, ErrorModel, FileDefinition, JobDefinition, IPC, etc. |
+| [14 Glossary Terms](14-glossary.md) | Section 29 (proposed) | Glossary, GlossaryTerm |
 
 ### Other resources
 

@@ -15,6 +15,7 @@
     "shapes/domain.ttl",
     "shapes/error-handling.ttl",
     "shapes/file-io.ttl",
+    "shapes/glossary.ttl",
     "shapes/governance.ttl",
     "shapes/identity.ttl",
     "shapes/infrastructure.ttl",

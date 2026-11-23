@@ -1,0 +1,32 @@
+# Synthetic cross-glossary term mapping with its provenance recorded as a claim.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+@prefix spec: <https://ontologies.corestory.ai/specspec/> .
+@prefix specsao: <https://ontologies.corestory.ai/specspec/sao/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Retail "Balance" and Finance "Spendable funds" share no words but describe the same field.
+# The mapping links two terms; it does not merge them. Finance "Balance" is not mapped:
+# its label matches, but its binding differs.
+<urn:specspec:demo:glossary:balance-match> a specsao:TermMappingLink ;
+    spec:id "urn:specspec:demo:glossary:balance-match"^^xsd:anyURI ;
+    spec:title "Retail balance matches finance spendable funds"^^xsd:string ;
+    specsao:term <https://example.org/sao/glossary/retail-balance> ;
+    specsao:matched_term <https://example.org/sao/glossary/finance-spendable-funds> ;
+    specsao:mapping_relation "exact_match" ;
+    specsao:basis_claim <urn:specspec:demo:glossary:balance-match-basis> .
+
+<urn:specspec:demo:glossary:balance-match-basis> a spec:Claim ;
+    spec:id "urn:specspec:demo:glossary:balance-match-basis"^^xsd:anyURI ;
+    spec:title "Both terms describe available_balance"^^xsd:string ;
+    spec:statement "Retail banking 'Balance' and finance 'Spendable funds' are each bound to account/available_balance and have equivalent definitions."^^xsd:string ;
+    spec:statement_mode "descriptive" ;
+    spec:origin "supplied" ;
+    spec:authored_by <urn:specspec:demo:data-steward> ;
+    spec:review_status "accepted" ;
+    spec:reviewed_by <urn:specspec:demo:data-steward> ;
+    spec:reviewed_at "2026-11-10T00:00:00Z"^^xsd:dateTime .
+
+<urn:specspec:demo:data-steward> a spec:SpecAgent ;
+    spec:agent_kind "person" ;
+    spec:id "urn:specspec:demo:data-steward"^^xsd:anyURI ;
+    spec:title "Example data steward"^^xsd:string .

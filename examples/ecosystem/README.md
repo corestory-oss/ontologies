@@ -1,6 +1,6 @@
 # Combined modernization fixture
 
-`manifest.json` composes the existing SpecSpec modernization graph and bridge links with `software.ttl`. The latter supplies the required SAO fields for the example Java callable, extending the earlier type-only manifest into a graph that can pass both validation profiles.
+`manifest.json` composes the existing SpecSpec modernization graph and bridge links with `software.ttl`. The latter supplies the required SAO fields for the example Java callable, extending the earlier type-only manifest into a graph that can pass both validation profiles. It also includes the SAO glossary example and `glossary-mapping.ttl`, a reviewed cross-glossary term match whose provenance is a SpecSpec claim.
 
 Run `uv run python scripts/validate_rdf.py --ontology ecosystem` from the repository root. This applies both complete SHACL profiles and the current bridge shapes to one graph, then verifies the original local evidence fixtures. No inference is materialized and no source program is executed. All data is synthetic.
 

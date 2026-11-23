@@ -1,0 +1,62 @@
+# Synthetic glossary example: two glossaries, a homonym, synonyms, short codes and bindings.
+# Copyright (c) 2026 CoreStory, Inc. — Apache-2.0
+@prefix sao: <https://ontologies.corestory.ai/sao/> .
+@prefix ex: <https://example.org/sao/glossary/> .
+
+# Two departments keep their own glossaries.
+ex:retail a sao:Glossary ;
+    sao:id "retail-banking-glossary" ;
+    sao:name "Retail banking glossary" ;
+    sao:contains_terms ex:retail-balance, ex:retail-account-balance .
+
+ex:finance a sao:Glossary ;
+    sao:id "finance-glossary" ;
+    sao:name "Finance glossary" ;
+    sao:contains_terms ex:finance-balance, ex:finance-spendable-funds .
+
+# Homonym: both glossaries say "Balance", but each term is bound to a different field.
+# Same label, different bindings: these are two terms and must not be merged.
+ex:retail-balance a sao:GlossaryTerm ;
+    sao:id "retail-banking-glossary/balance" ;
+    sao:name "Balance" ;
+    sao:contained_in_glossary ex:retail ;
+    sao:preferred_label "Balance"@en ;
+    sao:alternative_labels "Available balance"@en ;
+    sao:short_codes "AVBL" ;
+    sao:term_definition "Funds the customer can withdraw now, after holds."@en ;
+    sao:has_broader_terms ex:retail-account-balance ;
+    sao:describes_entities ex:available-balance-field .
+
+ex:retail-account-balance a sao:GlossaryTerm ;
+    sao:id "retail-banking-glossary/account-balance" ;
+    sao:name "Account balance" ;
+    sao:contained_in_glossary ex:retail ;
+    sao:preferred_label "Account balance"@en ;
+    sao:has_narrower_terms ex:retail-balance .
+
+ex:finance-balance a sao:GlossaryTerm ;
+    sao:id "finance-glossary/balance" ;
+    sao:name "Balance" ;
+    sao:contained_in_glossary ex:finance ;
+    sao:preferred_label "Balance"@en ;
+    sao:term_definition "Posted ledger balance at end of day, before holds."@en ;
+    sao:describes_entities ex:ledger-balance-field .
+
+# Synonym across glossaries: different words, same binding.
+ex:finance-spendable-funds a sao:GlossaryTerm ;
+    sao:id "finance-glossary/spendable-funds" ;
+    sao:name "Spendable funds" ;
+    sao:contained_in_glossary ex:finance ;
+    sao:preferred_label "Spendable funds"@en ;
+    sao:hidden_labels "Spendible funds"@en ;
+    sao:describes_entities ex:available-balance-field .
+
+ex:available-balance-field a sao:DataElement ;
+    sao:id "account/available_balance" ;
+    sao:name "available_balance" ;
+    sao:data_type "decimal" .
+
+ex:ledger-balance-field a sao:DataElement ;
+    sao:id "account/ledger_balance" ;
+    sao:name "ledger_balance" ;
+    sao:data_type "decimal" .
